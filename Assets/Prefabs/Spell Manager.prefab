@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7808990808998034963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7808990808998034967}
+  - component: {fileID: 1442137911461133963}
+  - component: {fileID: 8290986863599863434}
+  - component: {fileID: 8232875723283678204}
+  m_Layer: 0
+  m_Name: Spell Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7808990808998034967
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808990808998034963}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1442137911461133963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808990808998034963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9301d62869d246147a1af12cbc3d083f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  particleCasters: []
+  orbCasters: []
+  streamCasters: []
+  particleSpells: []
+  orbSpells: []
+  streamSpells: []
+  particleDummies: []
+  orbDummies: []
+  streamDummies: []
+  masterOrbElements: []
+--- !u!114 &8290986863599863434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808990808998034963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c47a724186b8384faf1d4d5fdb9cd61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minVelocity: 2
+  maxVelocity: 10
+  fingerForwardThreshold: 0.7
+  angleMargin: 20
+  twoPalms: 0
+  touchDown: 0
+  palmsForward: 0
+  palmsIn: 0
+  rockOn: 0
+  fingerGun: 0
+--- !u!114 &8232875723283678204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808990808998034963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eaa17af11025234ab6fed6a450647fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterOrb: {fileID: 0}
+  orbsPerSecond: 1
+  particlesPerSecond: 20
+  palmMenuVisuals1: {fileID: 0}
+  palmMenuVisuals2: {fileID: 0}
+  orbROFSlider: {fileID: 0}
+  orbROFText: {fileID: 0}
+  particleROFSlider: {fileID: 0}
+  particleROFText: {fileID: 0}
+  palmOffsetSlider: {fileID: 0}
+  palmOffsetText: {fileID: 0}
+  maxPalmDistSlider: {fileID: 0}
+  maxPalmDistText: {fileID: 0}
+  maxPalmDistance: 0.3
+  palmDistOffset: 0.05
+  scaleMultiplier: 1
+  conjureOSCMessages: []
+  currEl: 0
+  currForm: 1
