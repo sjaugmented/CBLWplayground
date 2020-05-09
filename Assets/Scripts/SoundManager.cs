@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
-    public AudioClip elementSwitchFX;
+    public AudioSource elementSwitchFX;
     public AudioSource orbAmbienceFX;
     public AudioSource fireStreamFX;
     public AudioSource waterIceStreamFX;

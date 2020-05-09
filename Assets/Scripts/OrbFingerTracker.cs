@@ -166,43 +166,6 @@ public class OrbFingerTracker : MonoBehaviour
         return withinRange;
     }
 
-    /* private void ProcessIndexVelocity()
-     {
-         if (caster.GetCurrForm() == SpellManager.Form.particle || caster.GetCurrForm() == SpellManager.Form.orb)
-         {
-             float awayVelocity;
-             Vector3 cameraPos = Camera.main.transform.position;
-
-             float handCamDist = Mathf.Abs(Vector3.Distance(cameraPos, indexTip.Position));
-             awayVelocity = (handCamDist - prevHandCamDist) / Time.deltaTime;
-             prevHandCamDist = Mathf.Abs(Vector3.Distance(cameraPos, indexTip.Position));
-
-             if (awayVelocity >= minVelocity && awayVelocity <= maxVelocity)
-             {
-                 if (indexTip.Forward.z >= fingerForwardThreshold)
-                 {
-                     caster.CastSpell();
-                 }
-                 else return;
-             }
-             else return;
-         }
-         else if (caster.GetCurrForm() == SpellManager.Form.stream)
-         {
-             if (indexTip.Forward.z >= fingerForwardThreshold)
-             {
-                 caster.CastSpell();
-             }
-             else caster.DisableStreams();
-         }
-         else return;
-     }*/
-
-    /* public bool GetCastFingerUp()
-     {
-         return oneFinger;
-     }*/
-
     public Vector3 GetPalm1Pos()
     {
         return rightPalm.Position;

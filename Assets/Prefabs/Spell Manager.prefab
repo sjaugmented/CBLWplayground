@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7808990808998034967}
   - component: {fileID: 1442137911461133963}
   - component: {fileID: 8290986863599863434}
-  - component: {fileID: 8232875723283678204}
+  - component: {fileID: 1936508196}
   m_Layer: 0
   m_Name: Spell Manager
   m_TagString: Untagged
@@ -45,16 +45,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9301d62869d246147a1af12cbc3d083f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleCasters: []
-  orbCasters: []
-  streamCasters: []
-  particleSpells: []
-  orbSpells: []
-  streamSpells: []
-  particleDummies: []
-  orbDummies: []
-  streamDummies: []
-  masterOrbElements: []
+  particleSpells:
+  - {fileID: 5418862387724200070, guid: 8b61e4f2b9dcdbe4b937c2728571b5b5, type: 3}
+  - {fileID: 5418862387724200070, guid: bb545500ae0731445a3327fb48b7b8b9, type: 3}
+  - {fileID: 5418862387724200070, guid: 717079b7b12fbb445aec744bf849e0c0, type: 3}
+  - {fileID: 5418862387724200070, guid: b3277739cc0bbd3429217280049545a1, type: 3}
+  orbSpells:
+  - {fileID: 9064369555328730510, guid: c43a52e769683b34984de58d1414fc2a, type: 3}
+  - {fileID: 9064369555328730510, guid: 5f1f470671025514eaf9740623645261, type: 3}
+  - {fileID: 9064369555328730510, guid: a7b97a303a23c184cb9cab78dfe279e7, type: 3}
+  - {fileID: 9064369555328730510, guid: 6ae7e386ef5740a40bf8b04f2ed2e2d5, type: 3}
+  streamSpells:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  masterOrbElements:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &8290986863599863434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +87,7 @@ MonoBehaviour:
   palmsIn: 0
   rockOn: 0
   fingerGun: 0
---- !u!114 &8232875723283678204
+--- !u!114 &1936508196
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +96,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7808990808998034963}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eaa17af11025234ab6fed6a450647fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 73197a4dfb094414689016d7528370ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   masterOrb: {fileID: 0}

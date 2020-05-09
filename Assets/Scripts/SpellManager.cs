@@ -222,7 +222,7 @@ public class SpellManager : MonoBehaviour
             // play soundfx as you leave the zone
             if (palmDist == maxPalmDistance - (elSlotSize * 3))
             {
-                audio.PlayOneShot(sound.elementSwitchFX);
+                sound.elementSwitchFX.Play();
                 Debug.Log("switch!");
             }
         }
@@ -237,7 +237,8 @@ public class SpellManager : MonoBehaviour
             }
 
             // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - (elSlotSize * 2)) audio.PlayOneShot(sound.elementSwitchFX);
+            if (palmDist == maxPalmDistance - (elSlotSize * 2)) sound.elementSwitchFX.Play();
+
         }
         else if (palmDist > maxPalmDistance - (elSlotSize * 2) && palmDist <= maxPalmDistance - elSlotSize)
         {
@@ -250,7 +251,8 @@ public class SpellManager : MonoBehaviour
             }
 
             // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - elSlotSize) audio.PlayOneShot(sound.elementSwitchFX);
+            if (palmDist == maxPalmDistance - elSlotSize) sound.elementSwitchFX.Play();
+
         }
         else if (palmDist > maxPalmDistance - elSlotSize && palmDist <= maxPalmDistance)
         {

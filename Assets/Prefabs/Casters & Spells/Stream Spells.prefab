@@ -116,6 +116,11 @@ PrefabInstance:
       propertyPath: parentStream
       value: 
       objectReference: {fileID: 3915736646862563292}
+    - target: {fileID: 7556222169217280985, guid: d6e60b8f97754d242bcb03c5f3a8e919,
+        type: 3}
+      propertyPath: messageOSC
+      value: /composition/columns/3/connect
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6e60b8f97754d242bcb03c5f3a8e919, type: 3}
 --- !u!4 &3915736646330023782 stripped
@@ -222,6 +227,11 @@ PrefabInstance:
       propertyPath: parentStream
       value: 
       objectReference: {fileID: 1604568059573005406}
+    - target: {fileID: 8103707190797711493, guid: 9919ec2c0c5774a43bcd291ead4ab644,
+        type: 3}
+      propertyPath: messageOSC
+      value: /composition/columns/6/connect
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9919ec2c0c5774a43bcd291ead4ab644, type: 3}
 --- !u!4 &4959115423471478992 stripped
@@ -275,6 +285,11 @@ PrefabInstance:
       propertyPath: parentStream
       value: 
       objectReference: {fileID: 5139163290290197210}
+    - target: {fileID: 6787164777896579102, guid: d576858bdd2cafc499ce0d4c4590a78b,
+        type: 3}
+      propertyPath: messageOSC
+      value: /composition/columns/9/connect
+      objectReference: {fileID: 0}
     - target: {fileID: 8972492002615308246, guid: d576858bdd2cafc499ce0d4c4590a78b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -447,6 +462,11 @@ PrefabInstance:
       propertyPath: parentStream
       value: 
       objectReference: {fileID: 3742656688249628542}
+    - target: {fileID: 4344580185811324803, guid: f1ac01cc60cf4f14f8e3c8d696a143f5,
+        type: 3}
+      propertyPath: messageOSC
+      value: /composition/columns/12/connect
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1ac01cc60cf4f14f8e3c8d696a143f5, type: 3}
 --- !u!4 &3544440003857832251 stripped
