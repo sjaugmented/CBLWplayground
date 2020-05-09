@@ -14,7 +14,7 @@ public class OrbFingerTracker : MonoBehaviour
     [Tooltip("How far forward the finger must point before casting can happen")]
     [SerializeField] float fingerForwardThreshold = 0.7f;
     [Tooltip("Margin between hero angles of 0 and 180")]
-    [SerializeField] float angleMargin = 20f;
+    [SerializeField] float angleMargin = 50f;
     //[SerializeField] bool fingerCasting = true;
 
     // used for index tracking & velocity
@@ -73,7 +73,7 @@ public class OrbFingerTracker : MonoBehaviour
             float ltPalmRtCamUp = Vector3.Angle(leftPalm.Right, cam.up);
 
             // look for touchDown 
-            if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForCamFor, 90) && IsWithinRange(ltPalmForCamFor, 90) && IsWithinRange(rtPalmRtCamFor, 0) && IsWithinRange(ltPalmRtCamFor, 180) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
+            if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForCamFor, 90) && IsWithinRange(ltPalmForCamFor, 90) && IsWithinRange(rtPalmRtCamFor, 30) && IsWithinRange(ltPalmRtCamFor, 150) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
             {
                 touchDown = true;
                 palmsIn = false;
@@ -82,7 +82,7 @@ public class OrbFingerTracker : MonoBehaviour
             }
 
             // look for palmsIn 
-            else if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForCamFor, 0) && IsWithinRange(ltPalmForCamFor, 0) && IsWithinRange(rtPalmRtCamFor, 90) && IsWithinRange(ltPalmRtCamFor, 90) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
+            else if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForCamFor, 20) && IsWithinRange(ltPalmForCamFor, 20) && IsWithinRange(rtPalmRtCamFor, 90) && IsWithinRange(ltPalmRtCamFor, 90) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
             {
                 touchDown = false;
                 palmsIn = true;
