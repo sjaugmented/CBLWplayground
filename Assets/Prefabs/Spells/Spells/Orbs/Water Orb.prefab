@@ -367,7 +367,7 @@ MonoBehaviour:
   dimOverTime: 1
   rateOfDim: 20
   OSCtoReceive: message to receive here
-  messageOSC: 
+  messageOSC: /waterOrb/
   valueOSC: 1
   dimOSCwithDMX: 0
   timedBlackout: 1
