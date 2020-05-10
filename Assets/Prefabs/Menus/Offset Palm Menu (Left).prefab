@@ -499,9 +499,9 @@ MonoBehaviour:
   lifetime: 0
   safeZone: 0
   safeZoneBuffer: 0.1
-  updateWhenOppositeHandNear: 0
+  updateWhenOppositeHandNear: 1
   hideHandCursorsOnActivate: 1
-  rotationBehavior: 3
+  rotationBehavior: 2
   onHandActivate:
     m_PersistentCalls:
       m_Calls: []
@@ -2153,7 +2153,7 @@ PrefabInstance:
     - target: {fileID: 7307063430618434848, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}
       propertyPath: OnValueUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: SetPalmDistanceOffset
       objectReference: {fileID: 0}
     - target: {fileID: 7307063430618434848, guid: 1093263a89abe47499cccf7dcb08effb,
         type: 3}

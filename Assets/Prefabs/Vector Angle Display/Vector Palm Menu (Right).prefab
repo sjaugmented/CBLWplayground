@@ -87,9 +87,9 @@ MonoBehaviour:
   lifetime: 0
   safeZone: 2
   safeZoneBuffer: 0.1
-  updateWhenOppositeHandNear: 0
+  updateWhenOppositeHandNear: 1
   hideHandCursorsOnActivate: 1
-  rotationBehavior: 3
+  rotationBehavior: 2
   onHandActivate:
     m_PersistentCalls:
       m_Calls: []
@@ -224,6 +224,11 @@ PrefabInstance:
         type: 3}
       propertyPath: Events.Array.data[1].Event.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2243437068443470798, guid: e1e3746d5067a614683084937319e0ba,
+        type: 3}
+      propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleVectors
       objectReference: {fileID: 0}
     - target: {fileID: 6414827836461462228, guid: e1e3746d5067a614683084937319e0ba,
         type: 3}

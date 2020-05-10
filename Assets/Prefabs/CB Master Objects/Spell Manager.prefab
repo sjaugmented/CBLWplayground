@@ -80,7 +80,7 @@ MonoBehaviour:
   minVelocity: 2
   maxVelocity: 10
   fingerForwardThreshold: 0.7
-  angleMargin: 20
+  angleMargin: 50
   twoPalms: 0
   touchDown: 0
   palmsForward: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masterOrb: {fileID: 0}
   orbsPerSecond: 1
-  particlesPerSecond: 20
+  particlesPerSecond: 1
   palmMenuVisuals1: {fileID: 0}
   palmMenuVisuals2: {fileID: 0}
   orbROFSlider: {fileID: 0}
@@ -112,8 +112,8 @@ MonoBehaviour:
   palmOffsetText: {fileID: 0}
   maxPalmDistSlider: {fileID: 0}
   maxPalmDistText: {fileID: 0}
-  maxPalmDistance: 0.3
-  palmDistOffset: 0.05
+  maxPalmDistance: 0.4
+  palmDistOffset: 0.15
   scaleMultiplier: 1
   conjureOSCMessages: []
   currEl: 0
