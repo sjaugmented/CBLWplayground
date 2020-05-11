@@ -29,12 +29,13 @@ public class OrbFingerTracker : MonoBehaviour
     public bool rockOn = false;
     public bool fingerGun = false;
     float palmDist;
-    float prevHandCamDist;
+
+    Transform floor;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        floor = FindObjectOfType<LevelObject>().transform;
     }
 
     // Update is called once per frame
@@ -64,6 +65,8 @@ public class OrbFingerTracker : MonoBehaviour
             float rtPalmRtCamFor = Vector3.Angle(rightPalm.Right, cam.forward);
             float rtPalmRtCamRt = Vector3.Angle(rightPalm.Right, cam.right);
             float rtPalmRtCamUp = Vector3.Angle(rightPalm.Right, cam.up);
+            float rtPalmForFloorFor = Vector3.Angle(rightPalm.Forward, floor.forward);
+            float rtPalmRtFloorFor = Vector3.Angle(rightPalm.Right, floor.forward);
 
             // left palm
             float ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
@@ -71,9 +74,11 @@ public class OrbFingerTracker : MonoBehaviour
             float ltPalmRtCamFor = Vector3.Angle(leftPalm.Right, cam.forward);
             float ltPalmRtCamRt = Vector3.Angle(leftPalm.Right, cam.right);
             float ltPalmRtCamUp = Vector3.Angle(leftPalm.Right, cam.up);
+            float ltPalmForFloorFor = Vector3.Angle(leftPalm.Forward, floor.forward);
+            float ltPalmRtFloorFor = Vector3.Angle(leftPalm.Right, floor.forward);
 
             // look for touchDown 
-            if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForCamFor, 90) && IsWithinRange(ltPalmForCamFor, 90) && IsWithinRange(rtPalmRtCamFor, 30) && IsWithinRange(ltPalmRtCamFor, 150) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
+            if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForFloorFor, 90) && IsWithinRange(ltPalmForFloorFor, 90) && IsWithinRange(rtPalmRtFloorFor, 0) && IsWithinRange(ltPalmRtFloorFor, 180) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
             {
                 touchDown = true;
                 palmsIn = false;
@@ -82,7 +87,7 @@ public class OrbFingerTracker : MonoBehaviour
             }
 
             // look for palmsIn 
-            else if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForCamFor, 20) && IsWithinRange(ltPalmForCamFor, 20) && IsWithinRange(rtPalmRtCamFor, 90) && IsWithinRange(ltPalmRtCamFor, 90) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
+            else if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmForFloorFor, 0) && IsWithinRange(ltPalmForFloorFor, 0) && IsWithinRange(rtPalmRtFloorFor, 90) && IsWithinRange(ltPalmRtFloorFor, 90) && IsWithinRange(rtPalmRtCamRt, 90) && IsWithinRange(ltPalmRtCamRt, 90))
             {
                 touchDown = false;
                 palmsIn = true;
