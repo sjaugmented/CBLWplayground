@@ -115,6 +115,10 @@ MonoBehaviour:
   maxPalmDistance: 0.4
   palmDistOffset: 0.15
   scaleMultiplier: 1
-  conjureOSCMessages: []
+  conjureOSCMessages:
+  - /lightOSCfloat/
+  - /fireOSCfloat/
+  - /waterOSCfloat/
+  - /iceOSCfloat/
   currEl: 0
   currForm: 1
