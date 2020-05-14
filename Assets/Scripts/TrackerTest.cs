@@ -63,6 +63,7 @@ public class TrackerTest : MonoBehaviour
         // if only right hand
         else if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rightIndex) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rightThumb) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rightMiddle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rightPinky) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuck))
         {
+            Debug.Log(Vector3.Angle(rightThumb.Forward, rightPalm.Forward)); // todo remove
             rpuCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Up, cam.forward)).ToString();
             rpfCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Forward, cam.forward)).ToString();
             rifRPU.text = Mathf.RoundToInt(Vector3.Angle(rightIndex.Forward, rightPalm.Up)).ToString();

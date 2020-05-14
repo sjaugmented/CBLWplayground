@@ -8,7 +8,14 @@ using UnityEngine;
 public class SpellManager : MonoBehaviour
 {
     [SerializeField] GameObject masterOrb;
-    public bool fistScaler = true;
+    public bool fistScaler = false;
+
+    [Header("Caster transforms for particles/streams")]
+    [SerializeField] Transform orbCaster;
+    [SerializeField] Transform particleCasterRight;
+    [SerializeField] Transform particleCasterLeft;
+    [SerializeField] Transform streamCasterRight;
+    [SerializeField] Transform streamCasterLeft;
 
     [Header("Rates of Fire")]
     [SerializeField] [Range(1, 20)] float orbsPerSecond = 1f;
@@ -386,29 +393,28 @@ public class SpellManager : MonoBehaviour
     {
         if (ableToCast)
         {
-            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, Camera.main.transform.rotation);
+            orbCaster.position = masterOrbPos;
+            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, orbCaster.rotation); // todo check rotation
             spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
-            if (fromOrbScaler)
-            {
-                ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
+            
+            ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
 
-                if (currEl == Element.water)
+            if (currEl == Element.water)
+            {
+                var liquidController = elParent.GetComponentInChildren<LiquidVolumeAnimator>();
+                liquidController.level = elementScale;
+            }
+            else
+            {
+                foreach (Transform child in elParent.transform)
                 {
-                    var liquidController = elParent.GetComponentInChildren<LiquidVolumeAnimator>();
-                    liquidController.level = elementScale;
-                }
-                else
-                {   
-                    foreach(Transform child in elParent.transform)
+                    if (child.CompareTag("Spell"))
                     {
-                        if (child.CompareTag("Spell"))
-                        {
-                            child.localScale = new Vector3(elementScale, elementScale, elementScale);
-                        }
+                        child.localScale = new Vector3(elementScale, elementScale, elementScale);
                     }
                 }
             }
-            
+
             StartCoroutine("CastDelay", orbsPerSecond);
         }
     }
@@ -422,13 +428,13 @@ public class SpellManager : MonoBehaviour
         {
             if (fingerGunRight)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rtIndexPos, Quaternion.identity);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rtIndexPos, particleCasterRight.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
 
             if (fingerGunLeft)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], ltIndexPos, Quaternion.identity);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], ltIndexPos, particleCasterLeft.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
             
@@ -463,13 +469,17 @@ public class SpellManager : MonoBehaviour
                 Transform streamParent = spellBook.streamSpells[elementID].transform.parent;
                 if (rockOnRight)
                 {
+                    streamCasterRight.position = midpointRtIndexPinky;
                     streamParent.position = midpointRtIndexPinky;
-                    // todo fix rotation
+                    streamParent.rotation = streamCasterRight.rotation;
+                    // todo check rotation
                 }
                 if (rockOnLeft)
                 {
+                    streamCasterLeft.position = midpointLtIndexPinky;
                     streamParent.position = midpointLtIndexPinky;
-                    // todo fix rotation
+                    streamParent.rotation = streamCasterLeft.rotation;
+                    // todo check rotation
                 }
 
                 foreach (Transform child in spellBook.streamSpells[elementID].transform)
