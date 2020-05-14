@@ -9,9 +9,10 @@ public class SpellManager : MonoBehaviour
 {
     [SerializeField] GameObject masterOrb;
     public bool fistScaler = false;
+    public Vector3 orbCastRotOffset = new Vector3(0, 0, 0);
 
     [Header("Caster transforms for particles/streams")]
-    [SerializeField] Transform orbCaster;
+    [SerializeField] Transform orbCaster; //remove
     [SerializeField] Transform particleCasterRight;
     [SerializeField] Transform particleCasterLeft;
     [SerializeField] Transform streamCasterRight;
@@ -153,11 +154,16 @@ public class SpellManager : MonoBehaviour
                     ElementScaler();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
-                    conjureValueOSC = palmDist / maxPalmDistance;
+                    if (palmDist - palmDistOffset > 0 && palmDist - palmDistOffset < maxPalmDistance - palmDistOffset)
+                    {
+                        conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
+                    }
+                    else if (palmDist - palmDistOffset >= maxPalmDistance - palmDistOffset) conjureValueOSC = 0;
+                    else if (palmDist - palmDistOffset <= 0) conjureValueOSC = 1;
 
-                    if (conjureValueOSC < 0) conjureValueOSC = 0;
-                    if (conjureValueOSC > 1) conjureValueOSC = 1;
                     SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
+                    Debug.Log(conjureValueOSC); // remove
+
                 }
             }
             else if (palmsParallel && fists)
@@ -169,10 +175,10 @@ public class SpellManager : MonoBehaviour
                     ElementScaler();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
-                    conjureValueOSC = palmDist / maxPalmDistance;
+                    conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
 
-                    if (conjureValueOSC < 0) conjureValueOSC = 0;
-                    if (conjureValueOSC > 1) conjureValueOSC = 1;
+                    /*if (conjureValueOSC < 0.02) conjureValueOSC = 0;
+                    if (conjureValueOSC > 0.98f) conjureValueOSC = 1;*/
                     SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
                 }
                 else
@@ -242,8 +248,8 @@ public class SpellManager : MonoBehaviour
     private void CalcHandPositions()
     {
         palmDist = handTracking.GetPalmDist();
-        palm1Pos = handTracking.GetPalm1Pos();
-        palm2Pos = handTracking.GetPalm2Pos();
+        palm1Pos = handTracking.GetRtPalmPos();
+        palm2Pos = handTracking.GetLtPalmPos();
         rtIndexPos = handTracking.GetRtIndexPos();
         rtPinkyPos = handTracking.GetRtPinkyPos();
         ltIndexPos = handTracking.GetLtIndexPos();
@@ -391,10 +397,15 @@ public class SpellManager : MonoBehaviour
 
     private void CastOrb()
     {
+        Quaternion rtPalmRot = handTracking.GetRtPalmRot();
+        Quaternion ltPalmRot = handTracking.GetLtPalmRot();
+        
         if (ableToCast)
         {
-            orbCaster.position = masterOrbPos;
-            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, orbCaster.rotation); // todo check rotation
+            orbCaster.position = masterOrbPos; // remove
+            Quaternion palmsRotationMid = Quaternion.Slerp(rtPalmRot, ltPalmRot, 0.5f);
+            Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
+            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation); // todo check rotation
             spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
             
             ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();

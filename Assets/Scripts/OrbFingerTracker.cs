@@ -247,14 +247,24 @@ public class OrbFingerTracker : MonoBehaviour
         return fists;
     }
 
-    public Vector3 GetPalm1Pos()
+    public Vector3 GetRtPalmPos()
     {
         return rightPalm.Position;
     }
 
-    public Vector3 GetPalm2Pos()
+    public Vector3 GetLtPalmPos()
     {
         return leftPalm.Position;
+    }
+
+    public Quaternion GetRtPalmRot()
+    {
+        return rightPalm.Rotation;
+    }
+
+    public Quaternion GetLtPalmRot()
+    {
+        return leftPalm.Rotation;
     }
 
     public Vector3 GetRtIndexPos()
