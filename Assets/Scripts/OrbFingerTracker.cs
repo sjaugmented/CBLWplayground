@@ -157,7 +157,7 @@ public class OrbFingerTracker : MonoBehaviour
             float rtThumbForPalmFor = Vector3.Angle(rtThumbTip.Forward, rightPalm.Forward);
 
             // look for rockOn
-            if (IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && !IsWithinRange(rtMidForPalmFor, 180))
+            if (IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && !IsWithinRange(rtMidForPalmFor, 0))
             {
                 rockOnRight = true;
                 fingerGunRight = false;
@@ -191,7 +191,7 @@ public class OrbFingerTracker : MonoBehaviour
             float ltThumbForPalmFor = Vector3.Angle(ltThumbTip.Forward, leftPalm.Forward);
 
             // look for rockOn
-            if (IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && !IsWithinRange(ltMidForPalmFor, 180))
+            if (IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && !IsWithinRange(ltMidForPalmFor, 0))
             {
                 rockOnLeft = true;
                 fingerGunLeft = false;

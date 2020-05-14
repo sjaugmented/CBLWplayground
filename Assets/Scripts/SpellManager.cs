@@ -221,7 +221,6 @@ public class SpellManager : MonoBehaviour
         {
             masterOrb.SetActive(false);
             sound.orbAmbienceFX.Pause();
-            DisableStreams();
         }
 
         if (fingerGunRight || fingerGunLeft)
