@@ -1094,7 +1094,7 @@ PrefabInstance:
     - target: {fileID: 6878141377480388974, guid: 2661d9ea4556fd441ba4a7e687b5122d,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6878141377718322783, guid: 2661d9ea4556fd441ba4a7e687b5122d,
         type: 3}
@@ -1245,6 +1245,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4782326656254363116, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RTF - RPF value
+      objectReference: {fileID: 0}
     - target: {fileID: 4782326656254363120, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
         type: 3}
       propertyPath: m_Mesh
@@ -1340,10 +1345,20 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4782326657086296856, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RIF - RPF value
+      objectReference: {fileID: 0}
     - target: {fileID: 4782326657086296860, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326657090274017, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RTF - RPF
       objectReference: {fileID: 0}
     - target: {fileID: 4782326657370749805, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
         type: 3}
@@ -1354,6 +1369,30 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326657460243245, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RIF - RPF
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326657511178795, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RMF - RPF label
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326657511178797, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_text
+      value: 'RightMiddleForward
+
+
+
+        RightPalmForward'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326657511178797, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 37
       objectReference: {fileID: 0}
     - target: {fileID: 4782326657511178799, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
         type: 3}
@@ -1375,6 +1414,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4782326657891152633, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RMF - RPF value
+      objectReference: {fileID: 0}
     - target: {fileID: 4782326657891152637, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
         type: 3}
       propertyPath: m_Mesh
@@ -1385,10 +1429,58 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4782326658077188304, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RMF - RPF
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326658096927078, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RTF - RPF label
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326658096927080, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_text
+      value: 'RightThumbForward
+
+
+
+        RightPalmForward'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326658096927080, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326658096927080, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4782326658096927082, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
         type: 3}
       propertyPath: m_Mesh
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326658208439529, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_Name
+      value: RIF - RPF label
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326658208439531, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_text
+      value: 'RightIndexForward
+
+
+
+        RightPalmForward'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4782326658208439531, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 36
       objectReference: {fileID: 0}
     - target: {fileID: 4782326658208439533, guid: 00ddbf0c1ac888e4b9c3d59a4fbe33b9,
         type: 3}
@@ -1981,6 +2073,21 @@ PrefabInstance:
       propertyPath: rikfRPF
       value: 
       objectReference: {fileID: 1780586461}
+    - target: {fileID: 9085309333162333234, guid: 3d2a5ac97482dbd41b2cb8a538bb752b,
+        type: 3}
+      propertyPath: rifRPF
+      value: 
+      objectReference: {fileID: 554298265}
+    - target: {fileID: 9085309333162333234, guid: 3d2a5ac97482dbd41b2cb8a538bb752b,
+        type: 3}
+      propertyPath: rtfRPF
+      value: 
+      objectReference: {fileID: 554298263}
+    - target: {fileID: 9085309333162333234, guid: 3d2a5ac97482dbd41b2cb8a538bb752b,
+        type: 3}
+      propertyPath: vectorsOn
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9085309333162333235, guid: 3d2a5ac97482dbd41b2cb8a538bb752b,
         type: 3}
       propertyPath: m_Name

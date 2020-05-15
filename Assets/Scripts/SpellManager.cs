@@ -342,9 +342,9 @@ public class SpellManager : MonoBehaviour
                 }
             }
             else return;
-
-            StartCoroutine("CastDelay", orbsPerSecond);
         }
+
+        StartCoroutine("CastDelay", orbsPerSecond);
     }
 
     private void CastParticle()
@@ -356,13 +356,13 @@ public class SpellManager : MonoBehaviour
         {
             if (fingerGunRight)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rtIndexTipPos + particleCastOffset, particleCasterRight.rotation);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rtIndexTipPos + particleCastOffset, Camera.main.transform.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
 
             if (fingerGunLeft)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], ltIndexTipPos + particleCastOffset, particleCasterLeft.rotation);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], ltIndexTipPos + particleCastOffset, Camera.main.transform.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
             

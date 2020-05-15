@@ -13,9 +13,9 @@ public class TrackerTest : MonoBehaviour
     [SerializeField] TextMeshPro rpuLPU;
     [SerializeField] TextMeshPro rpuCF;
     [SerializeField] TextMeshPro rpfCF;
-    [SerializeField] TextMeshPro rifRPU;
-    [SerializeField] TextMeshPro rmfRPU;
-    [SerializeField] TextMeshPro rtfRPU;
+    [SerializeField] TextMeshPro rifRPF;
+    [SerializeField] TextMeshPro rmfRPF;
+    [SerializeField] TextMeshPro rtfRPF;
     [SerializeField] TextMeshPro rpifRPF;
     [SerializeField] TextMeshPro lprCF;
     [SerializeField] TextMeshPro lprRPR;
@@ -49,10 +49,10 @@ public class TrackerTest : MonoBehaviour
             rpuLPU.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Up, leftPalm.Up)).ToString();
             rpuCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Up, cam.forward)).ToString();
             rpfCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Forward, cam.forward)).ToString();
-            rifRPU.text = Mathf.RoundToInt(Vector3.Angle(rightIndex.Forward, rightPalm.Up)).ToString();
-            rmfRPU.text = Mathf.RoundToInt(Vector3.Angle(rightMiddle.Forward, rightPalm.Up)).ToString();
-            rtfRPU.text = Mathf.RoundToInt(Vector3.Angle(rightThumb.Forward, rightPalm.Up)).ToString();
-            rpifRPF.text = Mathf.RoundToInt(Vector3.Angle(rightPinky.Forward, rightPalm.Up)).ToString();
+            rifRPF.text = Mathf.RoundToInt(Vector3.Angle(rightIndex.Forward, rightPalm.Forward)).ToString();
+            rmfRPF.text = Mathf.RoundToInt(Vector3.Angle(rightMiddle.Forward, rightPalm.Forward)).ToString();
+            rtfRPF.text = Mathf.RoundToInt(Vector3.Angle(rightThumb.Forward, rightPalm.Forward)).ToString();
+            rpifRPF.text = Mathf.RoundToInt(Vector3.Angle(rightPinky.Forward, rightPalm.Forward)).ToString();
             lprCF.text = Mathf.RoundToInt(Vector3.Angle(leftPalm.Right, cam.forward)).ToString();
             lprRPR.text = Mathf.RoundToInt(Vector3.Angle(leftPalm.Right, rightPalm.Right)).ToString();
             lprCR.text = Mathf.RoundToInt(Vector3.Angle(leftPalm.Right, cam.right)).ToString();
@@ -66,10 +66,10 @@ public class TrackerTest : MonoBehaviour
             Debug.Log(Vector3.Angle(rightThumb.Forward, rightPalm.Forward)); // todo remove
             rpuCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Up, cam.forward)).ToString();
             rpfCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Forward, cam.forward)).ToString();
-            rifRPU.text = Mathf.RoundToInt(Vector3.Angle(rightIndex.Forward, rightPalm.Up)).ToString();
-            rmfRPU.text = Mathf.RoundToInt(Vector3.Angle(rightMiddle.Forward, rightPalm.Up)).ToString();
-            rtfRPU.text = Mathf.RoundToInt(Vector3.Angle(rightThumb.Forward, rightPalm.Up)).ToString();
-            rpifRPF.text = Mathf.RoundToInt(Vector3.Angle(rightPinky.Forward, rightPalm.Up)).ToString();
+            rifRPF.text = Mathf.RoundToInt(Vector3.Angle(rightIndex.Forward, rightPalm.Forward)).ToString();
+            rmfRPF.text = Mathf.RoundToInt(Vector3.Angle(rightMiddle.Forward, rightPalm.Forward)).ToString();
+            rtfRPF.text = Mathf.RoundToInt(Vector3.Angle(rightThumb.Forward, rightPalm.Forward)).ToString();
+            rpifRPF.text = Mathf.RoundToInt(Vector3.Angle(rightPinky.Forward, rightPalm.Forward)).ToString();
             rimfRPF.text = Mathf.RoundToInt(Vector3.Angle(rtIndexMid.Forward, rightPalm.Forward)).ToString();
             rikfRPF.text = Mathf.RoundToInt(Vector3.Angle(rtIndexKnuck.Forward, rightPalm.Forward)).ToString();
         }
@@ -79,8 +79,8 @@ public class TrackerTest : MonoBehaviour
         {
             rpuCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Up, cam.forward)).ToString();
             rpfCF.text = Mathf.RoundToInt(Vector3.Angle(rightPalm.Forward, cam.forward)).ToString();
-            rifRPU.text = Mathf.RoundToInt(Vector3.Angle(rightIndex.Forward, rightPalm.Up)).ToString();
-            rtfRPU.text = Mathf.RoundToInt(Vector3.Angle(rightThumb.Forward, rightPalm.Up)).ToString();
+            rifRPF.text = Mathf.RoundToInt(Vector3.Angle(rightIndex.Forward, rightPalm.Forward)).ToString();
+            rtfRPF.text = Mathf.RoundToInt(Vector3.Angle(rightThumb.Forward, rightPalm.Forward)).ToString();
             rimfRPF.text = Mathf.RoundToInt(Vector3.Angle(rtIndexMid.Forward, rightPalm.Forward)).ToString();
             rikfRPF.text = Mathf.RoundToInt(Vector3.Angle(rtIndexKnuck.Forward, rightPalm.Forward)).ToString();
         }
@@ -99,9 +99,9 @@ public class TrackerTest : MonoBehaviour
             rpuLPU.text = "RPNA";
             rpuCF.text = "RPNA";
             rpfCF.text = "RPNA";
-            rifRPU.text = "RPNA";
-            rmfRPU.text = "RPNA";
-            rtfRPU.text = "RPNA";
+            rifRPF.text = "RPNA";
+            rmfRPF.text = "RPNA";
+            rtfRPF.text = "RPNA";
             rpifRPF.text = "RPNA";
             lprRPR.text = "RPNA";
         }
@@ -114,15 +114,15 @@ public class TrackerTest : MonoBehaviour
         }
         if (!HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rightIndex))
         {
-            rifRPU.text = "RINA";
+            rifRPF.text = "RINA";
         }
         if (!HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rightMiddle))
         {
-            rmfRPU.text = "RMNA";
+            rmfRPF.text = "RMNA";
         }
         if (!HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rightThumb))
         {
-            rtfRPU.text = "RTNA";
+            rtfRPF.text = "RTNA";
         }
         if (!HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rightPinky))
         {
