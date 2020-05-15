@@ -318,6 +318,14 @@ public class SpellManager : MonoBehaviour
         
         if (ableToCast)
         {
+            if (fromOrbScaler)
+            {
+
+            }
+            else
+            {
+
+            }
             orbCaster.position = masterOrbPos; // remove
             Quaternion palmsRotationMid = Quaternion.Slerp(rtPalmRot, ltPalmRot, 0.5f);
             Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
@@ -327,19 +335,11 @@ public class SpellManager : MonoBehaviour
             
             ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
 
-            if (currEl == Element.water)
+            foreach (Transform child in elParent.transform)
             {
-                var liquidController = elParent.GetComponentInChildren<LiquidVolumeAnimator>();
-                liquidController.level = elementScale;
-            }
-            else
-            {
-                foreach (Transform child in elParent.transform)
+                if (child.CompareTag("Spell"))
                 {
-                    if (child.CompareTag("Spell"))
-                    {
-                        child.localScale = new Vector3(elementScale, elementScale, elementScale);
-                    }
+                    child.localScale = new Vector3(elementScale, elementScale, elementScale);
                 }
             }
 
