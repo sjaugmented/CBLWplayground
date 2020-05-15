@@ -85,8 +85,12 @@ MonoBehaviour:
   touchDown: 0
   palmsForward: 0
   palmsIn: 0
-  rockOn: 0
-  fingerGun: 0
+  rockOnRight: 0
+  fingerGunRight: 0
+  rockOnLeft: 0
+  fingerGunLeft: 0
+  palmsParallel: 0
+  fists: 0
 --- !u!114 &1936508196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,6 +104,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterOrb: {fileID: 0}
+  fistScaler: 0
+  orbCastRotOffset: {x: 65, y: 0, z: 0}
+  particleCastOffset: {x: 0, y: 0, z: 0.1}
+  orbCaster: {fileID: 0}
+  particleCasterRight: {fileID: 0}
+  particleCasterLeft: {fileID: 0}
+  streamCasterRight: {fileID: 0}
+  streamCasterLeft: {fileID: 0}
   orbsPerSecond: 1
   particlesPerSecond: 1
   palmMenuVisuals1: {fileID: 0}
@@ -112,9 +124,9 @@ MonoBehaviour:
   palmOffsetText: {fileID: 0}
   maxPalmDistSlider: {fileID: 0}
   maxPalmDistText: {fileID: 0}
-  maxPalmDistance: 0.4
+  maxPalmDistance: 0.5
   palmDistOffset: 0.15
-  scaleMultiplier: 1
+  palmMidpointOffset: {x: 0, y: 0.02, z: 0}
   conjureOSCMessages:
   - /lightOSCfloat/
   - /fireOSCfloat/

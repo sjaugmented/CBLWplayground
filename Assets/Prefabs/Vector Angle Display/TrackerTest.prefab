@@ -48,11 +48,13 @@ MonoBehaviour:
   rpuLPU: {fileID: 0}
   rpuCF: {fileID: 0}
   rpfCF: {fileID: 0}
-  rifRPF: {fileID: 0}
-  rmfRPF: {fileID: 0}
-  rtfRPF: {fileID: 0}
+  rifRPU: {fileID: 0}
+  rmfRPU: {fileID: 0}
+  rtfRPU: {fileID: 0}
   rpifRPF: {fileID: 0}
   lprCF: {fileID: 0}
   lprRPR: {fileID: 0}
   lprCR: {fileID: 0}
+  rimfRPF: {fileID: 0}
+  rikfRPF: {fileID: 0}
   vectorsOn: 0
