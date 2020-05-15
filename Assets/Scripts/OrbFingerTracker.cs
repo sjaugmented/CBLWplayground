@@ -223,7 +223,6 @@ public class OrbFingerTracker : MonoBehaviour
         }
     }
 
-    #region Public Getters
     private bool IsWithinRange(float testVal, float target)
     {
         bool withinRange = false;
@@ -245,6 +244,7 @@ public class OrbFingerTracker : MonoBehaviour
         return withinRange;
     }
 
+    #region Public Getters
     public bool GetPalmsParallel()
     {
         return palmsParallel;
