@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MasterOrbRotater : MonoBehaviour
 {
-    [SerializeField] float xRotation = 1f;
-    [SerializeField] float yRotation = 1f;
-    [SerializeField] float zRotation = 1f;
+    public float xRotation = 1f;
+    public float yRotation = 1f;
+    public float zRotation = 1f;
 
     // Start is called before the first frame update
     void Start()

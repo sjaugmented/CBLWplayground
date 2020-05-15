@@ -143,24 +143,13 @@ public class SpellManager : MonoBehaviour
             {
                 if (fistScaler)
                 {
-                    masterOrb.SetActive(true);
-                    masterOrb.transform.position = masterOrbPos;
                     ElementSelector();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
                 }
                 else
                 {
-                    masterOrb.SetActive(true);
-                    masterOrb.transform.position = masterOrbPos;
                     ElementScaler();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
-
-                    /*if (palmDist - palmDistOffset > 0 && palmDist - palmDistOffset < maxPalmDistance - palmDistOffset)
-                    {
-                        conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
-                    }
-                    else if (palmDist - palmDistOffset >= maxPalmDistance - palmDistOffset) conjureValueOSC = 0;
-                    else if (palmDist - palmDistOffset <= 0) conjureValueOSC = 1;*/
 
                     if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
                     else if (palmDist > maxPalmDistance) conjureValueOSC = 0;
@@ -175,8 +164,6 @@ public class SpellManager : MonoBehaviour
             {
                 if (fistScaler)
                 {
-                    masterOrb.SetActive(true);
-                    masterOrb.transform.position = masterOrbPos;
                     ElementScaler();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
@@ -188,8 +175,6 @@ public class SpellManager : MonoBehaviour
                 }
                 else
                 {
-                    masterOrb.SetActive(true);
-                    masterOrb.transform.position = masterOrbPos;
                     ElementSelector();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
                 }
@@ -249,6 +234,10 @@ public class SpellManager : MonoBehaviour
     {
         fromOrbScaler = false;
 
+        masterOrb.SetActive(true);
+        masterOrb.transform.position = masterOrbPos;
+        masterOrb.GetComponent<MasterOrbRotater>().xRotation = 1;
+
         float elSlotSize = (maxPalmDistance - palmDistOffset) / spellBook.masterOrbElements.Count;
 
         // select element based on distance between palms
@@ -301,6 +290,10 @@ public class SpellManager : MonoBehaviour
     private void ElementScaler()
     {
         fromOrbScaler = true;
+
+        masterOrb.SetActive(true);
+        masterOrb.transform.position = masterOrbPos;
+        masterOrb.GetComponent<MasterOrbRotater>().xRotation = 100 * elementScale;
 
         // activate correct orb element
         for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
