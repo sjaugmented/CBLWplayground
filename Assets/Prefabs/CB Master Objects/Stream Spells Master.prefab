@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2560701942994156122}
   m_Layer: 0
-  m_Name: Stream Spells
+  m_Name: Stream Spells Master
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 7556222169217280985, guid: d6e60b8f97754d242bcb03c5f3a8e919,
         type: 3}
       propertyPath: messageOSC
-      value: /composition/columns/3/connect
+      value: /lightStream/
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6e60b8f97754d242bcb03c5f3a8e919, type: 3}
@@ -230,7 +230,7 @@ PrefabInstance:
     - target: {fileID: 8103707190797711493, guid: 9919ec2c0c5774a43bcd291ead4ab644,
         type: 3}
       propertyPath: messageOSC
-      value: /composition/columns/6/connect
+      value: /fireStream/
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9919ec2c0c5774a43bcd291ead4ab644, type: 3}
@@ -288,7 +288,7 @@ PrefabInstance:
     - target: {fileID: 6787164777896579102, guid: d576858bdd2cafc499ce0d4c4590a78b,
         type: 3}
       propertyPath: messageOSC
-      value: /composition/columns/9/connect
+      value: /waterStream/
       objectReference: {fileID: 0}
     - target: {fileID: 8972492002615308246, guid: d576858bdd2cafc499ce0d4c4590a78b,
         type: 3}
@@ -465,7 +465,7 @@ PrefabInstance:
     - target: {fileID: 4344580185811324803, guid: f1ac01cc60cf4f14f8e3c8d696a143f5,
         type: 3}
       propertyPath: messageOSC
-      value: /composition/columns/12/connect
+      value: /iceStream/
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f1ac01cc60cf4f14f8e3c8d696a143f5, type: 3}

@@ -4153,6 +4153,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /iceStream/
+      objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: m_Name
@@ -4217,6 +4222,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /lightStream/
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /fireStream/
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /waterStream/
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e56b870054828946b4e0d6585c98508, type: 3}
