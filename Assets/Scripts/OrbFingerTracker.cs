@@ -177,7 +177,7 @@ public class OrbFingerTracker : MonoBehaviour
                 fingerGunRight = false;
             }
             // look for fingerGun
-            else if (IsWithinRange(rtIndForCamFor, 0) && IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtThumbForCamFor, 90) && IsWithinRange(rtMidForPalmFor, 180) && IsWithinRange(rtPinkForPalmFor, 180))
+            else if (IsWithinRange(rtIndForCamFor, 0) && IsWithinRange(rtIndForPalmFor, 25) && IsWithinRange(Vector3.Angle(rtIndexTip.Forward, floor.forward), 25) && IsWithinRange(rtThumbForCamFor, 50) && IsWithinRange(Vector3.Angle(rtThumbTip.Forward, floor.forward), 90) && IsWithinRange(rtMidForPalmFor, 160) && IsWithinRange(rtPinkForPalmFor, 130))
             {
                 rockOnRight = false;
                 fingerGunRight = true;
@@ -213,7 +213,7 @@ public class OrbFingerTracker : MonoBehaviour
                 fingerGunLeft = false;
             }
             // look for fingerGun
-            else if (IsWithinRange(ltIndForCamFor, 0) && IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltThumbForCamFor, 90) && IsWithinRange(ltMidForPalmFor, 180) && IsWithinRange(ltPinkForPalmFor, 180))
+            else if (IsWithinRange(ltIndForCamFor, 0) && IsWithinRange(ltIndForPalmFor, 25) && IsWithinRange(Vector3.Angle(ltIndexTip.Forward, floor.forward), 25) && IsWithinRange(ltThumbForCamFor, 50) && IsWithinRange(Vector3.Angle(ltThumbTip.Forward, floor.forward), 90) && IsWithinRange(ltMidForPalmFor, 160) && IsWithinRange(ltPinkForPalmFor, 130))
             {
                 rockOnLeft = false;
                 fingerGunLeft = true;

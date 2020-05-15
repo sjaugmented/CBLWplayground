@@ -1094,7 +1094,7 @@ PrefabInstance:
     - target: {fileID: 6878141377480388974, guid: 2661d9ea4556fd441ba4a7e687b5122d,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6878141377718322783, guid: 2661d9ea4556fd441ba4a7e687b5122d,
         type: 3}
@@ -2088,6 +2088,11 @@ PrefabInstance:
       propertyPath: vectorsOn
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9085309333162333234, guid: 3d2a5ac97482dbd41b2cb8a538bb752b,
+        type: 3}
+      propertyPath: rmfRPF
+      value: 
+      objectReference: {fileID: 554298264}
     - target: {fileID: 9085309333162333235, guid: 3d2a5ac97482dbd41b2cb8a538bb752b,
         type: 3}
       propertyPath: m_Name
@@ -2812,6 +2817,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stream Spells
       objectReference: {fileID: 0}
+    - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156122, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3180,6 +3190,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rate of Fire Palm Menu (Left)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6478677226273246637, guid: 7d6ae58f66ea09d468dde75f8547f04a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6478677226273246638, guid: 7d6ae58f66ea09d468dde75f8547f04a,
         type: 3}
@@ -3923,6 +3938,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spell Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 7808990808998034963, guid: 8ed53c624b13a9041bec53cb0ef7871f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7808990808998034967, guid: 8ed53c624b13a9041bec53cb0ef7871f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4068,6 +4088,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Master Orb
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064369555328730510, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9065181063538938513, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
         type: 3}
