@@ -83,7 +83,6 @@ public class SpellManager : MonoBehaviour
 
     // used to create rate of fire for spells
     bool ableToCast = true;
-    bool fromElSelector = false;
     bool fromOrbScaler = false;
 
     OrbFingerTracker handTracking;
@@ -322,6 +321,7 @@ public class SpellManager : MonoBehaviour
         if (ableToCast)
         {
             GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+            StartCoroutine("CastDelay", orbsPerSecond);
             spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
 
             ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
@@ -344,7 +344,7 @@ public class SpellManager : MonoBehaviour
             else return;
         }
 
-        StartCoroutine("CastDelay", orbsPerSecond);
+        
     }
 
     private void CastParticle()
