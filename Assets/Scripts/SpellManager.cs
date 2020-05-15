@@ -10,6 +10,7 @@ public class SpellManager : MonoBehaviour
     [SerializeField] GameObject masterOrb;
     public bool fistScaler = false;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0);
+    public Vector3 particleCastOffset = new Vector3(0, 0, 0.1f);
 
     [Header("Caster transforms for particles/streams")]
     [SerializeField] Transform orbCaster; //remove
@@ -61,9 +62,9 @@ public class SpellManager : MonoBehaviour
     Vector3 palm1Pos;
     Vector3 palm2Pos;
     float palmDist;
-    Vector3 rtIndexPos;
+    Vector3 rtIndexTipPos;
     Vector3 rtPinkyPos;
-    Vector3 ltIndexPos;
+    Vector3 ltIndexTipPos;
     Vector3 ltPinkyPos;
 
     bool twoPalms;
@@ -117,16 +118,16 @@ public class SpellManager : MonoBehaviour
     {
         ConvertElementToID();
 
-         twoPalms = handTracking.GetTwoPalms();
-         touchDown = handTracking.GetTouchdown();
-         palmsForward = handTracking.GetPalmsForward();
-         palmsIn = handTracking.GetPalmsIn();
-         palmsParallel = handTracking.GetPalmsParallel();
-         fists = handTracking.GetFists();
-         rockOnRight = handTracking.GetRockOnRight();
-         fingerGunRight = handTracking.GetFingerGunRight();
-         rockOnLeft = handTracking.GetRockOnLeft();
-         fingerGunLeft = handTracking.GetFingerGunLeft();
+        twoPalms = handTracking.GetTwoPalms();
+        touchDown = handTracking.GetTouchdown();
+        palmsForward = handTracking.GetPalmsForward();
+        palmsIn = handTracking.GetPalmsIn();
+        palmsParallel = handTracking.GetPalmsParallel();
+        fists = handTracking.GetFists();
+        rockOnRight = handTracking.GetRockOnRight();
+        fingerGunRight = handTracking.GetFingerGunRight();
+        rockOnLeft = handTracking.GetRockOnLeft();
+        fingerGunLeft = handTracking.GetFingerGunLeft();
 
         CalcHandPositions();
 
@@ -154,12 +155,16 @@ public class SpellManager : MonoBehaviour
                     ElementScaler();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
-                    if (palmDist - palmDistOffset > 0 && palmDist - palmDistOffset < maxPalmDistance - palmDistOffset)
+                    /*if (palmDist - palmDistOffset > 0 && palmDist - palmDistOffset < maxPalmDistance - palmDistOffset)
                     {
                         conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
                     }
                     else if (palmDist - palmDistOffset >= maxPalmDistance - palmDistOffset) conjureValueOSC = 0;
-                    else if (palmDist - palmDistOffset <= 0) conjureValueOSC = 1;
+                    else if (palmDist - palmDistOffset <= 0) conjureValueOSC = 1;*/
+
+                    if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
+                    else if (palmDist > maxPalmDistance) conjureValueOSC = 0;
+                    else if (palmDist < palmDistOffset) conjureValueOSC = 1;
 
                     SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
                     Debug.Log(conjureValueOSC); // remove
@@ -175,10 +180,10 @@ public class SpellManager : MonoBehaviour
                     ElementScaler();
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
-                    conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
+                    if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
+                    else if (palmDist > maxPalmDistance) conjureValueOSC = 0;
+                    else if (palmDist < palmDistOffset) conjureValueOSC = 1;
 
-                    /*if (conjureValueOSC < 0.02) conjureValueOSC = 0;
-                    if (conjureValueOSC > 0.98f) conjureValueOSC = 1;*/
                     SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
                 }
                 else
@@ -189,28 +194,6 @@ public class SpellManager : MonoBehaviour
                     if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
                 }
             }
-
-            /*else if (palmsIn)
-            {
-                masterOrb.SetActive(true);
-                masterOrb.transform.position = midpointPalms;
-                ElementSelector();
-                if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
-            }
-            else if (touchDown)
-            {
-                masterOrb.SetActive(true);
-                masterOrb.transform.position = midpointPalms;
-                ElementScaler();
-                if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
-
-                conjureValueOSC = palmDist / maxPalmDistance;
-
-                if (conjureValueOSC < 0) conjureValueOSC = 0;
-                if (conjureValueOSC > 1) conjureValueOSC = 1;
-                SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
-
-            }*/
             else
             {
                 masterOrb.SetActive(false);
@@ -221,18 +204,20 @@ public class SpellManager : MonoBehaviour
         {
             masterOrb.SetActive(false);
             sound.orbAmbienceFX.Pause();
+
+            if (fingerGunRight || fingerGunLeft)
+            {
+                CastParticle();
+                DisableStreams();
+            }
+            else if (rockOnRight || rockOnLeft)
+            {
+                EnableStream();
+            }
+            else DisableStreams();
         }
 
-        if (fingerGunRight || fingerGunLeft)
-        {
-            CastParticle();
-            DisableStreams();
-        }
-        else if (rockOnRight || rockOnLeft)
-        {
-            EnableStream();
-        }
-        else DisableStreams();
+        
     }
 
     private void SendOSCMessage(string address, float value)
@@ -249,15 +234,15 @@ public class SpellManager : MonoBehaviour
         palmDist = handTracking.GetPalmDist();
         palm1Pos = handTracking.GetRtPalmPos();
         palm2Pos = handTracking.GetLtPalmPos();
-        rtIndexPos = handTracking.GetRtIndexPos();
-        rtPinkyPos = handTracking.GetRtPinkyPos();
-        ltIndexPos = handTracking.GetLtIndexPos();
-        ltPinkyPos = handTracking.GetLtPinkyPos();
+        rtIndexTipPos = handTracking.GetRtIndexTipPos();
+        rtPinkyPos = handTracking.GetRtPinkyTipPos();
+        ltIndexTipPos = handTracking.GetLtIndexTipPos();
+        ltPinkyPos = handTracking.GetLtPinkyTipPos();
 
         var midpointPalms = Vector3.Lerp(palm1Pos, palm2Pos, 0.5f);
         masterOrbPos = midpointPalms + palmMidpointOffset;
-        midpointRtIndexPinky = Vector3.Lerp(rtIndexPos, rtPinkyPos, 0.5f);
-        midpointLtIndexPinky = Vector3.Lerp(ltIndexPos, ltPinkyPos, 0.5f);
+        midpointRtIndexPinky = Vector3.Lerp(rtIndexTipPos, rtPinkyPos, 0.5f);
+        midpointLtIndexPinky = Vector3.Lerp(ltIndexTipPos, ltPinkyPos, 0.5f);
     }
 
     private void ElementSelector()
@@ -277,39 +262,12 @@ public class SpellManager : MonoBehaviour
                 sound.elementSwitchFX.Play();
                 Debug.Log("switch!");
             }
-            // activate corresponding element
-            /*for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-            {
-                if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-                else spellBook.masterOrbElements[i].SetActive(false);
-            }*/
         }
-        /*else if(palmDist > palmDistOffset && palmDist <= maxPalmDistance - (elSlotSize * 3))
-        {
-            currEl = Element.light;
-            // activate corresponding element
-            *//*for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-            {
-                if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-                else spellBook.masterOrbElements[i].SetActive(false);
-            }*//*
-
-            // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - (elSlotSize * 3))
-            {
-                sound.elementSwitchFX.Play();
-                Debug.Log("switch!");
-            }
-        }*/
         else if (palmDist > maxPalmDistance - (elSlotSize * 3) && palmDist <= maxPalmDistance - (elSlotSize * 2))
         {
             currEl = Element.fire;
             // activate corresponding element
             for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-            /*{
-                if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-                else spellBook.masterOrbElements[i].SetActive(false);
-            }*/
 
             // play soundfx as you leave the zone
             if (palmDist == maxPalmDistance - (elSlotSize * 2)) sound.elementSwitchFX.Play();
@@ -318,12 +276,6 @@ public class SpellManager : MonoBehaviour
         else if (palmDist > maxPalmDistance - (elSlotSize * 2) && palmDist <= maxPalmDistance - elSlotSize)
         {
             currEl = Element.water;
-            // activate corresponding element
-            /*for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-            {
-                if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-                else spellBook.masterOrbElements[i].SetActive(false);
-            }*/
 
             // play soundfx as you leave the zone
             if (palmDist == maxPalmDistance - elSlotSize) sound.elementSwitchFX.Play();
@@ -332,12 +284,6 @@ public class SpellManager : MonoBehaviour
         else if (palmDist > maxPalmDistance - elSlotSize && palmDist <= maxPalmDistance)
         {
             currEl = Element.ice;
-            // activate corresponding element
-            /*for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-            {
-                if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-                else spellBook.masterOrbElements[i].SetActive(false);
-            }*/
         }
 
         // activate corresponding element
@@ -346,16 +292,6 @@ public class SpellManager : MonoBehaviour
             if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
             else spellBook.masterOrbElements[i].SetActive(false);
         }
-
-        // turn on masterOrb mesh except if water
-        MeshRenderer orbRenderer = masterOrb.GetComponent<MeshRenderer>();
-        if (currEl == Element.water)
-        {
-            orbRenderer.enabled = false;
-            LiquidVolumeAnimator liquidController = spellBook.masterOrbElements[elementID].GetComponentInChildren<LiquidVolumeAnimator>();
-            liquidController.level = 0.6f;
-        }
-        else orbRenderer.enabled = true;
 
         // keep orb element scaled at 0.5 for best visibility
         spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -373,25 +309,13 @@ public class SpellManager : MonoBehaviour
             else spellBook.masterOrbElements[i].SetActive(false);
         }
 
-        // turn on masterOrb mesh except if water
-        MeshRenderer orbRenderer = masterOrb.GetComponent<MeshRenderer>();
-        if (currEl == Element.water) orbRenderer.enabled = false;
-        else orbRenderer.enabled = true;
-
         // determine scale
         if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) elementScale = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
         else if (palmDist > maxPalmDistance) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
 
         // apply scale based on orb element
-        if (currEl == Element.water)
-        {
-            spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(1, 1, 1);
-            LiquidVolumeAnimator liquidController = spellBook.masterOrbElements[elementID].GetComponentInChildren<LiquidVolumeAnimator>();
-            if (elementScale <= 0.002f) liquidController.level = 0.002f;
-            else liquidController.level = elementScale;
-        }
-        else spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(elementScale, elementScale, elementScale);
+        spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(elementScale, elementScale, elementScale);
     }
 
     private void CastOrb()
@@ -404,6 +328,7 @@ public class SpellManager : MonoBehaviour
             orbCaster.position = masterOrbPos; // remove
             Quaternion palmsRotationMid = Quaternion.Slerp(rtPalmRot, ltPalmRot, 0.5f);
             Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
+
             GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation); // todo check rotation
             spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
             
@@ -438,13 +363,13 @@ public class SpellManager : MonoBehaviour
         {
             if (fingerGunRight)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rtIndexPos, particleCasterRight.rotation);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rtIndexTipPos + particleCastOffset, particleCasterRight.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
 
             if (fingerGunLeft)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], ltIndexPos, particleCasterLeft.rotation);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], ltIndexTipPos + particleCastOffset, particleCasterLeft.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
             

@@ -151,9 +151,12 @@ public class OrbFingerTracker : MonoBehaviour
         }
         else
         {
+            twoPalms = false;
             palmsParallel = false;
             palmsForward = false;
         }
+
+
         // look for right fingers
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip))
         {
@@ -280,22 +283,22 @@ public class OrbFingerTracker : MonoBehaviour
         return leftPalm.Rotation;
     }
 
-    public Vector3 GetRtIndexPos()
+    public Vector3 GetRtIndexTipPos()
     {
         return rtIndexTip.Position;
     }
 
-    public Vector3 GetLtIndexPos()
+    public Vector3 GetLtIndexTipPos()
     {
         return ltIndexTip.Position;
     }
 
-    public Vector3 GetRtPinkyPos()
+    public Vector3 GetRtPinkyTipPos()
     {
         return rtPinkyTip.Position;
     }
 
-    public Vector3 GetLtPinkyPos()
+    public Vector3 GetLtPinkyTipPos()
     {
         return ltPinkyTip.Position;
     }

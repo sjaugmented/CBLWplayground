@@ -24,7 +24,7 @@ public class ParticleOrbController : MonoBehaviour
     [SerializeField] string OSCtoReceive = "message to receive here";
     [Tooltip("OSC message to send, either on cast or collision")]
     [SerializeField] string messageOSC;
-    [SerializeField] float valueOSC = 1f;
+    public float valueOSC = 1f;
     [Tooltip("If Dim Over Time is true and you want OSC value to change with DMX. Converts the highest DMX value to an OSC float.")] 
     [SerializeField] bool dimOSCwithDMX = false;
 

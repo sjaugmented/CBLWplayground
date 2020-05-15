@@ -1322,10 +1322,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackedTargetType: 6
   trackedHandness: 2
-  trackedHandJoint: 26
+  trackedHandJoint: 11
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
-  additionalRotation: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 50, y: 0, z: 0}
   updateSolvers: 1
 --- !u!4 &431114000 stripped
 Transform:
@@ -2225,10 +2225,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackedTargetType: 6
   trackedHandness: 1
-  trackedHandJoint: 26
+  trackedHandJoint: 11
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: 0, z: 0}
-  additionalRotation: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 50, y: 0, z: 0}
   updateSolvers: 1
 --- !u!1 &633109886
 GameObject:
@@ -4153,20 +4153,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
-        type: 3}
-      propertyPath: messageOSC
-      value: /iceStream/
-      objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: m_Name
       value: Stream Spells
-      objectReference: {fileID: 0}
-    - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156122, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
@@ -4222,21 +4212,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
-        type: 3}
-      propertyPath: messageOSC
-      value: /lightStream/
-      objectReference: {fileID: 0}
-    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
-        type: 3}
-      propertyPath: messageOSC
-      value: /fireStream/
-      objectReference: {fileID: 0}
-    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
-        type: 3}
-      propertyPath: messageOSC
-      value: /waterStream/
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e56b870054828946b4e0d6585c98508, type: 3}
@@ -5768,6 +5743,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114932100035050757, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1673872
+      objectReference: {fileID: 0}
+    - target: {fileID: 114932100035050757, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1673872
+      objectReference: {fileID: 0}
+    - target: {fileID: 114932100035050757, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1673872
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834374777599053766, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834374777599053766, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 2834374777599053766, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 9064369555328730499, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9064369555328730509, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5827,6 +5837,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Master Orb
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068627833562292234, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068627833562292234, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068627833562292234, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068627834376413615, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068627834376413615, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.167387
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068627834376413615, guid: 1d51ecb2f44a95d438ccb81bdc6211e0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.167387
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d51ecb2f44a95d438ccb81bdc6211e0, type: 3}
