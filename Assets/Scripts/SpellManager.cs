@@ -315,33 +315,33 @@ public class SpellManager : MonoBehaviour
     {
         Quaternion rtPalmRot = handTracking.GetRtPalmRot();
         Quaternion ltPalmRot = handTracking.GetLtPalmRot();
-        
+
+        Quaternion palmsRotationMid = Quaternion.Slerp(rtPalmRot, ltPalmRot, 0.5f);
+        Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
+
         if (ableToCast)
         {
-            if (fromOrbScaler)
-            {
-
-            }
-            else
-            {
-
-            }
-            orbCaster.position = masterOrbPos; // remove
-            Quaternion palmsRotationMid = Quaternion.Slerp(rtPalmRot, ltPalmRot, 0.5f);
-            Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
-
-            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation); // todo check rotation
+            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
             spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
-            
+
             ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
 
-            foreach (Transform child in elParent.transform)
+            if (fromOrbScaler)
             {
-                if (child.CompareTag("Spell"))
+                Debug.Log(elementScale); // remove
+                spellOrb.GetComponent<ParticleOrbController>().valueOSC = elementScale;
+
+                float particleScale = elementScale * 1.167388f;
+
+                foreach (Transform child in elParent.transform)
                 {
-                    child.localScale = new Vector3(elementScale, elementScale, elementScale);
+                    if (child.CompareTag("Spell"))
+                    {
+                        child.localScale = new Vector3(particleScale, particleScale, particleScale);
+                    }
                 }
             }
+            else return;
 
             StartCoroutine("CastDelay", orbsPerSecond);
         }

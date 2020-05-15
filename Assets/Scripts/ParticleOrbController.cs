@@ -48,7 +48,7 @@ public class ParticleOrbController : MonoBehaviour
         collider = GetComponent<SphereCollider>();
         
         SendDMX();
-        SendOSCMessage(valueOSC); //todo refactor for lockOSCvalueToDMX
+        SendOSCMessage(); //todo refactor for lockOSCvalueToDMX
 
         osc.SetAddressHandler(OSCtoReceive, OnReceiveOSC);
 
@@ -85,13 +85,13 @@ public class ParticleOrbController : MonoBehaviour
             Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
         }  
     }
-    private void SendOSCMessage(float oscVal)
+    private void SendOSCMessage()
     {
         OscMessage message = new OscMessage();
         message.address = messageOSC;
-        message.values.Add(oscVal);
+        message.values.Add(valueOSC);
         osc.Send(message);
-        Debug.Log("sending OSC: " + message + oscVal); //todo remove
+        Debug.Log("sending OSC: " + message); //todo remove
     }
 
     void OnReceiveOSC(OscMessage message)
