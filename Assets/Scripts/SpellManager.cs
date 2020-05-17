@@ -59,24 +59,9 @@ public class SpellManager : MonoBehaviour
     Vector3 masterOrbPos;
     Vector3 midpointRtIndexPinky;
     Vector3 midpointLtIndexPinky;
-    Vector3 palm1Pos;
-    Vector3 palm2Pos;
     float palmDist;
-    Vector3 rtIndexTipPos;
-    Vector3 rtPinkyPos;
-    Vector3 ltIndexTipPos;
-    Vector3 ltPinkyPos;
 
-    bool twoPalms;
-    bool touchDown;
-    bool palmsForward;
-    bool palmsIn;
-    bool palmsParallel;
-    bool fists;
-    bool rockOnRight;
-    bool fingerGunRight;
-    bool rockOnLeft;
-    bool fingerGunLeft;
+    
 
 
     float elementScale;
