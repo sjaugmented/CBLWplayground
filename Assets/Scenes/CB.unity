@@ -679,6 +679,8 @@ GameObject:
   - component: {fileID: 259462450}
   - component: {fileID: 259462451}
   - component: {fileID: 259462452}
+  - component: {fileID: 259462454}
+  - component: {fileID: 259462453}
   m_Layer: 0
   m_Name: Element Menu
   m_TagString: Untagged
@@ -717,6 +719,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   elements: []
+  selectedScale: 2
 --- !u!114 &259462452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,6 +767,55 @@ MonoBehaviour:
   cellWidth: 0.1
   cellHeight: 0.1
   assetVersion: 1
+--- !u!114 &259462453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259462449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateLinkedTransform: 0
+  moveLerpTime: 1
+  rotateLerpTime: 1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  referenceDirection: 1
+  minDistance: 0
+  maxDistance: 0
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  useFixedVerticalPosition: 0
+  fixedVerticalPosition: -0.4
+  orientToReferenceDirection: 0
+--- !u!114 &259462454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259462449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedTargetType: 0
+  trackedHandness: 3
+  trackedHandJoint: 2
+  transformOverride: {fileID: 0}
+  additionalOffset: {x: 0, y: 0, z: 0.3}
+  additionalRotation: {x: 0, y: 0, z: 0}
+  updateSolvers: 1
 --- !u!1 &307627091
 GameObject:
   m_ObjectHideFlags: 0
@@ -70895,6 +70947,10 @@ PrefabInstance:
       propertyPath: elementMenu
       value: 
       objectReference: {fileID: 259462449}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: elMenuOffset.z
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1442137911461133963, guid: 8ed53c624b13a9041bec53cb0ef7871f,
         type: 3}
       propertyPath: particleSpells.Array.size

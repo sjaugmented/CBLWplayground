@@ -7,7 +7,7 @@ public class ElementMenu : MonoBehaviour
     public List<Transform> elements = new List<Transform>();
     SpellManager spellManager;
     float defaultScale = 0.05784709f;
-    float selectedScale = 2;
+    [SerializeField] float selectedScale = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -25,9 +25,9 @@ public class ElementMenu : MonoBehaviour
     {
         for (int i = 0; i < elements.Count; i++)
         {
-            if (i == spellManager.elementID)
+            if (i == spellManager.GetElementID())
             {
-                elements[i].localScale = new Vector3(selectedScale, selectedScale, selectedScale);
+                elements[i].localScale = new Vector3(defaultScale * selectedScale, defaultScale * selectedScale, defaultScale * selectedScale);
             }
             else elements[i].localScale = new Vector3(defaultScale, defaultScale, defaultScale);
         }

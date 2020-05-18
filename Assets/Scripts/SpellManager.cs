@@ -7,9 +7,13 @@ using UnityEngine;
 
 public class SpellManager : MonoBehaviour
 {
+    [SerializeField] bool manualElMenu = false;
+    
     [SerializeField] GameObject masterOrb;
-    public Vector3 orbCastRotOffset = new Vector3(0, 0, 0);
-    public Vector3 particleCastOffset = new Vector3(0, 0, 0.1f);
+    public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
+    public Vector3 particleCastOffset = new Vector3(0, 0, 0.1f); // todo hardcode
+    [SerializeField] Vector3 elMenuOffset = new Vector3(0, 0, 0); // todo hardcode
+
 
     [Header("Caster transforms for particles/streams")]
     [SerializeField] Transform rightHandCaster;
@@ -50,7 +54,7 @@ public class SpellManager : MonoBehaviour
     public enum Form { particle, orb, stream };
     public Element currEl = Element.light;
     public Form currForm = Form.orb; // in case we reintroduce different forms - ie, particles, streams
-    public int elementID = 0;
+    int elementID = 0;
 
     // coordinates for conjuring
     Vector3 masterOrbPos;
@@ -87,6 +91,7 @@ public class SpellManager : MonoBehaviour
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         masterOrb.SetActive(false);
+        elementMenu.SetActive(false);
         DisableStreams();
     }
 
@@ -98,15 +103,27 @@ public class SpellManager : MonoBehaviour
 
         if (handTracking.twoPalms)
         {
-            if (handTracking.palmsForward)
+            // two handed casting
+            if (handTracking.palmsOut)
             {
                 CastOrb();
                 sound.orbAmbienceFX.Pause();
                 masterOrb.SetActive(false);
+                elementMenu.SetActive(false);
+
             }
-            else if (handTracking.palmsParallel && !handTracking.fists)
+            // element menu
+            else if (handTracking.palmsIn && handTracking.twoFists || manualElMenu)
+            {
+                ElementSelector();
+                masterOrb.SetActive(false);
+                if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
+            }
+            // element scaler
+            else if (handTracking.palmsIn && !handTracking.twoFists)
             {
                 ElementScaler();
+                elementMenu.SetActive(false);
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
                 conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
@@ -117,11 +134,6 @@ public class SpellManager : MonoBehaviour
                 SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
                 Debug.Log(conjureValueOSC); // remove
             }
-            else if (handTracking.palmsParallel && handTracking.fists)
-            {
-                ElementSelector();
-                if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
-            }
             else
             {
                 masterOrb.SetActive(false);
@@ -131,14 +143,15 @@ public class SpellManager : MonoBehaviour
         else
         {
             masterOrb.SetActive(false);
+            elementMenu.SetActive(false);
             sound.orbAmbienceFX.Pause();
 
-            if (handTracking.fingerGunRight || handTracking.fingerGunLeft)
+            /*if (handTracking.fingerGunRight || handTracking.fingerGunLeft)
             {
                 CastParticle();
                 DisableStreams();
-            }
-            else if (handTracking.rockOnRight || handTracking.rockOnLeft)
+            }*/
+            if (handTracking.rockOnRight || handTracking.rockOnLeft)
             {
                 EnableStream();
             }
@@ -171,57 +184,7 @@ public class SpellManager : MonoBehaviour
     {
         fromOrbScaler = false;
 
-        masterOrb.SetActive(true);
-        masterOrb.transform.position = masterOrbPos;
-        masterOrb.GetComponent<MasterOrbRotater>().xRotation = 1;
-
-        float elSlotSize = (maxPalmDistance - palmDistOffset) / spellBook.masterOrbElements.Count;
-
-        // select element based on distance between palms
-        if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxPalmDistance - (elSlotSize * 3)))
-        {
-            currEl = Element.light;
-
-            // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - (elSlotSize * 3))
-            {
-                sound.elementSwitchFX.Play();
-                Debug.Log("switch!");
-            }
-        }
-        else if (palmDist > maxPalmDistance - (elSlotSize * 3) && palmDist <= maxPalmDistance - (elSlotSize * 2))
-        {
-            currEl = Element.fire;
-            // activate corresponding element
-            for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-
-            // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - (elSlotSize * 2)) sound.elementSwitchFX.Play();
-
-        }
-        else if (palmDist > maxPalmDistance - (elSlotSize * 2) && palmDist <= maxPalmDistance - elSlotSize)
-        {
-            currEl = Element.water;
-
-            // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - elSlotSize) sound.elementSwitchFX.Play();
-
-        }
-        else if (palmDist > maxPalmDistance - elSlotSize && palmDist <= maxPalmDistance)
-        {
-            currEl = Element.ice;
-        }
-
-        // activate corresponding element
-        for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-        {
-            if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-            else spellBook.masterOrbElements[i].SetActive(false);
-        }
-
-        // keep orb element scaled at 0.5 for best visibility
-        spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-
+        elementMenu.SetActive(true);
     }
 
     private void ElementScaler()
@@ -381,6 +344,11 @@ public class SpellManager : MonoBehaviour
         ableToCast = false;
         yield return new WaitForSeconds(1 / delay);
         ableToCast = true;
+    }
+
+    public int GetElementID()
+    {
+        return elementID;
     }
 
     #region UI Hook Ups
