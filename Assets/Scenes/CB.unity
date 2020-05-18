@@ -780,13 +780,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 1
-  rotateLerpTime: 1
+  moveLerpTime: 2
+  rotateLerpTime: 2
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
   lifetime: 0
-  referenceDirection: 1
+  referenceDirection: 0
   minDistance: 0
   maxDistance: 0
   minViewDegrees: 0
@@ -796,7 +796,7 @@ MonoBehaviour:
   ignoreDistanceClamp: 0
   useFixedVerticalPosition: 0
   fixedVerticalPosition: -0.4
-  orientToReferenceDirection: 0
+  orientToReferenceDirection: 1
 --- !u!114 &259462454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,7 +813,7 @@ MonoBehaviour:
   trackedHandness: 3
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0, y: 0, z: 0.3}
+  additionalOffset: {x: 0, y: 0, z: 0.7}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!1 &307627091
@@ -70889,7 +70889,7 @@ PrefabInstance:
       objectReference: {fileID: 2113532884}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: orbCastRotOffset.x
-      value: 50
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: particlesPerSecond
