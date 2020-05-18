@@ -20,6 +20,7 @@ public class SpellManager : MonoBehaviour
     [SerializeField] [Range(1, 20)] float particlesPerSecond = 20f;
 
     [Header("Palm Menus")]
+    [SerializeField] GameObject elementMenu;
     [Tooltip("Parent object of the palm menu visuals")]
     [SerializeField] GameObject leftPalmMenuVisuals;
     [SerializeField] GameObject rightPalmMenuVisuals;
@@ -49,7 +50,7 @@ public class SpellManager : MonoBehaviour
     public enum Form { particle, orb, stream };
     public Element currEl = Element.light;
     public Form currForm = Form.orb; // in case we reintroduce different forms - ie, particles, streams
-    int elementID = 0;
+    public int elementID = 0;
 
     // coordinates for conjuring
     Vector3 masterOrbPos;
@@ -158,7 +159,7 @@ public class SpellManager : MonoBehaviour
 
     private void CalcHandPositions()
     {
-        palmDist = handTracking.GetPalmDist();
+        palmDist = handTracking.palmDist;
 
         var midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
         masterOrbPos = midpointPalms + palmMidpointOffset;
@@ -249,10 +250,7 @@ public class SpellManager : MonoBehaviour
 
     private void CastOrb()
     {
-        Quaternion rtPalmRot = handTracking.GetRtPalmRot();
-        Quaternion ltPalmRot = handTracking.GetLtPalmRot();
-
-        Quaternion palmsRotationMid = Quaternion.Slerp(rtPalmRot, ltPalmRot, 0.5f);
+        Quaternion palmsRotationMid = Quaternion.Slerp(handTracking.rightPalm.Rotation, handTracking.leftPalm.Rotation, 0.5f);
         Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
 
         if (ableToCast)
@@ -286,9 +284,6 @@ public class SpellManager : MonoBehaviour
 
     private void CastParticle()
     {
-        Quaternion rtIndexRot = handTracking.GetRtIndRot();
-        Quaternion ltIndexRot = handTracking.GetLtIndRot();
-
         if (ableToCast)
         {
             if (handTracking.fingerGunRight)
@@ -388,6 +383,7 @@ public class SpellManager : MonoBehaviour
         ableToCast = true;
     }
 
+    #region UI Hook Ups
     public void SetLight()
     {
         currEl = Element.light;
@@ -444,4 +440,5 @@ public class SpellManager : MonoBehaviour
         if (maxPalmDistance < 0.2f) maxPalmDistance = 0.2f;
         maxPalmDistText.text = maxPalmDistance.ToString();
     }
+    #endregion
 }

@@ -32,7 +32,7 @@ public class OrbFingerTracker : MonoBehaviour
     public bool fingerGunRight = false;
     public bool rockOnLeft = false;
     public bool fingerGunLeft = false;
-    float palmDist;
+    public float palmDist;
 
     public bool palmsParallel = false;
     public bool fists = false;
@@ -251,111 +251,4 @@ public class OrbFingerTracker : MonoBehaviour
 
         return withinRange;
     }
-
-    #region Public Getters
-    public bool GetPalmsParallel()
-    {
-        return palmsParallel;
-    }
-
-    public bool GetFists()
-    {
-        return fists;
-    }
-
-    public Vector3 GetRtPalmPos()
-    {
-        return rightPalm.Position;
-    }
-
-    public Vector3 GetLtPalmPos()
-    {
-        return leftPalm.Position;
-    }
-
-    public Quaternion GetRtPalmRot()
-    {
-        return rightPalm.Rotation;
-    }
-
-    public Quaternion GetLtPalmRot()
-    {
-        return leftPalm.Rotation;
-    }
-
-    public Vector3 GetRtIndexTipPos()
-    {
-        return rtIndexTip.Position;
-    }
-
-    public Vector3 GetLtIndexTipPos()
-    {
-        return ltIndexTip.Position;
-    }
-
-    public Vector3 GetRtPinkyTipPos()
-    {
-        return rtPinkyTip.Position;
-    }
-
-    public Vector3 GetLtPinkyTipPos()
-    {
-        return ltPinkyTip.Position;
-    }
-
-    public bool GetPalmsForward()
-    {
-        return palmsForward;
-    }
-
-    public bool GetTouchdown()
-    {
-        return touchDown;
-    }
-
-    public bool GetPalmsIn()
-    {
-        return palmsIn;
-    }
-
-    public float GetPalmDist()
-    {
-        return palmDist;
-    }
-
-    public bool GetTwoPalms()
-    {
-        return twoPalms;
-    }
-
-    public bool GetRockOnRight()
-    {
-        return rockOnRight;
-    }
-
-    public bool GetFingerGunRight()
-    {
-        return fingerGunRight;
-    }
-
-    public bool GetRockOnLeft()
-    {
-        return rockOnLeft;
-    }
-
-    public bool GetFingerGunLeft()
-    {
-        return fingerGunLeft;
-    }
-
-    public Quaternion GetRtIndRot()
-    {
-        return rtIndexTip.Rotation;
-    }
-
-    public Quaternion GetLtIndRot()
-    {
-        return ltIndexTip.Rotation;
-    }
-    #endregion
 }
