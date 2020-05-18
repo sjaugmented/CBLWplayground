@@ -8,16 +8,12 @@ using UnityEngine;
 public class SpellManager : MonoBehaviour
 {
     [SerializeField] GameObject masterOrb;
-    public bool fistScaler = false;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0);
     public Vector3 particleCastOffset = new Vector3(0, 0, 0.1f);
 
     [Header("Caster transforms for particles/streams")]
-    [SerializeField] Transform orbCaster; //remove
-    [SerializeField] Transform particleCasterRight;
-    [SerializeField] Transform particleCasterLeft;
-    [SerializeField] Transform streamCasterRight;
-    [SerializeField] Transform streamCasterLeft;
+    [SerializeField] Transform rightHandCaster;
+    [SerializeField] Transform leftHandCaster;
 
     [Header("Rates of Fire")]
     [SerializeField] [Range(1, 20)] float orbsPerSecond = 1f;
@@ -57,13 +53,9 @@ public class SpellManager : MonoBehaviour
 
     // coordinates for conjuring
     Vector3 masterOrbPos;
-    Vector3 midpointRtIndexPinky;
-    Vector3 midpointLtIndexPinky;
+    Vector3 rightStreamPos;
+    Vector3 leftStreamPos;
     float palmDist;
-
-    
-
-
     float elementScale;
 
     // used to create rate of fire for spells
@@ -101,67 +93,32 @@ public class SpellManager : MonoBehaviour
     void Update()
     {
         ConvertElementToID();
-
-        twoPalms = handTracking.GetTwoPalms();
-        touchDown = handTracking.GetTouchdown();
-        palmsForward = handTracking.GetPalmsForward();
-        palmsIn = handTracking.GetPalmsIn();
-        palmsParallel = handTracking.GetPalmsParallel();
-        fists = handTracking.GetFists();
-        rockOnRight = handTracking.GetRockOnRight();
-        fingerGunRight = handTracking.GetFingerGunRight();
-        rockOnLeft = handTracking.GetRockOnLeft();
-        fingerGunLeft = handTracking.GetFingerGunLeft();
-
         CalcHandPositions();
 
-        if (twoPalms)
+        if (handTracking.twoPalms)
         {
-            if (palmsForward)
+            if (handTracking.palmsForward)
             {
                 CastOrb();
                 sound.orbAmbienceFX.Pause();
                 masterOrb.SetActive(false);
             }
-            else if (palmsParallel && !fists)
+            else if (handTracking.palmsParallel && !handTracking.fists)
             {
-                if (fistScaler)
-                {
-                    ElementSelector();
-                    if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
-                }
-                else
-                {
-                    ElementScaler();
-                    if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
+                ElementScaler();
+                if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
-                    if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
-                    else if (palmDist > maxPalmDistance) conjureValueOSC = 0;
-                    else if (palmDist < palmDistOffset) conjureValueOSC = 1;
+                if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
+                else if (palmDist > maxPalmDistance) conjureValueOSC = 0;
+                else if (palmDist < palmDistOffset) conjureValueOSC = 1;
 
-                    SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
-                    Debug.Log(conjureValueOSC); // remove
-
-                }
+                SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
+                Debug.Log(conjureValueOSC); // remove
             }
-            else if (palmsParallel && fists)
+            else if (handTracking.palmsParallel && handTracking.fists)
             {
-                if (fistScaler)
-                {
-                    ElementScaler();
-                    if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
-
-                    if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
-                    else if (palmDist > maxPalmDistance) conjureValueOSC = 0;
-                    else if (palmDist < palmDistOffset) conjureValueOSC = 1;
-
-                    SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
-                }
-                else
-                {
-                    ElementSelector();
-                    if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
-                }
+                ElementSelector();
+                if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
             else
             {
@@ -174,12 +131,12 @@ public class SpellManager : MonoBehaviour
             masterOrb.SetActive(false);
             sound.orbAmbienceFX.Pause();
 
-            if (fingerGunRight || fingerGunLeft)
+            if (handTracking.fingerGunRight || handTracking.fingerGunLeft)
             {
                 CastParticle();
                 DisableStreams();
             }
-            else if (rockOnRight || rockOnLeft)
+            else if (handTracking.rockOnRight || handTracking.rockOnLeft)
             {
                 EnableStream();
             }
@@ -201,17 +158,11 @@ public class SpellManager : MonoBehaviour
     private void CalcHandPositions()
     {
         palmDist = handTracking.GetPalmDist();
-        palm1Pos = handTracking.GetRtPalmPos();
-        palm2Pos = handTracking.GetLtPalmPos();
-        rtIndexTipPos = handTracking.GetRtIndexTipPos();
-        rtPinkyPos = handTracking.GetRtPinkyTipPos();
-        ltIndexTipPos = handTracking.GetLtIndexTipPos();
-        ltPinkyPos = handTracking.GetLtPinkyTipPos();
 
-        var midpointPalms = Vector3.Lerp(palm1Pos, palm2Pos, 0.5f);
+        var midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
         masterOrbPos = midpointPalms + palmMidpointOffset;
-        midpointRtIndexPinky = Vector3.Lerp(rtIndexTipPos, rtPinkyPos, 0.5f);
-        midpointLtIndexPinky = Vector3.Lerp(ltIndexTipPos, ltPinkyPos, 0.5f);
+        rightStreamPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtPinkyTip.Position, 0.5f);
+        leftStreamPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltPinkyTip.Position, 0.5f);
     }
 
     private void ElementSelector()
@@ -339,15 +290,15 @@ public class SpellManager : MonoBehaviour
 
         if (ableToCast)
         {
-            if (fingerGunRight)
+            if (handTracking.fingerGunRight)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rtIndexTipPos + particleCastOffset, Camera.main.transform.rotation);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], handTracking.rtIndexTip.Position + particleCastOffset, Camera.main.transform.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
 
-            if (fingerGunLeft)
+            if (handTracking.fingerGunLeft)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], ltIndexTipPos + particleCastOffset, Camera.main.transform.rotation);
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], handTracking.ltIndexTip.Position + particleCastOffset, Camera.main.transform.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
             
@@ -380,18 +331,18 @@ public class SpellManager : MonoBehaviour
                 var emission = spellBook.streamSpells[i].emission;
                 emission.enabled = true;
                 Transform streamParent = spellBook.streamSpells[elementID].transform.parent;
-                if (rockOnRight)
+                if (handTracking.rockOnRight)
                 {
-                    streamCasterRight.position = midpointRtIndexPinky;
-                    streamParent.position = midpointRtIndexPinky;
-                    streamParent.rotation = streamCasterRight.rotation;
+                    rightHandCaster.position = rightStreamPos;
+                    streamParent.position = rightStreamPos;
+                    streamParent.rotation = rightHandCaster.rotation;
                     // todo check rotation
                 }
-                if (rockOnLeft)
+                if (handTracking.rockOnLeft)
                 {
-                    streamCasterLeft.position = midpointLtIndexPinky;
-                    streamParent.position = midpointLtIndexPinky;
-                    streamParent.rotation = streamCasterLeft.rotation;
+                    leftHandCaster.position = leftStreamPos;
+                    streamParent.position = leftStreamPos;
+                    streamParent.rotation = leftHandCaster.rotation;
                     // todo check rotation
                 }
 
@@ -406,7 +357,7 @@ public class SpellManager : MonoBehaviour
                 var emission = spellBook.streamSpells[i].emission;
                 emission.enabled = false;
                 Transform streamParent = spellBook.streamSpells[i].transform.parent;
-                streamParent.position = midpointRtIndexPinky;
+                streamParent.position = rightStreamPos;
 
                 foreach (Transform child in spellBook.streamSpells[i].transform)
                 {
@@ -491,10 +442,5 @@ public class SpellManager : MonoBehaviour
         maxPalmDistance = sliderVal * 0.6f;
         if (maxPalmDistance < 0.2f) maxPalmDistance = 0.2f;
         maxPalmDistText.text = maxPalmDistance.ToString();
-    }
-
-    public void SetFistScaler()
-    {
-        fistScaler = !fistScaler;
     }
 }
