@@ -3521,6 +3521,14 @@ PrefabInstance:
       propertyPath: conjureOSCMessages.Array.data[3]
       value: /iceOSClive/
       objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: leftPalmMenuVisuals
+      value: 
+      objectReference: {fileID: 1099100905}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: rightPalmMenuVisuals
+      value: 
+      objectReference: {fileID: 153612509}
     - target: {fileID: 1442137911461133963, guid: 8ed53c624b13a9041bec53cb0ef7871f,
         type: 3}
       propertyPath: particleSpells.Array.size

@@ -108,9 +108,10 @@ public class SpellManager : MonoBehaviour
                 ElementScaler();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
-                if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
-                else if (palmDist > maxPalmDistance) conjureValueOSC = 0;
-                else if (palmDist < palmDistOffset) conjureValueOSC = 1;
+                conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
+                if (conjureValueOSC < 0) conjureValueOSC = 0;
+                if (conjureValueOSC > 1) conjureValueOSC = 1;
+                Debug.Log(conjureValueOSC);
 
                 SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
                 Debug.Log(conjureValueOSC); // remove
