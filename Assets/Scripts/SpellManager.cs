@@ -21,8 +21,8 @@ public class SpellManager : MonoBehaviour
 
     [Header("Palm Menus")]
     [Tooltip("Parent object of the palm menu visuals")]
-    [SerializeField] GameObject palmMenuVisuals1;
-    [SerializeField] GameObject palmMenuVisuals2;
+    [SerializeField] GameObject leftPalmMenuVisuals;
+    [SerializeField] GameObject rightPalmMenuVisuals;
     [Tooltip("Rate of fire GameObject sliders in hierarchy")]
     [SerializeField] PinchSlider orbROFSlider;
     [SerializeField] TextMeshPro orbROFText;
