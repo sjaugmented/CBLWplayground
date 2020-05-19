@@ -19345,7 +19345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb2a98c044a417b47875fd505736f078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageOSC: babyGaze
+  messageOSC: /babyGaze/
   valueOSC: 1
   explosionFX: {fileID: 3145744985236965372, guid: c6330a34fad52074a9af29d273b0bd66,
     type: 3}
