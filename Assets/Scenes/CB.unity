@@ -70951,6 +70951,10 @@ PrefabInstance:
       propertyPath: elMenuOffset.z
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: currEl
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1442137911461133963, guid: 8ed53c624b13a9041bec53cb0ef7871f,
         type: 3}
       propertyPath: particleSpells.Array.size

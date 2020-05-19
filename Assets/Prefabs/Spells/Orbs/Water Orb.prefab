@@ -19076,7 +19076,7 @@ GameObject:
   - component: {fileID: 9064369555328730498}
   - component: {fileID: 9064369555328730499}
   - component: {fileID: 9064369555328730508}
-  - component: {fileID: 992028375479918303}
+  - component: {fileID: -223078153665004506}
   - component: {fileID: -5139467614829001259}
   - component: {fileID: -7906731912851692539}
   m_Layer: 9
@@ -19175,7 +19175,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &992028375479918303
+--- !u!114 &-223078153665004506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19184,22 +19184,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 9064369555328730510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f692b7fb581036c4ca648313c1f21110, type: 3}
+  m_Script: {fileID: 11500000, guid: 1eb6cc20d77c45c479c5cc3952b242c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeSpan: 5
-  force: 50
-  DMXchannels: 
-  DMXvalues: 
-  dimOverTime: 1
-  rateOfDim: 20
-  OSCtoReceive: message to receive here
-  messageOSC: /waterOrb/
-  valueOSC: 1
-  dimOSCwithDMX: 0
-  timedBlackout: 1
-  blackoutDelay: 1
-  isBullet: 1
+  force: 5
+  flashMaterial: {fileID: 2100000, guid: fe0566e94a0e8194f8b6ff59fcba9928, type: 2}
+  OSCtoReceive: /metronome/
 --- !u!54 &-5139467614829001259
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19208,9 +19198,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9064369555328730510}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
