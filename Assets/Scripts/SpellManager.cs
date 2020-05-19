@@ -66,6 +66,7 @@ public class SpellManager : MonoBehaviour
     // used to create rate of fire for spells
     bool ableToCast = true;
     bool fromOrbScaler = false;
+    bool activeGazeOrb = false;
 
     OrbFingerTracker handTracking;
     SpellBook spellBook;
@@ -218,31 +219,51 @@ public class SpellManager : MonoBehaviour
 
         if (ableToCast)
         {
-            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
-            StartCoroutine("CastDelay", orbsPerSecond);
-            spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
-
-            ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
-
-            if (fromOrbScaler)
+            if (currEl == Element.water)
             {
-                Debug.Log(elementScale); // remove
-                spellOrb.GetComponent<ParticleOrbController>().valueOSC = elementScale;
-
-                float particleScale = elementScale * 1.167388f;
-
-                foreach (Transform child in elParent.transform)
+                if (!activeGazeOrb)
                 {
-                    if (child.CompareTag("Spell"))
+                    GameObject waterOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+                    activeGazeOrb = true;
+                    waterOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
+                }
+                else return;
+            }
+            else
+            {
+                GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+                StartCoroutine("CastDelay", orbsPerSecond);
+                spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
+
+                ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
+
+                if (fromOrbScaler)
+                {
+                    Debug.Log(elementScale); // remove
+                    spellOrb.GetComponent<ParticleOrbController>().valueOSC = elementScale;
+
+                    float particleScale = elementScale * 1.167388f;
+
+                    foreach (Transform child in elParent.transform)
                     {
-                        child.localScale = new Vector3(particleScale, particleScale, particleScale);
+                        if (child.CompareTag("Spell"))
+                        {
+                            child.localScale = new Vector3(particleScale, particleScale, particleScale);
+                        }
                     }
                 }
+                else return;
             }
-            else return;
-        }
 
-        
+        }
+        else return;
+    }
+
+    public void DestroyWaterOrb()
+    {
+        GameObject gazeOrb = FindObjectOfType<GazeOrbController>().gameObject;
+        Destroy(gazeOrb);
+        activeGazeOrb = false;
     }
 
     private void CastParticle()

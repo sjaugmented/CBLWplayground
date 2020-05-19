@@ -4979,7 +4979,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.00825142, b: 0.7075472, a: 1}
+      maxColor: {r: 0.7058824, g: 0, b: 0.5565572, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0, g: 0.5029964, b: 0.9716981, a: 1}
@@ -9731,7 +9731,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 1
+      minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
       maxColor: {r: 1, g: 1, b: 1, a: 0.2509804}
       maxGradient:
@@ -14487,7 +14487,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.049598217, b: 1, a: 1}
+      maxColor: {r: 1, g: 0, b: 0.9094448, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -19076,12 +19076,12 @@ GameObject:
   - component: {fileID: 9064369555328730498}
   - component: {fileID: 9064369555328730499}
   - component: {fileID: 9064369555328730508}
-  - component: {fileID: -223078153665004506}
   - component: {fileID: -5139467614829001259}
   - component: {fileID: -7906731912851692539}
   - component: {fileID: 4751745124518551232}
+  - component: {fileID: 2496945314931542221}
   m_Layer: 9
-  m_Name: Water Orb
+  m_Name: Baby Gaze Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19176,26 +19176,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &-223078153665004506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9064369555328730510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb6cc20d77c45c479c5cc3952b242c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  babyOrbPrefab: {fileID: 9064369555328730510, guid: 7d130481330ead74cac7509867aa63dc,
-    type: 3}
-  force: 5
-  rateOfDecel: 1
-  spawnOffset: {x: 0, y: 0.1, z: 0}
-  flashMaterial: {fileID: 2100000, guid: fe0566e94a0e8194f8b6ff59fcba9928, type: 2}
-  OSCtoReceive: /metronome/
-  babySpawned: 0
 --- !u!54 &-5139467614829001259
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19332,8 +19312,8 @@ MonoBehaviour:
   whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -223078153665004506}
-        m_MethodName: SpawnBabyOrb
+      - m_Target: {fileID: 2496945314931542221}
+        m_MethodName: GazeSelected
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19353,3 +19333,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   eyeCursorSnapToTargetCenter: 0
+--- !u!114 &2496945314931542221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb2a98c044a417b47875fd505736f078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messageOSC: babyGaze
+  valueOSC: 1
+  explosionFX: {fileID: 3145744985236965372, guid: c6330a34fad52074a9af29d273b0bd66,
+    type: 3}
+  lifeSpan: 2
+  timer: 0

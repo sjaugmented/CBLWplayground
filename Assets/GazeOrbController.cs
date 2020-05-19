@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class GazeOrbController : MonoBehaviour
 {
+    [SerializeField] GameObject babyOrbPrefab;
+
     [Header("General")]
-    [Tooltip("Time before self-destruct")]
-    [SerializeField] float force = 50;
+    [SerializeField] float force = 5;
+    [SerializeField] float rateOfDecel = 0.5f;
+    [SerializeField] Vector3 spawnOffset = new Vector3(0, 0.1f, 0);
     [Tooltip("Metronome flash material")]
     [SerializeField] Material flashMaterial;
 
     [Header("OSC")]
     [Tooltip("OSC message to receive - triggers destruction/explosion of spell orb/particle")]
     [SerializeField] string OSCtoReceive = "/metronome/";
-    
+
+    public bool babySpawned = false;
     
     Material defaultMat;
 
@@ -28,21 +32,20 @@ public class GazeOrbController : MonoBehaviour
         render = GetComponent<Renderer>();
 
         osc.SetAddressHandler(OSCtoReceive, OnReceiveOSC);
-
-        
     }
 
     // Update is called once per frame
     void Update()
     {
         rigidBody.velocity = new Vector3(0, 0, 1) * force;
-        force--;
+        force -= rateOfDecel;
         if (force < 0) force = 0;
     }
 
-    public void GazeSelected()
+    public void SpawnBabyOrb()
     {
-
+        if (!babySpawned) Instantiate(babyOrbPrefab, transform.position + spawnOffset, Quaternion.identity);
+        else return;
     }
 
     void OnReceiveOSC(OscMessage message)
