@@ -34,6 +34,7 @@ public class BabyGazeOrb : MonoBehaviour
         
         if (timer < 0)
         {
+            gazeOrb.babySpawned = false;
             Destroy(gameObject);
         }
 
@@ -60,7 +61,7 @@ public class BabyGazeOrb : MonoBehaviour
     IEnumerator ExplodeOrb()
     {
         GameObject explosion = Instantiate(explosionFX, transform.position, Quaternion.identity);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         Destroy(explosion);
         gazeOrb.babySpawned = false;
         Destroy(gameObject);

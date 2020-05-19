@@ -30,6 +30,7 @@ public class GazeOrbController : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
         render = GetComponent<Renderer>();
+        osc = FindObjectOfType<OSC>();
 
         osc.SetAddressHandler(OSCtoReceive, OnReceiveOSC);
     }

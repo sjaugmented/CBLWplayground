@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78a4b02a0d9e7044fa19c6d432d0cafa, type: 3}
-  m_Name: New MixedRealityInputSimulationProfile
+  m_Name: New MixedRealityInputSimulationProfile 1
   m_EditorClassIdentifier: 
   isCustomProfile: 1
   indicatorsPrefab: {fileID: 0}
@@ -58,7 +58,7 @@ MonoBehaviour:
     code: 306
   defaultHandGesture: 2
   leftMouseHandGesture: 3
-  middleMouseHandGesture: 1
+  middleMouseHandGesture: 0
   rightMouseHandGesture: 0
   handGestureAnimationSpeed: 8
   holdStartDuration: 0.5
