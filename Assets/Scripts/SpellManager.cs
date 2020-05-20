@@ -51,9 +51,7 @@ public class SpellManager : MonoBehaviour
     float conjureValueOSC = 0;
 
     public enum Element { light, fire, water, ice };
-    public enum Form { particle, orb, stream };
     public Element currEl = Element.light;
-    public Form currForm = Form.orb; // in case we reintroduce different forms - ie, particles, streams
     int elementID = 0;
 
     // coordinates for conjuring

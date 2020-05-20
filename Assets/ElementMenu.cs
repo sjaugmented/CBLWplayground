@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ElementMenu : MonoBehaviour
 {
+    [Tooltip("Populates ")]
     public List<Transform> elements = new List<Transform>();
     SpellManager spellManager;
     float defaultScale = 0.05784709f;
@@ -28,6 +29,7 @@ public class ElementMenu : MonoBehaviour
             if (i == spellManager.GetElementID())
             {
                 elements[i].localScale = new Vector3(defaultScale * selectedScale, defaultScale * selectedScale, defaultScale * selectedScale);
+                elements[i].Rotate(10, 1, -1);
             }
             else elements[i].localScale = new Vector3(defaultScale, defaultScale, defaultScale);
         }

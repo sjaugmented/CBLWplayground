@@ -11,6 +11,7 @@ public class BabyGazeOrb : MonoBehaviour
     [SerializeField] float lifeSpan = 2;
 
     public float timer;
+    bool OSCsent = false;
 
     OSC osc;
     EyeTrackingTarget gaze;
@@ -46,12 +47,13 @@ public class BabyGazeOrb : MonoBehaviour
 
     public void GazeSelected()
     {
-        SendOSC();
+        if (!OSCsent) SendOSC();
         StartCoroutine("ExplodeOrb");
     }
 
     private void SendOSC()
     {
+        OSCsent = true;
         OscMessage message = new OscMessage();
         message.address = messageOSC;
         message.values.Add(valueOSC);
