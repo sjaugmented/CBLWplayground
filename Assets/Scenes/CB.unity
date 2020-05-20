@@ -876,7 +876,7 @@ MonoBehaviour:
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
   additionalOffset: {x: 0, y: -0.16, z: 0.07}
-  additionalRotation: {x: -9.35, y: 0, z: 90}
+  additionalRotation: {x: 0, y: 0, z: 90}
   updateSolvers: 1
 --- !u!1 &307627091
 GameObject:
