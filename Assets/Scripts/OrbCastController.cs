@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleOrbController : MonoBehaviour
+public class OrbCastController : MonoBehaviour
 {
     [Header("General")]
     [Tooltip("Time before self-destruct")] 
@@ -38,6 +39,7 @@ public class ParticleOrbController : MonoBehaviour
     DMXcontroller dmx;
     OSC osc;
     Collider collider;
+    EyeTrackingTarget eyeTracking;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +48,8 @@ public class ParticleOrbController : MonoBehaviour
         dmx = FindObjectOfType<DMXcontroller>();
         osc = FindObjectOfType<OSC>();
         collider = GetComponent<SphereCollider>();
+        eyeTracking = GetComponent<EyeTrackingTarget>();
+        eyeTracking.enabled = false;
         
         SendDMX();
         SendOSCMessage(); //todo refactor for lockOSCvalueToDMX

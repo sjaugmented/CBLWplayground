@@ -13,9 +13,12 @@ GameObject:
   - component: {fileID: 9064369555328730498}
   - component: {fileID: 9064369555328730499}
   - component: {fileID: 9064369555328730508}
-  - component: {fileID: 8965758351493955309}
   - component: {fileID: 581070510509431853}
   - component: {fileID: 2983597936570898725}
+  - component: {fileID: 4488875196401445545}
+  - component: {fileID: 4892000233046419111}
+  - component: {fileID: 8965758351493955309}
+  - component: {fileID: 5841528429279485880}
   m_Layer: 9
   m_Name: Light Orb
   m_TagString: Light
@@ -94,7 +97,7 @@ SphereCollider:
   m_GameObject: {fileID: 9064369555328730510}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -112,31 +115,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &8965758351493955309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9064369555328730510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f692b7fb581036c4ca648313c1f21110, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lifeSpan: 5
-  force: 50
-  DMXchannels: 
-  DMXvalues: 
-  dimOverTime: 1
-  rateOfDim: 20
-  OSCtoReceive: message to receive here
-  messageOSC: /lightOrb/
-  valueOSC: 1
-  dimOSCwithDMX: 0
-  timedBlackout: 1
-  blackoutDelay: 1
-  isBullet: 1
 --- !u!54 &581070510509431853
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -249,6 +227,108 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4488875196401445545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1e6657bab90ac149872e5361b42ea62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectAction:
+    id: 1
+    description: Select
+    axisConstraint: 2
+  voiceSelect: []
+  dwellTimeInSec: 0.8
+  onLookAtStart:
+    m_PersistentCalls:
+      m_Calls: []
+  whileLookingAtTarget:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8965758351493955309}
+        m_MethodName: SpawnBabyOrb
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onLookAway:
+    m_PersistentCalls:
+      m_Calls: []
+  onDwell:
+    m_PersistentCalls:
+      m_Calls: []
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  eyeCursorSnapToTargetCenter: 0
+--- !u!114 &4892000233046419111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ffbad97b9979a43b436e060958aa3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8965758351493955309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5013f23c77a7e4149b9a7660bc5c74fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  babyOrbPrefab: {fileID: 9064369555328730510, guid: e60ea32782eeba64686c62b51beba9f0,
+    type: 3}
+  force: 5
+  rateOfDecel: 0.5
+  spawnOffset: {x: 0, y: 0.1, z: 0}
+  flashMaterial: {fileID: 2100000, guid: fe0566e94a0e8194f8b6ff59fcba9928, type: 2}
+  OSCtoReceive: /metronome/
+  babySpawned: 0
+--- !u!114 &5841528429279485880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 806048fefb30bc54fac13dd9fd9ebeae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeSpan: 5
+  force: 50
+  DMXchannels: 
+  DMXvalues: 
+  dimOverTime: 1
+  rateOfDim: 20
+  OSCtoReceive: message to receive here
+  messageOSC: /lightOrb/
+  valueOSC: 1
+  dimOSCwithDMX: 0
+  timedBlackout: 1
+  blackoutDelay: 1
+  isBullet: 1
 --- !u!1 &9064369555553278811
 GameObject:
   m_ObjectHideFlags: 0

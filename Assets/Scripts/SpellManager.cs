@@ -45,8 +45,8 @@ public class SpellManager : MonoBehaviour
     [SerializeField] [Range(0f, 0.2f)] float palmDistOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 
-    [Header("OSC controller")]
-    public List<String> conjureOSCMessages;    
+    [Header("OSC/DMX controller")]
+    public List<String> conjureOSCMessages;
     
     float conjureValueOSC = 0;
 
@@ -64,8 +64,11 @@ public class SpellManager : MonoBehaviour
     // used to create rate of fire for spells
     bool ableToCast = true;
     public bool fromOrbScaler = false;
-    bool gazeOrbSelected = false;
-    bool activeGazeOrb = false;
+    public bool hoverOrb = false;
+    public bool activeLightHover = false;   //
+    public bool activeFireHover = false;    // todo
+    public bool activeWaterHover = false;   //  make private
+    public bool activeIceHover = false;     //
 
     OrbFingerTracker handTracking;
     SpellBook spellBook;
@@ -238,19 +241,9 @@ public class SpellManager : MonoBehaviour
         Quaternion palmsRotationMid = Quaternion.Slerp(handTracking.rightPalm.Rotation, handTracking.leftPalm.Rotation, 0.5f);
         Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
 
-        if (ableToCast)
+        if (!hoverOrb)
         {
-            if (currEl == Element.water)
-            {
-                if (!activeGazeOrb)
-                {
-                    GameObject waterOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
-                    activeGazeOrb = true;
-                    waterOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
-                }
-                else return;
-            }
-            else
+            if (ableToCast)
             {
                 GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
                 StartCoroutine("CastDelay", orbsPerSecond);
@@ -261,7 +254,7 @@ public class SpellManager : MonoBehaviour
                 if (fromOrbScaler)
                 {
                     Debug.Log(elementScale); // remove
-                    spellOrb.GetComponent<ParticleOrbController>().valueOSC = elementScale;
+                    spellOrb.GetComponent<OrbCastController>().valueOSC = elementScale;
 
                     float particleScale = elementScale * 1.167388f;
 
@@ -275,16 +268,74 @@ public class SpellManager : MonoBehaviour
                 }
                 else return;
             }
-
+            else return;
         }
-        else return;
+        else
+        {
+            if (currEl == Element.light && !activeLightHover)
+            {
+                GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+                activeLightHover = true;
+                spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
+            }
+
+            if (currEl == Element.fire && !activeFireHover)
+            {
+                GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+                activeFireHover = true;
+                spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
+            }
+
+            if (currEl == Element.water && !activeWaterHover)
+            {
+                GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+                activeWaterHover = true;
+                spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
+            }
+
+            if (currEl == Element.ice && !activeIceHover)
+            {
+                GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+                activeIceHover = true;
+                spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
+            }
+        }
     }
 
-    public void DestroyWaterOrb()
+    public void DestroyHoverOrb()
     {
-        GameObject gazeOrb = FindObjectOfType<GazeOrbController>().gameObject;
-        Destroy(gazeOrb);
-        activeGazeOrb = false;
+        OrbHoverController[] gazeOrbs = FindObjectsOfType<OrbHoverController>();
+
+        if (gazeOrbs == null) return;
+        else
+        {
+            foreach (OrbHoverController orb in gazeOrbs)
+            {
+                if (currEl == Element.light && orb.CompareTag("Light"))
+                {
+                    Destroy(orb.gameObject);
+                    activeLightHover = false;
+                }
+
+                if (currEl == Element.fire && orb.CompareTag("Fire"))
+                {
+                    Destroy(orb.gameObject);
+                    activeFireHover = false;
+                }
+
+                if (currEl == Element.water && orb.CompareTag("Water"))
+                {
+                    Destroy(orb.gameObject);
+                    activeWaterHover = false;
+                }
+
+                if (currEl == Element.ice && orb.CompareTag("Ice"))
+                {
+                    Destroy(orb.gameObject);
+                    activeIceHover = false;
+                }
+            }
+        }        
     }
 
     private void CastParticle()
@@ -471,12 +522,12 @@ public class SpellManager : MonoBehaviour
 
     public void GazeOrbYes()
     {
-        gazeOrbSelected = true;
+        hoverOrb = true;
     }
 
     public void GazeOrbNo()
     {
-        gazeOrbSelected = false;
+        hoverOrb = false;
     }
 
     public void SetOrbRateOfFire()

@@ -6,6 +6,7 @@ public class ElementMenu : MonoBehaviour
 {
     [Tooltip("Populates ")]
     public List<Transform> elements = new List<Transform>();
+    public List<Transform> hovers = new List<Transform>();
     SpellManager spellManager;
     float defaultScale = 0.08408988f;
     [SerializeField] float selectedScale = 3;
@@ -17,7 +18,8 @@ public class ElementMenu : MonoBehaviour
         
         foreach (Transform child in transform)
         {
-            elements.Add(child);
+            if (child.CompareTag("Element Selector")) elements.Add(child);
+            if (child.CompareTag("Hover Selector")) hovers.Add(child);
         }
     }
 
@@ -32,6 +34,21 @@ public class ElementMenu : MonoBehaviour
                 elements[i].Rotate(10, 1, -1);
             }
             else elements[i].localScale = new Vector3(defaultScale, defaultScale, defaultScale);
+        }
+
+        if (!spellManager.hoverOrb)
+        {
+            hovers[0].localScale = new Vector3(defaultScale * selectedScale, defaultScale * selectedScale, defaultScale * selectedScale);
+            hovers[0].Rotate(10, 1, -1);
+
+            hovers[1].localScale = new Vector3(defaultScale, defaultScale, defaultScale);
+        }
+        else
+        {
+            hovers[0].localScale = new Vector3(defaultScale, defaultScale, defaultScale);
+
+            hovers[1].localScale = new Vector3(defaultScale * selectedScale, defaultScale * selectedScale, defaultScale * selectedScale);
+            hovers[1].Rotate(10, 1, -1);
         }
     }
 }

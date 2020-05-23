@@ -11,6 +11,9 @@ TagManager:
   - Ice
   - UI
   - Selector
+  - Element Selector
+  - Hover Selector
+  - fx
   layers:
   - Default
   - TransparentFX

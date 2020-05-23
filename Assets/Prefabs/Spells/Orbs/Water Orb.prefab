@@ -19076,10 +19076,12 @@ GameObject:
   - component: {fileID: 9064369555328730498}
   - component: {fileID: 9064369555328730499}
   - component: {fileID: 9064369555328730508}
-  - component: {fileID: -223078153665004506}
   - component: {fileID: -5139467614829001259}
   - component: {fileID: -7906731912851692539}
   - component: {fileID: 4751745124518551232}
+  - component: {fileID: 502597978772740375}
+  - component: {fileID: 3700465270143756181}
+  - component: {fileID: 3926310555508751193}
   m_Layer: 9
   m_Name: Water Orb
   m_TagString: Water
@@ -19176,26 +19178,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &-223078153665004506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9064369555328730510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb6cc20d77c45c479c5cc3952b242c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  babyOrbPrefab: {fileID: 9064369555328730510, guid: 7d130481330ead74cac7509867aa63dc,
-    type: 3}
-  force: 5
-  rateOfDecel: 1
-  spawnOffset: {x: 0, y: 0.1, z: 0}
-  flashMaterial: {fileID: 2100000, guid: fe0566e94a0e8194f8b6ff59fcba9928, type: 2}
-  OSCtoReceive: /metronome/
-  babySpawned: 0
 --- !u!54 &-5139467614829001259
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19332,7 +19314,7 @@ MonoBehaviour:
   whileLookingAtTarget:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -223078153665004506}
+      - m_Target: {fileID: 3700465270143756181}
         m_MethodName: SpawnBabyOrb
         m_Mode: 1
         m_Arguments:
@@ -19353,3 +19335,60 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   eyeCursorSnapToTargetCenter: 0
+--- !u!114 &502597978772740375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69ffbad97b9979a43b436e060958aa3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3700465270143756181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5013f23c77a7e4149b9a7660bc5c74fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  babyOrbPrefab: {fileID: 9064369555328730510, guid: 7d130481330ead74cac7509867aa63dc,
+    type: 3}
+  force: 5
+  rateOfDecel: 0.5
+  spawnOffset: {x: 0, y: 0.1, z: 0}
+  flashMaterial: {fileID: 2100000, guid: fe0566e94a0e8194f8b6ff59fcba9928, type: 2}
+  OSCtoReceive: /metronome/
+  babySpawned: 0
+--- !u!114 &3926310555508751193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9064369555328730510}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 806048fefb30bc54fac13dd9fd9ebeae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifeSpan: 5
+  force: 50
+  DMXchannels: 
+  DMXvalues: 
+  dimOverTime: 1
+  rateOfDim: 20
+  OSCtoReceive: message to receive here
+  messageOSC: /waterOrb/
+  valueOSC: 1
+  dimOSCwithDMX: 0
+  timedBlackout: 1
+  blackoutDelay: 1
+  isBullet: 1

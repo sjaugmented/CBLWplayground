@@ -19081,8 +19081,8 @@ GameObject:
   - component: {fileID: 4751745124518551232}
   - component: {fileID: 2496945314931542221}
   m_Layer: 9
-  m_Name: Baby Gaze Orb
-  m_TagString: Untagged
+  m_Name: Fire Gaze
+  m_TagString: Fire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19342,10 +19342,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 9064369555328730510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb2a98c044a417b47875fd505736f078, type: 3}
+  m_Script: {fileID: 11500000, guid: 1eb6cc20d77c45c479c5cc3952b242c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messageOSC: /babyGaze/
+  messageOSC: /fireGaze/
   valueOSC: 1
   explosionFX: {fileID: 3145744985236965372, guid: c6330a34fad52074a9af29d273b0bd66,
     type: 3}

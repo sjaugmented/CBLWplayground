@@ -1,70 +1,90 @@
-﻿using System.Collections;
+﻿using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GazeOrbController : MonoBehaviour
 {
-    [SerializeField] GameObject babyOrbPrefab;
+    [SerializeField] string messageOSC = "babyGaze";
+    [SerializeField] float valueOSC = 1;
+    [SerializeField] GameObject explosionFX;
+    [SerializeField] float lifeSpan = 2;
 
-    [Header("General")]
-    [SerializeField] float force = 5;
-    [SerializeField] float rateOfDecel = 0.5f;
-    [SerializeField] Vector3 spawnOffset = new Vector3(0, 0.1f, 0);
-    [Tooltip("Metronome flash material")]
-    [SerializeField] Material flashMaterial;
+    public float timer;
+    bool OSCsent = false;
+    bool exploded = false;
 
-    [Header("OSC")]
-    [Tooltip("OSC message to receive - triggers destruction/explosion of spell orb/particle")]
-    [SerializeField] string OSCtoReceive = "/metronome/";
-
-    public bool babySpawned = false;
-    
-    Material defaultMat;
-
-    Rigidbody rigidBody;
     OSC osc;
-    Renderer render;
-
+    EyeTrackingTarget gaze;
+    OrbHoverController hoverParent;
+    
     // Start is called before the first frame update
     void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
-        render = GetComponent<Renderer>();
         osc = FindObjectOfType<OSC>();
+        gaze = GetComponent<EyeTrackingTarget>();
 
-        osc.SetAddressHandler(OSCtoReceive, OnReceiveOSC);
+        OrbHoverController[] hoverOrbs = FindObjectsOfType<OrbHoverController>();
+
+        foreach (OrbHoverController orb in hoverOrbs)
+        {
+            if (orb.CompareTag(gameObject.tag)) hoverParent = orb;
+        }
+
+        timer = lifeSpan;
+        hoverParent.babySpawned = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        rigidBody.velocity = new Vector3(0, 0, 1) * force;
-        force -= rateOfDecel;
-        if (force < 0) force = 0;
+        timer -= Time.deltaTime;
+        
+        if (timer < 0)
+        {
+            hoverParent.babySpawned = false;
+            Destroy(gameObject);
+        }
+
+        if (gaze.IsLookedAt)
+        {
+            timer = lifeSpan;
+        }
     }
 
-    public void SpawnBabyOrb()
+    public void GazeSelected()
     {
-        if (!babySpawned) Instantiate(babyOrbPrefab, transform.position + spawnOffset, Quaternion.identity);
-        else return;
+        if (!OSCsent) SendOSC();
+        StartCoroutine("ExplodeOrb");
     }
 
-    void OnReceiveOSC(OscMessage message)
+    private void SendOSC()
     {
-        defaultMat = render.material;
-        StartCoroutine("Metronome");
-
+        OSCsent = true;
+        OscMessage message = new OscMessage();
+        message.address = messageOSC;
+        message.values.Add(valueOSC);
+        osc.Send(message);
     }
 
-    IEnumerator Metronome()
+    IEnumerator ExplodeOrb()
     {
-        render.material = flashMaterial;
-        yield return new WaitForSeconds(0.2f);
-        render.material = defaultMat;
-    }
+        if (!exploded)
+        {
+            GameObject explosion = Instantiate(explosionFX, transform.position, Quaternion.identity);
+            exploded = true;
 
-    /*void FixedUpdate()
-    {
-        rigidBody.AddForce(transform.forward * force);
-    }*/
+            yield return new WaitForSeconds(1f);
+
+            gameObject.SetActive(false);
+
+            yield return new WaitForSeconds(1);
+
+            Destroy(explosion);
+            hoverParent.babySpawned = false;
+            Destroy(gameObject);
+        }
+        else yield break;
+        
+    }
 }
