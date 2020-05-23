@@ -4859,6 +4859,38 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: lightChannels.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: fireChannels.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: waterChannels.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: iceChannels.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: lightValues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: fireValues.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: waterValues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: iceValues.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: masterOrb
       value: 
       objectReference: {fileID: 1269948449}
@@ -4989,6 +5021,58 @@ PrefabInstance:
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: currEl
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: lightChannels.Array.data[0]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: lightChannels.Array.data[1]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: fireChannels.Array.data[0]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: fireChannels.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: waterChannels.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: iceChannels.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: iceChannels.Array.data[1]
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: lightValues.Array.data[0]
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: fireValues.Array.data[0]
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: fireValues.Array.data[1]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: waterValues.Array.data[0]
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: iceValues.Array.data[0]
+      value: 255
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
+      propertyPath: iceValues.Array.data[1]
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1442137911461133963, guid: 8ed53c624b13a9041bec53cb0ef7871f,
         type: 3}

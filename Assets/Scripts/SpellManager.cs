@@ -110,6 +110,7 @@ public class SpellManager : MonoBehaviour
         elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
+
     }
 
     // Update is called once per frame
@@ -187,11 +188,28 @@ public class SpellManager : MonoBehaviour
 
     private void SendDMX()
     {
-        // determine channels based on currEl
+        if (currEl == Element.light)
+        {
+            if (lightChannels.Count == 0) return;
+
+            if (lightChannels.Count == lightValues.Count)
+            {
+                for (int i = 0; i < lightChannels.Count; i++)
+                {
+                    dmx.SetAddress(lightChannels[i], lightValues[i]);
+                }
+            }
+            else
+            {
+                Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
+            }
+        }
 
         // calc float per channe value
 
         // sendDMX
+
+
     }
 
     private void CalcHandPositions()
