@@ -7,7 +7,7 @@ public class ElementMenu : MonoBehaviour
     [Tooltip("Populates ")]
     public List<Transform> elements = new List<Transform>();
     SpellManager spellManager;
-    float defaultScale = 0.05784709f;
+    float defaultScale = 0.08408988f;
     [SerializeField] float selectedScale = 3;
 
     // Start is called before the first frame update

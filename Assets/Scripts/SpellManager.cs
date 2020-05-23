@@ -63,12 +63,14 @@ public class SpellManager : MonoBehaviour
 
     // used to create rate of fire for spells
     bool ableToCast = true;
-    bool fromOrbScaler = false;
+    public bool fromOrbScaler = false;
+    bool gazeOrbSelected = false;
     bool activeGazeOrb = false;
 
     OrbFingerTracker handTracking;
     SpellBook spellBook;
     OSC osc;
+    DMXcontroller dmx;
     SoundManager sound;
     AudioSource audio;
 
@@ -86,12 +88,14 @@ public class SpellManager : MonoBehaviour
         handTracking = FindObjectOfType<OrbFingerTracker>();
         spellBook = GetComponent<SpellBook>();
         osc = FindObjectOfType<OSC>();
+        dmx = FindObjectOfType<DMXcontroller>();
         sound = FindObjectOfType<SoundManager>();
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         masterOrb.SetActive(false);
         elementMenu.SetActive(false);
-        DisableStreams();
+        DisableRightStreams();
+        DisableLeftStreams();
     }
 
     // Update is called once per frame
@@ -115,14 +119,12 @@ public class SpellManager : MonoBehaviour
             else if (handTracking.palmsIn && handTracking.twoFists || manualElMenu)
             {
                 ElementSelector();
-                masterOrb.SetActive(false);
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
             // element scaler
             else if (handTracking.palmsIn && !handTracking.twoFists)
             {
                 ElementScaler();
-                elementMenu.SetActive(false);
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
                 conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
@@ -142,7 +144,6 @@ public class SpellManager : MonoBehaviour
         else
         {
             masterOrb.SetActive(false);
-            elementMenu.SetActive(false);
             sound.orbAmbienceFX.Pause();
 
             /*if (handTracking.fingerGunRight || handTracking.fingerGunLeft)
@@ -150,11 +151,11 @@ public class SpellManager : MonoBehaviour
                 CastParticle();
                 DisableStreams();
             }*/
-            if (handTracking.rockOnRight || handTracking.rockOnLeft)
-            {
-                EnableStream();
-            }
-            else DisableStreams();
+            if (handTracking.rockOnRight) EnableRightStreams();
+            else DisableRightStreams();
+
+            if (handTracking.rockOnLeft) EnableLeftStreams();
+            else DisableLeftStreams();
         }
 
         
@@ -167,6 +168,11 @@ public class SpellManager : MonoBehaviour
         message.values.Add(value);
         osc.Send(message);
         //Debug.Log("Sending OSC: " + address + " " + value); // todo remove
+    }
+
+    private void SendDMX()
+    {
+        // todo for loop through DMX values
     }
 
     private void CalcHandPositions()
@@ -182,15 +188,32 @@ public class SpellManager : MonoBehaviour
     private void ElementSelector()
     {
         fromOrbScaler = false;
+        DisableRightStreams();
+        DisableLeftStreams();
 
+        
+
+        masterOrb.SetActive(true);
         elementMenu.SetActive(true);
+        masterOrb.transform.position = masterOrbPos;
+
+        for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
+        {
+            if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
+            else spellBook.masterOrbElements[i].SetActive(false);
+        }
     }
 
     private void ElementScaler()
     {
         fromOrbScaler = true;
+        DisableRightStreams();
+        DisableLeftStreams();
+
+        
 
         masterOrb.SetActive(true);
+        elementMenu.SetActive(false);
         masterOrb.transform.position = masterOrbPos;
         masterOrb.GetComponent<MasterOrbRotater>().xRotation = 100 * elementScale;
 
@@ -283,9 +306,9 @@ public class SpellManager : MonoBehaviour
         }
     }
 
-    public void DisableStreams()
+    public void DisableRightStreams()
     {
-        foreach (ParticleSystem stream in spellBook.streamSpells)
+        foreach (ParticleSystem stream in spellBook.rightStreams)
         {
             var emission = stream.emission;
             emission.enabled = false;
@@ -300,31 +323,21 @@ public class SpellManager : MonoBehaviour
         sound.waterIceStreamFX.Pause();
     }
 
-    private void EnableStream()
+    private void EnableRightStreams()
     {
-        for(int i = 0; i < spellBook.streamSpells.Count; i++)
+        for(int i = 0; i < spellBook.rightStreams.Count; i++)
         {
             if (i == elementID)
             {
-                var emission = spellBook.streamSpells[i].emission;
+                var emission = spellBook.rightStreams[i].emission;
                 emission.enabled = true;
-                Transform streamParent = spellBook.streamSpells[elementID].transform.parent;
-                if (handTracking.rockOnRight)
-                {
-                    rightHandCaster.position = rightStreamPos;
-                    streamParent.position = rightStreamPos;
-                    streamParent.rotation = rightHandCaster.rotation;
-                    // todo check rotation
-                }
-                if (handTracking.rockOnLeft)
-                {
-                    leftHandCaster.position = leftStreamPos;
-                    streamParent.position = leftStreamPos;
-                    streamParent.rotation = leftHandCaster.rotation;
-                    // todo check rotation
-                }
+                Transform streamParent = spellBook.rightStreams[elementID].transform.parent;
+                
+                rightHandCaster.position = rightStreamPos;
+                streamParent.position = rightStreamPos;
+                streamParent.rotation = rightHandCaster.rotation;
 
-                foreach (Transform child in spellBook.streamSpells[elementID].transform)
+                foreach (Transform child in spellBook.rightStreams[elementID].transform)
                 {
                     var childEmission = child.GetComponent<ParticleSystem>().emission;
                     childEmission.enabled = true;
@@ -332,12 +345,77 @@ public class SpellManager : MonoBehaviour
             }
             else
             {
-                var emission = spellBook.streamSpells[i].emission;
+                var emission = spellBook.rightStreams[i].emission;
                 emission.enabled = false;
-                Transform streamParent = spellBook.streamSpells[i].transform.parent;
+                Transform streamParent = spellBook.rightStreams[i].transform.parent;
                 streamParent.position = rightStreamPos;
 
-                foreach (Transform child in spellBook.streamSpells[i].transform)
+                foreach (Transform child in spellBook.rightStreams[i].transform)
+                {
+                    var childEmission = child.GetComponent<ParticleSystem>().emission;
+                    childEmission.enabled = false;
+                }
+            }
+        }
+
+
+        if (currEl == Element.fire)
+        {
+            sound.fireStreamFX.Play();
+            sound.waterIceStreamFX.Pause();
+        }
+        else
+        {
+            sound.waterIceStreamFX.Play();
+            sound.fireStreamFX.Pause();
+        }
+    }
+
+    public void DisableLeftStreams()
+    {
+        foreach (ParticleSystem stream in spellBook.leftStreams)
+        {
+            var emission = stream.emission;
+            emission.enabled = false;
+            foreach (Transform child in stream.transform)
+            {
+                var childEmission = child.GetComponent<ParticleSystem>().emission;
+                childEmission.enabled = false;
+            }
+        }
+
+        sound.fireStreamFX.Pause();
+        sound.waterIceStreamFX.Pause();
+    }
+
+    private void EnableLeftStreams()
+    {
+        for (int i = 0; i < spellBook.leftStreams.Count; i++)
+        {
+            if (i == elementID)
+            {
+                var emission = spellBook.leftStreams[i].emission;
+                emission.enabled = true;
+                Transform streamParent = spellBook.leftStreams[elementID].transform.parent;
+                
+                leftHandCaster.position = leftStreamPos;
+                streamParent.position = leftStreamPos;
+                streamParent.rotation = leftHandCaster.rotation;
+
+                foreach (Transform child in spellBook.leftStreams[elementID].transform)
+                {
+                    var childEmission = child.GetComponent<ParticleSystem>().emission;
+                    childEmission.enabled = true;
+                }
+            }
+            else
+            {
+                var emission = spellBook.leftStreams[i].emission;
+                emission.enabled = false;
+                Transform streamParent = spellBook.leftStreams[i].transform.parent;
+                streamParent.position = rightStreamPos;
+
+                foreach (Transform child in spellBook.leftStreams[i].transform)
                 {
                     var childEmission = child.GetComponent<ParticleSystem>().emission;
                     childEmission.enabled = false;
@@ -389,6 +467,16 @@ public class SpellManager : MonoBehaviour
     public void SetIce()
     {
         currEl = Element.ice;
+    }
+
+    public void GazeOrbYes()
+    {
+        gazeOrbSelected = true;
+    }
+
+    public void GazeOrbNo()
+    {
+        gazeOrbSelected = false;
     }
 
     public void SetOrbRateOfFire()
