@@ -12,8 +12,8 @@ public class GazeOrbController : MonoBehaviour
     [SerializeField] float lifeSpan = 2;
 
     [Header("DMX controller")]
-    List<int> dmxChannels;
-    List<int> dmxValues;
+    public List<int> dmxChannels;
+    public List<int> dmxValues;
 
     public float timer;
     bool OSCsent = false;

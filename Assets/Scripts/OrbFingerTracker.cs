@@ -106,6 +106,8 @@ public class OrbFingerTracker : MonoBehaviour
         float ltIndKnuckForPalmFor = Vector3.Angle(ltIndexKnuckle.Forward, leftPalm.Forward);
         #endregion
 
+        if (rockOnLeft && rockOnRight) palmsOut = false;
+
         // look for two palms
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
         {

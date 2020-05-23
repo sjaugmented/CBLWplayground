@@ -42,7 +42,7 @@ public class OrbHoverController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rigidBody.velocity = new Vector3(0, 0, 1) * force;
+        rigidBody.velocity = transform.forward * force;
         force -= rateOfDecel;
         if (force < 0) force = 0;
     }

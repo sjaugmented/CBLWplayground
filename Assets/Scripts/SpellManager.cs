@@ -119,6 +119,17 @@ public class SpellManager : MonoBehaviour
         ConvertElementToID();
         CalcHandPositions();
 
+        /*if (handTracking.fingerGunRight || handTracking.fingerGunLeft)
+            {
+                CastParticle();
+                DisableStreams();
+            }*/
+        if (handTracking.rockOnRight) EnableRightStreams();
+        else DisableRightStreams();
+
+        if (handTracking.rockOnLeft) EnableLeftStreams();
+        else DisableLeftStreams();
+
         if (handTracking.twoPalms)
         {
             // two handed casting
@@ -161,20 +172,10 @@ public class SpellManager : MonoBehaviour
         {
             masterOrb.SetActive(false);
             sound.orbAmbienceFX.Pause();
-
-            /*if (handTracking.fingerGunRight || handTracking.fingerGunLeft)
-            {
-                CastParticle();
-                DisableStreams();
-            }*/
-            if (handTracking.rockOnRight) EnableRightStreams();
-            else DisableRightStreams();
-
-            if (handTracking.rockOnLeft) EnableLeftStreams();
-            else DisableLeftStreams();
         }
 
         
+
     }
 
     private void SendOSCMessage(string address, float value)
