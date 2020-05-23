@@ -142,14 +142,14 @@ public class SpellManager : MonoBehaviour
                 ElementScaler();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
-                conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
+                /*conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
                 if (conjureValueOSC < 0) conjureValueOSC = 0;
-                if (conjureValueOSC > 1) conjureValueOSC = 1;
-                Debug.Log(conjureValueOSC);
+                if (conjureValueOSC > 1) conjureValueOSC = 1;*/
+                conjureValueOSC = elementScale;
+                //Debug.Log(conjureValueOSC); // remove
 
                 SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
-                Debug.Log(conjureValueOSC); // remove
-                SendDMX();
+                LiveDMX();
             }
             else
             {
@@ -186,7 +186,7 @@ public class SpellManager : MonoBehaviour
         //Debug.Log("Sending OSC: " + address + " " + value); // todo remove
     }
 
-    private void SendDMX()
+    private void LiveDMX()
     {
         if (currEl == Element.light)
         {
@@ -194,22 +194,97 @@ public class SpellManager : MonoBehaviour
 
             if (lightChannels.Count == lightValues.Count)
             {
+                // calc float per channel value
+                List<int> adjustedValues = new List<int>();
+
+                foreach (int value in lightValues)
+                {
+                    int adjVal = Mathf.RoundToInt(value * elementScale);
+                    adjustedValues.Add(adjVal);
+                }
+
+                // sendDMX
                 for (int i = 0; i < lightChannels.Count; i++)
                 {
-                    dmx.SetAddress(lightChannels[i], lightValues[i]);
+                    dmx.SetAddress(lightChannels[i], adjustedValues[i]);
                 }
+
+                Debug.Log(adjustedValues[0]); // remove
             }
-            else
-            {
-                Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
-            }
+            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
         }
 
-        // calc float per channe value
+        if (currEl == Element.fire)
+        {
+            if (fireChannels.Count == 0) return;
 
-        // sendDMX
+            if (fireChannels.Count == fireValues.Count)
+            {
+                // calc float per channel value
+                List<int> adjustedValues = new List<int>();
 
+                foreach (int value in fireValues)
+                {
+                    int adjVal = Mathf.RoundToInt(value * elementScale);
+                    adjustedValues.Add(adjVal);
+                }
 
+                // sendDMX
+                for (int i = 0; i < fireChannels.Count; i++)
+                {
+                    dmx.SetAddress(fireChannels[i], adjustedValues[i]);
+                }
+            }
+            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
+        }
+
+        if (currEl == Element.water)
+        {
+            if (waterChannels.Count == 0) return;
+
+            if (waterChannels.Count == waterValues.Count)
+            {
+                // calc float per channel value
+                List<int> adjustedValues = new List<int>();
+
+                foreach (int value in waterValues)
+                {
+                    int adjVal = Mathf.RoundToInt(value * elementScale);
+                    adjustedValues.Add(adjVal);
+                }
+
+                // sendDMX
+                for (int i = 0; i < waterChannels.Count; i++)
+                {
+                    dmx.SetAddress(waterChannels[i], adjustedValues[i]);
+                }
+            }
+            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
+        }
+
+        if (currEl == Element.ice)
+        {
+            if (iceChannels.Count == 0) return;
+
+            if (iceChannels.Count == iceValues.Count)
+            {
+                // calc float per channel value
+                List<int> adjustedValues = new List<int>();
+
+                foreach (int value in iceValues)
+                {
+                    int adjVal = Mathf.RoundToInt(value * elementScale);
+                    adjustedValues.Add(adjVal);
+                }
+
+                // sendDMX
+                for (int i = 0; i < iceChannels.Count; i++)
+                {
+                    dmx.SetAddress(iceChannels[i], adjustedValues[i]);
+                }
+            }
+            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
+        }
     }
 
     private void CalcHandPositions()

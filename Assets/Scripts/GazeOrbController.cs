@@ -11,6 +11,10 @@ public class GazeOrbController : MonoBehaviour
     [SerializeField] GameObject explosionFX;
     [SerializeField] float lifeSpan = 2;
 
+    [Header("DMX controller")]
+    List<int> dmxChannels;
+    List<int> dmxValues;
+
     public float timer;
     bool OSCsent = false;
     bool exploded = false;
