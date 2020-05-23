@@ -9,6 +9,8 @@ TagManager:
   - Fire
   - Water
   - Ice
+  - UI
+  - Selector
   layers:
   - Default
   - TransparentFX
