@@ -8,7 +8,7 @@ public class OrbCastController : MonoBehaviour
     [Header("General")]
     [Tooltip("Time before self-destruct")] 
     [SerializeField] float lifeSpan = 5f;
-    [SerializeField] float force = 50;
+    public float force = 50;
     
     [Header("DMX/OSC")]
     [Tooltip("DMX channels to control")] 

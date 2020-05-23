@@ -1,4 +1,5 @@
-﻿using Microsoft.MixedReality.Toolkit.Input;
+﻿using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,9 +75,11 @@ public class GazeOrbController : MonoBehaviour
             GameObject explosion = Instantiate(explosionFX, transform.position, Quaternion.identity);
             exploded = true;
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.2f);
 
-            gameObject.SetActive(false);
+            Renderer render = GetComponent<Renderer>();
+            
+            render.enabled = false;
 
             yield return new WaitForSeconds(1);
 

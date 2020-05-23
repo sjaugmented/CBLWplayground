@@ -45,9 +45,19 @@ public class SpellManager : MonoBehaviour
     [SerializeField] [Range(0f, 0.2f)] float palmDistOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 
-    [Header("OSC/DMX controller")]
+    [Header("OSC controller")]
     public List<String> conjureOSCMessages;
-    
+
+    [Header("DMX controllers")]
+    public List<int> lightChannels;
+    public List<int> lightValues;
+    public List<int> fireChannels;
+    public List<int> fireValues;
+    public List<int> waterChannels;
+    public List<int> waterValues;
+    public List<int> iceChannels;
+    public List<int> iceValues;
+
     float conjureValueOSC = 0;
 
     public enum Element { light, fire, water, ice };
@@ -65,10 +75,11 @@ public class SpellManager : MonoBehaviour
     bool ableToCast = true;
     public bool fromOrbScaler = false;
     public bool hoverOrb = false;
-    public bool activeLightHover = false;   //
-    public bool activeFireHover = false;    // todo
-    public bool activeWaterHover = false;   //  make private
-    public bool activeIceHover = false;     //
+    bool hoverSelectFromMenu = false;
+    bool activeLightHover = false;   //
+    bool activeFireHover = false;    // todo
+    bool activeWaterHover = false;   //  make private
+    bool activeIceHover = false;     //
 
     OrbFingerTracker handTracking;
     SpellBook spellBook;
@@ -137,6 +148,7 @@ public class SpellManager : MonoBehaviour
 
                 SendOSCMessage(conjureOSCMessages[elementID], conjureValueOSC);
                 Debug.Log(conjureValueOSC); // remove
+                SendDMX();
             }
             else
             {
@@ -175,7 +187,11 @@ public class SpellManager : MonoBehaviour
 
     private void SendDMX()
     {
-        // todo for loop through DMX values
+        // determine channels based on currEl
+
+        // calc float per channe value
+
+        // sendDMX
     }
 
     private void CalcHandPositions()
@@ -190,11 +206,11 @@ public class SpellManager : MonoBehaviour
 
     private void ElementSelector()
     {
-        fromOrbScaler = false;
         DisableRightStreams();
         DisableLeftStreams();
 
-        
+        fromOrbScaler = false;
+        hoverSelectFromMenu = false;
 
         masterOrb.SetActive(true);
         elementMenu.SetActive(true);
@@ -232,6 +248,13 @@ public class SpellManager : MonoBehaviour
         else if (palmDist > maxPalmDistance) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
 
+        if (!hoverSelectFromMenu)
+        {
+            if (elementScale < 0.2) hoverOrb = true;
+            else hoverOrb = false;
+        }
+        else return;
+
         // apply scale based on orb element
         spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(elementScale, elementScale, elementScale);
     }
@@ -254,7 +277,15 @@ public class SpellManager : MonoBehaviour
                 if (fromOrbScaler)
                 {
                     Debug.Log(elementScale); // remove
-                    spellOrb.GetComponent<OrbCastController>().valueOSC = elementScale;
+                    OrbCastController spellController = spellOrb.GetComponent<OrbCastController>();
+                    spellController.valueOSC = elementScale;
+
+                    float spellForceRange = 1 - (palmDist / maxPalmDistance);
+
+                    float spellForce = spellForceRange * 50;
+                    if (spellForce < 1) spellForce = 2;
+                    spellController.force = spellForce;
+
 
                     float particleScale = elementScale * 1.167388f;
 
@@ -520,14 +551,16 @@ public class SpellManager : MonoBehaviour
         currEl = Element.ice;
     }
 
-    public void GazeOrbYes()
+    public void HoverOrbYes()
     {
         hoverOrb = true;
+        hoverSelectFromMenu = true;
     }
 
-    public void GazeOrbNo()
+    public void HoverOrbNo()
     {
         hoverOrb = false;
+        hoverSelectFromMenu = true;
     }
 
     public void SetOrbRateOfFire()
