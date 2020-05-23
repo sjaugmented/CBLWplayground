@@ -17,9 +17,11 @@ public class GazeOrbController : MonoBehaviour
 
     public float timer;
     bool OSCsent = false;
+    bool DMXsent = false;
     bool exploded = false;
 
     OSC osc;
+    DMXcontroller dmx;
     EyeTrackingTarget gaze;
     OrbHoverController hoverParent;
     
@@ -27,6 +29,7 @@ public class GazeOrbController : MonoBehaviour
     void Start()
     {
         osc = FindObjectOfType<OSC>();
+        dmx = FindObjectOfType<DMXcontroller>();
         gaze = GetComponent<EyeTrackingTarget>();
 
         OrbHoverController[] hoverOrbs = FindObjectsOfType<OrbHoverController>();
@@ -60,6 +63,7 @@ public class GazeOrbController : MonoBehaviour
     public void GazeSelected()
     {
         if (!OSCsent) SendOSC();
+        if (!DMXsent) SendDMX();
         StartCoroutine("ExplodeOrb");
     }
 
@@ -70,6 +74,23 @@ public class GazeOrbController : MonoBehaviour
         message.address = messageOSC;
         message.values.Add(valueOSC);
         osc.Send(message);
+    }
+
+    private void SendDMX()
+    {
+        if (dmxChannels.Count == 0) return;
+
+        if (dmxChannels.Count == dmxValues.Count)
+        {
+            for (int i = 0; i < dmxChannels.Count; i++)
+            {
+                dmx.SetAddress(dmxChannels[i], dmxValues[i]);
+            }
+        }
+        else
+        {
+            Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
+        }
     }
 
     IEnumerator ExplodeOrb()
