@@ -69,11 +69,12 @@ public class GazeOrbController : MonoBehaviour
 
     private void SendOSC()
     {
-        OSCsent = true;
         OscMessage message = new OscMessage();
         message.address = messageOSC;
         message.values.Add(valueOSC);
         osc.Send(message);
+
+        OSCsent = true;
     }
 
     private void SendDMX()
@@ -86,6 +87,8 @@ public class GazeOrbController : MonoBehaviour
             {
                 dmx.SetAddress(dmxChannels[i], dmxValues[i]);
             }
+
+            DMXsent = true;
         }
         else
         {
