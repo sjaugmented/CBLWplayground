@@ -8,6 +8,7 @@ using UnityEngine;
 public class SpellManager : MonoBehaviour
 {
     [SerializeField] bool manualElMenu = false;
+    [SerializeField] bool floatPassthru = true;
     
     [SerializeField] GameObject masterOrb;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
@@ -368,7 +369,7 @@ public class SpellManager : MonoBehaviour
 
                 ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
 
-                if (fromOrbScaler)
+                if (fromOrbScaler && floatPassthru)
                 {
                     Debug.Log(elementScale); // remove
                     OrbCastController spellController = spellOrb.GetComponent<OrbCastController>();
