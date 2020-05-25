@@ -377,6 +377,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /iceStreamLeft/
+      objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: m_Name
@@ -441,6 +446,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /lightStreamLeft/
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /fireStreamLeft/
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /waterStreamLeft/
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e56b870054828946b4e0d6585c98508, type: 3}
@@ -3833,6 +3853,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /iceStreamRight/
+      objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: m_Name
@@ -3897,6 +3922,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /lightStreamRight/
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /fireStreamRight/
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: messageOSC
+      value: /waterStreamRight/
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e56b870054828946b4e0d6585c98508, type: 3}
