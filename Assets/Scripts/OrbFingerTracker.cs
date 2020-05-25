@@ -29,9 +29,9 @@ public class OrbFingerTracker : MonoBehaviour
     public bool twoFists = false;
     public bool palmsOut = false;
     public bool rockOnRight = false;
-    public bool fingerGunRight = false;
+    public bool peaceRight = false;
     public bool rockOnLeft = false;
-    public bool fingerGunLeft = false;
+    public bool peaceLeft = false;
     public float palmDist;
 
     
@@ -106,14 +106,65 @@ public class OrbFingerTracker : MonoBehaviour
         float ltIndKnuckForPalmFor = Vector3.Angle(ltIndexKnuckle.Forward, leftPalm.Forward);
         #endregion
 
-        if (rockOnLeft && rockOnRight) palmsOut = false;
+        // look for right fingers
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip))
+        {
+            // look for rockOn
+            if (IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && !IsWithinRange(rtMidForPalmFor, 0))
+            {
+                rockOnRight = true;
+                peaceRight = false;
+            }
+            // look for peace
+            else if (IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtMidForPalmFor, 0) && !IsWithinRange(rtPinkForPalmFor, 0))
+            {
+                rockOnRight = false;
+                peaceRight = true;
+            }
+            else
+            {
+                rockOnRight = false;
+                peaceRight = false;
+            }
+        }
+        else
+        {
+            rockOnRight = false;
+            peaceRight = false;
+        }
+        // look for left fingers
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
+        {
+            // look for rockOn
+            if (IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && !IsWithinRange(ltMidForPalmFor, 0))
+            {
+                rockOnLeft = true;
+                peaceLeft = false;
+            }
+            // look for peace
+            else if (IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltMidForPalmFor, 0) && !IsWithinRange(ltPinkForPalmFor, 0))
+            {
+                rockOnLeft = false;
+                peaceLeft = true;
+            }
+            else
+            {
+                rockOnLeft = false;
+                peaceLeft = false;
+            }
+        }
+        else
+        {
+            rockOnLeft = false;
+            peaceLeft = false;
+        }
 
         // look for two palms
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
         {
             twoPalms = true;
-            fingerGunRight = false;
-            fingerGunLeft = false;
+            peaceRight = false;
+            peaceLeft = false;
             rockOnRight = false;
             rockOnLeft = false;
 
@@ -157,7 +208,7 @@ public class OrbFingerTracker : MonoBehaviour
         }
 
 
-        // look for right fingers
+        /*// look for right fingers
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip))
         {
             // look for rockOn
@@ -208,7 +259,7 @@ public class OrbFingerTracker : MonoBehaviour
         {
             rockOnLeft = false;
             fingerGunLeft = false;
-        }
+        }*/
     }
 
     private bool IsWithinRange(float testVal, float target)

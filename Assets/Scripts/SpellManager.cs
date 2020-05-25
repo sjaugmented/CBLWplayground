@@ -69,6 +69,8 @@ public class SpellManager : MonoBehaviour
     Vector3 masterOrbPos;
     Vector3 rightStreamPos;
     Vector3 leftStreamPos;
+    Vector3 rightPartPos;
+    Vector3 leftPartPos;
     float palmDist;
     float elementScale;
 
@@ -114,17 +116,29 @@ public class SpellManager : MonoBehaviour
 
     }
 
+    public bool allowPeace = false;
+
     // Update is called once per frame
     void Update()
     {
         ConvertElementToID();
         CalcHandPositions();
 
-        /*if (handTracking.fingerGunRight || handTracking.fingerGunLeft)
+        if (allowPeace)
+        {
+            if (handTracking.peaceRight)
             {
-                CastParticle();
-                DisableStreams();
-            }*/
+                CastParticle(rightHand: true);
+                DisableRightStreams();
+            }
+
+            if (handTracking.peaceLeft)
+            {
+                CastParticle(rightHand: false);
+                DisableLeftStreams();
+            }
+        }
+        
         if (handTracking.rockOnRight) EnableRightStreams();
         else DisableRightStreams();
 
@@ -297,6 +311,8 @@ public class SpellManager : MonoBehaviour
         masterOrbPos = midpointPalms + palmMidpointOffset;
         rightStreamPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtPinkyTip.Position, 0.5f);
         leftStreamPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltPinkyTip.Position, 0.5f);
+        rightPartPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtMiddleTip.Position, 0.5f);
+        leftPartPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltMiddleTip.Position, 0.5f);
     }
 
     private void ElementSelector()
@@ -464,19 +480,20 @@ public class SpellManager : MonoBehaviour
         }        
     }
 
-    private void CastParticle()
+    private void CastParticle(bool rightHand)
     {
         if (ableToCast)
         {
-            if (handTracking.fingerGunRight)
+            if (rightHand)
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], handTracking.rtIndexTip.Position + particleCastOffset, Camera.main.transform.rotation);
+                rightHandCaster.position = rightPartPos;
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rightHandCaster.position, rightHandCaster.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
-
-            if (handTracking.fingerGunLeft)
+            else
             {
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], handTracking.ltIndexTip.Position + particleCastOffset, Camera.main.transform.rotation);
+                leftHandCaster.position = leftPartPos;
+                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], leftHandCaster.position, leftHandCaster.rotation);
                 StartCoroutine("CastDelay", particlesPerSecond);
             }
             
@@ -535,7 +552,7 @@ public class SpellManager : MonoBehaviour
             }
         }
 
-
+        // todo fix sound not firing
         if (currEl == Element.fire)
         {
             sound.fireStreamFX.Play();
@@ -656,6 +673,11 @@ public class SpellManager : MonoBehaviour
     {
         hoverOrb = false;
         hoverSelectFromMenu = true;
+    }
+
+    public void AllowPeace()
+    {
+        allowPeace = !allowPeace;
     }
 
     public void SetOrbRateOfFire()
