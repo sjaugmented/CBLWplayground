@@ -30,9 +30,7 @@ public class OrbFingerTracker : MonoBehaviour
     public bool pullUps = false;
     public bool palmsOut = false;
     public bool rockOnRight = false;
-    public bool peaceRight = false;
     public bool rockOnLeft = false;
-    public bool peaceLeft = false;
     public float palmDist;
 
     
@@ -114,24 +112,15 @@ public class OrbFingerTracker : MonoBehaviour
             if (IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && !IsWithinRange(rtMidForPalmFor, 0))
             {
                 rockOnRight = true;
-                peaceRight = false;
-            }
-            // look for peace
-            else if (IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtMidForPalmFor, 0) && !IsWithinRange(rtPinkForPalmFor, 0))
-            {
-                rockOnRight = false;
-                peaceRight = true;
             }
             else
             {
                 rockOnRight = false;
-                peaceRight = false;
             }
         }
         else
         {
             rockOnRight = false;
-            peaceRight = false;
         }
 
         // look for left fingers
@@ -141,32 +130,21 @@ public class OrbFingerTracker : MonoBehaviour
             if (IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && !IsWithinRange(ltMidForPalmFor, 0))
             {
                 rockOnLeft = true;
-                peaceLeft = false;
-            }
-            // look for peace
-            else if (IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltMidForPalmFor, 0) && !IsWithinRange(ltPinkForPalmFor, 0))
-            {
-                rockOnLeft = false;
-                peaceLeft = true;
             }
             else
             {
                 rockOnLeft = false;
-                peaceLeft = false;
             }
         }
         else
         {
             rockOnLeft = false;
-            peaceLeft = false;
         }
 
         // look for two palms
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
         {
             twoHands = true;
-            peaceRight = false;
-            peaceLeft = false;
             rockOnRight = false;
             rockOnLeft = false;
 

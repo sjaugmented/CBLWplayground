@@ -124,21 +124,6 @@ public class SpellManager : MonoBehaviour
         ConvertElementToID();
         CalcHandPositions();
 
-        if (allowPeace)
-        {
-            if (handTracking.peaceRight)
-            {
-                CastParticle(rightHand: true);
-                DisableRightStreams();
-            }
-
-            if (handTracking.peaceLeft)
-            {
-                CastParticle(rightHand: false);
-                DisableLeftStreams();
-            }
-        }
-        
         if (handTracking.rockOnRight) EnableRightStreams();
         else DisableRightStreams();
 
@@ -147,8 +132,14 @@ public class SpellManager : MonoBehaviour
 
         if (handTracking.twoHands)
         {
+            // pullUps - top level menu
+            if (handTracking.pullUps)
+            {
+                // show top level menu
+            }
+            
             // two handed casting
-            if (handTracking.palmsOut)
+            else if (handTracking.palmsOut)
             {
                 CastOrb();
                 sound.orbAmbienceFX.Pause();
