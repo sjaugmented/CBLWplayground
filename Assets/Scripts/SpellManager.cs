@@ -312,17 +312,58 @@ public class SpellManager : MonoBehaviour
         DisableLeftStreams();
 
         fromOrbScaler = false;
-        hoverSelectFromMenu = false;
 
         masterOrb.SetActive(true);
-        elementMenu.SetActive(true);
         masterOrb.transform.position = masterOrbPos;
+        masterOrb.GetComponent<MasterOrbRotater>().xRotation = 1;
 
+        float elSlotSize = (maxPalmDistance - palmDistOffset) / spellBook.masterOrbElements.Count;
+
+        // select element based on distance between palms
+        if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxPalmDistance - (elSlotSize * 3)))
+        {
+            currEl = Element.light;
+
+            // play soundfx as you leave the zone
+            if (palmDist == maxPalmDistance - (elSlotSize * 3))
+            {
+                sound.elementSwitchFX.Play();
+                Debug.Log("switch!");
+            }
+        }
+        else if (palmDist > maxPalmDistance - (elSlotSize * 3) && palmDist <= maxPalmDistance - (elSlotSize * 2))
+        {
+            currEl = Element.fire;
+            // activate corresponding element
+            for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
+
+                // play soundfx as you leave the zone
+                if (palmDist == maxPalmDistance - (elSlotSize * 2)) sound.elementSwitchFX.Play();
+
+        }
+        else if (palmDist > maxPalmDistance - (elSlotSize * 2) && palmDist <= maxPalmDistance - elSlotSize)
+        {
+            currEl = Element.water;
+
+            // play soundfx as you leave the zone
+            if (palmDist == maxPalmDistance - elSlotSize) sound.elementSwitchFX.Play();
+
+        }
+        else if (palmDist > maxPalmDistance - elSlotSize && palmDist <= maxPalmDistance)
+        {
+            currEl = Element.ice;
+        }
+
+        // activate corresponding element
         for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
         {
             if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
             else spellBook.masterOrbElements[i].SetActive(false);
         }
+
+        // keep orb element scaled at 0.5 for best visibility
+        spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
     }
 
     private void ElementScaler()
