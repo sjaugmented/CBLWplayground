@@ -145,7 +145,7 @@ public class SpellManager : MonoBehaviour
         if (handTracking.rockOnLeft) EnableLeftStreams();
         else DisableLeftStreams();
 
-        if (handTracking.twoPalms)
+        if (handTracking.twoHands)
         {
             // two handed casting
             if (handTracking.palmsOut)
@@ -157,13 +157,13 @@ public class SpellManager : MonoBehaviour
 
             }
             // element menu
-            else if (handTracking.palmsIn && handTracking.twoFists || manualElMenu)
+            else if (handTracking.palmsIn && handTracking.fistsIn || manualElMenu)
             {
                 ElementSelector();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
             // element scaler
-            else if (handTracking.palmsIn && !handTracking.twoFists)
+            else if (handTracking.palmsIn && !handTracking.fistsIn)
             {
                 ElementScaler();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();

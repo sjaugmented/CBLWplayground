@@ -24,9 +24,10 @@ public class OrbFingerTracker : MonoBehaviour
     float castFingerUpThresh = 0.3f;
     bool castFingerOut = false;
 
-    public bool twoPalms = false;
+    public bool twoHands = false;
     public bool palmsIn = false;
-    public bool twoFists = false;
+    public bool fistsIn = false;
+    public bool pullUps = false;
     public bool palmsOut = false;
     public bool rockOnRight = false;
     public bool peaceRight = false;
@@ -132,6 +133,7 @@ public class OrbFingerTracker : MonoBehaviour
             rockOnRight = false;
             peaceRight = false;
         }
+
         // look for left fingers
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
         {
@@ -162,7 +164,7 @@ public class OrbFingerTracker : MonoBehaviour
         // look for two palms
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
         {
-            twoPalms = true;
+            twoHands = true;
             peaceRight = false;
             peaceLeft = false;
             rockOnRight = false;
@@ -175,15 +177,23 @@ public class OrbFingerTracker : MonoBehaviour
             {
                 palmsIn = true;
                 palmsOut = false;
+                pullUps = false;
 
                 // look for fingers both hands
                 if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
                 {
-                    if (IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70))
+                    if (IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70) && IsWithinRange(rtPalmUpCamFor, 0) && IsWithinRange(ltPalmUpCamFor, 0))
                     {
-                        twoFists = true;
+                        pullUps = true;
+                        fistsIn = false;
                     }
-                    else twoFists = false;
+
+                    else if (IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90))
+                    {
+                        pullUps = false;
+                        fistsIn = true;
+                    }
+                    else fistsIn = false;
                 }
             } 
 
@@ -202,64 +212,13 @@ public class OrbFingerTracker : MonoBehaviour
         }
         else
         {
-            twoPalms = false;
+            twoHands = false;
             palmsIn = false;
             palmsOut = false;
         }
 
 
-        /*// look for right fingers
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip))
-        {
-            // look for rockOn
-            if (IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && !IsWithinRange(rtMidForPalmFor, 0))
-            {
-                rockOnRight = true;
-                fingerGunRight = false;
-            }
-            // look for fingerGun
-            else if (IsWithinRange(rtIndForCamFor, 0) && IsWithinRange(rtIndForPalmFor, 25) && IsWithinRange(Vector3.Angle(rtIndexTip.Forward, floor.forward), 25) && IsWithinRange(rtThumbForCamFor, 50) && IsWithinRange(Vector3.Angle(rtThumbTip.Forward, floor.forward), 90) && IsWithinRange(rtMidForPalmFor, 160) && IsWithinRange(rtPinkForPalmFor, 130))
-            {
-                rockOnRight = false;
-                fingerGunRight = true;
-            }
-            else
-            {
-                rockOnRight = false;
-                fingerGunRight = false;
-            }
-        }
-        else
-        {
-            rockOnRight = false;
-            fingerGunRight = false;
-        }
-        // look for left fingers
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
-        {
-            // look for rockOn
-            if (IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && !IsWithinRange(ltMidForPalmFor, 0))
-            {
-                rockOnLeft = true;
-                fingerGunLeft = false;
-            }
-            // look for fingerGun
-            else if (IsWithinRange(ltIndForCamFor, 0) && IsWithinRange(ltIndForPalmFor, 25) && IsWithinRange(Vector3.Angle(ltIndexTip.Forward, floor.forward), 25) && IsWithinRange(ltThumbForCamFor, 50) && IsWithinRange(Vector3.Angle(ltThumbTip.Forward, floor.forward), 90) && IsWithinRange(ltMidForPalmFor, 160) && IsWithinRange(ltPinkForPalmFor, 130))
-            {
-                rockOnLeft = false;
-                fingerGunLeft = true;
-            }
-            else
-            {
-                rockOnLeft = false;
-                fingerGunLeft = false;
-            }
-        }
-        else
-        {
-            rockOnLeft = false;
-            fingerGunLeft = false;
-        }*/
+        
     }
 
     private bool IsWithinRange(float testVal, float target)
