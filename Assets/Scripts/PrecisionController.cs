@@ -73,6 +73,12 @@ public class PrecisionController : MonoBehaviour
         
     }
 
+    private void Tethered()
+    {
+
+
+    }
+
     private void DimmerControl()
     {
 
