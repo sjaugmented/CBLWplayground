@@ -1,4 +1,5 @@
-﻿using Microsoft.MixedReality.Toolkit.Utilities;
+﻿using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,12 @@ public class PrecisionPoseTracker : MonoBehaviour
     public MixedRealityPose rightPalm, rtIndexTip, rtIndexMid, rtIndexKnuckle, rtMiddleTip, rtMiddleKnuckle, rtPinkyTip, rtThumbTip;
     // left hand joints
     public MixedRealityPose leftPalm, ltIndexTip, ltIndexMid, ltIndexKnuckle, ltMiddleTip, ltMiddleKnuckle, ltPinkyTip, ltThumbTip;
+    public bool rightFist = false;
+    public bool leftFist = false;
+    public bool flatRtHand = false;
+    public bool knifeRtHand = false;
+    public bool flatLtHand = false;
+    public bool knifeLtHand = false;
 
     // Start is called before the first frame update
     void Start()
@@ -24,50 +31,96 @@ public class PrecisionPoseTracker : MonoBehaviour
 
         #region Palm Ref Angles
         // right palm
-        float rtPalmUpCamFor = Vector3.Angle(rightPalm.Up, cam.forward);
-        float rtPalmForCamFor = Vector3.Angle(rightPalm.Forward, cam.forward);
-        float rtPalmRtCamFor = Vector3.Angle(rightPalm.Right, cam.forward);
-        float rtPalmRtCamRt = Vector3.Angle(rightPalm.Right, cam.right);
-        float rtPalmRtCamUp = Vector3.Angle(rightPalm.Right, cam.up);
+        float rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);
+        float rtPalmUpFloorFor = Vector3.Angle(rightPalm.Up, floor.forward);
+        float rtPalmUpFloorRt = Vector3.Angle(rightPalm.Up, floor.right);
+        float rtPalmForFloorUp = Vector3.Angle(rightPalm.Forward, floor.up);
         float rtPalmForFloorFor = Vector3.Angle(rightPalm.Forward, floor.forward);
+        float rtPalmForFloorRt = Vector3.Angle(rightPalm.Forward, floor.right);
+        float rtPalmRtFloorUp = Vector3.Angle(rightPalm.Right, floor.up);
         float rtPalmRtFloorFor = Vector3.Angle(rightPalm.Right, floor.forward);
-        float rtPalmUpCamRt = Vector3.Angle(rightPalm.Up, cam.right);
-        float rtPalmForCamRt = Vector3.Angle(rightPalm.Forward, cam.right);
+        float rtPalmRtFloorRt = Vector3.Angle(rightPalm.Right, floor.right);
+
 
         // left palm
-        float ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
-        float ltPalmForCamFor = Vector3.Angle(leftPalm.Forward, cam.forward);
-        float ltPalmRtCamFor = Vector3.Angle(leftPalm.Right, cam.forward);
-        float ltPalmRtCamRt = Vector3.Angle(leftPalm.Right, cam.right);
-        float ltPalmRtCamUp = Vector3.Angle(leftPalm.Right, cam.up);
+        float ltPalmUpFloorUp = Vector3.Angle(leftPalm.Up, floor.up);
+        float ltPalmUpFloorFor = Vector3.Angle(leftPalm.Up, floor.forward);
+        float ltPalmUpFloorRt = Vector3.Angle(leftPalm.Up, floor.right);
+        float ltPalmForFloorUp = Vector3.Angle(leftPalm.Forward, floor.up);
         float ltPalmForFloorFor = Vector3.Angle(leftPalm.Forward, floor.forward);
+        float ltPalmForFloorRt = Vector3.Angle(leftPalm.Forward, floor.right);
+        float ltPalmRtFloorUp = Vector3.Angle(leftPalm.Right, floor.up);
         float ltPalmRtFloorFor = Vector3.Angle(leftPalm.Right, floor.forward);
-        float ltPalmUpCamRt = Vector3.Angle(leftPalm.Up, cam.right);
-        float ltPalmForCamRt = Vector3.Angle(leftPalm.Forward, cam.right);
+        float ltPalmRtFloorRt = Vector3.Angle(leftPalm.Right, floor.right);
         #endregion
 
         #region Finger Ref Angles
         // get right finger angles
         float rtIndForPalmFor = Vector3.Angle(rtIndexTip.Forward, rightPalm.Forward);
-        float rtIndForCamFor = Vector3.Angle(rtIndexTip.Forward, cam.forward);
         float rtMidForPalmFor = Vector3.Angle(rtMiddleTip.Forward, rightPalm.Forward);
         float rtPinkForPalmFor = Vector3.Angle(rtPinkyTip.Forward, rightPalm.Forward);
-        float rtThumbForCamFor = Vector3.Angle(rtThumbTip.Forward, cam.forward);
         float rtThumbForPalmFor = Vector3.Angle(rtThumbTip.Forward, rightPalm.Forward);
         float rtIndMidForPalmFor = Vector3.Angle(rtIndexMid.Forward, rightPalm.Forward);
         float rtIndKnuckForPalmFor = Vector3.Angle(rtIndexKnuckle.Forward, rightPalm.Forward);
 
         // get left finger angles
         float ltIndForPalmFor = Vector3.Angle(ltIndexTip.Forward, leftPalm.Forward);
-        float ltIndForCamFor = Vector3.Angle(ltIndexTip.Forward, cam.forward);
         float ltMidForPalmFor = Vector3.Angle(ltMiddleTip.Forward, leftPalm.Forward);
         float ltPinkForPalmFor = Vector3.Angle(ltPinkyTip.Forward, leftPalm.Forward);
-        float ltThumbForCamFor = Vector3.Angle(ltThumbTip.Forward, cam.forward);
         float ltThumbForPalmFor = Vector3.Angle(ltThumbTip.Forward, leftPalm.Forward);
         float ltIndMidForPalmFor = Vector3.Angle(ltIndexMid.Forward, leftPalm.Forward);
         float ltIndKnuckForPalmFor = Vector3.Angle(ltIndexKnuckle.Forward, leftPalm.Forward);
         #endregion
 
+        // look for right hand
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm))
+        {
+            // look for right fist
+            if (IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70))
+            {
+                rightFist = true;
+                flatRtHand = false;
+                knifeRtHand = false;
+            }
 
+            // look for right flat
+            else if (IsWithinRange(rtIndMidForPalmFor, 0) && IsWithinRange(rtIndKnuckForPalmFor, 0) && IsWithinRange(ltIndMidForPalmFor, 0) && IsWithinRange(ltIndKnuckForPalmFor, 0) && IsWithinRange(rtPalmUpFloorUp, 0) && IsWithinRange(rtPalmRtFloorRt, 0))
+            {
+                rightFist = false;
+                flatRtHand = true;
+                knifeRtHand = false;
+            }
+
+            else if (IsWithinRange(rtIndMidForPalmFor, 0) && IsWithinRange(rtIndKnuckForPalmFor, 0) && IsWithinRange(ltIndMidForPalmFor, 0) && IsWithinRange(ltIndKnuckForPalmFor, 0) && IsWithinRange(rtPalmUpFloorUp, 90) && IsWithinRange(rtPalmRtFloorRt, 90))
+            {
+                rightFist = false;
+                flatRtHand = false;
+                knifeRtHand = true;
+            }
+
+            else
+            {
+                rightFist = false;
+                flatRtHand = false;
+                knifeRtHand = false;
+            }
+        }
+        else
+        {
+            rightFist = false;
+            flatRtHand = false;
+            knifeRtHand = false;
+        }
+
+    }
+
+    private bool IsWithinRange(float testVal, float target)
+    {
+        bool withinRange = false;
+
+        if (testVal >= target - 50 && testVal <= target + 50) withinRange = true;
+        else withinRange = false;
+
+        return withinRange;
     }
 }
