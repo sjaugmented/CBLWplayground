@@ -1,14 +1,30 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PrecisionController : MonoBehaviour
 {
+    [Header("Right Hand HUD")]
     [SerializeField] GameObject rightTetherOnText;
     [SerializeField] GameObject rightTetherOffText;
     [SerializeField] GameObject rightDimmerText;
     [SerializeField] GameObject rightKelvinText;
+    [SerializeField] TextMeshPro rightDimmerVal;
+    [SerializeField] TextMeshPro rightKelvinVal;
+
+    [Header("Left Hand HUD")]
+    [SerializeField] GameObject leftTetherOnText;
+    [SerializeField] GameObject leftTetherOffText;
+    [SerializeField] GameObject leftDimmerText;
+    [SerializeField] GameObject leftKelvinText;
+    [SerializeField] TextMeshPro leftDimmerVal;
+    [SerializeField] TextMeshPro leftKelvinVal;
+
+    [Header("Float GameObjects")]
+    [SerializeField] GameObject rightHandFloat;
+    [SerializeField] GameObject leftHandFloat;
 
     [SerializeField] bool tetherOverride = false;
     bool rightFisted = false;
@@ -23,11 +39,18 @@ public class PrecisionController : MonoBehaviour
 
 
     PrecisionPoseTracker poseTracker;
+    DMXcontroller dmx;
+    OSC osc;
 
     // Start is called before the first frame update
     void Start()
     {
         poseTracker = GetComponent<PrecisionPoseTracker>();
+        dmx = FindObjectOfType<DMXcontroller>();
+        osc = FindObjectOfType<OSC>();
+
+        rightHandFloat.SetActive(false);
+        leftHandFloat.SetActive(false);
     }
 
     // Update is called once per frame
@@ -69,14 +92,57 @@ public class PrecisionController : MonoBehaviour
             else leftKelvin = false;
         }
 
-        ProcessTextObjects();
-        
+        ProcessRightHUD();
+        ProcessRightHandControls();
     }
 
-    private void Tethered()
+    private void ProcessRightHandControls()
     {
+        bool dimmerYLocked = false;
+        float dimmerYPos = 0;
+        
+        if (rightDimmer)
+        {
+            // activate right hand float
+            rightHandFloat.SetActive(true);
 
+            // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
+            if (!dimmerYLocked)
+            {
+                dimmerYPos = poseTracker.rtMiddleTip.Position.y;
+                dimmerYLocked = true;
+            }
 
+            rightHandFloat.transform.position = new Vector3(poseTracker.rtMiddleTip.Position.x, dimmerYPos, poseTracker.rtMiddleTip.Position.z);
+
+            // determine float using pose.position.y
+
+            // convert float to DMX
+
+            // send DMX
+
+            // send OSC
+        }
+
+        bool kelvinXLocked = false;
+        float kelvinXPos;
+
+        if (rightKelvin)
+        {
+            // activate right hand float
+
+            // rotate float gameobject 90 degrees
+
+            // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
+
+            // determine float using pose.position.y
+
+            // convert float to DMX
+
+            // send DMX
+
+            // send OSC
+        }
     }
 
     private void DimmerControl()
@@ -89,7 +155,7 @@ public class PrecisionController : MonoBehaviour
 
     }
 
-    private void ProcessTextObjects()
+    private void ProcessRightHUD()
     {
         if (rightTether)
         {
@@ -113,5 +179,31 @@ public class PrecisionController : MonoBehaviour
             rightKelvinText.SetActive(true);
         }
         else rightKelvinText.SetActive(false);
+    }
+
+    private void ProcessLeftHud()
+    {
+        if (leftTether)
+        {
+            leftTetherOnText.SetActive(true);
+            leftTetherOffText.SetActive(false);
+        }
+        else
+        {
+            leftTetherOnText.SetActive(false);
+            leftTetherOffText.SetActive(true);
+        }
+
+        if (leftTether && leftDimmer)
+        {
+            leftDimmerText.SetActive(true);
+        }
+        else leftDimmerText.SetActive(false);
+
+        if (leftTether && leftKelvin)
+        {
+           leftKelvinText.SetActive(true);
+        }
+        else leftKelvinText.SetActive(false);
     }
 }
