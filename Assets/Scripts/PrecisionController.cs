@@ -73,6 +73,16 @@ public class PrecisionController : MonoBehaviour
         
     }
 
+    private void DimmerControl()
+    {
+
+    }
+
+    private void KelvinControl()
+    {
+
+    }
+
     private void ProcessTextObjects()
     {
         if (rightTether)

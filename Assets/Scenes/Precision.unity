@@ -1522,6 +1522,7 @@ GameObject:
   - component: {fileID: 1479164448}
   - component: {fileID: 1479164447}
   - component: {fileID: 1479164446}
+  - component: {fileID: 1479164449}
   m_Layer: 0
   m_Name: Precision Manager
   m_TagString: Untagged
@@ -1606,7 +1607,6 @@ MonoBehaviour:
   ltThumbTip:
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
-  hasFisted: 0
   rightFist: 0
   leftFist: 0
   rightFlatHand: 0
@@ -1621,12 +1621,30 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479164445}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0046366267, y: -0.050876513, z: 0.000715062}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1479164449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479164445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd695848136e990429a0e0e5d5d8c59a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skyPanelChannels: 1e0000001f000000
+  skyPanelVals: 0000000000000000
+  DJChannels: 00000000000000000000000000000000
+  DJVals: 00000000000000000000000000000000
+  spotChannels: 01000000020000000300000004000000
+  spotValues: 00000000000000000000000000000000
 --- !u!1 &1567939187
 GameObject:
   m_ObjectHideFlags: 0
