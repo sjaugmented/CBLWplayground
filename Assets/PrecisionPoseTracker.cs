@@ -12,8 +12,8 @@ public class PrecisionPoseTracker : MonoBehaviour
     public MixedRealityPose leftPalm, ltIndexTip, ltIndexMid, ltIndexKnuckle, ltMiddleTip, ltMiddleKnuckle, ltPinkyTip, ltThumbTip;
     public bool rightFist = false;
     public bool leftFist = false;
-    public bool flatRtHand = false;
-    public bool knifeRtHand = false;
+    public bool rightFlatHand = false;
+    public bool rightKnifeHand = false;
     public bool flatLtHand = false;
     public bool knifeLtHand = false;
 
@@ -79,37 +79,37 @@ public class PrecisionPoseTracker : MonoBehaviour
             if (IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70))
             {
                 rightFist = true;
-                flatRtHand = false;
-                knifeRtHand = false;
+                rightFlatHand = false;
+                rightKnifeHand = false;
             }
 
             // look for right flat
             else if (IsWithinRange(rtIndMidForPalmFor, 0) && IsWithinRange(rtIndKnuckForPalmFor, 0) && IsWithinRange(ltIndMidForPalmFor, 0) && IsWithinRange(ltIndKnuckForPalmFor, 0) && IsWithinRange(rtPalmUpFloorUp, 0) && IsWithinRange(rtPalmRtFloorRt, 0))
             {
                 rightFist = false;
-                flatRtHand = true;
-                knifeRtHand = false;
+                rightFlatHand = true;
+                rightKnifeHand = false;
             }
 
             else if (IsWithinRange(rtIndMidForPalmFor, 0) && IsWithinRange(rtIndKnuckForPalmFor, 0) && IsWithinRange(ltIndMidForPalmFor, 0) && IsWithinRange(ltIndKnuckForPalmFor, 0) && IsWithinRange(rtPalmUpFloorUp, 90) && IsWithinRange(rtPalmRtFloorRt, 90))
             {
                 rightFist = false;
-                flatRtHand = false;
-                knifeRtHand = true;
+                rightFlatHand = false;
+                rightKnifeHand = true;
             }
 
             else
             {
                 rightFist = false;
-                flatRtHand = false;
-                knifeRtHand = false;
+                rightFlatHand = false;
+                rightKnifeHand = false;
             }
         }
         else
         {
             rightFist = false;
-            flatRtHand = false;
-            knifeRtHand = false;
+            rightFlatHand = false;
+            rightKnifeHand = false;
         }
 
     }

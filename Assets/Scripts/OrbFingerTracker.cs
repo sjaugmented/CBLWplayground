@@ -176,7 +176,7 @@ public class OrbFingerTracker : MonoBehaviour
             } 
 
             // look for palmsOut 
-            else if (IsWithinRange(p2pUp, 0) && IsWithinRange(p2pRt, 0) && IsWithinRange(p2pFor, 0))
+            else if (IsWithinRange(p2pUp, 0) && IsWithinRange(p2pRt, 0) && IsWithinRange(p2pFor, 0) && IsWithinRange(rtPalmUpCamFor, 180) && IsWithinRange(ltPalmUpCamFor, 180))
             {
                 palmsIn = false;
                 palmsOut = true;
