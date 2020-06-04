@@ -30,7 +30,7 @@ public class PrecisionController : MonoBehaviour
         if (tetherOverride) rightTether = true;
         else
         {
-            if (poseTracker.rightFist) rightTether = !rightTether;
+            if (!poseTracker.hasFisted && poseTracker.rightFist) rightTether = !rightTether;
         }
         
         if (rightTether)
