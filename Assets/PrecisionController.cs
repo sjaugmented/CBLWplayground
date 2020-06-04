@@ -11,8 +11,8 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] GameObject rightKelvinText;
 
     [SerializeField] bool tetherOverride = false;
-
-    bool rightTether = false;
+    bool hasFisted = false;
+    bool rightTether = true;
     bool rightDimmer = false;
     bool rightKelvin = false;
 
@@ -27,12 +27,14 @@ public class PrecisionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tetherOverride) rightTether = true;
-        else
+        if (poseTracker.rightFist && !hasFisted)
         {
-            if (!poseTracker.hasFisted && poseTracker.rightFist) rightTether = !rightTether;
+            rightTether = !rightTether;
+            hasFisted = true;
         }
-        
+
+        if (!poseTracker.rightFist) hasFisted = false;
+
         if (rightTether)
         {
             if (poseTracker.rightFlatHand) rightDimmer = true;

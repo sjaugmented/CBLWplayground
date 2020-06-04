@@ -76,13 +76,27 @@ public class PrecisionPoseTracker : MonoBehaviour
         // look for right hand
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm))
         {
-            // look for right fist
-            if (IsWithinRange(rtIndMidForPalmFor, 140) && IsWithinRange(rtMidForPalmFor, 140) && IsWithinRange(rtPinkForPalmFor, 130))
+            Debug.Log("rtIndMidFor: " + rtIndMidForPalmFor);
+            Debug.Log("rtMidFor: " + rtMidForPalmFor);
+            Debug.Log("rtPinkFor: " + rtPinkForPalmFor);
+
+            // debug - unity standard tap
+            if (IsWithinRange(rtIndMidForPalmFor, 83) && IsWithinRange(rtMidForPalmFor, 160) && IsWithinRange(rtPinkForPalmFor, 129))
             {
-                hasFisted = true;
                 rightFist = true;
                 rightFlatHand = false;
                 rightKnifeHand = false;
+                hasFisted = true;
+            }
+
+            // look for right fist
+            else if (IsWithinRange(rtIndMidForPalmFor, 140) && IsWithinRange(rtMidForPalmFor, 140) && IsWithinRange(rtPinkForPalmFor, 130))
+            {
+                
+                rightFist = true;
+                rightFlatHand = false;
+                rightKnifeHand = false;
+                hasFisted = true;
             }
 
             // look for right flat
@@ -94,6 +108,7 @@ public class PrecisionPoseTracker : MonoBehaviour
                 rightKnifeHand = false;
             }
 
+            // look for knife hand
             else if (IsWithinRange(rtIndMidForPalmFor, 0) && IsWithinRange(rtMidForPalmFor, 0) && IsWithinRange(rtPinkForPalmFor, 0) && IsWithinRange(rtPalmUpFloorUp, 90) && IsWithinRange(rtPalmRtFloorRt, 90))
             {
                 hasFisted = false;
@@ -102,6 +117,7 @@ public class PrecisionPoseTracker : MonoBehaviour
                 rightKnifeHand = true;
             }
 
+            // if not hand positions match
             else
             {
                 hasFisted = false;
@@ -110,6 +126,8 @@ public class PrecisionPoseTracker : MonoBehaviour
                 rightKnifeHand = false;
             }
         }
+
+        // if no hands!
         else
         {
             hasFisted = false;
@@ -122,8 +140,7 @@ public class PrecisionPoseTracker : MonoBehaviour
 
     private bool IsWithinRange(float testVal, float target)
     {
-        bool withinRange = false;
-
+        bool withinRange;
         if (testVal >= target - 50 && testVal <= target + 50) withinRange = true;
         else withinRange = false;
 
