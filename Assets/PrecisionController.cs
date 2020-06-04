@@ -11,10 +11,16 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] GameObject rightKelvinText;
 
     [SerializeField] bool tetherOverride = false;
-    bool hasFisted = false;
-    bool rightTether = true;
+    bool rightFisted = false;
+    bool rightTether = false;
     bool rightDimmer = false;
     bool rightKelvin = false;
+
+    bool leftFisted = false;
+    bool leftTether = false;
+    bool leftDimmer = false;
+    bool leftKelvin = false;
+
 
     PrecisionPoseTracker poseTracker;
 
@@ -27,13 +33,14 @@ public class PrecisionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (poseTracker.rightFist && !hasFisted)
+        // right hand control
+        if (poseTracker.rightFist && !rightFisted)
         {
             rightTether = !rightTether;
-            hasFisted = true;
+            rightFisted = true;
         }
 
-        if (!poseTracker.rightFist) hasFisted = false;
+        if (!poseTracker.rightFist) rightFisted = false;
 
         if (rightTether)
         {
@@ -42,6 +49,24 @@ public class PrecisionController : MonoBehaviour
 
             if (poseTracker.rightKnifeHand) rightKelvin = true;
             else rightKelvin = false;
+        }
+
+        // left hand control
+        if (poseTracker.leftFist && !leftFisted)
+        {
+            leftTether = !leftTether;
+            leftFisted = true;
+        }
+
+        if (!poseTracker.leftFist) leftFisted = false;
+
+        if (leftTether)
+        {
+            if (poseTracker.leftFlatHand) leftDimmer = true;
+            else leftDimmer = false;
+
+            if (poseTracker.leftKnifeHand) leftKelvin = true;
+            else leftKelvin = false;
         }
 
         ProcessTextObjects();
