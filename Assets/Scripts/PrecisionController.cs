@@ -145,6 +145,10 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
+            OscMessage message = new OscMessage();
+            message.address = "/rightDimmer/";
+            message.values.Add(rightDimmerFloat);
+            osc.Send(message);
         }
 
         if (rightKelvin)
@@ -180,6 +184,10 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
+            OscMessage message = new OscMessage();
+            message.address = "/rightKelvin/";
+            message.values.Add(rightKelvinFloat);
+            osc.Send(message);
         }
     }
 
@@ -228,6 +236,10 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
+            OscMessage message = new OscMessage();
+            message.address = "/leftDimmer/";
+            message.values.Add(leftDimmerFloat);
+            osc.Send(message);
         }
 
         if (leftKelvin)
@@ -263,6 +275,10 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
+            OscMessage message = new OscMessage();
+            message.address = "/leftKelvin/";
+            message.values.Add(leftKelvinFloat);
+            osc.Send(message);
         }
     }
 
