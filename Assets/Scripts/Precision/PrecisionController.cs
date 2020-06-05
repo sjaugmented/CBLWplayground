@@ -145,10 +145,7 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
-            OscMessage message = new OscMessage();
-            message.address = "/rightDimmer/";
-            message.values.Add(rightDimmerFloat);
-            osc.Send(message);
+            SendOSC("/rightDimmer/", rightDimmerFloat);
         }
 
         if (rightKelvin)
@@ -184,13 +181,11 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
-            OscMessage message = new OscMessage();
-            message.address = "/rightKelvin/";
-            message.values.Add(rightKelvinFloat);
-            osc.Send(message);
+            SendOSC("/rightKelvin/", rightKelvinFloat);
         }
     }
 
+    
     float leftDimmerFloat;
     float leftDimmerYPos;
     bool leftDimmerYLocked = false;
@@ -236,10 +231,7 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
-            OscMessage message = new OscMessage();
-            message.address = "/leftDimmer/";
-            message.values.Add(leftDimmerFloat);
-            osc.Send(message);
+            SendOSC("/leftDimmer/", leftDimmerFloat);
         }
 
         if (leftKelvin)
@@ -275,21 +267,17 @@ public class PrecisionController : MonoBehaviour
             // send DMX
 
             // send OSC
-            OscMessage message = new OscMessage();
-            message.address = "/leftKelvin/";
-            message.values.Add(leftKelvinFloat);
-            osc.Send(message);
+            SendOSC("/leftKelvin/", leftKelvinFloat);
         }
     }
 
-    private void DimmerControl()
+    private void SendOSC(string messageOSC, float val)
     {
-
-    }
-
-    private void KelvinControl()
-    {
-
+        OscMessage message = new OscMessage();
+        message.address = messageOSC;
+        message.values.Add(val);
+        osc.Send(message);
+        Debug.Log("OSC sending: " + message);
     }
 
     private void ProcessRightHUD()
