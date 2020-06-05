@@ -6,6 +6,14 @@ using UnityEngine;
 
 public class PrecisionController : MonoBehaviour
 {
+    [Header("SkyPanel DMX channels")]
+    [SerializeField] int skyDimmerDMX = 50;
+    [SerializeField] int skyKelvinDMX = 51;
+
+    [Header("SpotLight DMX channels")]
+    [SerializeField] int spotDimmerDMX = 4;
+    [SerializeField] int spotKelvinDMX = 3;
+
     [Header("Right Hand HUD")]
     [SerializeField] GameObject rightTetherOnText;
     [SerializeField] GameObject rightTetherOffText;
@@ -100,6 +108,7 @@ public class PrecisionController : MonoBehaviour
         ProcessLeftHandControls();
     }
 
+    #region right globals
     float rightDimmerFloat;
     float rightDimmerYPos;
     bool rightDimmerYLocked = false;
@@ -107,6 +116,7 @@ public class PrecisionController : MonoBehaviour
     float rightKelvinFloat;
     bool rightKelvinXLocked = false;
     float rightKelvinXPos;
+    #endregion
 
     private void ProcessRightHandControls()
     {
@@ -141,14 +151,16 @@ public class PrecisionController : MonoBehaviour
             rightDimmerVal.text = rightDimmerFloat.ToString();
 
             // convert float to DMX
+            int dimmerVal = Mathf.RoundToInt(rightDimmerFloat * 255);
 
             // send DMX
+            SendDMX(skyDimmerDMX, dimmerVal);
 
             // send OSC
             SendOSC("/rightDimmer/", rightDimmerFloat);
         }
 
-        if (rightKelvin)
+        else if (rightKelvin)
         {
             rightDimmerYLocked = false;
 
@@ -177,15 +189,20 @@ public class PrecisionController : MonoBehaviour
             rightKelvinVal.text = rightKelvinFloat.ToString();
 
             // convert float to DMX
+            int kelvinVal = Mathf.RoundToInt(rightKelvinFloat * 255);
 
             // send DMX
+            SendDMX(skyKelvinDMX, kelvinVal);
 
             // send OSC
             SendOSC("/rightKelvin/", rightKelvinFloat);
         }
+        else rightHandFloat.SetActive(false);
+
     }
 
-    
+
+    #region left globals
     float leftDimmerFloat;
     float leftDimmerYPos;
     bool leftDimmerYLocked = false;
@@ -193,6 +210,7 @@ public class PrecisionController : MonoBehaviour
     float leftKelvinFloat;
     bool leftKelvinXLocked = false;
     float leftKelvinXPos;
+    #endregion
 
     private void ProcessLeftHandControls()
     {
@@ -227,14 +245,16 @@ public class PrecisionController : MonoBehaviour
             leftDimmerVal.text = leftDimmerFloat.ToString();
 
             // convert float to DMX
+            int dimmerVal = Mathf.RoundToInt(leftDimmerFloat * 255);
 
             // send DMX
+            SendDMX(spotDimmerDMX, dimmerVal);
 
             // send OSC
             SendOSC("/leftDimmer/", leftDimmerFloat);
         }
 
-        if (leftKelvin)
+        else if (leftKelvin)
         {
             leftDimmerYLocked = false;
 
@@ -263,12 +283,21 @@ public class PrecisionController : MonoBehaviour
             leftKelvinVal.text = leftKelvinFloat.ToString();
 
             // convert float to DMX
+            int kelvinVal = Mathf.RoundToInt(leftDimmerFloat * 255);
 
             // send DMX
+            SendDMX(spotKelvinDMX, kelvinVal);
 
             // send OSC
             SendOSC("/leftKelvin/", leftKelvinFloat);
         }
+        else leftHandFloat.SetActive(false);
+
+    }
+
+    private void SendDMX(int channel, int val)
+    {
+        dmx.SetAddress(channel, val);
     }
 
     private void SendOSC(string messageOSC, float val)

@@ -10,7 +10,7 @@ public class SpellManager : MonoBehaviour
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
 
-    [SerializeField] GameObject topLevelVisuals;
+    //[SerializeField] GameObject topLevelVisuals;
     
     [SerializeField] GameObject masterOrb;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
@@ -112,7 +112,7 @@ public class SpellManager : MonoBehaviour
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         masterOrb.SetActive(false);
-        topLevelVisuals.SetActive(false);
+        //topLevelVisuals.SetActive(false);
         //elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
@@ -138,8 +138,8 @@ public class SpellManager : MonoBehaviour
             // pullUps - top level menu
             if (handTracking.pullUps)
             {
-                topLevelVisuals.SetActive(true);
-                topLevelVisuals.transform.position = masterOrbPos + new Vector3(0, 0, 0.5f);
+                /*topLevelVisuals.SetActive(true);
+                topLevelVisuals.transform.position = masterOrbPos + new Vector3(0, 0, 0.5f);*/
             }
             
             // two handed casting
@@ -148,21 +148,21 @@ public class SpellManager : MonoBehaviour
                 CastOrb();
                 sound.orbAmbienceFX.Pause();
                 masterOrb.SetActive(false);
-                topLevelVisuals.SetActive(false);
+                //topLevelVisuals.SetActive(false);
                 //elementMenu.SetActive(false);
 
             }
             // element menu
             else if (handTracking.palmsIn && handTracking.fistsIn || manualElMenu)
             {
-                topLevelVisuals.SetActive(false);
+                //topLevelVisuals.SetActive(false);
                 ElementSelector();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
             // element scaler
             else if (handTracking.palmsIn && !handTracking.fistsIn)
             {
-                topLevelVisuals.SetActive(false);
+                //topLevelVisuals.SetActive(false);
                 ElementScaler();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
@@ -178,14 +178,14 @@ public class SpellManager : MonoBehaviour
             else
             {
                 masterOrb.SetActive(false);
-                topLevelVisuals.SetActive(false);
+                //topLevelVisuals.SetActive(false);
                 sound.orbAmbienceFX.Pause();
             }
         }
         else
         {
             masterOrb.SetActive(false);
-            topLevelVisuals.SetActive(false);
+            //topLevelVisuals.SetActive(false);
             sound.orbAmbienceFX.Pause();
         }
 
