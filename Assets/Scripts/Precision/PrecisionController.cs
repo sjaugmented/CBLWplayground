@@ -14,6 +14,10 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] int spotDimmerDMX = 4;
     [SerializeField] int spotKelvinDMX = 3;
 
+    [Header("DJ DMX channels")]
+    [SerializeField] int djDimmerDMX;
+    [SerializeField] int djKelvinDMX;
+
     [Header("Right Hand HUD")]
     [SerializeField] GameObject rightTetherOnText;
     [SerializeField] GameObject rightTetherOffText;
@@ -37,15 +41,22 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] Transform leftHandMin;
 
     [SerializeField] bool tetherOverride = false;
-    bool rightFisted = false;
+    bool hasMadeRightFist = false;
     bool rightTether = false;
     bool rightDimmer = false;
     bool rightKelvin = false;
 
-    bool leftFisted = false;
+    bool hasMadeLeftFist = false;
     bool leftTether = false;
     bool leftDimmer = false;
     bool leftKelvin = false;
+
+    public enum Lights { none, SkyPanel, Spot, DJ };
+    public Lights gazeLight = Lights.none;
+    public Lights rightControl = Lights.none;
+    public Lights leftControl = Lights.none;
+
+
 
 
     PrecisionPoseTracker poseTracker;
@@ -67,13 +78,13 @@ public class PrecisionController : MonoBehaviour
     void Update()
     {
         // right hand control
-        if (poseTracker.rightFist && !rightFisted)
+        if (poseTracker.rightFist && !hasMadeRightFist)
         {
-            rightTether = !rightTether;
-            rightFisted = true;
+            ToggleRightTether();
+            hasMadeRightFist = true;
         }
 
-        if (!poseTracker.rightFist) rightFisted = false;
+        if (!poseTracker.rightFist) hasMadeRightFist = false;
 
         if (rightTether)
         {
@@ -85,13 +96,13 @@ public class PrecisionController : MonoBehaviour
         }
 
         // left hand control
-        if (poseTracker.leftFist && !leftFisted)
+        if (poseTracker.leftFist && !hasMadeLeftFist)
         {
-            leftTether = !leftTether;
-            leftFisted = true;
+            ToggleLeftTether();
+            hasMadeLeftFist = true;
         }
 
-        if (!poseTracker.leftFist) leftFisted = false;
+        if (!poseTracker.leftFist) hasMadeLeftFist = false;
 
         if (leftTether)
         {
@@ -107,6 +118,69 @@ public class PrecisionController : MonoBehaviour
         ProcessRightHandControls();
         ProcessLeftHandControls();
     }
+
+    private void ToggleRightTether()
+    {
+        if (!rightTether)
+        {
+            if (gazeLight == Lights.SkyPanel)
+            {
+                rightControl = Lights.SkyPanel;
+            }
+
+            else if (gazeLight == Lights.Spot)
+            {
+                rightControl = Lights.Spot;
+            }
+
+            else if (gazeLight == Lights.DJ)
+            {
+                rightControl = Lights.DJ;
+            }
+
+            else return;
+
+            rightTether = true;
+
+        }
+        else
+        {
+            rightControl = Lights.none;
+            rightTether = false;
+        }
+    }
+
+    private void ToggleLeftTether()
+    {
+        if (!leftTether)
+        {
+            if (gazeLight == Lights.SkyPanel)
+            {
+                leftControl = Lights.SkyPanel;
+            }
+
+            else if (gazeLight == Lights.Spot)
+            {
+                leftControl = Lights.Spot;
+            }
+
+            else if (gazeLight == Lights.DJ)
+            {
+                leftControl = Lights.DJ;
+            }
+
+            else return;
+
+            leftTether = true;
+
+        }
+        else
+        {
+            leftControl = Lights.none;
+            leftTether = false;
+        }
+    }
+
 
     #region right globals
     float rightDimmerFloat;
@@ -153,11 +227,23 @@ public class PrecisionController : MonoBehaviour
             // convert float to DMX
             int dimmerVal = Mathf.RoundToInt(rightDimmerFloat * 255);
 
-            // send DMX
-            SendDMX(skyDimmerDMX, dimmerVal);
+            // send DMX & OSC
+            if (rightControl == Lights.SkyPanel)
+            {
+                SendDMX(skyDimmerDMX, dimmerVal);
+                SendOSC("/SkyPanelDimmer/", rightDimmerFloat);
+            }
+            else if (rightControl == Lights.Spot)
+            {
+                SendDMX(spotDimmerDMX, dimmerVal);
+                SendOSC("/SpotDimmer/", rightDimmerFloat);
+            }
+            else if (rightControl == Lights.DJ)
+            {
+                SendDMX(djDimmerDMX, dimmerVal);
+                SendOSC("/DJDimmer/", rightDimmerFloat);
+            }
 
-            // send OSC
-            SendOSC("/rightDimmer/", rightDimmerFloat);
         }
 
         else if (rightKelvin)
@@ -191,11 +277,22 @@ public class PrecisionController : MonoBehaviour
             // convert float to DMX
             int kelvinVal = Mathf.RoundToInt(rightKelvinFloat * 255);
 
-            // send DMX
-            SendDMX(skyKelvinDMX, kelvinVal);
-
-            // send OSC
-            SendOSC("/rightKelvin/", rightKelvinFloat);
+            // send DMX & OSC
+            if (rightControl == Lights.SkyPanel)
+            {
+                SendDMX(skyKelvinDMX, kelvinVal);
+                SendOSC("/SkyPanelkelvin/", rightKelvinFloat);
+            }
+            else if (rightControl == Lights.Spot)
+            {
+                SendDMX(spotKelvinDMX, kelvinVal);
+                SendOSC("/SpotKelvin/", rightKelvinFloat);
+            }
+            else if (rightControl == Lights.DJ)
+            {
+                SendDMX(djKelvinDMX, kelvinVal);
+                SendOSC("/DJKelvin/", rightKelvinFloat);
+            }
         }
         else rightHandFloat.SetActive(false);
 
@@ -247,11 +344,22 @@ public class PrecisionController : MonoBehaviour
             // convert float to DMX
             int dimmerVal = Mathf.RoundToInt(leftDimmerFloat * 255);
 
-            // send DMX
-            SendDMX(spotDimmerDMX, dimmerVal);
-
-            // send OSC
-            SendOSC("/leftDimmer/", leftDimmerFloat);
+            // send DMX & OSC
+            if (leftControl == Lights.SkyPanel)
+            {
+                SendDMX(skyDimmerDMX, dimmerVal);
+                SendOSC("/SkyPanelDimmer/", rightDimmerFloat);
+            }
+            else if (leftControl == Lights.Spot)
+            {
+                SendDMX(spotDimmerDMX, dimmerVal);
+                SendOSC("/SpotDimmer/", rightDimmerFloat);
+            }
+            else if (leftControl == Lights.DJ)
+            {
+                SendDMX(djDimmerDMX, dimmerVal);
+                SendOSC("/DJDimmer/", rightDimmerFloat);
+            }
         }
 
         else if (leftKelvin)
@@ -285,11 +393,22 @@ public class PrecisionController : MonoBehaviour
             // convert float to DMX
             int kelvinVal = Mathf.RoundToInt(leftDimmerFloat * 255);
 
-            // send DMX
-            SendDMX(spotKelvinDMX, kelvinVal);
-
-            // send OSC
-            SendOSC("/leftKelvin/", leftKelvinFloat);
+            // send DMX & OSC
+            if (leftControl == Lights.SkyPanel)
+            {
+                SendDMX(skyKelvinDMX, kelvinVal);
+                SendOSC("/SkyPanelkelvin/", rightKelvinFloat);
+            }
+            else if (leftControl == Lights.Spot)
+            {
+                SendDMX(spotKelvinDMX, kelvinVal);
+                SendOSC("/SpotKelvin/", rightKelvinFloat);
+            }
+            else if (leftControl == Lights.DJ)
+            {
+                SendDMX(djKelvinDMX, kelvinVal);
+                SendOSC("/DJKelvin/", rightKelvinFloat);
+            }
         }
         else leftHandFloat.SetActive(false);
 
@@ -298,6 +417,7 @@ public class PrecisionController : MonoBehaviour
     private void SendDMX(int channel, int val)
     {
         dmx.SetAddress(channel, val);
+        Debug.Log("Sending DMX: channel " + channel + ", value " + val); // remove
     }
 
     private void SendOSC(string messageOSC, float val)
@@ -307,6 +427,21 @@ public class PrecisionController : MonoBehaviour
         message.values.Add(val);
         osc.Send(message);
         Debug.Log("OSC sending: " + message);
+    }
+
+    public void GazeAtSkyPanel()
+    {
+        gazeLight = Lights.SkyPanel;
+    }
+
+    public void GazeAtSpot()
+    {
+        gazeLight = Lights.Spot;
+    }
+
+    public void GazeAtDJ()
+    {
+        gazeLight = Lights.DJ;
     }
 
     private void ProcessRightHUD()
