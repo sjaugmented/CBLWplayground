@@ -382,6 +382,16 @@ PrefabInstance:
       propertyPath: messageOSC
       value: /iceStreamLeft/
       objectReference: {fileID: 0}
+    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: m_Name
@@ -452,15 +462,45 @@ PrefabInstance:
       propertyPath: messageOSC
       value: /lightStreamLeft/
       objectReference: {fileID: 0}
+    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 255
+      objectReference: {fileID: 0}
     - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: messageOSC
       value: /fireStreamLeft/
       objectReference: {fileID: 0}
+    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 255
+      objectReference: {fileID: 0}
     - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: messageOSC
       value: /waterStreamLeft/
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 255
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e56b870054828946b4e0d6585c98508, type: 3}
@@ -926,7 +966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &367764643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4060,6 +4100,16 @@ PrefabInstance:
       propertyPath: messageOSC
       value: /iceStreamRight/
       objectReference: {fileID: 0}
+    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 56
+      objectReference: {fileID: 0}
+    - target: {fileID: 2288528384949589924, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 2560701942994156121, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: m_Name
@@ -4130,15 +4180,45 @@ PrefabInstance:
       propertyPath: messageOSC
       value: /lightStreamRight/
       objectReference: {fileID: 0}
+    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 57
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428078756873562796, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 255
+      objectReference: {fileID: 0}
     - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: messageOSC
       value: /fireStreamRight/
       objectReference: {fileID: 0}
+    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 54
+      objectReference: {fileID: 0}
+    - target: {fileID: 6052651089369278706, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
         type: 3}
       propertyPath: messageOSC
       value: /waterStreamRight/
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: channelDMX
+      value: 56
+      objectReference: {fileID: 0}
+    - target: {fileID: 9059459858482878425, guid: 1e56b870054828946b4e0d6585c98508,
+        type: 3}
+      propertyPath: valueDMX
+      value: 255
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e56b870054828946b4e0d6585c98508, type: 3}
@@ -5270,11 +5350,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: currEl
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: lightChannels.Array.data[0]
-      value: 4
+      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: lightChannels.Array.data[1]
@@ -5282,23 +5362,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: fireChannels.Array.data[0]
-      value: 1
+      value: 54
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: fireChannels.Array.data[1]
-      value: 2
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: waterChannels.Array.data[0]
-      value: 3
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: iceChannels.Array.data[0]
-      value: 3
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: iceChannels.Array.data[1]
-      value: 4
+      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: lightValues.Array.data[0]

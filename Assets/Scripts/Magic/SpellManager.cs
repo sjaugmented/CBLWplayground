@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SpellManager : MonoBehaviour
 {
@@ -117,6 +118,9 @@ public class SpellManager : MonoBehaviour
         DisableRightStreams();
         DisableLeftStreams();
 
+        // set global dimmer and color crossfade to max on skypanel
+        dmx.SetAddress(50, 255);
+        dmx.SetAddress(53, 255);
     }
 
     public bool allowPeace = false;
@@ -204,6 +208,7 @@ public class SpellManager : MonoBehaviour
 
     private void LiveDMX()
     {
+        
         if (currEl == Element.light)
         {
             if (lightChannels.Count == 0) return;
@@ -331,6 +336,7 @@ public class SpellManager : MonoBehaviour
         // select element based on distance between palms
         if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxPalmDistance - (elSlotSize * 3)))
         {
+            dmx.ResetDMX();
             currEl = Element.light;
 
             // play soundfx as you leave the zone
@@ -342,6 +348,7 @@ public class SpellManager : MonoBehaviour
         }
         else if (palmDist > maxPalmDistance - (elSlotSize * 3) && palmDist <= maxPalmDistance - (elSlotSize * 2))
         {
+            dmx.ResetDMX();
             currEl = Element.fire;
             // activate corresponding element
             for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
@@ -352,6 +359,7 @@ public class SpellManager : MonoBehaviour
         }
         else if (palmDist > maxPalmDistance - (elSlotSize * 2) && palmDist <= maxPalmDistance - elSlotSize)
         {
+            dmx.ResetDMX();
             currEl = Element.water;
 
             // play soundfx as you leave the zone
@@ -360,6 +368,7 @@ public class SpellManager : MonoBehaviour
         }
         else if (palmDist > maxPalmDistance - elSlotSize && palmDist <= maxPalmDistance)
         {
+            dmx.ResetDMX();
             currEl = Element.ice;
         }
 

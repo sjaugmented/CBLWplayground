@@ -318,9 +318,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeSpan: 5
   force: 50
-  DMXchannels: 
-  DMXvalues: 
-  dimOverTime: 1
+  DMXchannels: 04000000
+  DMXvalues: ff000000
+  dimOverTime: 0
   rateOfDim: 20
   OSCtoReceive: message to receive here
   messageOSC: /lightOrb/
@@ -5039,7 +5039,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 2100000, guid: da2dab93f98398145a66462fbd7c178d, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

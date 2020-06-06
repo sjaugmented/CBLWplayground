@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Precision.unity
-    guid: 15a40e515346cb84d8e2b9f4a5f219e6
+    path: Assets/Scenes/Magic.unity
+    guid: 251dae1070303514daa14c325e308876
   m_configObjects: {}

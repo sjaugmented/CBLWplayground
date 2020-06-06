@@ -362,9 +362,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifeSpan: 5
   force: 50
-  DMXchannels: 
-  DMXvalues: 
-  dimOverTime: 1
+  DMXchannels: 0300000004000000
+  DMXvalues: ff000000af000000
+  dimOverTime: 0
   rateOfDim: 20
   OSCtoReceive: message to receive here
   messageOSC: /iceOrb/

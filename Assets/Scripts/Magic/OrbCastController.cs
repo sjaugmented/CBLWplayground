@@ -146,14 +146,8 @@ public class OrbCastController : MonoBehaviour
 
     IEnumerator TimedLight()
     {
-        if (DMXchannels.Length == 0)
-        {
-            // do nothing
-        }
-
         yield return new WaitForSeconds(blackoutDelay);
         dmx.ResetDMX();
-        //Debug.Log("resetting DMX"); //todo remove
     }
 
     IEnumerator SelfDestruct()

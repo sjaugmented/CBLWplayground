@@ -25,7 +25,7 @@ public class StreamController : MonoBehaviour
     {
         var emitting = parentStream.emission;
 
-        if (emitting.enabled == false) return;
+        if (emitting.enabled == false) return ;
         else
         {
             dmx.SetAddress(channelDMX, valueDMX);
