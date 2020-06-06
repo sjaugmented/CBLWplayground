@@ -56,7 +56,7 @@ public class PrecisionController : MonoBehaviour
     public Lights rightControl = Lights.none;
     public Lights leftControl = Lights.none;
 
-
+    bool hudOn = false;
 
 
     PrecisionPoseTracker poseTracker;
@@ -113,10 +113,27 @@ public class PrecisionController : MonoBehaviour
             else leftKelvin = false;
         }
 
-        ProcessRightHUD();
-        ProcessLeftHud();
+        
         ProcessRightHandControls();
         ProcessLeftHandControls();
+
+        if (hudOn)
+        {
+            ProcessRightHUD();
+            ProcessLeftHud();
+        }
+        else
+        {
+            rightTetherOffText.SetActive(false);
+            rightTetherOnText.SetActive(false);
+            rightDimmerText.SetActive(false);
+            rightKelvinText.SetActive(false);
+
+            leftTetherOffText.SetActive(false);
+            leftTetherOnText.SetActive(false);
+            leftDimmerText.SetActive(false);
+            leftKelvinText.SetActive(false);
+        }
     }
 
     private void ToggleRightTether()
@@ -391,7 +408,7 @@ public class PrecisionController : MonoBehaviour
             leftKelvinVal.text = leftKelvinFloat.ToString();
 
             // convert float to DMX
-            int kelvinVal = Mathf.RoundToInt(leftDimmerFloat * 255);
+            int kelvinVal = Mathf.RoundToInt(leftKelvinFloat  * 255);
 
             // send DMX & OSC
             if (leftControl == Lights.SkyPanel)
@@ -442,6 +459,16 @@ public class PrecisionController : MonoBehaviour
     public void GazeAtDJ()
     {
         gazeLight = Lights.DJ;
+    }
+
+    public void NoGaze()
+    {
+        gazeLight = Lights.none;
+    }
+
+    public void ToggleHUD()
+    {
+        hudOn = !hudOn;
     }
 
     private void ProcessRightHUD()
