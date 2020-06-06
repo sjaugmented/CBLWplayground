@@ -5,6 +5,7 @@ using UnityEngine;
 public class HideHitBox : MonoBehaviour
 {
     Renderer thisRenderer;
+    bool visible = true;
     
     // Start is called before the first frame update
     void Start()
@@ -14,6 +15,16 @@ public class HideHitBox : MonoBehaviour
 
     public void HideBox()
     {
-        thisRenderer.enabled = !thisRenderer.enabled;
+        if (visible)
+        {
+            thisRenderer.enabled = false;
+            visible = false;
+        }
+        else
+        {
+            thisRenderer.enabled = true;
+            visible = true;
+        }
+        
     }
 }
