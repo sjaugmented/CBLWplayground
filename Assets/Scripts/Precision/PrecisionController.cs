@@ -19,16 +19,18 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] int djKelvinDMX;
 
     [Header("Right Hand HUD")]
-    [SerializeField] GameObject rightTetherOnText;
-    [SerializeField] GameObject rightTetherOffText;
+    [SerializeField] GameObject rightSkyPanel;
+    [SerializeField] GameObject rightSpot;
+    [SerializeField] GameObject rightNone;
     [SerializeField] GameObject rightDimmerText;
     [SerializeField] GameObject rightKelvinText;
     [SerializeField] TextMeshPro rightDimmerVal;
     [SerializeField] TextMeshPro rightKelvinVal;
 
     [Header("Left Hand HUD")]
-    [SerializeField] GameObject leftTetherOnText;
-    [SerializeField] GameObject leftTetherOffText;
+    [SerializeField] GameObject leftSkyPanel;
+    [SerializeField] GameObject leftSpot;
+    [SerializeField] GameObject leftNone;
     [SerializeField] GameObject leftDimmerText;
     [SerializeField] GameObject leftKelvinText;
     [SerializeField] TextMeshPro leftDimmerVal;
@@ -124,13 +126,13 @@ public class PrecisionController : MonoBehaviour
         }
         else
         {
-            rightTetherOffText.SetActive(false);
-            rightTetherOnText.SetActive(false);
+            rightNone.SetActive(false);
+            rightSkyPanel.SetActive(false);
             rightDimmerText.SetActive(false);
             rightKelvinText.SetActive(false);
 
-            leftTetherOffText.SetActive(false);
-            leftTetherOnText.SetActive(false);
+            leftNone.SetActive(false);
+            leftSkyPanel.SetActive(false);
             leftDimmerText.SetActive(false);
             leftKelvinText.SetActive(false);
         }
@@ -155,14 +157,13 @@ public class PrecisionController : MonoBehaviour
                 rightControl = Lights.DJ;
             }
 
-            else return;
+            else rightControl = Lights.none;
 
             rightTether = true;
 
         }
         else
         {
-            rightControl = Lights.none;
             rightTether = false;
         }
     }
@@ -193,7 +194,6 @@ public class PrecisionController : MonoBehaviour
         }
         else
         {
-            leftControl = Lights.none;
             leftTether = false;
         }
     }
@@ -267,18 +267,19 @@ public class PrecisionController : MonoBehaviour
         {
             rightDimmerYLocked = false;
 
-            // activate right hand float
-            rightHandFloat.SetActive(true);
-            rightHandFloat.transform.localRotation = Quaternion.Euler(poseTracker.rightPalm.Rotation.x, poseTracker.rightPalm.Rotation.y, -90);
-
-            // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
+            // set float.position.x to pose.position.x and store in memory - float.position.y/z tracks to pose.position.y/z
             if (!rightKelvinXLocked)
             {
                 rightKelvinXPos = poseTracker.rightPalm.Position.x;
                 rightKelvinXLocked = true;
             }
 
+            // activate right hand float, position, and rotate
+            rightHandFloat.SetActive(true);
+            rightHandFloat.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            rightHandFloat.transform.rotation = poseTracker.rightPalm.Rotation;
             rightHandFloat.transform.position = new Vector3(rightKelvinXPos, poseTracker.rtMiddleTip.Position.y, poseTracker.rtMiddleTip.Position.z);
+
 
             // determine float using pose.position.x
             float maxDistance = 0.25f;
@@ -387,7 +388,7 @@ public class PrecisionController : MonoBehaviour
             leftHandFloat.SetActive(true);
             leftHandFloat.transform.transform.localRotation = Quaternion.Euler(0, 0, 90);
 
-            // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
+            // set float.position.x to pose.position.x and store in memory - float.position.y/z tracks to pose.position.y/z
             if (!leftKelvinXLocked)
             {
                 leftKelvinXPos = poseTracker.ltMiddleTip.Position.x;
@@ -475,13 +476,29 @@ public class PrecisionController : MonoBehaviour
     {
         if (rightTether)
         {
-            rightTetherOnText.SetActive(true);
-            rightTetherOffText.SetActive(false);
+            if (rightControl == Lights.SkyPanel)
+            {
+                rightSkyPanel.SetActive(true);
+                rightSpot.SetActive(false);
+                rightNone.SetActive(false);
+            }
+            else if (rightControl == Lights.Spot)
+            {
+                rightSkyPanel.SetActive(false);
+                rightSpot.SetActive(true);
+                rightNone.SetActive(false);
+            }
+            else if (rightControl == Lights.none)
+            {
+                rightSkyPanel.SetActive(false);
+                rightSpot.SetActive(false);
+                rightNone.SetActive(true);
+            }
         }
         else
         {
-            rightTetherOnText.SetActive(false);
-            rightTetherOffText.SetActive(true);
+            rightSkyPanel.SetActive(false);
+            rightNone.SetActive(true);
         }
 
         if (rightTether && rightDimmer)
@@ -501,13 +518,13 @@ public class PrecisionController : MonoBehaviour
     {
         if (leftTether)
         {
-            leftTetherOnText.SetActive(true);
-            leftTetherOffText.SetActive(false);
+            leftSkyPanel.SetActive(true);
+            leftNone.SetActive(false);
         }
         else
         {
-            leftTetherOnText.SetActive(false);
-            leftTetherOffText.SetActive(true);
+            leftSkyPanel.SetActive(false);
+            leftNone.SetActive(true);
         }
 
         if (leftTether && leftDimmer)
