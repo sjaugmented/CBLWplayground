@@ -8,6 +8,9 @@ using UnityEngine.UIElements;
 
 public class SpellManager : MonoBehaviour
 {
+    [SerializeField] GameObject vertStackText;
+    [SerializeField] GameObject forStackText;
+    
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
 
@@ -121,6 +124,9 @@ public class SpellManager : MonoBehaviour
         // set global dimmer and color crossfade to max on skypanel
         dmx.SetAddress(50, 255);
         dmx.SetAddress(53, 255);
+
+        vertStackText.SetActive(false);
+        forStackText.SetActive(false);
     }
 
     public bool allowPeace = false;
@@ -139,6 +145,12 @@ public class SpellManager : MonoBehaviour
 
         if (handTracking.twoHands)
         {
+            if (handTracking.verticalStack) vertStackText.SetActive(true);
+            else vertStackText.SetActive(false);
+
+            if (handTracking.forwardStack) forStackText.SetActive(true);
+            else forStackText.SetActive(false);
+            
             // pullUps - top level menu
             if (handTracking.pullUps)
             {
@@ -156,6 +168,7 @@ public class SpellManager : MonoBehaviour
                 //elementMenu.SetActive(false);
 
             }
+
             // element menu
             else if (handTracking.palmsIn && handTracking.fistsIn || manualElMenu)
             {
@@ -163,6 +176,7 @@ public class SpellManager : MonoBehaviour
                 ElementSelector();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
+
             // element scaler
             else if (handTracking.palmsIn && !handTracking.fistsIn)
             {

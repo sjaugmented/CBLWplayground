@@ -29,6 +29,8 @@ public class OrbFingerTracker : MonoBehaviour
     public bool fistsIn = false;
     public bool pullUps = false;
     public bool palmsOut = false;
+    public bool verticalStack = false;
+    public bool forwardStack = false;
     public bool rockOnRight = false;
     public bool rockOnLeft = false;
     public float palmDist;
@@ -62,6 +64,8 @@ public class OrbFingerTracker : MonoBehaviour
 
         // right palm
         float rtPalmUpCamFor = Vector3.Angle(rightPalm.Up, cam.forward);
+        float rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);
+        float rtPalmUpFloorFor = Vector3.Angle(rightPalm.Up, floor.forward);
         float rtPalmForCamFor = Vector3.Angle(rightPalm.Forward, cam.forward);
         float rtPalmRtCamFor = Vector3.Angle(rightPalm.Right, cam.forward);
         float rtPalmRtCamRt = Vector3.Angle(rightPalm.Right, cam.right);
@@ -73,6 +77,8 @@ public class OrbFingerTracker : MonoBehaviour
 
         // left palm
         float ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
+        float ltPalmUpFloorUp = Vector3.Angle(leftPalm.Up, floor.up);
+        float ltPalmUpFloorFor = Vector3.Angle(leftPalm.Up, floor.forward);
         float ltPalmForCamFor = Vector3.Angle(leftPalm.Forward, cam.forward);
         float ltPalmRtCamFor = Vector3.Angle(leftPalm.Right, cam.forward);
         float ltPalmRtCamRt = Vector3.Angle(leftPalm.Right, cam.right);
@@ -105,7 +111,7 @@ public class OrbFingerTracker : MonoBehaviour
         float ltIndKnuckForPalmFor = Vector3.Angle(ltIndexKnuckle.Forward, leftPalm.Forward);
         #endregion
 
-        // look for right fingers
+        // look for only right fingers
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip))
         {
             // look for rockOn
@@ -123,7 +129,7 @@ public class OrbFingerTracker : MonoBehaviour
             rockOnRight = false;
         }
 
-        // look for left fingers
+        // look for only left fingers
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
         {
             // look for rockOn
@@ -150,53 +156,94 @@ public class OrbFingerTracker : MonoBehaviour
 
             palmDist = Vector3.Distance(rightPalm.Position, leftPalm.Position);
 
-            // look for palms in
-            if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(p2pFor, 0) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmUpCamRt, 0) && IsWithinRange(ltPalmUpCamRt, 180) && IsWithinRange(rtPalmForCamRt, 90) && IsWithinRange(ltPalmForCamRt, 90))
+            // look for fingers both hands
+            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
             {
-                palmsIn = true;
-                palmsOut = false;
-                pullUps = false;
-
-                // look for fingers both hands
-                if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
+                // look for palms in, neutral fingers
+                if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(p2pFor, 0) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmUpFloorUp, 90) && IsWithinRange(ltPalmUpFloorUp, 90) && IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && IsWithinRange(rtMidForPalmFor, 20) && IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && IsWithinRange(ltMidForPalmFor, 20))
                 {
-                    if (IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70) && IsWithinRange(rtPalmUpCamFor, 0) && IsWithinRange(ltPalmUpCamFor, 0))
-                    {
-                        pullUps = true;
-                        fistsIn = false;
-                    }
+                    palmsIn = true;
+                    palmsOut = false;
+                    pullUps = false;
+                    verticalStack = false;
+                    forwardStack = false;
 
-                    else if (IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90))
+                    // look for fists in
+                    if (IsWithinRange(p2pUp, 180) && IsWithinRange(p2pRt, 180) && IsWithinRange(p2pFor, 0) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmUpFloorUp, 90) && IsWithinRange(ltPalmUpFloorUp, 90) && IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70))
                     {
-                        pullUps = false;
                         fistsIn = true;
                     }
                     else fistsIn = false;
                 }
-            } 
 
-            // look for palmsOut 
-            else if (IsWithinRange(p2pUp, 0) && IsWithinRange(p2pRt, 0) && IsWithinRange(p2pFor, 0) && IsWithinRange(rtPalmUpCamFor, 180) && IsWithinRange(ltPalmUpCamFor, 180))
-            {
-                palmsIn = false;
-                palmsOut = true;
-                
+                // look for palmsOut, neutral fingers
+                else if (IsWithinRange(p2pUp, 0) && IsWithinRange(p2pRt, 0) && IsWithinRange(p2pFor, 0) && IsWithinRange(rtPalmUpCamFor, 180) && IsWithinRange(ltPalmUpCamFor, 180) && IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && IsWithinRange(rtMidForPalmFor, 20) && IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && IsWithinRange(ltMidForPalmFor, 20))
+                {
+                    palmsIn = false;
+                    palmsOut = true;
+                    pullUps = false;
+                    verticalStack = false;
+                    forwardStack = false;
+                }
+
+                // look for pull up fists
+                else if (IsWithinRange(p2pUp, 0) && IsWithinRange(p2pRt, 180) && IsWithinRange(p2pFor, 0) && IsWithinRange(rtPalmUpCamFor, 0) && IsWithinRange(ltPalmUpCamFor, 0) && IsWithinRange(rtIndMidForPalmFor, 170) && IsWithinRange(rtIndKnuckForPalmFor, 70) && IsWithinRange(ltIndMidForPalmFor, 170) && IsWithinRange(ltIndKnuckForPalmFor, 70) && IsWithinRange(rtPalmUpCamFor, 0) && IsWithinRange(ltPalmUpCamFor, 0))
+                {
+                    palmsIn = false;
+                    palmsOut = false;
+                    pullUps = true;
+                    verticalStack = false;
+                    forwardStack = false;
+                }
+
+                // look for vertical stack
+                else if (IsWithinRange(p2pUp, 0) && IsWithinRange(p2pRt, 180) && IsWithinRange(p2pFor, 180) && IsWithinRange(rtPalmUpCamFor, 90) && IsWithinRange(ltPalmUpCamFor, 90) && IsWithinRange(rtPalmRtCamFor, 0) && IsWithinRange(ltPalmRtCamFor, 180) && IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && IsWithinRange(rtMidForPalmFor, 20) && IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && IsWithinRange(ltMidForPalmFor, 20))
+                {
+                    palmsIn = false;
+                    palmsOut = false;
+                    pullUps = false;
+                    verticalStack = true;
+                    forwardStack = false;
+                }
+
+                // look for forward stack
+                else if (IsWithinRange(p2pUp, 0) && IsWithinRange(p2pRt, 180) && IsWithinRange(p2pFor, 180) && IsWithinRange(rtPalmUpFloorFor, 0) && IsWithinRange(ltPalmUpFloorFor, 0) && IsWithinRange(rtPalmRtFloorFor, 90) && IsWithinRange(ltPalmRtFloorFor, 90) && IsWithinRange(rtIndForPalmFor, 20) && IsWithinRange(rtPinkForPalmFor, 20) && IsWithinRange(rtMidForPalmFor, 20) && IsWithinRange(ltIndForPalmFor, 20) && IsWithinRange(ltPinkForPalmFor, 20) && IsWithinRange(ltMidForPalmFor, 20))
+                {
+                    palmsIn = false;
+                    palmsOut = false;
+                    pullUps = false;
+                    verticalStack = false;
+                    forwardStack = true;
+                }
+
+                else
+                {
+                    palmsIn = false;
+                    palmsOut = false;
+                    pullUps = false;
+                    verticalStack = false;
+                    forwardStack = false;
+                }
             }
             else
             {
                 palmsIn = false;
                 palmsOut = false;
+                pullUps = false;
+                verticalStack = false;
+                forwardStack = false;
             }
+
         }
         else
         {
             twoHands = false;
             palmsIn = false;
             palmsOut = false;
+            pullUps = false;
+            verticalStack = false;
+            forwardStack = false;
         }
-
-
-        
     }
 
     private bool IsWithinRange(float testVal, float target)
