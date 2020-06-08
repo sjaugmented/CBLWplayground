@@ -3698,7 +3698,7 @@ Transform:
   m_Children:
   - {fileID: 942197832}
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1053962949
 GameObject:
@@ -4928,7 +4928,7 @@ Transform:
   - {fileID: 1337045810}
   - {fileID: 1135113536}
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1301276206
 GameObject:
@@ -5499,16 +5499,16 @@ MonoBehaviour:
   spotKelvinDMX: 3
   djDimmerDMX: 0
   djKelvinDMX: 0
-  rightSkyPanel: {fileID: 0}
-  rightSpot: {fileID: 0}
-  rightNone: {fileID: 0}
+  rightSkyPanel: {fileID: 120076851}
+  rightSpot: {fileID: 144327067}
+  rightNone: {fileID: 106153033}
   rightDimmerText: {fileID: 1601205741}
   rightKelvinText: {fileID: 1933820697}
   rightDimmerVal: {fileID: 1088650913}
   rightKelvinVal: {fileID: 1744462843}
-  leftSkyPanel: {fileID: 0}
-  leftSpot: {fileID: 0}
-  leftNone: {fileID: 0}
+  leftSkyPanel: {fileID: 158274503}
+  leftSpot: {fileID: 1707181545}
+  leftNone: {fileID: 878909990}
   leftDimmerText: {fileID: 740916945}
   leftKelvinText: {fileID: 1301276206}
   leftDimmerVal: {fileID: 2001369073}
@@ -5521,6 +5521,7 @@ MonoBehaviour:
   gazeLight: 0
   rightControl: 0
   leftControl: 0
+  hudOn: 1
 --- !u!114 &1479164447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8932,7 +8933,7 @@ PrefabInstance:
     - target: {fileID: 8051595775175407407, guid: 4cbc27ebd21d2f140b3767bcd1cb52e7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 22
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 8051595775175407407, guid: 4cbc27ebd21d2f140b3767bcd1cb52e7,
         type: 3}

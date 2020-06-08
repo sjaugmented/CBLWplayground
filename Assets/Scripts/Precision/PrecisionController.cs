@@ -58,7 +58,7 @@ public class PrecisionController : MonoBehaviour
     public Lights rightControl = Lights.none;
     public Lights leftControl = Lights.none;
 
-    bool hudOn = false;
+    public bool hudOn = false; // todo make private
 
 
     PrecisionPoseTracker poseTracker;
@@ -128,10 +128,12 @@ public class PrecisionController : MonoBehaviour
         {
             rightNone.SetActive(false);
             rightSkyPanel.SetActive(false);
+            rightSpot.SetActive(false);
             rightDimmerText.SetActive(false);
             rightKelvinText.SetActive(false);
 
             leftNone.SetActive(false);
+            leftSpot.SetActive(false);
             leftSkyPanel.SetActive(false);
             leftDimmerText.SetActive(false);
             leftKelvinText.SetActive(false);
@@ -142,22 +144,26 @@ public class PrecisionController : MonoBehaviour
     {
         if (!rightTether)
         {
-            if (gazeLight == Lights.SkyPanel)
+            if (rightControl == Lights.none)
             {
-                rightControl = Lights.SkyPanel;
-            }
+                if (gazeLight == Lights.SkyPanel)
+                {
+                    rightControl = Lights.SkyPanel;
+                }
 
-            else if (gazeLight == Lights.Spot)
-            {
-                rightControl = Lights.Spot;
-            }
+                else if (gazeLight == Lights.Spot)
+                {
+                    rightControl = Lights.Spot;
+                }
 
-            else if (gazeLight == Lights.DJ)
-            {
-                rightControl = Lights.DJ;
-            }
+                else if (gazeLight == Lights.DJ)
+                {
+                    rightControl = Lights.DJ;
+                }
 
-            else rightControl = Lights.none;
+                else return;
+            }
+            
 
             rightTether = true;
 
@@ -172,22 +178,25 @@ public class PrecisionController : MonoBehaviour
     {
         if (!leftTether)
         {
-            if (gazeLight == Lights.SkyPanel)
+            if (leftControl == Lights.none)
             {
-                leftControl = Lights.SkyPanel;
-            }
+                if (gazeLight == Lights.SkyPanel)
+                {
+                    leftControl = Lights.SkyPanel;
+                }
 
-            else if (gazeLight == Lights.Spot)
-            {
-                leftControl = Lights.Spot;
-            }
+                else if (gazeLight == Lights.Spot)
+                {
+                    leftControl = Lights.Spot;
+                }
 
-            else if (gazeLight == Lights.DJ)
-            {
-                leftControl = Lights.DJ;
-            }
+                else if (gazeLight == Lights.DJ)
+                {
+                    leftControl = Lights.DJ;
+                }
 
-            else return;
+                else return;
+            }
 
             leftTether = true;
 
@@ -277,7 +286,6 @@ public class PrecisionController : MonoBehaviour
             // activate right hand float, position, and rotate
             rightHandFloat.SetActive(true);
             rightHandFloat.transform.localRotation = Quaternion.Euler(0, 0, -90);
-            rightHandFloat.transform.rotation = poseTracker.rightPalm.Rotation;
             rightHandFloat.transform.position = new Vector3(rightKelvinXPos, poseTracker.rtMiddleTip.Position.y, poseTracker.rtMiddleTip.Position.z);
 
 
@@ -488,6 +496,10 @@ public class PrecisionController : MonoBehaviour
                 rightSpot.SetActive(true);
                 rightNone.SetActive(false);
             }
+            else if (rightControl == Lights.DJ)
+            {
+                // add HUD text
+            }
             else if (rightControl == Lights.none)
             {
                 rightSkyPanel.SetActive(false);
@@ -498,6 +510,7 @@ public class PrecisionController : MonoBehaviour
         else
         {
             rightSkyPanel.SetActive(false);
+            rightSpot.SetActive(false);
             rightNone.SetActive(true);
         }
 
@@ -518,12 +531,33 @@ public class PrecisionController : MonoBehaviour
     {
         if (leftTether)
         {
-            leftSkyPanel.SetActive(true);
-            leftNone.SetActive(false);
+            if (leftControl == Lights.SkyPanel)
+            {
+                leftSkyPanel.SetActive(true);
+                leftSpot.SetActive(false);
+                leftNone.SetActive(false);
+            }
+            else if (leftControl == Lights.Spot)
+            {
+                leftSkyPanel.SetActive(false);
+                leftSpot.SetActive(true);
+                leftNone.SetActive(false);
+            }
+            else if (leftControl == Lights.DJ)
+            {
+                // add HUD text
+            }
+            else if (leftControl == Lights.none)
+            {
+                leftSkyPanel.SetActive(false);
+                leftSpot.SetActive(false);
+                leftNone.SetActive(true);
+            }
         }
         else
         {
             leftSkyPanel.SetActive(false);
+            leftSpot.SetActive(false);
             leftNone.SetActive(true);
         }
 
