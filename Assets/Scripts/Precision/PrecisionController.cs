@@ -222,7 +222,7 @@ public class PrecisionController : MonoBehaviour
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!rightDimmerYLocked)
             {
-                rightDimmerYPos = poseTracker.rtMiddleTip.Position.y;
+                rightDimmerYPos = poseTracker.rightPalm.Position.y;
                 rightDimmerYLocked = true;
             }
 
@@ -269,12 +269,12 @@ public class PrecisionController : MonoBehaviour
 
             // activate right hand float
             rightHandFloat.SetActive(true);
-            rightHandFloat.transform.transform.localRotation = Quaternion.Euler(0, 0, -90);
+            rightHandFloat.transform.localRotation = Quaternion.Euler(poseTracker.rightPalm.Rotation.x, poseTracker.rightPalm.Rotation.y, -90);
 
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!rightKelvinXLocked)
             {
-                rightKelvinXPos = poseTracker.rtMiddleTip.Position.x;
+                rightKelvinXPos = poseTracker.rightPalm.Position.x;
                 rightKelvinXLocked = true;
             }
 
