@@ -145,8 +145,8 @@ public class OrbFingerTracker : MonoBehaviour
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
         {
             twoHands = true;
-            rockOnRight = false;
-            rockOnLeft = false;
+            /*rockOnRight = false;
+            rockOnLeft = false;*/
 
             palmDist = Vector3.Distance(rightPalm.Position, leftPalm.Position);
 
