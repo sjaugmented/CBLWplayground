@@ -3602,7 +3602,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: currEl
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1936508196, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
       propertyPath: lightChannels.Array.data[0]
@@ -3885,7 +3885,7 @@ PrefabInstance:
     - target: {fileID: 8290986863599863434, guid: 8ed53c624b13a9041bec53cb0ef7871f,
         type: 3}
       propertyPath: angleMargin
-      value: 25
+      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ed53c624b13a9041bec53cb0ef7871f, type: 3}
