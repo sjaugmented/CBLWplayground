@@ -170,7 +170,7 @@ public class SpellManager : MonoBehaviour
             }
 
             // element menu
-            else if (handTracking.palmsIn && handTracking.fistsIn || manualElMenu)
+            else if (handTracking.fistsIn || manualElMenu)
             {
                 //topLevelVisuals.SetActive(false);
                 ElementSelector();
@@ -178,7 +178,7 @@ public class SpellManager : MonoBehaviour
             }
 
             // element scaler
-            else if (handTracking.palmsIn && !handTracking.fistsIn)
+            else if (handTracking.palmsIn)
             {
                 //topLevelVisuals.SetActive(false);
                 ElementScaler();
@@ -206,9 +206,6 @@ public class SpellManager : MonoBehaviour
             //topLevelVisuals.SetActive(false);
             sound.orbAmbienceFX.Pause();
         }
-
-        
-
     }
 
     private void SendOSCMessage(string address, float value)
