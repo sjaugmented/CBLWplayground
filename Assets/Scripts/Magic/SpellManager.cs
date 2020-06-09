@@ -9,7 +9,9 @@ using UnityEngine.UIElements;
 public class SpellManager : MonoBehaviour
 {
     [SerializeField] GameObject vertStackText;
+    [SerializeField] TextMeshPro yFloatText;
     [SerializeField] GameObject forStackText;
+    [SerializeField] TextMeshPro zFloatText;
     [SerializeField] GameObject pullUpsText;
     
     [SerializeField] bool manualElMenu = false;
@@ -49,12 +51,16 @@ public class SpellManager : MonoBehaviour
 
     [Header("Palm Conjure")]
     [Tooltip("Max distance between palms for conjuring")]
-    [SerializeField] [Range( 0.2f, 0.6f)] float maxPalmDistance = 0.3f;
+    [SerializeField] [Range( 0.2f, 0.6f)] float maxXAxisDist = 0.5f;
+    [SerializeField] float maxYAxisDist = 0.3f;
+    [SerializeField] float maxZAxisDist = 0.3f;
     [SerializeField] [Range(0f, 0.2f)] float palmDistOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 
     [Header("OSC controller")]
     public List<String> conjureOSCMessages;
+    [SerializeField] string yOSCMessage = "/yOSCfloat/";
+    [SerializeField] string zOSCMessage = "/zOSCfloat/";
 
     [Header("DMX controllers")]
     public List<int> lightChannels;
@@ -79,6 +85,8 @@ public class SpellManager : MonoBehaviour
     Vector3 rightPartPos;
     Vector3 leftPartPos;
     float palmDist;
+    float indexMidDist;
+    private Vector3 midpointIndexes;
     float elementScale;
 
     // used to create rate of fire for spells
@@ -147,25 +155,47 @@ public class SpellManager : MonoBehaviour
 
         if (handTracking.twoHands)
         {
-            if (handTracking.verticalStack) vertStackText.SetActive(true);
-            else vertStackText.SetActive(false);
+            if (handTracking.verticalStack)
+            {
+                float yOSCFloat;
 
-            if (handTracking.forwardStack) forStackText.SetActive(true);
-            else forStackText.SetActive(false);
+                yOSCFloat = 1 - indexMidDist / maxYAxisDist;
+                if (indexMidDist > maxYAxisDist) elementScale = 0;
+
+                SendOSCMessage(yOSCMessage, yOSCFloat);
+
+                vertStackText.SetActive(true);
+                vertStackText.transform.position = midpointIndexes;
+                yFloatText.text = yOSCFloat.ToString();
+            }
+            else
+            {
+                vertStackText.SetActive(false);
+            }
+
+            if (handTracking.forwardStack)
+            {
+                float zOSCFloat;
+
+                zOSCFloat = 1 - indexMidDist / maxZAxisDist;
+                if (indexMidDist > maxZAxisDist) elementScale = 0;
+
+                SendOSCMessage(zOSCMessage, zOSCFloat);
+
+                forStackText.SetActive(true);
+                forStackText.transform.position = midpointIndexes;
+                zFloatText.text = zOSCFloat.ToString();
+            }
+            else
+            {
+                forStackText.SetActive(false);
+            }
 
             if (handTracking.pullUps) pullUpsText.SetActive(true);
             else pullUpsText.SetActive(false);
-
-
-            // pullUps - top level menu
-            if (handTracking.pullUps)
-            {
-                /*topLevelVisuals.SetActive(true);
-                topLevelVisuals.transform.position = masterOrbPos + new Vector3(0, 0, 0.5f);*/
-            }
             
             // two handed casting
-            else if (handTracking.palmsOut)
+            if (handTracking.palmsOut)
             {
                 CastOrb();
                 sound.orbAmbienceFX.Pause();
@@ -220,7 +250,7 @@ public class SpellManager : MonoBehaviour
         message.address = address;
         message.values.Add(value);
         osc.Send(message);
-        //Debug.Log("Sending OSC: " + address + " " + value); // todo remove
+        Debug.Log("Sending OSC: " + address + " " + value); // todo remove
     }
 
     private void LiveDMX()
@@ -328,6 +358,8 @@ public class SpellManager : MonoBehaviour
     private void CalcHandPositions()
     {
         palmDist = handTracking.palmDist;
+        indexMidDist = Vector3.Distance(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position);
+        midpointIndexes = Vector3.Lerp(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position, 0.5f);
 
         var midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
         masterOrbPos = midpointPalms + palmMidpointOffset;
@@ -348,22 +380,22 @@ public class SpellManager : MonoBehaviour
         masterOrb.transform.position = masterOrbPos;
         masterOrb.GetComponent<MasterOrbRotater>().xRotation = 1;
 
-        float elSlotSize = (maxPalmDistance - palmDistOffset) / spellBook.masterOrbElements.Count;
+        float elSlotSize = (maxXAxisDist - palmDistOffset) / spellBook.masterOrbElements.Count;
 
         // select element based on distance between palms
-        if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxPalmDistance - (elSlotSize * 3)))
+        if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxXAxisDist - (elSlotSize * 3)))
         {
             dmx.ResetDMX();
             currEl = Element.light;
 
             // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - (elSlotSize * 3))
+            if (palmDist == maxXAxisDist - (elSlotSize * 3))
             {
                 sound.elementSwitchFX.Play();
                 Debug.Log("switch!");
             }
         }
-        else if (palmDist > maxPalmDistance - (elSlotSize * 3) && palmDist <= maxPalmDistance - (elSlotSize * 2))
+        else if (palmDist > maxXAxisDist - (elSlotSize * 3) && palmDist <= maxXAxisDist - (elSlotSize * 2))
         {
             dmx.ResetDMX();
             currEl = Element.fire;
@@ -371,19 +403,19 @@ public class SpellManager : MonoBehaviour
             for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
 
                 // play soundfx as you leave the zone
-                if (palmDist == maxPalmDistance - (elSlotSize * 2)) sound.elementSwitchFX.Play();
+                if (palmDist == maxXAxisDist - (elSlotSize * 2)) sound.elementSwitchFX.Play();
 
         }
-        else if (palmDist > maxPalmDistance - (elSlotSize * 2) && palmDist <= maxPalmDistance - elSlotSize)
+        else if (palmDist > maxXAxisDist - (elSlotSize * 2) && palmDist <= maxXAxisDist - elSlotSize)
         {
             dmx.ResetDMX();
             currEl = Element.water;
 
             // play soundfx as you leave the zone
-            if (palmDist == maxPalmDistance - elSlotSize) sound.elementSwitchFX.Play();
+            if (palmDist == maxXAxisDist - elSlotSize) sound.elementSwitchFX.Play();
 
         }
-        else if (palmDist > maxPalmDistance - elSlotSize && palmDist <= maxPalmDistance)
+        else if (palmDist > maxXAxisDist - elSlotSize && palmDist <= maxXAxisDist)
         {
             dmx.ResetDMX();
             currEl = Element.ice;
@@ -422,8 +454,8 @@ public class SpellManager : MonoBehaviour
         }
 
         // determine scale
-        if (palmDist >= palmDistOffset && palmDist <= maxPalmDistance) elementScale = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
-        else if (palmDist > maxPalmDistance) elementScale = 0;
+        if (palmDist >= palmDistOffset && palmDist <= maxXAxisDist) elementScale = 1 - (palmDist - palmDistOffset) / (maxXAxisDist - palmDistOffset);
+        else if (palmDist > maxXAxisDist) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
 
         if (!hoverSelectFromMenu)
@@ -458,7 +490,7 @@ public class SpellManager : MonoBehaviour
                     OrbCastController spellController = spellOrb.GetComponent<OrbCastController>();
                     spellController.valueOSC = elementScale;
 
-                    float spellForceRange = 1 - (palmDist / maxPalmDistance);
+                    float spellForceRange = 1 - (palmDist / maxXAxisDist);
 
                     float spellForce = spellForceRange * 50;
                     if (spellForce < 1) spellForce = 2;
@@ -779,9 +811,9 @@ public class SpellManager : MonoBehaviour
     public void SetMaxPalmDist()
     {
         float sliderVal = maxPalmDistSlider.SliderValue;
-        maxPalmDistance = sliderVal * 0.6f;
-        if (maxPalmDistance < 0.2f) maxPalmDistance = 0.2f;
-        maxPalmDistText.text = maxPalmDistance.ToString();
+        maxXAxisDist = sliderVal * 0.6f;
+        if (maxXAxisDist < 0.2f) maxXAxisDist = 0.2f;
+        maxPalmDistText.text = maxXAxisDist.ToString();
     }
     #endregion
 }
