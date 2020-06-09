@@ -10,6 +10,7 @@ public class SpellManager : MonoBehaviour
 {
     [SerializeField] GameObject vertStackText;
     [SerializeField] GameObject forStackText;
+    [SerializeField] GameObject pullUpsText;
     
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
@@ -127,6 +128,7 @@ public class SpellManager : MonoBehaviour
 
         vertStackText.SetActive(false);
         forStackText.SetActive(false);
+        pullUpsText.SetActive(false);
     }
 
     public bool allowPeace = false;
@@ -150,7 +152,11 @@ public class SpellManager : MonoBehaviour
 
             if (handTracking.forwardStack) forStackText.SetActive(true);
             else forStackText.SetActive(false);
-            
+
+            if (handTracking.pullUps) pullUpsText.SetActive(true);
+            else pullUpsText.SetActive(false);
+
+
             // pullUps - top level menu
             if (handTracking.pullUps)
             {
