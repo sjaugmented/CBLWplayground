@@ -131,8 +131,8 @@ public class SpellManager : MonoBehaviour
         DisableLeftStreams();
 
         // set global dimmer and color crossfade to max on skypanel
-        dmx.SetAddress(50, 255);
-        dmx.SetAddress(53, 255);
+        /*dmx.SetAddress(50, 255);
+        dmx.SetAddress(53, 255);*/
 
         vertStackText.SetActive(false);
         forStackText.SetActive(false);
@@ -190,9 +190,6 @@ public class SpellManager : MonoBehaviour
             {
                 forStackText.SetActive(false);
             }
-
-            if (handTracking.pullUps) pullUpsText.SetActive(true);
-            else pullUpsText.SetActive(false);
             
             // two handed casting
             if (handTracking.palmsOut)

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Director : MonoBehaviour
 {
     [SerializeField] GameObject topLevelMenu;
+    [SerializeField] Vector3 menuOffset;
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material selectedMaterial;
     public List<Renderer> selectorPlatonics = new List<Renderer>();
@@ -17,6 +18,17 @@ public class Director : MonoBehaviour
     SpellManager magic;
     PrecisionPoseTracker precisionPose;
     PrecisionController precision;
+
+    GameObject masterOrb;    
+    GameObject rightStreams;
+    GameObject leftStreams;
+    GameObject rightFloat;
+    GameObject leftFloat;
+    GameObject rightHUD;
+    GameObject leftHUD;
+    GameObject skyPanelBox;
+    GameObject spotBox;
+    GameObject clearBox;
     
     // Start is called before the first frame update
     void Start()
@@ -25,6 +37,17 @@ public class Director : MonoBehaviour
         magic = FindObjectOfType<SpellManager>();
         precisionPose = FindObjectOfType<PrecisionPoseTracker>();
         precision = FindObjectOfType<PrecisionController>();
+
+        masterOrb = FindObjectOfType<MasterOrbRotater>().gameObject;
+        rightStreams = FindObjectOfType<RightStreams>().gameObject;
+        leftStreams = FindObjectOfType<LeftStreams>().gameObject;
+        rightFloat = FindObjectOfType<RightFloat>().gameObject;
+        leftFloat = FindObjectOfType<LeftFloat>().gameObject;
+        rightHUD = FindObjectOfType<RightHUD>().gameObject;
+        leftHUD = FindObjectOfType<LeftHUD>().gameObject;
+        skyPanelBox = FindObjectOfType<SkyPanelBox>().gameObject;
+        spotBox = FindObjectOfType<SpotBox>().gameObject;
+        clearBox = FindObjectOfType<ClearBox>().gameObject;
 
     }
 
@@ -36,7 +59,13 @@ public class Director : MonoBehaviour
         ConvertIndex();
         SetSelectorMaterial();
 
-        if (handTracking.pullUps) topLevelMenu.SetActive(true);
+        if (handTracking.pullUps)
+        {
+            topLevelMenu.SetActive(true);
+
+            Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
+            topLevelMenu.transform.position = midpointPalms + menuOffset;
+        }
         else topLevelMenu.SetActive(false);
         
     }
@@ -45,17 +74,20 @@ public class Director : MonoBehaviour
     {
         if (currentMode == Mode.Magic)
         {
-            modeIndex = 1;
+            modeIndex = 0;
+            SetGameObjects(true, false, false);
         }
 
         if (currentMode == Mode.RGB)
         {
-            modeIndex = 2;
+            modeIndex = 1;
+            SetGameObjects(false, true, false);
         }
 
         if (currentMode == Mode.Precision)
         {
-            modeIndex = 3;
+            modeIndex = 2;
+            SetGameObjects(false, false, true);
         }
     }
 
@@ -74,15 +106,33 @@ public class Director : MonoBehaviour
         }
     }
 
+    private void SetGameObjects(bool mag, bool rgb, bool prec)
+    {
+        magic.enabled = mag;
+        //rgb.enabled = rgb;
+        precisionPose.enabled = prec;
+        precision.enabled = prec;
+
+        masterOrb.SetActive(mag);
+        rightStreams.SetActive(mag);
+        leftStreams.SetActive(mag);
+
+        rightFloat.SetActive(prec);
+        leftFloat.SetActive(prec);
+        rightHUD.SetActive(prec);
+        leftHUD.SetActive(prec);
+        skyPanelBox.SetActive(prec);
+        spotBox.SetActive(prec);
+        clearBox.SetActive(prec);
+    }
+
     #region GazeFunctions
     public void MagicMode()
     {
         currentMode = Mode.Magic;
 
-        magic.enabled = true;
-        //rgb.enabled = false;
-        precisionPose.enabled = false;
-        precision.enabled = false;
+        
+
     }
 
     public void RGBMode()
@@ -95,10 +145,6 @@ public class Director : MonoBehaviour
     {
         currentMode = Mode.Precision;
 
-        magic.enabled = false;
-        //rgb.enabled = false;
-        precisionPose.enabled = true;
-        precision.enabled = true;
     }
     #endregion
 }
