@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Director : MonoBehaviour
 {
-    [SerializeField] Material defaultSelector;
-    [SerializeField] Material selectedSelector;
-    public List<GameObject> selectorPlatonics = new List<GameObject>();
+    [SerializeField] GameObject topLevelMenu;
+    [SerializeField] Material defaultMaterial;
+    [SerializeField] Material selectedMaterial;
+    public List<Renderer> selectorPlatonics = new List<Renderer>();
 
     public enum Mode { Magic, RGB, Precision};
     public Mode currentMode = Mode.Magic;
@@ -25,7 +26,19 @@ public class Director : MonoBehaviour
         precisionPose = FindObjectOfType<PrecisionPoseTracker>();
         precision = FindObjectOfType<PrecisionController>();
 
-        MagicMode();
+    }
+
+    
+
+    // Update is called once per frame
+    void Update()
+    {
+        ConvertIndex();
+        SetSelectorMaterial();
+
+        if (handTracking.pullUps) topLevelMenu.SetActive(true);
+        else topLevelMenu.SetActive(false);
+        
     }
 
     private void ConvertIndex()
@@ -46,9 +59,30 @@ public class Director : MonoBehaviour
         }
     }
 
+    private void SetSelectorMaterial()
+    {
+        for (int i = 0; i < selectorPlatonics.Count; i++)
+        {
+            if (i == modeIndex)
+            {
+                selectorPlatonics[i].material = selectedMaterial;
+            }
+            else
+            {
+                selectorPlatonics[i].material = defaultMaterial;
+            }
+        }
+    }
+
+    #region GazeFunctions
     public void MagicMode()
     {
         currentMode = Mode.Magic;
+
+        magic.enabled = true;
+        //rgb.enabled = false;
+        precisionPose.enabled = false;
+        precision.enabled = false;
     }
 
     public void RGBMode()
@@ -61,11 +95,10 @@ public class Director : MonoBehaviour
     {
         currentMode = Mode.Precision;
 
+        magic.enabled = false;
+        //rgb.enabled = false;
+        precisionPose.enabled = true;
+        precision.enabled = true;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #endregion
 }
