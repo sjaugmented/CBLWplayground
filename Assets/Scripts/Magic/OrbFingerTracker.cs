@@ -36,13 +36,14 @@ public class OrbFingerTracker : MonoBehaviour
     public bool rockOnLeft = false;
     public float palmDist;
 
-    
 
+    Transform cam;
     Transform floor;
 
     // Start is called before the first frame update
     void Start()
     {
+        cam = Camera.main.transform;
         floor = FindObjectOfType<LevelObject>().transform;
     }
 
@@ -54,8 +55,6 @@ public class OrbFingerTracker : MonoBehaviour
 
     private void ProcessHands()
     {
-        Transform cam = Camera.main.transform;
-
         #region Palm Ref Angles
         // get reference angles
         // palm to palm
@@ -98,6 +97,7 @@ public class OrbFingerTracker : MonoBehaviour
         float rtPinkForPalmFor = Vector3.Angle(rtPinkyTip.Forward, rightPalm.Forward);
         float rtThumbForCamFor = Vector3.Angle(rtThumbTip.Forward, cam.forward);
         float rtThumbForPalmFor = Vector3.Angle(rtThumbTip.Forward, rightPalm.Forward);
+        float rtIndMidForCamRt = Vector3.Angle(rtIndexMid.Forward, cam.right);
         float rtIndMidForPalmFor = Vector3.Angle(rtIndexMid.Forward, rightPalm.Forward);
         float rtIndMidUpCamFor = Vector3.Angle(rtIndexMid.Up, cam.forward);
         float rtIndMidUpFloorFor = Vector3.Angle(rtIndexMid.Up, floor.forward);
@@ -111,6 +111,7 @@ public class OrbFingerTracker : MonoBehaviour
         float ltPinkForPalmFor = Vector3.Angle(ltPinkyTip.Forward, leftPalm.Forward);
         float ltThumbForCamFor = Vector3.Angle(ltThumbTip.Forward, cam.forward);
         float ltThumbForPalmFor = Vector3.Angle(ltThumbTip.Forward, leftPalm.Forward);
+        float ltIndMidForCamRt = Vector3.Angle(ltIndexMid.Forward, cam.right);
         float ltIndMidForPalmFor = Vector3.Angle(ltIndexMid.Forward, leftPalm.Forward);
         float ltIndMidUpCamFor = Vector3.Angle(ltIndexMid.Up, cam.forward);
         float ltIndMidUpFloorFor = Vector3.Angle(ltIndexMid.Up, floor.forward);
@@ -218,7 +219,7 @@ public class OrbFingerTracker : MonoBehaviour
                 }
 
                 // look for vertical stack
-                else if (IsWithinRange(rtIndMidForLtIndMidFor, 180, bigMargin) && IsWithinRange(rtIndMidUpLtIndMidUp, 0, bigMargin) && IsWithinRange(rtIndMidUpFloorUp, 0, bigMargin) && IsWithinRange(ltIndMidUpFloorUp, 0, bigMargin))
+                else if (IsWithinRange(rtIndMidForLtIndMidFor, 180, bigMargin) && IsWithinRange(rtIndMidUpLtIndMidUp, 0, bigMargin) && IsWithinRange(rtIndMidUpFloorUp, 0, bigMargin) && IsWithinRange(ltIndMidUpFloorUp, 0, bigMargin) && IsWithinRange(rtIndMidForCamRt, 180, bigMargin) && IsWithinRange(ltIndMidForCamRt, 0, bigMargin))
                 {
                     palmsIn = false;
                     fistsIn = false;
@@ -229,7 +230,7 @@ public class OrbFingerTracker : MonoBehaviour
                 }
 
                 // look for forward stack
-                else if (IsWithinRange(rtIndMidForLtIndMidFor, 180, bigMargin) && IsWithinRange(rtIndMidUpLtIndMidUp, 0, bigMargin) && IsWithinRange(rtIndMidUpFloorFor, 0, bigMargin) && IsWithinRange(ltIndMidUpFloorFor, 0, bigMargin))
+                else if (IsWithinRange(rtIndMidForLtIndMidFor, 180, bigMargin) && IsWithinRange(rtIndMidUpLtIndMidUp, 0, bigMargin) && IsWithinRange(rtIndMidUpFloorFor, 0, bigMargin) && IsWithinRange(ltIndMidUpFloorFor, 0, bigMargin) && IsWithinRange(rtIndMidForCamRt, 180, bigMargin) && IsWithinRange(ltIndMidForCamRt, 0, bigMargin))
                 {
                     palmsIn = false;
                     fistsIn = false;

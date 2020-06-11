@@ -17,18 +17,19 @@ public class PrecisionPoseTracker : MonoBehaviour
     public bool leftFlatHand = false;
     public bool leftKnifeHand = false;
 
+    Transform cam;
+    Transform floor;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        cam = Camera.main.transform;
+        floor = FindObjectOfType<LevelObject>().transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Transform floor = FindObjectOfType<LevelObject>().transform;
-        Transform cam = Camera.main.transform;
-
         #region Palm Ref Angles
         // right palm
         float rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);

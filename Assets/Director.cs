@@ -15,39 +15,27 @@ public class Director : MonoBehaviour
     public int modeIndex = 1;
     
     OrbFingerTracker handTracking;
-    SpellManager magic;
+    SpellManager magicController;
+    RGBController rgbController;
     PrecisionPoseTracker precisionPose;
-    PrecisionController precision;
+    PrecisionController precisionController;
 
-    GameObject masterOrb;    
-    GameObject rightStreams;
-    GameObject leftStreams;
-    GameObject rightFloat;
-    GameObject leftFloat;
-    GameObject rightHUD;
-    GameObject leftHUD;
-    GameObject skyPanelBox;
-    GameObject spotBox;
-    GameObject clearBox;
+    GameObject magicComponents;
+    GameObject rgbComponents;
+    GameObject precisionComponents;
     
     // Start is called before the first frame update
     void Start()
     {
         handTracking = FindObjectOfType<OrbFingerTracker>();
-        magic = FindObjectOfType<SpellManager>();
+        magicController = FindObjectOfType<SpellManager>();
+        rgbController = FindObjectOfType<RGBController>();
         precisionPose = FindObjectOfType<PrecisionPoseTracker>();
-        precision = FindObjectOfType<PrecisionController>();
+        precisionController = FindObjectOfType<PrecisionController>();
 
-        masterOrb = FindObjectOfType<MasterOrbRotater>().gameObject;
-        rightStreams = FindObjectOfType<RightStreams>().gameObject;
-        leftStreams = FindObjectOfType<LeftStreams>().gameObject;
-        rightFloat = FindObjectOfType<RightFloat>().gameObject;
-        leftFloat = FindObjectOfType<LeftFloat>().gameObject;
-        rightHUD = FindObjectOfType<RightHUD>().gameObject;
-        leftHUD = FindObjectOfType<LeftHUD>().gameObject;
-        skyPanelBox = FindObjectOfType<SkyPanelBox>().gameObject;
-        spotBox = FindObjectOfType<SpotBox>().gameObject;
-        clearBox = FindObjectOfType<ClearBox>().gameObject;
+        magicComponents = FindObjectOfType<MagicID>().gameObject;
+        rgbComponents = FindObjectOfType<RGBID>().gameObject;
+        precisionComponents = FindObjectOfType<PrecisionID>().gameObject;
 
     }
 
@@ -108,22 +96,15 @@ public class Director : MonoBehaviour
 
     private void SetGameObjects(bool mag, bool rgb, bool prec)
     {
-        magic.enabled = mag;
-        //rgb.enabled = rgb;
+        magicController.enabled = mag;
+        rgbController.enabled = rgb;
         precisionPose.enabled = prec;
-        precision.enabled = prec;
+        precisionController.enabled = prec;
 
-        masterOrb.SetActive(mag);
-        rightStreams.SetActive(mag);
-        leftStreams.SetActive(mag);
-
-        rightFloat.SetActive(prec);
-        leftFloat.SetActive(prec);
-        rightHUD.SetActive(prec);
-        leftHUD.SetActive(prec);
-        skyPanelBox.SetActive(prec);
-        spotBox.SetActive(prec);
-        clearBox.SetActive(prec);
+        magicComponents.SetActive(mag);
+        rgbComponents.SetActive(rgb);
+        precisionComponents.SetActive(prec);
+        
     }
 
     #region GazeFunctions

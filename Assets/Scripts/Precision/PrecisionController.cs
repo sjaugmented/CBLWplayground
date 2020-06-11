@@ -68,7 +68,7 @@ public class PrecisionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        poseTracker = GetComponent<PrecisionPoseTracker>();
+        poseTracker = FindObjectOfType<PrecisionPoseTracker>();
         dmx = FindObjectOfType<DMXcontroller>();
         osc = FindObjectOfType<OSC>();
 
