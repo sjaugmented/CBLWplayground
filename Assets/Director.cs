@@ -15,7 +15,7 @@ public class Director : MonoBehaviour
     public int modeIndex = 1;
     
     OrbFingerTracker handTracking;
-    SpellManager magicController;
+    MagicController magicController;
     RGBController rgbController;
     PrecisionPoseTracker precisionPose;
     PrecisionController precisionController;
@@ -28,7 +28,7 @@ public class Director : MonoBehaviour
     void Start()
     {
         handTracking = FindObjectOfType<OrbFingerTracker>();
-        magicController = FindObjectOfType<SpellManager>();
+        magicController = FindObjectOfType<MagicController>();
         rgbController = FindObjectOfType<RGBController>();
         precisionPose = FindObjectOfType<PrecisionPoseTracker>();
         precisionController = FindObjectOfType<PrecisionController>();

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CastVsHoverController : MonoBehaviour
 {
-    SpellManager spellManager;
+    MagicController spellManager;
     OrbCastController castController;
     OrbHoverController hoverController;
 
     // Start is called before the first frame update
     void Start()
     {
-        spellManager = FindObjectOfType<SpellManager>();
+        spellManager = FindObjectOfType<MagicController>();
         castController = GetComponent<OrbCastController>();
         hoverController = GetComponent<OrbHoverController>();
 

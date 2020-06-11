@@ -6,18 +6,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SpellManager : MonoBehaviour
+public class MagicController : MonoBehaviour
 {
     [SerializeField] GameObject vertStackText;
     [SerializeField] TextMeshPro yFloatText;
     [SerializeField] GameObject forStackText;
     [SerializeField] TextMeshPro zFloatText;
-    [SerializeField] GameObject pullUpsText;
     
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
-
-    //[SerializeField] GameObject topLevelVisuals;
     
     [SerializeField] GameObject masterOrb;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
@@ -125,7 +122,6 @@ public class SpellManager : MonoBehaviour
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         masterOrb.SetActive(false);
-        //topLevelVisuals.SetActive(false);
         //elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();

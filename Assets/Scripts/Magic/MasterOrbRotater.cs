@@ -10,12 +10,12 @@ public class MasterOrbRotater : MonoBehaviour
 
     public bool scalerActive;
 
-    SpellManager spellManager;
+    MagicController spellManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        spellManager = FindObjectOfType<SpellManager>();
+        spellManager = FindObjectOfType<MagicController>();
     }
 
     // Update is called once per frame
