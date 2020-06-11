@@ -49,8 +49,6 @@ public class MagicController : MonoBehaviour
     [Header("Palm Conjure")]
     [Tooltip("Max distance between palms for conjuring")]
     [SerializeField] [Range( 0.2f, 0.6f)] float maxXAxisDist = 0.5f;
-    [SerializeField] float maxYAxisDist = 0.3f;
-    [SerializeField] float maxZAxisDist = 0.3f;
     [SerializeField] [Range(0f, 0.2f)] float palmDistOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 
@@ -132,7 +130,6 @@ public class MagicController : MonoBehaviour
 
         vertStackText.SetActive(false);
         forStackText.SetActive(false);
-        pullUpsText.SetActive(false);
     }
 
     public bool allowPeace = false;
@@ -150,43 +147,7 @@ public class MagicController : MonoBehaviour
         else DisableLeftStreams();
 
         if (handTracking.twoHands)
-        {
-            if (handTracking.verticalStack)
-            {
-                float yOSCFloat;
-
-                yOSCFloat = 1 - indexMidDist / maxYAxisDist;
-                if (indexMidDist > maxYAxisDist) elementScale = 0;
-
-                SendOSCMessage(yOSCMessage, yOSCFloat);
-
-                vertStackText.SetActive(true);
-                vertStackText.transform.position = midpointIndexes;
-                yFloatText.text = yOSCFloat.ToString();
-            }
-            else
-            {
-                vertStackText.SetActive(false);
-            }
-
-            if (handTracking.forwardStack)
-            {
-                float zOSCFloat;
-
-                zOSCFloat = 1 - indexMidDist / maxZAxisDist;
-                if (indexMidDist > maxZAxisDist) elementScale = 0;
-
-                SendOSCMessage(zOSCMessage, zOSCFloat);
-
-                forStackText.SetActive(true);
-                forStackText.transform.position = midpointIndexes;
-                zFloatText.text = zOSCFloat.ToString();
-            }
-            else
-            {
-                forStackText.SetActive(false);
-            }
-            
+        {   
             // two handed casting
             if (handTracking.palmsOut)
             {
@@ -225,14 +186,12 @@ public class MagicController : MonoBehaviour
             else
             {
                 masterOrb.SetActive(false);
-                //topLevelVisuals.SetActive(false);
                 sound.orbAmbienceFX.Pause();
             }
         }
         else
         {
             masterOrb.SetActive(false);
-            //topLevelVisuals.SetActive(false);
             sound.orbAmbienceFX.Pause();
         }
     }
