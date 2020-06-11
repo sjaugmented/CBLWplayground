@@ -53,7 +53,7 @@ public class PrecisionController : MonoBehaviour
     bool leftDimmer = false;
     bool leftKelvin = false;
 
-    public enum Lights { none, SkyPanel, Spot, DJ };
+    public enum Lights { none, SkyPanel, Spot, DJ, reset };
     public Lights gazeLight = Lights.none;
     public Lights rightControl = Lights.none;
     public Lights leftControl = Lights.none;
@@ -61,14 +61,14 @@ public class PrecisionController : MonoBehaviour
     public bool hudOn = false; // todo make private
 
 
-    PrecisionPoseTracker poseTracker;
+    HandTracking handTracking;
     DMXcontroller dmx;
     OSC osc;
 
     // Start is called before the first frame update
     void Start()
     {
-        poseTracker = FindObjectOfType<PrecisionPoseTracker>();
+        handTracking = FindObjectOfType<HandTracking>();
         dmx = FindObjectOfType<DMXcontroller>();
         osc = FindObjectOfType<OSC>();
 
@@ -80,38 +80,38 @@ public class PrecisionController : MonoBehaviour
     void Update()
     {
         // right hand control
-        if (poseTracker.rightFist && !hasMadeRightFist)
+        if (handTracking.rightFist && !hasMadeRightFist)
         {
             ToggleRightTether();
             hasMadeRightFist = true;
         }
 
-        if (!poseTracker.rightFist) hasMadeRightFist = false;
+        if (!handTracking.rightFist) hasMadeRightFist = false;
 
         if (rightTether)
         {
-            if (poseTracker.rightFlatHand) rightDimmer = true;
+            if (handTracking.rightFlatHand) rightDimmer = true;
             else rightDimmer = false;
 
-            if (poseTracker.rightKnifeHand) rightKelvin = true;
+            if (handTracking.rightKnifeHand) rightKelvin = true;
             else rightKelvin = false;
         }
 
         // left hand control
-        if (poseTracker.leftFist && !hasMadeLeftFist)
+        if (handTracking.leftFist && !hasMadeLeftFist)
         {
             ToggleLeftTether();
             hasMadeLeftFist = true;
         }
 
-        if (!poseTracker.leftFist) hasMadeLeftFist = false;
+        if (!handTracking.leftFist) hasMadeLeftFist = false;
 
         if (leftTether)
         {
-            if (poseTracker.leftFlatHand) leftDimmer = true;
+            if (handTracking.leftFlatHand) leftDimmer = true;
             else leftDimmer = false;
 
-            if (poseTracker.leftKnifeHand) leftKelvin = true;
+            if (handTracking.leftKnifeHand) leftKelvin = true;
             else leftKelvin = false;
         }
 
@@ -144,6 +144,8 @@ public class PrecisionController : MonoBehaviour
     {
         if (!rightTether)
         {
+            if (gazeLight == Lights.reset) rightControl = Lights.none;
+            
             if (rightControl == Lights.none)
             {
                 if (gazeLight == Lights.SkyPanel)
@@ -163,13 +165,13 @@ public class PrecisionController : MonoBehaviour
 
                 else return;
             }
-            
 
             rightTether = true;
 
         }
         else
         {
+            if (gazeLight == Lights.reset) rightControl = Lights.none;
             rightTether = false;
         }
     }
@@ -178,6 +180,8 @@ public class PrecisionController : MonoBehaviour
     {
         if (!leftTether)
         {
+            if (gazeLight == Lights.reset) leftControl = Lights.none;
+
             if (leftControl == Lights.none)
             {
                 if (gazeLight == Lights.SkyPanel)
@@ -203,6 +207,7 @@ public class PrecisionController : MonoBehaviour
         }
         else
         {
+            if (gazeLight == Lights.reset) leftControl = Lights.none;
             leftTether = false;
         }
     }
@@ -231,24 +236,24 @@ public class PrecisionController : MonoBehaviour
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!rightDimmerYLocked)
             {
-                rightDimmerYPos = poseTracker.rightPalm.Position.y;
+                rightDimmerYPos = handTracking.rightPalm.Position.y;
                 rightDimmerYLocked = true;
             }
 
-            rightHandFloat.transform.position = new Vector3(poseTracker.rtMiddleTip.Position.x, rightDimmerYPos, poseTracker.rtMiddleTip.Position.z);
+            rightHandFloat.transform.position = new Vector3(handTracking.rtMiddleTip.Position.x, rightDimmerYPos, handTracking.rtMiddleTip.Position.z);
 
             // determine float using pose.position.y
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(rightHandMin.position, poseTracker.rtMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rtMiddleTip.Position);
 
 
             rightDimmerFloat = handDistToMin / maxDistance;
             if (rightDimmerFloat > 1) rightDimmerFloat = 1;
-            if (poseTracker.rtMiddleTip.Position.y < rightHandFloat.transform.position.y - 0.125) rightDimmerFloat = 0;
+            if (handTracking.rtMiddleTip.Position.y < rightHandFloat.transform.position.y - 0.125) rightDimmerFloat = 0;
             
 
             // display in HUD
-            rightDimmerVal.text = rightDimmerFloat.ToString();
+            rightDimmerVal.text = Mathf.RoundToInt(rightDimmerFloat * 255).ToString();
 
             // convert float to DMX
             int dimmerVal = Mathf.RoundToInt(rightDimmerFloat * 255);
@@ -279,23 +284,23 @@ public class PrecisionController : MonoBehaviour
             // set float.position.x to pose.position.x and store in memory - float.position.y/z tracks to pose.position.y/z
             if (!rightKelvinXLocked)
             {
-                rightKelvinXPos = poseTracker.rightPalm.Position.x;
+                rightKelvinXPos = handTracking.rightPalm.Position.x;
                 rightKelvinXLocked = true;
             }
 
             // activate right hand float, position, and rotate
             rightHandFloat.SetActive(true);
             rightHandFloat.transform.localRotation = Quaternion.Euler(0, 0, -90);
-            rightHandFloat.transform.position = new Vector3(rightKelvinXPos, poseTracker.rtMiddleTip.Position.y, poseTracker.rtMiddleTip.Position.z);
+            rightHandFloat.transform.position = new Vector3(rightKelvinXPos, handTracking.rtMiddleTip.Position.y, handTracking.rtMiddleTip.Position.z);
 
 
             // determine float using pose.position.x
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(rightHandMin.position, poseTracker.rtMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rtMiddleTip.Position);
 
             rightKelvinFloat = handDistToMin / maxDistance;
             if (rightKelvinFloat > 1) rightKelvinFloat = 1;
-            if (poseTracker.rtMiddleTip.Position.x < rightHandFloat.transform.position.x - 0.125) rightKelvinFloat = 0;
+            if (handTracking.rtMiddleTip.Position.x < rightHandFloat.transform.position.x - 0.125) rightKelvinFloat = 0;
 
             // display in HUD
             rightKelvinVal.text = rightKelvinFloat.ToString();
@@ -348,24 +353,24 @@ public class PrecisionController : MonoBehaviour
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!leftDimmerYLocked)
             {
-                leftDimmerYPos = poseTracker.ltMiddleTip.Position.y;
+                leftDimmerYPos = handTracking.ltMiddleTip.Position.y;
                 leftDimmerYLocked = true;
             }
 
-            leftHandFloat.transform.position = new Vector3(poseTracker.ltMiddleTip.Position.x, leftDimmerYPos, poseTracker.ltMiddleTip.Position.z);
+            leftHandFloat.transform.position = new Vector3(handTracking.ltMiddleTip.Position.x, leftDimmerYPos, handTracking.ltMiddleTip.Position.z);
 
             // determine float using pose.position.y
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(leftHandMin.position, poseTracker.ltMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(leftHandMin.position, handTracking.ltMiddleTip.Position);
 
 
             leftDimmerFloat = handDistToMin / maxDistance;
             if (leftDimmerFloat > 1) leftDimmerFloat = 1;
-            if (poseTracker.ltMiddleTip.Position.y < leftHandFloat.transform.position.y - 0.125) leftDimmerFloat = 0;
+            if (handTracking.ltMiddleTip.Position.y < leftHandFloat.transform.position.y - 0.125) leftDimmerFloat = 0;
 
 
             // display in HUD
-            leftDimmerVal.text = leftDimmerFloat.ToString();
+            leftDimmerVal.text = Mathf.RoundToInt(leftDimmerFloat * 255).ToString();
 
             // convert float to DMX
             int dimmerVal = Mathf.RoundToInt(leftDimmerFloat * 255);
@@ -399,19 +404,19 @@ public class PrecisionController : MonoBehaviour
             // set float.position.x to pose.position.x and store in memory - float.position.y/z tracks to pose.position.y/z
             if (!leftKelvinXLocked)
             {
-                leftKelvinXPos = poseTracker.ltMiddleTip.Position.x;
+                leftKelvinXPos = handTracking.ltMiddleTip.Position.x;
                 leftKelvinXLocked = true;
             }
 
-            leftHandFloat.transform.position = new Vector3(leftKelvinXPos, poseTracker.ltMiddleTip.Position.y, poseTracker.ltMiddleTip.Position.z);
+            leftHandFloat.transform.position = new Vector3(leftKelvinXPos, handTracking.ltMiddleTip.Position.y, handTracking.ltMiddleTip.Position.z);
 
             // determine float using pose.position.x
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(leftHandMin.position, poseTracker.ltMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(leftHandMin.position, handTracking.ltMiddleTip.Position);
 
             leftKelvinFloat = handDistToMin / maxDistance;
             if (leftKelvinFloat > 1) leftKelvinFloat = 1;
-            if (poseTracker.ltMiddleTip.Position.x > leftHandFloat.transform.position.x + 0.125) leftKelvinFloat = 0;
+            if (handTracking.ltMiddleTip.Position.x > leftHandFloat.transform.position.x + 0.125) leftKelvinFloat = 0;
 
             // display in HUD
             leftKelvinVal.text = leftKelvinFloat.ToString();
@@ -473,6 +478,11 @@ public class PrecisionController : MonoBehaviour
     public void NoGaze()
     {
         gazeLight = Lights.none;
+    }
+
+    public void ResetHand()
+    {
+        gazeLight = Lights.reset;
     }
 
     public void ToggleHUD()

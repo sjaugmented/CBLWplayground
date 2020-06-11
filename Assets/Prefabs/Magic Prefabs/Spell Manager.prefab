@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7808990808998034967}
   - component: {fileID: 1442137911461133963}
-  - component: {fileID: 8290986863599863434}
   - component: {fileID: 1936508196}
   m_Layer: 0
   m_Name: Spell Manager
@@ -55,7 +54,12 @@ MonoBehaviour:
   - {fileID: 9064369555328730510, guid: 5f1f470671025514eaf9740623645261, type: 3}
   - {fileID: 9064369555328730510, guid: a7b97a303a23c184cb9cab78dfe279e7, type: 3}
   - {fileID: 9064369555328730510, guid: 6ae7e386ef5740a40bf8b04f2ed2e2d5, type: 3}
-  streamSpells:
+  rightStreams:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  leftStreams:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -65,32 +69,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &8290986863599863434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7808990808998034963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c47a724186b8384faf1d4d5fdb9cd61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minVelocity: 2
-  maxVelocity: 10
-  fingerForwardThreshold: 0.7
-  angleMargin: 50
-  twoPalms: 0
-  touchDown: 0
-  palmsForward: 0
-  palmsIn: 0
-  rockOnRight: 0
-  fingerGunRight: 0
-  rockOnLeft: 0
-  fingerGunLeft: 0
-  palmsParallel: 0
-  fists: 0
 --- !u!114 &1936508196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,22 +78,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 7808990808998034963}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73197a4dfb094414689016d7528370ef, type: 3}
+  m_Script: {fileID: 11500000, guid: b1bfb5a5ddebe27408d08db04c5a796f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manualElMenu: 0
+  floatPassthru: 1
   masterOrb: {fileID: 0}
-  fistScaler: 0
-  orbCastRotOffset: {x: 65, y: 0, z: 0}
-  particleCastOffset: {x: 0, y: 0, z: 0.1}
-  orbCaster: {fileID: 0}
-  particleCasterRight: {fileID: 0}
-  particleCasterLeft: {fileID: 0}
-  streamCasterRight: {fileID: 0}
-  streamCasterLeft: {fileID: 0}
+  orbCastRotOffset: {x: 60, y: 0, z: 0}
+  particleCastOffset: {x: 50, y: 0, z: 0.1}
+  elMenuOffset: {x: 0, y: 0, z: 0.5}
+  rightHandCaster: {fileID: 0}
+  leftHandCaster: {fileID: 0}
   orbsPerSecond: 1
-  particlesPerSecond: 1
-  palmMenuVisuals1: {fileID: 0}
-  palmMenuVisuals2: {fileID: 0}
+  particlesPerSecond: 5
+  leftPalmMenuVisuals: {fileID: 0}
+  rightPalmMenuVisuals: {fileID: 0}
   orbROFSlider: {fileID: 0}
   orbROFText: {fileID: 0}
   particleROFSlider: {fileID: 0}
@@ -124,13 +101,24 @@ MonoBehaviour:
   palmOffsetText: {fileID: 0}
   maxPalmDistSlider: {fileID: 0}
   maxPalmDistText: {fileID: 0}
-  maxPalmDistance: 0.5
+  maxXAxisDist: 0.5
   palmDistOffset: 0.15
-  palmMidpointOffset: {x: 0, y: 0.02, z: 0}
+  palmMidpointOffset: {x: 0, y: 0.05, z: 0}
   conjureOSCMessages:
-  - /lightOSCfloat/
-  - /fireOSCfloat/
-  - /waterOSCfloat/
-  - /iceOSCfloat/
-  currEl: 0
-  currForm: 1
+  - /lightOSClive/
+  - /fireOSClive/
+  - /waterOSClive/
+  - /iceOSClive/
+  yOSCMessage: /yOSCfloat/
+  zOSCMessage: /zOSCfloat/
+  lightChannels: 39000000
+  lightValues: ff000000
+  fireChannels: 3600000037000000
+  fireValues: ff00000032000000
+  waterChannels: 38000000
+  waterValues: ff000000
+  iceChannels: 3800000039000000
+  iceValues: ff00000064000000
+  currEl: 1
+  fromOrbScaler: 0
+  hoverOrb: 0

@@ -8,10 +8,6 @@ using UnityEngine.UIElements;
 
 public class MagicController : MonoBehaviour
 {
-    [SerializeField] GameObject vertStackText;
-    [SerializeField] TextMeshPro yFloatText;
-    [SerializeField] GameObject forStackText;
-    [SerializeField] TextMeshPro zFloatText;
     
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
@@ -77,8 +73,6 @@ public class MagicController : MonoBehaviour
     Vector3 masterOrbPos;
     Vector3 rightStreamPos;
     Vector3 leftStreamPos;
-    Vector3 rightPartPos;
-    Vector3 leftPartPos;
     float palmDist;
     float indexMidDist;
     private Vector3 midpointIndexes;
@@ -94,7 +88,7 @@ public class MagicController : MonoBehaviour
     bool activeWaterHover = false;   //  make private
     bool activeIceHover = false;     //
 
-    OrbFingerTracker handTracking;
+    HandTracking handTracking;
     SpellBook spellBook;
     OSC osc;
     DMXcontroller dmx;
@@ -112,7 +106,7 @@ public class MagicController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        handTracking = FindObjectOfType<OrbFingerTracker>();
+        handTracking = FindObjectOfType<HandTracking>();
         spellBook = GetComponent<SpellBook>();
         osc = FindObjectOfType<OSC>();
         dmx = FindObjectOfType<DMXcontroller>();
@@ -128,11 +122,7 @@ public class MagicController : MonoBehaviour
         /*dmx.SetAddress(50, 255);
         dmx.SetAddress(53, 255);*/
 
-        vertStackText.SetActive(false);
-        forStackText.SetActive(false);
     }
-
-    public bool allowPeace = false;
 
     // Update is called once per frame
     void Update()
@@ -309,7 +299,7 @@ public class MagicController : MonoBehaviour
 
     private void CalcHandPositions()
     {
-        palmDist = handTracking.palmDist;
+        palmDist = Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position);
         indexMidDist = Vector3.Distance(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position);
         midpointIndexes = Vector3.Lerp(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position, 0.5f);
 
@@ -317,8 +307,6 @@ public class MagicController : MonoBehaviour
         masterOrbPos = midpointPalms + palmMidpointOffset;
         rightStreamPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtPinkyTip.Position, 0.5f);
         leftStreamPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltPinkyTip.Position, 0.5f);
-        rightPartPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtMiddleTip.Position, 0.5f);
-        leftPartPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltMiddleTip.Position, 0.5f);
     }
 
     private void ElementSelector()
@@ -531,26 +519,7 @@ public class MagicController : MonoBehaviour
         }        
     }
 
-    private void CastParticle(bool rightHand)
-    {
-        if (ableToCast)
-        {
-            if (rightHand)
-            {
-                rightHandCaster.position = rightPartPos;
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], rightHandCaster.position, rightHandCaster.rotation);
-                StartCoroutine("CastDelay", particlesPerSecond);
-            }
-            else
-            {
-                leftHandCaster.position = leftPartPos;
-                GameObject spellParticle = Instantiate(spellBook.particleSpells[elementID], leftHandCaster.position, leftHandCaster.rotation);
-                StartCoroutine("CastDelay", particlesPerSecond);
-            }
-            
-        }
-    }
-
+    
     public void DisableRightStreams()
     {
         foreach (ParticleSystem stream in spellBook.rightStreams)
@@ -724,11 +693,6 @@ public class MagicController : MonoBehaviour
     {
         hoverOrb = false;
         hoverSelectFromMenu = true;
-    }
-
-    public void AllowPeace()
-    {
-        allowPeace = !allowPeace;
     }
 
     public void SetOrbRateOfFire()

@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class RGBController : MonoBehaviour
 {
-    [SerializeField] GameObject vertStackText;
+    [SerializeField] GameObject horStackObj;
+    [SerializeField] TextMeshPro xFloatText;
+    [SerializeField] GameObject vertStackObj;
     [SerializeField] TextMeshPro yFloatText;
-    [SerializeField] GameObject forStackText;
+    [SerializeField] GameObject forStackObj;
     [SerializeField] TextMeshPro zFloatText;
 
     [SerializeField] [Range(0.2f, 0.6f)] float maxXAxisDist = 0.5f;
-    [SerializeField] float maxYAxisDist = 0.3f;
-    [SerializeField] float maxZAxisDist = 0.3f;
+    [SerializeField] [Range(0.2f, 0.6f)] float maxYAxisDist = 0.3f;
+    [SerializeField] [Range(0.2f, 0.6f)] float maxZAxisDist = 0.3f;
     [SerializeField] [Range(0f, 0.2f)] float palmDistOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 
@@ -22,30 +24,30 @@ public class RGBController : MonoBehaviour
     [SerializeField] string zOSCMessage = "/zOSCfloat/";
 
     [Header("DMX controllers")]
-    public List<int> lightChannels;
-    public List<int> lightValues;
-    public List<int> fireChannels;
-    public List<int> fireValues;
-    public List<int> waterChannels;
-    public List<int> waterValues;
-    public List<int> iceChannels;
-    public List<int> iceValues;
+    [SerializeField] int redDMX;
+    [SerializeField] [Range(0, 255)] int redVal;
+    [SerializeField] int greenDMX;
+    [SerializeField] [Range(0, 255)] int greenVal;
+    [SerializeField] int blueDMX;
+    [SerializeField] [Range(0, 255)] int blueVal;
 
-    OrbFingerTracker handTracking;
+
+    HandTracking handTracking;
     DMXcontroller dmx;
     OSC osc;
-
+    private float palmDist;
     private float indexMidDist;
     private int floatScale;
     private Vector3 midpointIndexes;
+    private Vector3 masterOrbPos;
 
-    
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        handTracking = FindObjectOfType<OrbFingerTracker>();
+        handTracking = FindObjectOfType<HandTracking>();
         dmx = FindObjectOfType<DMXcontroller>();
         osc = FindObjectOfType<OSC>();
     }
@@ -53,10 +55,24 @@ public class RGBController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CalcHandPositions();
+
         if (handTracking.palmsIn)
         {
+            float xOSCFloat;
 
+            xOSCFloat = 1 - indexMidDist / maxYAxisDist;
+            if (indexMidDist > maxYAxisDist) floatScale = 0;
+            redVal = Mathf.RoundToInt(xOSCFloat * 255);
+
+            SendOSCMessage(yOSCMessage, xOSCFloat);
+            dmx.SetAddress(redDMX, redVal);
+
+            horStackObj.SetActive(true);
+            horStackObj.transform.position = midpointIndexes;
+            xFloatText.text = xOSCFloat.ToString();
         }
+        else horStackObj.SetActive(false);
         
         if (handTracking.verticalStack)
         {
@@ -64,16 +80,18 @@ public class RGBController : MonoBehaviour
 
             yOSCFloat = 1 - indexMidDist / maxYAxisDist;
             if (indexMidDist > maxYAxisDist) floatScale = 0;
+            greenVal = Mathf.RoundToInt(yOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
+            dmx.SetAddress(greenDMX, greenVal);
 
-            vertStackText.SetActive(true);
-            vertStackText.transform.position = midpointIndexes;
+            vertStackObj.SetActive(true);
+            vertStackObj.transform.position = midpointIndexes;
             yFloatText.text = yOSCFloat.ToString();
         }
         else
         {
-            vertStackText.SetActive(false);
+            vertStackObj.SetActive(false);
         }
 
         if (handTracking.forwardStack)
@@ -82,19 +100,32 @@ public class RGBController : MonoBehaviour
 
             zOSCFloat = 1 - indexMidDist / maxZAxisDist;
             if (indexMidDist > maxZAxisDist) floatScale = 0;
+            blueVal = Mathf.RoundToInt(zOSCFloat * 255);
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
+            dmx.SetAddress(blueDMX, blueVal);
 
-            forStackText.SetActive(true);
-            forStackText.transform.position = midpointIndexes;
+            forStackObj.SetActive(true);
+            forStackObj.transform.position = midpointIndexes;
             zFloatText.text = zOSCFloat.ToString();
         }
         else
         {
-            forStackText.SetActive(false);
+            forStackObj.SetActive(false);
         }
     }
 
+    private void CalcHandPositions()
+    {
+        palmDist = Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position);
+        indexMidDist = Vector3.Distance(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position);
+        midpointIndexes = Vector3.Lerp(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position, 0.5f);
+
+        var midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
+        masterOrbPos = midpointPalms + palmMidpointOffset;
+        /*rightStreamPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtPinkyTip.Position, 0.5f);
+        leftStreamPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltPinkyTip.Position, 0.5f);*/
+    }
 
 
     private void SendOSCMessage(string address, float value)

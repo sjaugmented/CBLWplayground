@@ -9,9 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6050530075630950257}
-  - component: {fileID: 6050530075630950222}
   - component: {fileID: 6050530075630950223}
-  - component: {fileID: 6050530075630950256}
   m_Layer: 0
   m_Name: Precision Manager
   m_TagString: Untagged
@@ -33,72 +31,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6050530075630950222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6050530075630950220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8777fde09c28e46489ad1d2663e3f152, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rightPalm:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rtIndexTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rtIndexMid:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rtIndexKnuckle:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rtMiddleTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rtMiddleKnuckle:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rtPinkyTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rtThumbTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  leftPalm:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  ltIndexTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  ltIndexMid:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  ltIndexKnuckle:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  ltMiddleTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  ltMiddleKnuckle:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  ltPinkyTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  ltThumbTip:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0, w: 0}
-  rightFist: 0
-  leftFist: 0
-  rightFlatHand: 0
-  rightKnifeHand: 0
-  leftFlatHand: 0
-  leftKnifeHand: 0
 --- !u!114 &6050530075630950223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,24 +72,3 @@ MonoBehaviour:
   rightControl: 0
   leftControl: 0
   hudOn: 1
---- !u!114 &6050530075630950256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6050530075630950220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd695848136e990429a0e0e5d5d8c59a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skyPanelChannels: 1e0000001f000000
-  skyPanelVals: 0000000000000000
-  DJChannels: 00000000000000000000000000000000
-  DJVals: 00000000000000000000000000000000
-  spotChannels: 01000000020000000300000004000000
-  spotValues: 00000000000000000000000000000000
-  skyPanelActive: 0
-  DJActive: 0
-  spotActive: 0

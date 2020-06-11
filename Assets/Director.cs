@@ -12,12 +12,12 @@ public class Director : MonoBehaviour
 
     public enum Mode { Magic, RGB, Precision};
     public Mode currentMode = Mode.Magic;
-    public int modeIndex = 1;
+    int modeIndex = 1;
     
-    OrbFingerTracker handTracking;
+    HandTracking handTracking;
+
     MagicController magicController;
     RGBController rgbController;
-    PrecisionPoseTracker precisionPose;
     PrecisionController precisionController;
 
     GameObject magicComponents;
@@ -27,10 +27,10 @@ public class Director : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        handTracking = FindObjectOfType<OrbFingerTracker>();
+        handTracking = FindObjectOfType<HandTracking>();
+
         magicController = FindObjectOfType<MagicController>();
         rgbController = FindObjectOfType<RGBController>();
-        precisionPose = FindObjectOfType<PrecisionPoseTracker>();
         precisionController = FindObjectOfType<PrecisionController>();
 
         magicComponents = FindObjectOfType<MagicID>().gameObject;
@@ -98,7 +98,6 @@ public class Director : MonoBehaviour
     {
         magicController.enabled = mag;
         rgbController.enabled = rgb;
-        precisionPose.enabled = prec;
         precisionController.enabled = prec;
 
         magicComponents.SetActive(mag);
