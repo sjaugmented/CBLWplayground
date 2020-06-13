@@ -62,7 +62,7 @@ public class RGBController : MonoBehaviour
             float xOSCFloat;
 
             xOSCFloat = 1 - indexMidDist / maxYAxisDist;
-            if (indexMidDist > maxYAxisDist) floatScale = 0;
+            if (indexMidDist > maxYAxisDist) xOSCFloat = 0;
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, xOSCFloat);
@@ -79,7 +79,7 @@ public class RGBController : MonoBehaviour
             float yOSCFloat;
 
             yOSCFloat = 1 - indexMidDist / maxYAxisDist;
-            if (indexMidDist > maxYAxisDist) floatScale = 0;
+            if (indexMidDist > maxYAxisDist) yOSCFloat = 0;
             greenVal = Mathf.RoundToInt(yOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
@@ -99,7 +99,7 @@ public class RGBController : MonoBehaviour
             float zOSCFloat;
 
             zOSCFloat = 1 - indexMidDist / maxZAxisDist;
-            if (indexMidDist > maxZAxisDist) floatScale = 0;
+            if (indexMidDist > maxZAxisDist) zOSCFloat = 0;
             blueVal = Mathf.RoundToInt(zOSCFloat * 255);
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
