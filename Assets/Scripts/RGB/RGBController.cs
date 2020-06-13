@@ -15,7 +15,7 @@ public class RGBController : MonoBehaviour
     [SerializeField] [Range(0.2f, 0.6f)] float maxXAxisDist = 0.5f;
     [SerializeField] [Range(0.2f, 0.6f)] float maxYAxisDist = 0.3f;
     [SerializeField] [Range(0.2f, 0.6f)] float maxZAxisDist = 0.3f;
-    [SerializeField] [Range(0f, 0.2f)] float palmDistOffset = 0.05f;
+    [SerializeField] [Range(0f, 0.2f)] float floatOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 
     [Header("OSC controller")]
@@ -61,8 +61,9 @@ public class RGBController : MonoBehaviour
         {
             float xOSCFloat;
 
-            xOSCFloat = 1 - indexMidDist / maxYAxisDist;
-            if (indexMidDist > maxYAxisDist) xOSCFloat = 0;
+            xOSCFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
+            if (indexMidDist > maxXAxisDist) xOSCFloat = 0;
+            if (indexMidDist < floatOffset) xOSCFloat = 1;
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, xOSCFloat);
@@ -78,9 +79,10 @@ public class RGBController : MonoBehaviour
         {
             float yOSCFloat;
 
-            yOSCFloat = 1 - indexMidDist / maxYAxisDist;
+            yOSCFloat = 1 - (indexMidDist - floatOffset) / (maxYAxisDist - floatOffset);
             if (indexMidDist > maxYAxisDist) yOSCFloat = 0;
-            greenVal = Mathf.RoundToInt(yOSCFloat * 255);
+            if (indexMidDist < floatOffset) yOSCFloat = 1;
+            redVal = Mathf.RoundToInt(yOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
             dmx.SetAddress(greenDMX, greenVal);
@@ -98,9 +100,10 @@ public class RGBController : MonoBehaviour
         {
             float zOSCFloat;
 
-            zOSCFloat = 1 - indexMidDist / maxZAxisDist;
+            zOSCFloat = 1 - (indexMidDist - floatOffset) / (maxZAxisDist - floatOffset);
             if (indexMidDist > maxZAxisDist) zOSCFloat = 0;
-            blueVal = Mathf.RoundToInt(zOSCFloat * 255);
+            if (indexMidDist < floatOffset) zOSCFloat = 1;
+            redVal = Mathf.RoundToInt(zOSCFloat * 255);
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
             dmx.SetAddress(blueDMX, blueVal);

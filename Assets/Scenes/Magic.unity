@@ -6132,7 +6132,7 @@ MonoBehaviour:
   maxXAxisDist: 0.5
   maxYAxisDist: 0.3
   maxZAxisDist: 0.3
-  palmDistOffset: 0.05
+  floatOffset: 0.09
   palmMidpointOffset: {x: 0, y: 0, z: 0.3}
   xOSCMessage: /xRGBfloat/
   yOSCMessage: /yRGBfloat/
