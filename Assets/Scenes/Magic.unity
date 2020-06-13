@@ -656,7 +656,7 @@ MonoBehaviour:
   - {fileID: 447844901}
   - {fileID: 1207833447}
   - {fileID: 1250128727}
-  currentMode: 1
+  currentMode: 2
 --- !u!1 &418790343
 GameObject:
   m_ObjectHideFlags: 0
@@ -2032,7 +2032,7 @@ PrefabInstance:
     - target: {fileID: 6626111425901126162, guid: 8fbe16de8cf2f0247baa18d7face4d59,
         type: 3}
       propertyPath: additionalOffset.y
-      value: -0.35
+      value: -0.42
       objectReference: {fileID: 0}
     - target: {fileID: 6626111425901126175, guid: 8fbe16de8cf2f0247baa18d7face4d59,
         type: 3}
@@ -5911,7 +5911,7 @@ PrefabInstance:
     - target: {fileID: 2007293294809354732, guid: 0d924a9326fbb2c449f8f7a2a9fa031b,
         type: 3}
       propertyPath: additionalOffset.y
-      value: -0.35
+      value: -0.42
       objectReference: {fileID: 0}
     - target: {fileID: 2007293294809354733, guid: 0d924a9326fbb2c449f8f7a2a9fa031b,
         type: 3}
