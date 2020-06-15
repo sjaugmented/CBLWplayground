@@ -42,14 +42,25 @@ public class RGBController : MonoBehaviour
     private Vector3 masterOrbPos;
 
 
-
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
         dmx = FindObjectOfType<DMXcontroller>();
         osc = FindObjectOfType<OSC>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+
+        
+    }
+
+    void OnEnable()
+    {
+        dmx.SetAddress(50, 255);
+        dmx.SetAddress(53, 255);
     }
 
     // Update is called once per frame

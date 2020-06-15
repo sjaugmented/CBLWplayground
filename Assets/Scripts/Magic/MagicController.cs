@@ -103,13 +103,18 @@ public class MagicController : MonoBehaviour
         if (currEl == Element.ice) elementID = 3;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
         spellBook = GetComponent<SpellBook>();
         osc = FindObjectOfType<OSC>();
         dmx = FindObjectOfType<DMXcontroller>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
         sound = FindObjectOfType<SoundManager>();
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
@@ -118,10 +123,15 @@ public class MagicController : MonoBehaviour
         DisableRightStreams();
         DisableLeftStreams();
 
-        // set global dimmer and color crossfade to max on skypanel
-        /*dmx.SetAddress(50, 255);
-        dmx.SetAddress(53, 255);*/
+        
 
+    }
+
+    void OnEnable()
+    {
+        // set global dimmer and color crossfade to max on skypanel
+        dmx.SetAddress(50, 255);
+        dmx.SetAddress(53, 255);
     }
 
     // Update is called once per frame
@@ -144,15 +154,13 @@ public class MagicController : MonoBehaviour
                 CastOrb();
                 sound.orbAmbienceFX.Pause();
                 masterOrb.SetActive(false);
-                //topLevelVisuals.SetActive(false);
-                //elementMenu.SetActive(false);
+                
 
             }
 
             // element menu
             else if (handTracking.fistsIn || manualElMenu)
             {
-                //topLevelVisuals.SetActive(false);
                 ElementSelector();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
@@ -160,7 +168,6 @@ public class MagicController : MonoBehaviour
             // element scaler
             else if (handTracking.palmsIn)
             {
-                //topLevelVisuals.SetActive(false);
                 ElementScaler();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 

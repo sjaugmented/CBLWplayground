@@ -65,15 +65,27 @@ public class PrecisionController : MonoBehaviour
     DMXcontroller dmx;
     OSC osc;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
         dmx = FindObjectOfType<DMXcontroller>();
         osc = FindObjectOfType<OSC>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
 
         rightHandFloat.SetActive(false);
         leftHandFloat.SetActive(false);
+
+        
+    }
+
+    void OnEnable()
+    {
+        dmx.SetAddress(53, 0);
     }
 
     // Update is called once per frame

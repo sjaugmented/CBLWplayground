@@ -5,8 +5,12 @@ using UnityEngine.PlayerLoop;
 
 public class HideHitBox : MonoBehaviour
 {
+    [SerializeField] Material gazedMaterial;
+    Material defaultMaterial;
+    
     Renderer thisRenderer;
     bool visible = true;
+    bool lookedAt = false;
     
     // Start is called before the first frame update
     void Start()
@@ -26,6 +30,17 @@ public class HideHitBox : MonoBehaviour
             thisRenderer.enabled = true;
             visible = true;
         }
+        
+    }
+
+    public void LookedAt()
+    {
+        this.transform.Rotate(0, 2, 0);
+    }
+
+    public void LookedAway()
+    {
+        this.transform.Rotate(0, 0, 0);
         
     }
 }
