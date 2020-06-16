@@ -2612,6 +2612,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac36ea97e25c694b9fc900c37dbba55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwOrb: {fileID: 8772315707712261194, guid: a9fabf6f98c9545439a4be05e21b5160,
+    type: 3}
   magnifier: 1
   velocity: 0
 --- !u!4 &738241107

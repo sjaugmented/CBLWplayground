@@ -435,7 +435,6 @@ public class MagicController : MonoBehaviour
 
                 if (fromOrbScaler && floatPassthru)
                 {
-                    Debug.Log(elementScale); // remove
                     OrbCastController spellController = spellOrb.GetComponent<OrbCastController>();
                     spellController.valueOSC = elementScale;
 
