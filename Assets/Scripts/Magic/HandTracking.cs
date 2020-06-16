@@ -38,8 +38,10 @@ public class HandTracking : MonoBehaviour
     public bool leftFist = false;
     public bool rightFlatHand = false;
     public bool rightKnifeHand = false;
+    public bool rightThrower;
     public bool leftFlatHand = false;
     public bool leftKnifeHand = false;
+
 
 
     Transform cam;
@@ -168,6 +170,13 @@ public class HandTracking : MonoBehaviour
                 rightKnifeHand = true;
             }
             else rightKnifeHand = false;
+
+            // look for palm out throw
+            if (IsWithinRange(rtIndMidForPalmFor, 20, bigMargin) && IsWithinRange(rtMidForPalmFor, 20, bigMargin) && IsWithinRange(rtPinkForPalmFor, 20, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 60, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 0, bigMargin))
+            {
+                rightThrower = true;
+            }
+            else rightThrower = false;
         }
         else
         {
@@ -175,6 +184,7 @@ public class HandTracking : MonoBehaviour
             rightFist = false;
             rightFlatHand = false;
             rightKnifeHand = false;
+            rightThrower = false;
         }
 
         // look for only left fingers

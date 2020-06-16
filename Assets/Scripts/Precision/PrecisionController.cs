@@ -475,6 +475,7 @@ public class PrecisionController : MonoBehaviour
         Debug.Log("OSC sending: " + message);
     }
 
+    #region Button/Gaze hookups
     public void GazeAtSkyPanel()
     {
         gazeLight = Lights.SkyPanel;
@@ -504,6 +505,7 @@ public class PrecisionController : MonoBehaviour
     {
         hudOn = !hudOn;
     }
+    #endregion
 
     private void ProcessRightHUD()
     {

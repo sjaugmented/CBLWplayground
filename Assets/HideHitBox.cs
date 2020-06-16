@@ -16,6 +16,7 @@ public class HideHitBox : MonoBehaviour
     void Start()
     {
         thisRenderer = GetComponent<Renderer>();
+        defaultMaterial = thisRenderer.material;
     }
 
     public void HideBox()
@@ -36,11 +37,13 @@ public class HideHitBox : MonoBehaviour
     public void LookedAt()
     {
         this.transform.Rotate(0, 2, 0);
+        thisRenderer.material = gazedMaterial;
     }
 
     public void LookedAway()
     {
         this.transform.Rotate(0, 0, 0);
+        thisRenderer.material = defaultMaterial;
         
     }
 }

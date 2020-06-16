@@ -122,7 +122,6 @@ public class MagicController : MonoBehaviour
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         masterOrb.SetActive(false);
-        //elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
 

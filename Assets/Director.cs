@@ -10,7 +10,7 @@ public class Director : MonoBehaviour
     [SerializeField] Material selectedMaterial;
     public List<Renderer> selectorPlatonics = new List<Renderer>();
 
-    public enum Mode { Magic, RGB, Precision};
+    public enum Mode { Magic, RGB, Precision, Throw, ResetDMX };
     public Mode currentMode = Mode.Magic;
     int modeIndex = 1;
     
@@ -19,6 +19,7 @@ public class Director : MonoBehaviour
     MagicController magicController;
     RGBController rgbController;
     PrecisionController precisionController;
+    ThrowController throwController;
 
     GameObject magicComponents;
     GameObject rgbComponents;
@@ -32,10 +33,12 @@ public class Director : MonoBehaviour
         magicController = FindObjectOfType<MagicController>();
         rgbController = FindObjectOfType<RGBController>();
         precisionController = FindObjectOfType<PrecisionController>();
+        throwController = FindObjectOfType<ThrowController>();
 
         magicComponents = FindObjectOfType<MagicID>().gameObject;
         rgbComponents = FindObjectOfType<RGBID>().gameObject;
         precisionComponents = FindObjectOfType<PrecisionID>().gameObject;
+
 
     }
 
@@ -52,7 +55,11 @@ public class Director : MonoBehaviour
             topLevelMenu.SetActive(true);
 
             Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-            topLevelMenu.transform.position = midpointPalms + menuOffset;
+
+            //Vector3 relativeOffset = Camera.main.transform.InverseTransformDirection(menuOffset);
+
+            topLevelMenu.transform.position = midpointPalms + Camera.main.transform.forward;
+            topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
         }
         else topLevelMenu.SetActive(false);
         
@@ -63,19 +70,30 @@ public class Director : MonoBehaviour
         if (currentMode == Mode.Magic)
         {
             modeIndex = 0;
-            SetGameObjects(true, false, false);
+            SetGameObjects(true, false, false, false);
         }
 
         if (currentMode == Mode.RGB)
         {
             modeIndex = 1;
-            SetGameObjects(false, true, false);
+            SetGameObjects(false, true, false, false);
         }
 
         if (currentMode == Mode.Precision)
         {
             modeIndex = 2;
-            SetGameObjects(false, false, true);
+            SetGameObjects(false, false, true, false);
+        }
+
+        if (currentMode == Mode.Throw)
+        {
+            modeIndex = 3;
+            SetGameObjects(false, false, false, true);
+        }
+
+        if (currentMode == Mode.ResetDMX)
+        {
+            modeIndex = 4;
         }
     }
 
@@ -94,11 +112,12 @@ public class Director : MonoBehaviour
         }
     }
 
-    private void SetGameObjects(bool mag, bool rgb, bool prec)
+    private void SetGameObjects(bool mag, bool rgb, bool prec, bool thrower)
     {
         magicController.enabled = mag;
         rgbController.enabled = rgb;
         precisionController.enabled = prec;
+        throwController.enabled = thrower;
 
         magicComponents.SetActive(mag);
         rgbComponents.SetActive(rgb);
@@ -107,24 +126,31 @@ public class Director : MonoBehaviour
     }
 
     #region GazeFunctions
+    public void ResetDMX()
+    {
+        DMXcontroller dmx = FindObjectOfType<DMXcontroller>();
+        dmx.ResetDMX();
+        currentMode = Mode.ResetDMX;
+    }
+
     public void MagicMode()
     {
         currentMode = Mode.Magic;
-
-        
-
     }
 
     public void RGBMode()
     {
         currentMode = Mode.RGB;
-
     }
 
     public void PrecisionMode()
     {
         currentMode = Mode.Precision;
+    }
 
+    public void ThrowMode()
+    {
+        currentMode = Mode.Throw;
     }
     #endregion
 }

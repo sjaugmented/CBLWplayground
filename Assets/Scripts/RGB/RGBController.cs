@@ -48,23 +48,22 @@ public class RGBController : MonoBehaviour
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
-        /*dmx = FindObjectOfType<DMXcontroller>();
-        osc = FindObjectOfType<OSC>();*/
+        dmx = FindObjectOfType<DMXcontroller>();
+        osc = FindObjectOfType<OSC>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        dmx = FindObjectOfType<DMXcontroller>();
-        osc = FindObjectOfType<OSC>();
+        
 
-        dmx.SetAddress(DMXdimmer, 255);
-        dmx.SetAddress(DMXXover, 255);
+        
     }
 
     void OnEnable()
     {
-        
+        dmx.SetAddress(DMXdimmer, 255);
+        dmx.SetAddress(DMXXover, 255);
     }
 
     // Update is called once per frame
@@ -97,7 +96,7 @@ public class RGBController : MonoBehaviour
             yOSCFloat = 1 - (indexMidDist - floatOffset) / (maxYAxisDist - floatOffset);
             if (indexMidDist > maxYAxisDist) yOSCFloat = 0;
             if (indexMidDist < floatOffset) yOSCFloat = 1;
-            redVal = Mathf.RoundToInt(yOSCFloat * 255);
+            greenVal = Mathf.RoundToInt(yOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
             dmx.SetAddress(greenDMX, greenVal);
@@ -118,7 +117,7 @@ public class RGBController : MonoBehaviour
             zOSCFloat = 1 - (indexMidDist - floatOffset) / (maxZAxisDist - floatOffset);
             if (indexMidDist > maxZAxisDist) zOSCFloat = 0;
             if (indexMidDist < floatOffset) zOSCFloat = 1;
-            redVal = Mathf.RoundToInt(zOSCFloat * 255);
+            blueVal = Mathf.RoundToInt(zOSCFloat * 255);
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
             dmx.SetAddress(blueDMX, blueVal);
