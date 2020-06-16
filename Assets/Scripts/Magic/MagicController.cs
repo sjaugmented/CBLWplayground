@@ -54,6 +54,9 @@ public class MagicController : MonoBehaviour
     [SerializeField] string zOSCMessage = "/zOSCfloat/";
 
     [Header("DMX controllers")]
+    public int DMXdimmer;
+    public int DMXkelvin;
+    public int DMXXover;
     public List<int> lightChannels;
     public List<int> lightValues;
     public List<int> fireChannels;
@@ -130,8 +133,8 @@ public class MagicController : MonoBehaviour
     void OnEnable()
     {
         // set global dimmer and color crossfade to max on skypanel
-        dmx.SetAddress(50, 255);
-        dmx.SetAddress(53, 255);
+        dmx.SetAddress(DMXdimmer, 255);
+        dmx.SetAddress(DMXXover, 255);
     }
 
     // Update is called once per frame

@@ -9,6 +9,7 @@ public class PrecisionController : MonoBehaviour
     [Header("SkyPanel DMX channels")]
     [SerializeField] int skyDimmerDMX = 50;
     [SerializeField] int skyKelvinDMX = 51;
+    [SerializeField] int skyXover = 53;
 
     [Header("SpotLight DMX channels")]
     [SerializeField] int spotDimmerDMX = 4;
@@ -85,7 +86,7 @@ public class PrecisionController : MonoBehaviour
 
     void OnEnable()
     {
-        dmx.SetAddress(53, 0);
+        dmx.SetAddress(skyXover, 0);
     }
 
     // Update is called once per frame
@@ -157,8 +158,10 @@ public class PrecisionController : MonoBehaviour
         if (!rightTether)
         {
             if (gazeLight == Lights.reset) rightControl = Lights.none;
+            else if (gazeLight == Lights.SkyPanel) rightControl = Lights.SkyPanel;
+            else if (gazeLight == Lights.Spot) rightControl = Lights.Spot;
             
-            if (rightControl == Lights.none)
+            else if (rightControl == Lights.none)
             {
                 if (gazeLight == Lights.SkyPanel)
                 {

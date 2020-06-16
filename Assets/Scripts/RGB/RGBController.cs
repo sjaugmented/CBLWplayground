@@ -24,6 +24,9 @@ public class RGBController : MonoBehaviour
     [SerializeField] string zOSCMessage = "/zOSCfloat/";
 
     [Header("DMX controllers")]
+    [SerializeField] int DMXdimmer;
+    [SerializeField] int DMXkelvin;
+    [SerializeField] int DMXXover;
     [SerializeField] int redDMX;
     [SerializeField] [Range(0, 255)] int redVal;
     [SerializeField] int greenDMX;
@@ -45,22 +48,23 @@ public class RGBController : MonoBehaviour
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
-        dmx = FindObjectOfType<DMXcontroller>();
-        osc = FindObjectOfType<OSC>();
+        /*dmx = FindObjectOfType<DMXcontroller>();
+        osc = FindObjectOfType<OSC>();*/
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        dmx = FindObjectOfType<DMXcontroller>();
+        osc = FindObjectOfType<OSC>();
 
-        
+        dmx.SetAddress(DMXdimmer, 255);
+        dmx.SetAddress(DMXXover, 255);
     }
 
     void OnEnable()
     {
-        dmx.SetAddress(50, 255);
-        dmx.SetAddress(53, 255);
+        
     }
 
     // Update is called once per frame
@@ -77,7 +81,7 @@ public class RGBController : MonoBehaviour
             if (indexMidDist < floatOffset) xOSCFloat = 1;
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
 
-            SendOSCMessage(yOSCMessage, xOSCFloat);
+            SendOSCMessage(xOSCMessage, xOSCFloat);
             dmx.SetAddress(redDMX, redVal);
 
             horStackObj.SetActive(true);
@@ -149,11 +153,5 @@ public class RGBController : MonoBehaviour
         message.values.Add(value);
         osc.Send(message);
         Debug.Log("Sending OSC: " + address + " " + value); // todo remove
-    }
-
-    private void LiveDMX()
-    {
-        // todo
-        
     }
 }
