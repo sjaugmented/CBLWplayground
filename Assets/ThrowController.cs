@@ -6,7 +6,7 @@ public class ThrowController : MonoBehaviour
 {
     HandTracking handTracker;
 
-    float castThreshold = 10;
+    [SerializeField] float castThreshold = 10;
 
     [SerializeField] GameObject throwOrb;
 
