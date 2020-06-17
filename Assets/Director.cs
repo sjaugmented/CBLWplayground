@@ -8,11 +8,14 @@ public class Director : MonoBehaviour
     [SerializeField] Vector3 menuOffset;
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material selectedMaterial;
+    [SerializeField] float menuTimer = 5f;
+    [SerializeField] float menuSelectDelay = 0.5f;
     public List<Renderer> selectorPlatonics = new List<Renderer>();
 
     public enum Mode { Magic, RGB, Precision, Throw, ResetDMX };
     public Mode currentMode = Mode.Magic;
     int modeIndex = 1;
+    bool menuActive = false;
     
     HandTracking handTracking;
 
@@ -52,17 +55,27 @@ public class Director : MonoBehaviour
 
         if (handTracking.pullUps)
         {
-            topLevelMenu.SetActive(true);
+            if (!menuActive)
+            {
+                menuActive = true;
+                topLevelMenu.SetActive(true);
+                StartCoroutine("MenuTimeOut", menuTimer);
 
-            Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-
-            //Vector3 relativeOffset = Camera.main.transform.InverseTransformDirection(menuOffset);
-
-            topLevelMenu.transform.position = midpointPalms + Camera.main.transform.forward;
-            topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
+                Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
+                topLevelMenu.transform.position = midpointPalms + Camera.main.transform.forward;
+                topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
+            }
+            else return;
+            
         }
         else topLevelMenu.SetActive(false);
         
+    }
+
+    IEnumerator MenuTimeOut(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        topLevelMenu.SetActive(false);
     }
 
     private void ConvertIndex()
@@ -126,31 +139,38 @@ public class Director : MonoBehaviour
     }
 
     #region GazeFunctions
-    public void ResetDMX()
-    {
-        DMXcontroller dmx = FindObjectOfType<DMXcontroller>();
-        dmx.ResetDMX();
-        currentMode = Mode.ResetDMX;
-    }
-
     public void MagicMode()
     {
         currentMode = Mode.Magic;
+        StartCoroutine("MenuTimeOut", menuSelectDelay);
     }
 
     public void RGBMode()
     {
         currentMode = Mode.RGB;
+        StartCoroutine("MenuTimeOut", menuSelectDelay);
+
     }
 
     public void PrecisionMode()
     {
         currentMode = Mode.Precision;
+        StartCoroutine("MenuTimeOut", menuSelectDelay);
+
     }
 
     public void ThrowMode()
     {
         currentMode = Mode.Throw;
+        StartCoroutine("MenuTimeOut", menuSelectDelay);
+    }
+
+    public void ResetDMX()
+    {
+        DMXcontroller dmx = FindObjectOfType<DMXcontroller>();
+        dmx.ResetDMX();
+        currentMode = Mode.ResetDMX;
+        StartCoroutine("MenuTimeOut", menuSelectDelay);
     }
     #endregion
 }

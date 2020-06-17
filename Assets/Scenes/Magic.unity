@@ -599,7 +599,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323692125}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd6717a286ea83045831a79bccae2596, type: 3}
   m_Name: 
@@ -720,6 +720,8 @@ MonoBehaviour:
   menuOffset: {x: 0, y: 0, z: 0.7}
   defaultMaterial: {fileID: 2100000, guid: a923a5d1aebc7fe449b4ab3289da537b, type: 2}
   selectedMaterial: {fileID: 2100000, guid: 47f3c5e1cb6142ba9697cd4c86d74321, type: 2}
+  menuTimer: 5
+  menuSelectDelay: 0.5
   selectorPlatonics:
   - {fileID: 447844901}
   - {fileID: 1207833447}
