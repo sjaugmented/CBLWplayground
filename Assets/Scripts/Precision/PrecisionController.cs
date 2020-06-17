@@ -225,6 +225,7 @@ public class PrecisionController : MonoBehaviour
     float rightKelvinFloat;
     bool rightKelvinXLocked = false;
     float rightKelvinXPos;
+    Vector3 rightKelvinPos;
     #endregion
 
     private void ProcessRightHandControls()

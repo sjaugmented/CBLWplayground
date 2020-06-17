@@ -75,6 +75,7 @@ public class MagicController : MonoBehaviour
     SpellBook spellBook;
     OSC osc;
     DMXcontroller dmx;
+    DMXChannels dmxChan;
     SoundManager sound;
     AudioSource audio;
 
@@ -92,6 +93,7 @@ public class MagicController : MonoBehaviour
         spellBook = GetComponent<SpellBook>();
         osc = FindObjectOfType<OSC>();
         dmx = FindObjectOfType<DMXcontroller>();
+        dmxChan = FindObjectOfType<DMXChannels>();
     }
 
     // Start is called before the first frame update
@@ -112,8 +114,8 @@ public class MagicController : MonoBehaviour
     void OnEnable()
     {
         // set global dimmer and color crossfade to max on skypanel
-        dmx.SetAddress(DMXdimmer, 255);
-        dmx.SetAddress(DMXXover, 255);
+        dmx.SetAddress(dmxChan.skyPanelDimmer, 255);
+        dmx.SetAddress(dmxChan.skyPanelXOver, 255);
     }
 
     // Update is called once per frame

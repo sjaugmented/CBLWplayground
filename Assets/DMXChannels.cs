@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class DMXChannels : MonoBehaviour
 {
@@ -9,13 +10,13 @@ public class DMXChannels : MonoBehaviour
     public int skyPanelKelvin;
     public int skyPanelXOver;
     public int skyPanelRed;
-    public [Range(0, 255)] int redVal;
+    public int redVal;
     public int skyPanelGreen;
-    public [Range(0, 255)] int greenVal;
+    public int greenVal;
     public int skyPanelBlue;
-    public [Range(0, 255)] int blueVal;
+    public int blueVal;
     public int skyPanelWhite;
-    public [Range(0, 255)] int whiteVal;
+    public int whiteVal;
 
     [Header("SpotLight channels")]
     public int spotRed;
