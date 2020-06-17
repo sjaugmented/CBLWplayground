@@ -15,7 +15,9 @@ public class Director : MonoBehaviour
     public enum Mode { Magic, RGB, Precision, Throw, ResetDMX };
     public Mode currentMode = Mode.Magic;
     int modeIndex = 1;
-    bool menuActive = false;
+    public bool menuActive = false;
+
+    List<Vector3> platonicStartPos = new List<Vector3>();
     
     HandTracking handTracking;
 
@@ -42,7 +44,13 @@ public class Director : MonoBehaviour
         rgbComponents = FindObjectOfType<RGBID>().gameObject;
         precisionComponents = FindObjectOfType<PrecisionID>().gameObject;
 
+        topLevelMenu.SetActive(false);
 
+        foreach (Renderer selector in selectorPlatonics)
+        {
+            Vector3 startingPos = selector.transform.parent.localPosition;
+            platonicStartPos.Add(startingPos);
+        }
     }
 
     
@@ -53,22 +61,29 @@ public class Director : MonoBehaviour
         ConvertIndex();
         SetSelectorMaterial();
 
+        if (topLevelMenu.activeInHierarchy)
+        {
+            menuActive = true;
+        }
+        else menuActive = false;
+
         if (handTracking.pullUps)
         {
             if (!menuActive)
             {
-                menuActive = true;
+                //ResetSelectorPositions();
                 topLevelMenu.SetActive(true);
+                //NoGravity();
                 StartCoroutine("MenuTimeOut", menuTimer);
 
                 Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-                topLevelMenu.transform.position = midpointPalms + Camera.main.transform.forward;
+                topLevelMenu.transform.position = midpointPalms + menuOffset;
                 topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
             }
             else return;
             
+            
         }
-        else topLevelMenu.SetActive(false);
         
     }
 
@@ -76,6 +91,37 @@ public class Director : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         topLevelMenu.SetActive(false);
+    }
+
+    IEnumerator Gravity()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        for(int i = 0; i < selectorPlatonics.Count; i++)
+        {
+            if (i != modeIndex)
+            {
+                Rigidbody rigidbody = selectorPlatonics[i].gameObject.GetComponentInParent<Rigidbody>();
+                rigidbody.useGravity = true;
+            }
+        }
+    }
+
+    private void NoGravity()
+    {
+        foreach(Renderer selector in selectorPlatonics)
+        {
+            Rigidbody rigidbody = selector.gameObject.GetComponentInParent<Rigidbody>();
+            rigidbody.useGravity = false;
+        }
+    }
+
+    private void ResetSelectorPositions()
+    {
+        for(int i = 0; i < selectorPlatonics.Count; i++)
+        {
+            selectorPlatonics[i].transform.parent.localPosition = platonicStartPos[i];
+        }
     }
 
     private void ConvertIndex()
@@ -143,12 +189,14 @@ public class Director : MonoBehaviour
     {
         currentMode = Mode.Magic;
         StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("Gravity");
     }
 
     public void RGBMode()
     {
         currentMode = Mode.RGB;
         StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("Gravity");
 
     }
 
@@ -156,6 +204,7 @@ public class Director : MonoBehaviour
     {
         currentMode = Mode.Precision;
         StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("Gravity");
 
     }
 
@@ -163,6 +212,7 @@ public class Director : MonoBehaviour
     {
         currentMode = Mode.Throw;
         StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("Gravity");
     }
 
     public void ResetDMX()
@@ -171,6 +221,7 @@ public class Director : MonoBehaviour
         dmx.ResetDMX();
         currentMode = Mode.ResetDMX;
         StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("Gravity");
     }
     #endregion
 }
