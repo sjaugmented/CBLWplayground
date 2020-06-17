@@ -17,7 +17,6 @@ public class MagicController : MonoBehaviour
     public Vector3 particleCastOffset = new Vector3(0, 0, 0.1f); // todo hardcode
     [SerializeField] Vector3 elMenuOffset = new Vector3(0, 0, 0); // todo hardcode
 
-
     [Header("Caster transforms for particles/streams")]
     [SerializeField] Transform rightHandCaster;
     [SerializeField] Transform leftHandCaster;
@@ -25,22 +24,6 @@ public class MagicController : MonoBehaviour
     [Header("Rates of Fire")]
     [SerializeField] [Range(1, 20)] float orbsPerSecond = 1f;
     [SerializeField] [Range(1, 20)] float particlesPerSecond = 20f;
-
-    [Header("Palm Menus")]
-    //[SerializeField] GameObject elementMenu;
-    [Tooltip("Parent object of the palm menu visuals")]
-    [SerializeField] GameObject leftPalmMenuVisuals;
-    [SerializeField] GameObject rightPalmMenuVisuals;
-    [Tooltip("Rate of fire GameObject sliders in hierarchy")]
-    [SerializeField] PinchSlider orbROFSlider;
-    [SerializeField] TextMeshPro orbROFText;
-    [Tooltip("Rate of fire GameObject sliders in hierarchy")]
-    [SerializeField] PinchSlider particleROFSlider;
-    [SerializeField] TextMeshPro particleROFText;
-    [SerializeField] PinchSlider palmOffsetSlider;
-    [SerializeField] TextMeshPro palmOffsetText;
-    [SerializeField] PinchSlider maxPalmDistSlider;
-    [SerializeField] TextMeshPro maxPalmDistText;
 
     [Header("Palm Conjure")]
     [Tooltip("Max distance between palms for conjuring")]
@@ -53,10 +36,7 @@ public class MagicController : MonoBehaviour
     [SerializeField] string yOSCMessage = "/yOSCfloat/";
     [SerializeField] string zOSCMessage = "/zOSCfloat/";
 
-    [Header("DMX controllers")]
-    public int DMXdimmer;
-    public int DMXkelvin;
-    public int DMXXover;
+    [Header("DMX values")]
     public List<int> lightChannels;
     public List<int> lightValues;
     public List<int> fireChannels;
@@ -701,43 +681,6 @@ public class MagicController : MonoBehaviour
     {
         hoverOrb = false;
         hoverSelectFromMenu = true;
-    }
-
-    public void SetOrbRateOfFire()
-    {
-        float sliderVal = orbROFSlider.SliderValue;
-        // rate of fire cannot go below 1
-        if (sliderVal < 0.05f) sliderVal = 0.05f;
-        orbsPerSecond = sliderVal * 20;
-
-        orbROFText.text = orbsPerSecond.ToString();
-    }
-
-    public void SetParticleRateOfFire()
-    {
-        float sliderVal = particleROFSlider.SliderValue;
-        // rate of fire cannot go below 1
-        if (sliderVal < 0.05f) sliderVal = 0.05f;
-        particlesPerSecond = sliderVal * 20;
-
-        particleROFText.text = particlesPerSecond.ToString();
-    }
-
-    public void SetPalmDistanceOffset()
-    {
-        float sliderVal = palmOffsetSlider.SliderValue;
-
-        palmDistOffset = sliderVal * 0.2f;
-
-        palmOffsetText.text = palmDistOffset.ToString();
-    }
-
-    public void SetMaxPalmDist()
-    {
-        float sliderVal = maxPalmDistSlider.SliderValue;
-        maxXAxisDist = sliderVal * 0.6f;
-        if (maxXAxisDist < 0.2f) maxXAxisDist = 0.2f;
-        maxPalmDistText.text = maxXAxisDist.ToString();
     }
     #endregion
 }

@@ -23,20 +23,15 @@ public class RGBController : MonoBehaviour
     [SerializeField] string yOSCMessage = "/yOSCfloat/";
     [SerializeField] string zOSCMessage = "/zOSCfloat/";
 
-    [Header("DMX controllers")]
-    [SerializeField] int DMXdimmer;
-    [SerializeField] int DMXkelvin;
-    [SerializeField] int DMXXover;
-    [SerializeField] int redDMX;
+    [Header("DMX values")]
     [SerializeField] [Range(0, 255)] int redVal;
-    [SerializeField] int greenDMX;
     [SerializeField] [Range(0, 255)] int greenVal;
-    [SerializeField] int blueDMX;
     [SerializeField] [Range(0, 255)] int blueVal;
 
 
     HandTracking handTracking;
     DMXcontroller dmx;
+    DMXChannels dmxChan;
     OSC osc;
     private float palmDist;
     private float indexMidDist;
@@ -49,6 +44,7 @@ public class RGBController : MonoBehaviour
     {
         handTracking = FindObjectOfType<HandTracking>();
         dmx = FindObjectOfType<DMXcontroller>();
+        dmxChan = FindObjectOfType<DMXChannels>();
         osc = FindObjectOfType<OSC>();
     }
 
@@ -62,8 +58,8 @@ public class RGBController : MonoBehaviour
 
     void OnEnable()
     {
-        dmx.SetAddress(DMXdimmer, 255);
-        dmx.SetAddress(DMXXover, 255);
+        dmx.SetAddress(dmxChan.skyPanelDimmer, 255);
+        dmx.SetAddress(dmxChan.skyPanelXOver, 255);
     }
 
     // Update is called once per frame
@@ -81,7 +77,7 @@ public class RGBController : MonoBehaviour
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
 
             SendOSCMessage(xOSCMessage, xOSCFloat);
-            dmx.SetAddress(redDMX, redVal);
+            dmx.SetAddress(dmxChan.skyPanelRed, redVal);
 
             horStackObj.SetActive(true);
             horStackObj.transform.position = midpointIndexes;
@@ -99,7 +95,7 @@ public class RGBController : MonoBehaviour
             greenVal = Mathf.RoundToInt(yOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
-            dmx.SetAddress(greenDMX, greenVal);
+            dmx.SetAddress(dmxChan.skyPanelGreen, greenVal);
 
             vertStackObj.SetActive(true);
             vertStackObj.transform.position = midpointIndexes;
@@ -120,7 +116,7 @@ public class RGBController : MonoBehaviour
             blueVal = Mathf.RoundToInt(zOSCFloat * 255);
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
-            dmx.SetAddress(blueDMX, blueVal);
+            dmx.SetAddress(dmxChan.skyPanelBlue, blueVal);
 
             forStackObj.SetActive(true);
             forStackObj.transform.position = midpointIndexes;

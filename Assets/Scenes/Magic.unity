@@ -585,6 +585,7 @@ GameObject:
   m_Component:
   - component: {fileID: 323692127}
   - component: {fileID: 323692126}
+  - component: {fileID: 323692128}
   m_Layer: 0
   m_Name: DMX
   m_TagString: Untagged
@@ -618,6 +619,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323692128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323692125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89ed0b0535cd644f9297f99ccf3d707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skyPanelDimmer: 70
+  skyPanelKelvin: 71
+  skyPanelXOver: 73
+  skyPanelRed: 74
+  redVal: 0
+  skyPanelGreen: 75
+  greenVal: 0
+  skyPanelBlue: 76
+  blueVal: 0
+  skyPanelWhite: 77
+  whiteVal: 0
+  spotRed: 1
+  spotGreen: 2
+  spotBlue: 3
+  spotWhite: 4
 --- !u!1 &367764642
 GameObject:
   m_ObjectHideFlags: 0
@@ -4721,6 +4749,7 @@ MonoBehaviour:
   twoHands: 0
   palmsIn: 0
   fistsIn: 0
+  chinUps: 0
   pullUps: 0
   palmsOut: 0
   verticalStack: 0
@@ -6230,16 +6259,6 @@ MonoBehaviour:
   leftHandCaster: {fileID: 570846434}
   orbsPerSecond: 1
   particlesPerSecond: 5
-  leftPalmMenuVisuals: {fileID: 0}
-  rightPalmMenuVisuals: {fileID: 0}
-  orbROFSlider: {fileID: 0}
-  orbROFText: {fileID: 0}
-  particleROFSlider: {fileID: 0}
-  particleROFText: {fileID: 0}
-  palmOffsetSlider: {fileID: 0}
-  palmOffsetText: {fileID: 0}
-  maxPalmDistSlider: {fileID: 0}
-  maxPalmDistText: {fileID: 0}
   maxXAxisDist: 0.5
   palmDistOffset: 0.15
   palmMidpointOffset: {x: 0, y: 0.05, z: 0}
