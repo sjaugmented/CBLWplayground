@@ -255,16 +255,16 @@ public class PrecisionController : MonoBehaviour
                 rightDimmerYLocked = true;
             }
 
-            rightHandFloat.transform.position = new Vector3(handTracking.rtMiddleTip.Position.x, rightDimmerYPos, handTracking.rtMiddleTip.Position.z);
+            rightHandFloat.transform.position = new Vector3(handTracking.rightPalm.Position.x, rightDimmerYPos, handTracking.rightPalm.Position.z);
 
             // determine float using pose.position.y
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rtMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rightPalm.Position);
 
 
             rightDimmerFloat = handDistToMin / maxDistance;
             if (rightDimmerFloat > 1) rightDimmerFloat = 1;
-            if (handTracking.rtMiddleTip.Position.y < rightHandFloat.transform.position.y - 0.125) rightDimmerFloat = 0;
+            if (handTracking.rightPalm.Position.y < rightHandFloat.transform.position.y - 0.125) rightDimmerFloat = 0;
             
 
             // display in HUD
@@ -295,6 +295,8 @@ public class PrecisionController : MonoBehaviour
         else if (rightKelvin)
         {
             rightDimmerYLocked = false;
+            var cam = Camera.main.transform;
+            var camRelative = cam.InverseTransformPoint(handTracking.rightPalm.Position);
 
             // set float.position.x to pose.position.x and store in memory - float.position.y/z tracks to pose.position.y/z
             if (!rightKelvinXLocked)
@@ -306,16 +308,16 @@ public class PrecisionController : MonoBehaviour
             // activate right hand float, position, and rotate
             rightHandFloat.SetActive(true);
             rightHandFloat.transform.localRotation = Quaternion.Euler(0, 0, -90);
-            rightHandFloat.transform.position = new Vector3(rightKelvinXPos, handTracking.rtMiddleTip.Position.y, handTracking.rtMiddleTip.Position.z);
+            rightHandFloat.transform.position = new Vector3(rightKelvinXPos, handTracking.rightPalm.Position.y, handTracking.rightPalm.Position.z);
 
 
             // determine float using pose.position.x
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rtMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rightPalm.Position);
 
             rightKelvinFloat = handDistToMin / maxDistance;
             if (rightKelvinFloat > 1) rightKelvinFloat = 1;
-            if (handTracking.rtMiddleTip.Position.x < rightHandFloat.transform.position.x - 0.125) rightKelvinFloat = 0;
+            if (handTracking.rightPalm.Position.x < rightHandFloat.transform.position.x - 0.125) rightKelvinFloat = 0;
 
             // display in HUD
             rightKelvinVal.text = rightKelvinFloat.ToString();

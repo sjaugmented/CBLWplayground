@@ -28,6 +28,7 @@ public class HandTracking : MonoBehaviour
     public bool twoHands = false;
     public bool palmsIn = false;
     public bool fistsIn = false;
+    public bool chinUps = false;
     public bool pullUps = false;
     public bool palmsOut = false;
     public bool verticalStack = false;
@@ -246,6 +247,7 @@ public class HandTracking : MonoBehaviour
                     palmsIn = true;
                     fistsIn = false;
                     palmsOut = false;
+                    chinUps = false;
                     pullUps = false;
                     verticalStack = false;
                     forwardStack = false;
@@ -260,6 +262,7 @@ public class HandTracking : MonoBehaviour
                     palmsIn = false;
                     fistsIn = true;
                     palmsOut = false;
+                    chinUps = false;
                     pullUps = false;
                     verticalStack = false;
                     forwardStack = false;
@@ -271,12 +274,13 @@ public class HandTracking : MonoBehaviour
                     palmsIn = false;
                     fistsIn = false;
                     palmsOut = true;
+                    chinUps = false;
                     pullUps = false;
                     verticalStack = false;
                     forwardStack = false;
                 }
 
-                // look for pull ups
+                // look for chin ups
                 else if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 0, bigMargin) && IsWithinRange(ltPalmUpCamFor, 0, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 170, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 70, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 170, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 70, bigMargin) ||
                     //debug: unity standard airtap
                     IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 0, bigMargin) && IsWithinRange(ltPalmUpCamFor, 0, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
@@ -284,6 +288,21 @@ public class HandTracking : MonoBehaviour
                     palmsIn = false;
                     fistsIn = false;
                     palmsOut = false;
+                    chinUps = true;
+                    pullUps = false;
+                    verticalStack = false;
+                    forwardStack = false;
+                }
+
+                // look for pull ups
+                else if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 180, bigMargin) && IsWithinRange(ltPalmUpCamFor, 180, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 170, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 70, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 170, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 70, bigMargin) ||
+                    //debug: unity standard airtap
+                    IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 0, bigMargin) && IsWithinRange(ltPalmUpCamFor, 0, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+                {
+                    palmsIn = false;
+                    fistsIn = false;
+                    palmsOut = false;
+                    chinUps = false;
                     pullUps = true;
                     verticalStack = false;
                     forwardStack = false;
@@ -295,6 +314,7 @@ public class HandTracking : MonoBehaviour
                     palmsIn = false;
                     fistsIn = false;
                     palmsOut = false;
+                    chinUps = false;
                     pullUps = false;
                     verticalStack = true;
                     forwardStack = false;
@@ -306,6 +326,7 @@ public class HandTracking : MonoBehaviour
                     palmsIn = false;
                     fistsIn = false;
                     palmsOut = false;
+                    chinUps = false;
                     pullUps = false;
                     verticalStack = false;
                     forwardStack = true;
@@ -316,6 +337,7 @@ public class HandTracking : MonoBehaviour
                     palmsIn = false;
                     fistsIn = false;
                     palmsOut = false;
+                    chinUps = false;
                     pullUps = false;
                     verticalStack = false;
                     forwardStack = false;
@@ -326,6 +348,7 @@ public class HandTracking : MonoBehaviour
                 palmsIn = false;
                 fistsIn = false;
                 palmsOut = false;
+                chinUps = false;
                 pullUps = false;
                 verticalStack = false;
                 forwardStack = false;
@@ -338,6 +361,7 @@ public class HandTracking : MonoBehaviour
             fistsIn = false;
             palmsIn = false;
             palmsOut = false;
+            chinUps = false;
             pullUps = false;
             verticalStack = false;
             forwardStack = false;

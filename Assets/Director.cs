@@ -15,7 +15,7 @@ public class Director : MonoBehaviour
     public enum Mode { Magic, RGB, Precision, Throw, ResetDMX };
     public Mode currentMode = Mode.Magic;
     int modeIndex = 1;
-    public bool menuActive = false;
+    bool menuActive = false;
 
     List<Vector3> platonicStartPos = new List<Vector3>();
     
@@ -67,7 +67,7 @@ public class Director : MonoBehaviour
         }
         else menuActive = false;
 
-        if (handTracking.pullUps)
+        if (handTracking.chinUps)
         {
             if (!menuActive)
             {

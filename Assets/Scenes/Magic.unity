@@ -728,8 +728,7 @@ MonoBehaviour:
   - {fileID: 1250128727}
   - {fileID: 1235822469}
   - {fileID: 1414344847}
-  currentMode: 3
-  menuActive: 0
+  currentMode: 2
 --- !u!1 &418790343
 GameObject:
   m_ObjectHideFlags: 0
@@ -2497,6 +2496,11 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7319661690027442526, guid: b022d269b0aa54642a082cf51b7b42fd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7319661690513756368, guid: b022d269b0aa54642a082cf51b7b42fd,
         type: 3}
       propertyPath: m_Mesh
@@ -2520,7 +2524,7 @@ PrefabInstance:
     - target: {fileID: 8863862667333915269, guid: b022d269b0aa54642a082cf51b7b42fd,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5
+      value: 0.962
       objectReference: {fileID: 0}
     - target: {fileID: 8863862667333915269, guid: b022d269b0aa54642a082cf51b7b42fd,
         type: 3}
@@ -5503,6 +5507,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1603890332}
     m_Modifications:
+    - target: {fileID: 299354133538341648, guid: 32649782604619b4683f3b68bddfab1b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 299354133991625374, guid: 32649782604619b4683f3b68bddfab1b,
         type: 3}
       propertyPath: m_Mesh
@@ -5521,7 +5530,7 @@ PrefabInstance:
     - target: {fileID: 1923575093012635952, guid: 32649782604619b4683f3b68bddfab1b,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5
+      value: 0.962
       objectReference: {fileID: 0}
     - target: {fileID: 1923575093012635952, guid: 32649782604619b4683f3b68bddfab1b,
         type: 3}
@@ -5976,6 +5985,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1603890332}
     m_Modifications:
+    - target: {fileID: 4736306779723037806, guid: da44efc8d41cdb64ebc28f05ee24350d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4736306780344085984, guid: da44efc8d41cdb64ebc28f05ee24350d,
         type: 3}
       propertyPath: m_Mesh
@@ -5999,7 +6013,7 @@ PrefabInstance:
     - target: {fileID: 6858085343349267582, guid: da44efc8d41cdb64ebc28f05ee24350d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5
+      value: 0.962
       objectReference: {fileID: 0}
     - target: {fileID: 6858085343349267582, guid: da44efc8d41cdb64ebc28f05ee24350d,
         type: 3}
