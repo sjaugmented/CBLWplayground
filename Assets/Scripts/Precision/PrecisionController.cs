@@ -29,8 +29,12 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] GameObject rightKelvinObj;
     [SerializeField] GameObject leftDimmerObj;
     [SerializeField] GameObject leftKelvinObj;
-    [SerializeField] Transform rightHandMin;
-    [SerializeField] Transform leftHandMin;
+    [SerializeField] Transform rightDimmerMin;
+    [SerializeField] Transform rightKelvinMin;
+    [SerializeField] Transform rightKelvinMax;
+    [SerializeField] Transform leftDimmerMin;
+    [SerializeField] Transform leftKelvinMin;
+    [SerializeField] Transform leftKelvinMax;
 
     [SerializeField] bool tetherOverride = false;
     bool hasMadeRightFist = false;
@@ -62,18 +66,17 @@ public class PrecisionController : MonoBehaviour
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
         osc = FindObjectOfType<OSC>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
 
         rightDimmerObj.SetActive(false);
         rightKelvinObj.SetActive(false);
         leftDimmerObj.SetActive(false);
         leftKelvinObj.SetActive(false);
-        
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+   
     }
 
     void OnEnable()
@@ -226,8 +229,7 @@ public class PrecisionController : MonoBehaviour
     bool rightDimmerYLocked = false;
 
     float rightKelvinFloat;
-    bool rightKelvinXLocked = false;
-    float rightKelvinXPos;
+    bool rightKelvinLocked = false;
     Vector3 rightKelvinPos;
     #endregion
 
@@ -235,10 +237,11 @@ public class PrecisionController : MonoBehaviour
     {
         if (rightDimmer)
         {
-            rightKelvinXLocked = false;
+            rightKelvinLocked = false;
             
             // activate right hand float
             rightDimmerObj.SetActive(true);
+            rightKelvinObj.SetActive(false);
 
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!rightDimmerYLocked)
@@ -251,7 +254,7 @@ public class PrecisionController : MonoBehaviour
 
             // determine float using pose.position.y
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rightPalm.Position);
+            float handDistToMin = Vector3.Distance(rightDimmerMin.position, handTracking.rightPalm.Position);
 
 
             rightDimmerFloat = handDistToMin / maxDistance;
@@ -282,31 +285,27 @@ public class PrecisionController : MonoBehaviour
         else if (rightKelvin)
         {
             rightDimmerYLocked = false;
-            var cam = Camera.main.transform;
-            var camRelative = cam.InverseTransformPoint(handTracking.rightPalm.Position);
 
             // set float.position.x to pose.position.x and store in memory - float.position.y/z tracks to pose.position.y/z
-            if (!rightKelvinXLocked)
+            if (!rightKelvinLocked)
             {
                 rightKelvinPos = handTracking.rightPalm.Position;
-                rightKelvinXLocked = true;
+                rightKelvinLocked = true;
             }
 
             // activate right hand float, position, and rotate
             rightDimmerObj.SetActive(false);
             rightKelvinObj.SetActive(true);
-            rightKelvinObj.transform.rotation = cam.rotation;
-            //rightHandFloat.transform.rotation = cam.rotation;
-            //rightHandFloat.transform.position = new Vector3(rightKelvinXPos, handTracking.rightPalm.Position.y, handTracking.rightPalm.Position.z);
+            rightKelvinObj.transform.position = rightKelvinPos;
 
 
             // determine float using pose.position.x
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(rightHandMin.position, handTracking.rightPalm.Position);
+            float handDistToMin = Vector3.Distance(rightKelvinMin.position, handTracking.rightPalm.Position);
 
             rightKelvinFloat = handDistToMin / maxDistance;
             if (rightKelvinFloat > 1) rightKelvinFloat = 1;
-            if (handTracking.rightPalm.Position.x < rightDimmerObj.transform.position.x - 0.125) rightKelvinFloat = 0;
+            if (Vector3.Distance(handTracking.rightPalm.Position, rightKelvinMax.position) > maxDistance) rightKelvinFloat = 0;
 
             // display in HUD
             rightKelvinVal.text = rightKelvinFloat.ToString();
@@ -340,37 +339,37 @@ public class PrecisionController : MonoBehaviour
     bool leftDimmerYLocked = false;
 
     float leftKelvinFloat;
-    bool leftKelvinXLocked = false;
-    float leftKelvinXPos;
+    bool leftKelvinLocked = false;
+    Vector3 leftKelvinPos;
     #endregion
 
     private void ProcessLeftHandControls()
     {
         if (leftDimmer)
         {
-            leftKelvinXLocked = false;
+            leftKelvinLocked = false;
 
             // activate right hand float
             leftDimmerObj.SetActive(true);
-            leftDimmerObj.transform.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            leftKelvinObj.SetActive(false);
 
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!leftDimmerYLocked)
             {
-                leftDimmerYPos = handTracking.ltMiddleTip.Position.y;
+                leftDimmerYPos = handTracking.leftPalm.Position.y;
                 leftDimmerYLocked = true;
             }
 
-            leftDimmerObj.transform.position = new Vector3(handTracking.ltMiddleTip.Position.x, leftDimmerYPos, handTracking.ltMiddleTip.Position.z);
+            leftDimmerObj.transform.position = new Vector3(handTracking.leftPalm.Position.x, leftDimmerYPos, handTracking.leftPalm.Position.z);
 
             // determine float using pose.position.y
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(leftHandMin.position, handTracking.ltMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(leftDimmerMin.position, handTracking.leftPalm.Position);
 
 
             leftDimmerFloat = handDistToMin / maxDistance;
             if (leftDimmerFloat > 1) leftDimmerFloat = 1;
-            if (handTracking.ltMiddleTip.Position.y < leftDimmerObj.transform.position.y - 0.125) leftDimmerFloat = 0;
+            if (leftDimmerFloat < 0) leftDimmerFloat = 0;
 
 
             // display in HUD
@@ -398,31 +397,31 @@ public class PrecisionController : MonoBehaviour
             leftDimmerYLocked = false;
 
             // activate right hand float
-            leftDimmerObj.SetActive(true);
-            leftDimmerObj.transform.transform.localRotation = Quaternion.Euler(0, 0, 90);
+            leftDimmerObj.SetActive(false);
+            leftKelvinObj.SetActive(true);
 
-            // set float.position.x to pose.position.x and store in memory - float.position.y/z tracks to pose.position.y/z
-            if (!leftKelvinXLocked)
+            // set float.positionto pose.position and store in memory
+            if (!leftKelvinLocked)
             {
-                leftKelvinXPos = handTracking.ltMiddleTip.Position.x;
-                leftKelvinXLocked = true;
+                leftKelvinPos = handTracking.leftPalm.Position;
+                leftKelvinLocked = true;
             }
 
-            leftDimmerObj.transform.position = new Vector3(leftKelvinXPos, handTracking.ltMiddleTip.Position.y, handTracking.ltMiddleTip.Position.z);
+            leftKelvinObj.transform.position = leftKelvinPos;
 
             // determine float using pose.position.x
             float maxDistance = 0.25f;
-            float handDistToMin = Vector3.Distance(leftHandMin.position, handTracking.ltMiddleTip.Position);
+            float handDistToMin = Vector3.Distance(leftKelvinMin.position, handTracking.leftPalm.Position);
 
             leftKelvinFloat = handDistToMin / maxDistance;
             if (leftKelvinFloat > 1) leftKelvinFloat = 1;
-            if (handTracking.ltMiddleTip.Position.x > leftDimmerObj.transform.position.x + 0.125) leftKelvinFloat = 0;
+            if (Vector3.Distance(handTracking.rightPalm.Position, leftKelvinMax.position) > maxDistance) leftKelvinFloat = 0;
 
             // display in HUD
             leftKelvinVal.text = leftKelvinFloat.ToString();
 
             // convert float to DMX
-            int kelvinVal = Mathf.RoundToInt(leftKelvinFloat  * 255);
+            int kelvinVal = Mathf.RoundToInt(leftKelvinFloat * 255);
 
             // send DMX & OSC
             if (leftControl == Lights.SkyPanel)
@@ -437,8 +436,11 @@ public class PrecisionController : MonoBehaviour
             }
             
         }
-        else leftDimmerObj.SetActive(false);
-
+        else
+        {
+            leftDimmerObj.SetActive(false);
+            leftKelvinObj.SetActive(false);
+        }
     }
 
     private void SendDMX(int channel, int val)

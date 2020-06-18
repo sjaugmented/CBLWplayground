@@ -94,21 +94,20 @@ public class MagicController : MonoBehaviour
         osc = FindObjectOfType<OSC>();
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
         sound = FindObjectOfType<SoundManager>();
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         masterOrb.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
         
 
+        
     }
 
     void OnEnable()
@@ -522,9 +521,6 @@ public class MagicController : MonoBehaviour
                 childEmission.enabled = false;
             }
         }
-
-        sound.fireStreamFX.Pause();
-        sound.waterIceStreamFX.Pause();
     }
 
     private void EnableRightStreams()
@@ -587,9 +583,6 @@ public class MagicController : MonoBehaviour
                 childEmission.enabled = false;
             }
         }
-
-        sound.fireStreamFX.Pause();
-        sound.waterIceStreamFX.Pause();
     }
 
     private void EnableLeftStreams()

@@ -29,9 +29,8 @@ public class Director : MonoBehaviour
     GameObject magicComponents;
     GameObject rgbComponents;
     GameObject precisionComponents;
-    
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
 
@@ -44,6 +43,15 @@ public class Director : MonoBehaviour
         rgbComponents = FindObjectOfType<RGBID>().gameObject;
         precisionComponents = FindObjectOfType<PrecisionID>().gameObject;
 
+        magicController.enabled = false;
+        rgbController.enabled = false;
+        precisionController.enabled = false;
+        throwController.enabled = false;
+    }
+    
+    // Start is called before the first frame update
+    void Start()
+    {
         topLevelMenu.SetActive(false);
 
         foreach (Renderer selector in selectorPlatonics)
