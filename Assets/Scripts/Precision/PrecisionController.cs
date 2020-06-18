@@ -415,7 +415,7 @@ public class PrecisionController : MonoBehaviour
 
             leftKelvinFloat = handDistToMin / maxDistance;
             if (leftKelvinFloat > 1) leftKelvinFloat = 1;
-            if (Vector3.Distance(handTracking.rightPalm.Position, leftKelvinMax.position) > maxDistance) leftKelvinFloat = 0;
+            if (Vector3.Distance(handTracking.leftPalm.Position, leftKelvinMax.position) > maxDistance) leftKelvinFloat = 0;
 
             // display in HUD
             leftKelvinVal.text = leftKelvinFloat.ToString();
