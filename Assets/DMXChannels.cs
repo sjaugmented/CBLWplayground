@@ -6,17 +6,17 @@ using UnityEngine.SocialPlatforms;
 public class DMXChannels : MonoBehaviour
 {
     [Header("SkyPanel channels")]
+    public List<int> SkyPanel1 = new List<int>();
+    public List<int> SkyPanel2 = new List<int>();
+
+    [Header("Individual channel assignments")]
     public int skyPanelDimmer;
     public int skyPanelKelvin;
     public int skyPanelXOver;
     public int skyPanelRed;
-    public int redVal;
     public int skyPanelGreen;
-    public int greenVal;
     public int skyPanelBlue;
-    public int blueVal;
     public int skyPanelWhite;
-    public int whiteVal;
 
     [Header("SpotLight channels")]
     public int spotRed;

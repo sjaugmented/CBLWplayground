@@ -42,12 +42,9 @@ public class PrecisionController : MonoBehaviour
     bool rightDimmer = false;
     bool rightKelvin = false;
 
-    bool hasMadeLeftFist = false;
-    bool leftTether = false;
-    bool leftDimmer = false;
-    bool leftKelvin = false;
 
-    public enum Lights { none, SkyPanel, Spot, DJ, reset };
+
+    public enum Lights { none, SkyPanel1, SkyPanel2, DJ, reset };
     public Lights gazeLight = Lights.none;
     public Lights rightControl = Lights.none;
     public Lights leftControl = Lights.none;
@@ -59,6 +56,15 @@ public class PrecisionController : MonoBehaviour
     DMXcontroller dmx;
     DMXChannels dmxChan;
     OSC osc;
+
+    bool hasMadeLeftFist = false;
+    bool leftTether = false;
+    bool leftDimmer = false;
+    bool leftKelvin = false;
+
+    int dimmerChan = 0;
+    int kelvinChan = 1;
+    int xOverChan = 3;
 
     void Awake()
     {
@@ -81,7 +87,8 @@ public class PrecisionController : MonoBehaviour
 
     void OnEnable()
     {
-        dmx.SetAddress(dmxChan.skyPanelXOver, 0);
+        dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
+        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
     }
 
     // Update is called once per frame
@@ -153,19 +160,19 @@ public class PrecisionController : MonoBehaviour
         if (!rightTether)
         {
             if (gazeLight == Lights.reset) rightControl = Lights.none;
-            else if (gazeLight == Lights.SkyPanel) rightControl = Lights.SkyPanel;
-            else if (gazeLight == Lights.Spot) rightControl = Lights.Spot;
+            else if (gazeLight == Lights.SkyPanel1) rightControl = Lights.SkyPanel1;
+            else if (gazeLight == Lights.SkyPanel2) rightControl = Lights.SkyPanel2;
             
             else if (rightControl == Lights.none)
             {
-                if (gazeLight == Lights.SkyPanel)
+                if (gazeLight == Lights.SkyPanel1)
                 {
-                    rightControl = Lights.SkyPanel;
+                    rightControl = Lights.SkyPanel1;
                 }
 
-                else if (gazeLight == Lights.Spot)
+                else if (gazeLight == Lights.SkyPanel2)
                 {
-                    rightControl = Lights.Spot;
+                    rightControl = Lights.SkyPanel2;
                 }
 
                 else if (gazeLight == Lights.DJ)
@@ -194,14 +201,14 @@ public class PrecisionController : MonoBehaviour
 
             if (leftControl == Lights.none)
             {
-                if (gazeLight == Lights.SkyPanel)
+                if (gazeLight == Lights.SkyPanel1)
                 {
-                    leftControl = Lights.SkyPanel;
+                    leftControl = Lights.SkyPanel1;
                 }
 
-                else if (gazeLight == Lights.Spot)
+                else if (gazeLight == Lights.SkyPanel2)
                 {
-                    leftControl = Lights.Spot;
+                    leftControl = Lights.SkyPanel2;
                 }
 
                 else if (gazeLight == Lights.DJ)
@@ -269,14 +276,14 @@ public class PrecisionController : MonoBehaviour
             int dimmerVal = Mathf.RoundToInt(rightDimmerFloat * 255);
 
             // send DMX & OSC
-            if (rightControl == Lights.SkyPanel)
+            if (rightControl == Lights.SkyPanel1)
             {
-                SendDMX(dmxChan.skyPanelDimmer, dimmerVal);
+                SendDMX(dmxChan.SkyPanel1[dimmerChan], dimmerVal);
                 SendOSC("/SkyPanelDimmer/", rightDimmerFloat);
             }
-            else if (rightControl == Lights.Spot)
+            else if (rightControl == Lights.SkyPanel2)
             {
-                SendDMX(dmxChan.spotWhite, dimmerVal);
+                SendDMX(dmxChan.SkyPanel2[dimmerChan], dimmerVal);
                 SendOSC("/SpotDimmer/", rightDimmerFloat);
             }
 
@@ -314,14 +321,14 @@ public class PrecisionController : MonoBehaviour
             int kelvinVal = Mathf.RoundToInt(rightKelvinFloat * 255);
 
             // send DMX & OSC
-            if (rightControl == Lights.SkyPanel)
+            if (rightControl == Lights.SkyPanel1)
             {
-                SendDMX(dmxChan.skyPanelKelvin, kelvinVal);
+                SendDMX(dmxChan.SkyPanel1[kelvinChan], kelvinVal);
                 SendOSC("/SkyPanelkelvin/", rightKelvinFloat);
             }
-            else if (rightControl == Lights.Spot)
+            else if (rightControl == Lights.SkyPanel2)
             {
-                SendDMX(dmxChan.spotBlue, kelvinVal);
+                SendDMX(dmxChan.SkyPanel2[kelvinChan], kelvinVal);
                 SendOSC("/SpotKelvin/", rightKelvinFloat);
             }
         }
@@ -379,14 +386,14 @@ public class PrecisionController : MonoBehaviour
             int dimmerVal = Mathf.RoundToInt(leftDimmerFloat * 255);
 
             // send DMX & OSC
-            if (leftControl == Lights.SkyPanel)
+            if (leftControl == Lights.SkyPanel1)
             {
-                SendDMX(dmxChan.skyPanelDimmer, dimmerVal);
+                SendDMX(dmxChan.SkyPanel1[dimmerChan], dimmerVal);
                 SendOSC("/SkyPanelDimmer/", rightDimmerFloat);
             }
-            else if (leftControl == Lights.Spot)
+            else if (leftControl == Lights.SkyPanel2)
             {
-                SendDMX(dmxChan.spotWhite, dimmerVal);
+                SendDMX(dmxChan.SkyPanel2[dimmerChan], dimmerVal);
                 SendOSC("/SpotDimmer/", rightDimmerFloat);
             }
             
@@ -424,14 +431,14 @@ public class PrecisionController : MonoBehaviour
             int kelvinVal = Mathf.RoundToInt(leftKelvinFloat * 255);
 
             // send DMX & OSC
-            if (leftControl == Lights.SkyPanel)
+            if (leftControl == Lights.SkyPanel1)
             {
-                SendDMX(dmxChan.skyPanelKelvin, kelvinVal);
+                SendDMX(dmxChan.SkyPanel1[kelvinChan], kelvinVal);
                 SendOSC("/SkyPanelkelvin/", rightKelvinFloat);
             }
-            else if (leftControl == Lights.Spot)
+            else if (leftControl == Lights.SkyPanel2)
             {
-                SendDMX(dmxChan.spotBlue, kelvinVal);
+                SendDMX(dmxChan.SkyPanel2[kelvinChan], kelvinVal);
                 SendOSC("/SpotKelvin/", rightKelvinFloat);
             }
             
@@ -461,12 +468,12 @@ public class PrecisionController : MonoBehaviour
     #region Button/Gaze hookups
     public void GazeAtSkyPanel()
     {
-        gazeLight = Lights.SkyPanel;
+        gazeLight = Lights.SkyPanel1;
     }
 
     public void GazeAtSpot()
     {
-        gazeLight = Lights.Spot;
+        gazeLight = Lights.SkyPanel2;
     }
 
     public void GazeAtDJ()
@@ -494,13 +501,13 @@ public class PrecisionController : MonoBehaviour
     {
         if (rightTether)
         {
-            if (rightControl == Lights.SkyPanel)
+            if (rightControl == Lights.SkyPanel1)
             {
                 rightSkyPanel.SetActive(true);
                 rightSpot.SetActive(false);
                 rightNone.SetActive(false);
             }
-            else if (rightControl == Lights.Spot)
+            else if (rightControl == Lights.SkyPanel2)
             {
                 rightSkyPanel.SetActive(false);
                 rightSpot.SetActive(true);
@@ -541,13 +548,13 @@ public class PrecisionController : MonoBehaviour
     {
         if (leftTether)
         {
-            if (leftControl == Lights.SkyPanel)
+            if (leftControl == Lights.SkyPanel1)
             {
                 leftSkyPanel.SetActive(true);
                 leftSpot.SetActive(false);
                 leftNone.SetActive(false);
             }
-            else if (leftControl == Lights.Spot)
+            else if (leftControl == Lights.SkyPanel2)
             {
                 leftSkyPanel.SetActive(false);
                 leftSpot.SetActive(true);

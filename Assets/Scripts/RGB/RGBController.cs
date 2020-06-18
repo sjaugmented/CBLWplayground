@@ -39,6 +39,14 @@ public class RGBController : MonoBehaviour
     private Vector3 midpointIndexes;
     private Vector3 masterOrbPos;
 
+    int dimmerChan = 0;
+    int kelvinChan = 1;
+    int xOverChan = 3;
+    int redChan = 4;
+    int greenChan = 5;
+    int blueChan = 6;
+    int whiteChan = 7;
+
 
     void Awake()
     {
@@ -77,7 +85,7 @@ public class RGBController : MonoBehaviour
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
 
             SendOSCMessage(xOSCMessage, xOSCFloat);
-            dmx.SetAddress(dmxChan.skyPanelRed, redVal);
+            dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
 
             horStackObj.SetActive(true);
             horStackObj.transform.position = midpointIndexes;
@@ -95,7 +103,7 @@ public class RGBController : MonoBehaviour
             greenVal = Mathf.RoundToInt(yOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
-            dmx.SetAddress(dmxChan.skyPanelGreen, greenVal);
+            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
 
             vertStackObj.SetActive(true);
             vertStackObj.transform.position = midpointIndexes;
@@ -116,7 +124,7 @@ public class RGBController : MonoBehaviour
             blueVal = Mathf.RoundToInt(zOSCFloat * 255);
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
-            dmx.SetAddress(dmxChan.skyPanelBlue, blueVal);
+            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
 
             forStackObj.SetActive(true);
             forStackObj.transform.position = midpointIndexes;
@@ -136,8 +144,6 @@ public class RGBController : MonoBehaviour
 
         var midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
         masterOrbPos = midpointPalms + palmMidpointOffset;
-        /*rightStreamPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtPinkyTip.Position, 0.5f);
-        leftStreamPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltPinkyTip.Position, 0.5f);*/
     }
 
 
