@@ -66,8 +66,10 @@ public class RGBController : MonoBehaviour
 
     void OnEnable()
     {
-        dmx.SetAddress(dmxChan.skyPanelDimmer, 255);
-        dmx.SetAddress(dmxChan.skyPanelXOver, 255);
+        dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
     }
 
     // Update is called once per frame

@@ -106,6 +106,14 @@ public class MagicController : MonoBehaviour
     SoundManager sound;
     AudioSource audio;
 
+    int dimmerChan = 0;
+    int kelvinChan = 1;
+    int xOverChan = 3;
+    int redChan = 4;
+    int greenChan = 5;
+    int blueChan = 6;
+    int whiteChan = 7;
+
     List<GameObject> masterOrbs = new List<GameObject>();
 
     void Awake()
@@ -119,6 +127,9 @@ public class MagicController : MonoBehaviour
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         lightMasterOrb.SetActive(false);
+        fireMasterOrb.SetActive(false);
+        waterMasterOrb.SetActive(false);
+        iceMasterOrb.SetActive(false);
         elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
@@ -127,20 +138,20 @@ public class MagicController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
         masterOrbs.Add(lightMasterOrb);
         masterOrbs.Add(fireMasterOrb);
         masterOrbs.Add(waterMasterOrb);
         masterOrbs.Add(iceMasterOrb);
-
-
     }
 
     void OnEnable()
     {
         // set global dimmer and color crossfade to max on skypanel
-        dmx.SetAddress(dmxChan.skyPanelDimmer, 255);
-        dmx.SetAddress(dmxChan.skyPanelXOver, 255);
+        dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
+
         Color color = transparency.color;
         color.a = 0;
         transparency.color = color;
@@ -186,7 +197,7 @@ public class MagicController : MonoBehaviour
             // element scaler
             else if (handTracking.palmsIn)
             {
-                ElementScaler();
+                LiveScaler();
                 //if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
 
                 /*conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
@@ -375,22 +386,18 @@ public class MagicController : MonoBehaviour
         // select variant based on distance between palms
         if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxXAxisDist - (elSlotSize * 3)))
         {
-            dmx.ResetDMX();
             variantID = 0;
         }
         else if (palmDist > maxXAxisDist - (elSlotSize * 3) && palmDist <= maxXAxisDist - (elSlotSize * 2))
         {
-            dmx.ResetDMX();
             variantID = 1;
         }
         else if (palmDist > maxXAxisDist - (elSlotSize * 2) && palmDist <= maxXAxisDist - elSlotSize)
         {
-            dmx.ResetDMX();
             variantID = 2;
         }
         else if (palmDist > maxXAxisDist - elSlotSize && palmDist <= maxXAxisDist)
         {
-            dmx.ResetDMX();
             variantID = 3;
         }
 
@@ -424,8 +431,10 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    private void ElementScaler()
+    private void LiveScaler()
     {
+        dmx.ResetDMX();
+
         fromOrbScaler = true;
 
         elementMenu.SetActive(false);
@@ -476,6 +485,8 @@ public class MagicController : MonoBehaviour
 
     private void CastOrb()
     {
+        dmx.ResetDMX();
+
         Quaternion palmsRotationMid = Quaternion.Slerp(handTracking.rightPalm.Rotation, handTracking.leftPalm.Rotation, 0.5f);
         Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
 

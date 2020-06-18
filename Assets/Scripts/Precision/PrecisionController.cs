@@ -65,6 +65,10 @@ public class PrecisionController : MonoBehaviour
     int dimmerChan = 0;
     int kelvinChan = 1;
     int xOverChan = 3;
+    int redChan = 4;
+    int greenChan = 5;
+    int blueChan = 6;
+    int whiteChan = 7;
 
     void Awake()
     {
@@ -87,8 +91,8 @@ public class PrecisionController : MonoBehaviour
 
     void OnEnable()
     {
-        dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
-        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
+        SendDMX(dmxChan.SkyPanel1[xOverChan], 0);
+        SendDMX(dmxChan.SkyPanel2[xOverChan], 0);
     }
 
     // Update is called once per frame
@@ -466,19 +470,14 @@ public class PrecisionController : MonoBehaviour
     }
 
     #region Button/Gaze hookups
-    public void GazeAtSkyPanel()
+    public void GazeAtSkyPanel1()
     {
         gazeLight = Lights.SkyPanel1;
     }
 
-    public void GazeAtSpot()
+    public void GazeAtSkyPanel2()
     {
         gazeLight = Lights.SkyPanel2;
-    }
-
-    public void GazeAtDJ()
-    {
-        gazeLight = Lights.DJ;
     }
 
     public void NoGaze()
