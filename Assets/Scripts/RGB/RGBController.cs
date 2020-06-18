@@ -87,7 +87,7 @@ public class RGBController : MonoBehaviour
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
 
             SendOSCMessage(xOSCMessage, xOSCFloat);
-            dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+            dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
 
             horStackObj.SetActive(true);
             horStackObj.transform.position = midpointIndexes;
@@ -105,7 +105,7 @@ public class RGBController : MonoBehaviour
             greenVal = Mathf.RoundToInt(yOSCFloat * 255);
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
-            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+            dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
 
             vertStackObj.SetActive(true);
             vertStackObj.transform.position = midpointIndexes;
@@ -126,7 +126,7 @@ public class RGBController : MonoBehaviour
             blueVal = Mathf.RoundToInt(zOSCFloat * 255);
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
-            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
+            dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
 
             forStackObj.SetActive(true);
             forStackObj.transform.position = midpointIndexes;

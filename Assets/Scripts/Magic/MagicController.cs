@@ -213,8 +213,6 @@ public class MagicController : MonoBehaviour
         masterValues.Add(waterVals);
         masterValues.Add(iceVals);
         #endregion
-        
-        
 
     }
 
@@ -318,7 +316,7 @@ public class MagicController : MonoBehaviour
                 adjustedValues.Add(adjVal);
             }
 
-            dmx.SetAddress(masterElements[elementID][variantID][channel], adjustedValues[channel]);
+            dmx.SetAddress(dmxChan.SkyPanel2[masterElements[elementID][variantID][channel]], adjustedValues[channel]);
         }
         
 
@@ -556,8 +554,6 @@ public class MagicController : MonoBehaviour
 
     private void LiveScaler()
     {
-        dmx.ResetDMX();
-
         fromOrbScaler = true;
 
         elementMenu.SetActive(false);
