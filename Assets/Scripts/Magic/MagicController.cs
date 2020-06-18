@@ -45,6 +45,7 @@ public class MagicController : MonoBehaviour
     public List<int> waterValues;
     public List<int> iceChannels;
     public List<int> iceValues;
+
     #endregion
 
     #region public vars
@@ -52,10 +53,11 @@ public class MagicController : MonoBehaviour
 
     public enum Element { light, fire, water, ice };
     public Element currEl = Element.light;
-    int elementID = 0;
-    int variantID = 0;
+    public int elementID = 0;
+    public int variantID = 0;
+    public int channelID = 0;
 
-    public enum LightVariants { light1, light2, light3, light4, none };
+    /*public enum LightVariants { light1, light2, light3, light4, none };
     public LightVariants currLight = LightVariants.none;
     int lightID = 4;
 
@@ -69,7 +71,7 @@ public class MagicController : MonoBehaviour
 
     public enum IceVariants { ice1, ice2, ice3, ice4, none };
     public IceVariants currIce = IceVariants.none;
-    int iceID = 4;
+    int iceID = 4;*/
 
     // parameters for conjure floats
     float maxXAxisDist = 0.5f;
@@ -114,7 +116,23 @@ public class MagicController : MonoBehaviour
     int blueChan = 6;
     int whiteChan = 7;
 
+    List<List<List<int>>> masterElements = new List<List<List<int>>>();
+    List<List<List<int>>> masterValues = new List<List<List<int>>>();
+
+
     List<GameObject> masterOrbs = new List<GameObject>();
+
+    List<List<int>> lightVariants = new List<List<int>>();
+    List<List<int>> lightVals = new List<List<int>>();
+
+    List<List<int>> fireVariants = new List<List<int>>();
+    List<List<int>> fireVals = new List<List<int>>();
+
+    List<List<int>> waterVariants = new List<List<int>>();
+    List<List<int>> waterVals = new List<List<int>>();
+
+    List<List<int>> iceVariants = new List<List<int>>();
+    List<List<int>> iceVals = new List<List<int>>();
 
     void Awake()
     {
@@ -123,8 +141,8 @@ public class MagicController : MonoBehaviour
         osc = FindObjectOfType<OSC>();
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
-        sound = FindObjectOfType<SoundManager>();
-        audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
+        //sound = FindObjectOfType<SoundManager>();
+        //audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         lightMasterOrb.SetActive(false);
         fireMasterOrb.SetActive(false);
@@ -138,10 +156,66 @@ public class MagicController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        #region Magic lists
+        //create lists for magic
         masterOrbs.Add(lightMasterOrb);
         masterOrbs.Add(fireMasterOrb);
         masterOrbs.Add(waterMasterOrb);
         masterOrbs.Add(iceMasterOrb);
+
+        lightVariants.Add(spellBook.light1);
+        lightVariants.Add(spellBook.light2);
+        lightVariants.Add(spellBook.light3);
+        lightVariants.Add(spellBook.light4);
+
+        lightVals.Add(spellBook.light1vals);
+        lightVals.Add(spellBook.light2vals);
+        lightVals.Add(spellBook.light3vals);
+        lightVals.Add(spellBook.light4vals);
+
+        fireVariants.Add(spellBook.fire1);
+        fireVariants.Add(spellBook.fire2);
+        fireVariants.Add(spellBook.fire3);
+        fireVariants.Add(spellBook.fire4);
+
+        fireVals.Add(spellBook.fire1vals);
+        fireVals.Add(spellBook.fire2vals);
+        fireVals.Add(spellBook.fire3vals);
+        fireVals.Add(spellBook.fire4vals);
+
+        waterVariants.Add(spellBook.water1);
+        waterVariants.Add(spellBook.water2);
+        waterVariants.Add(spellBook.water3);
+        waterVariants.Add(spellBook.water4);
+
+        waterVals.Add(spellBook.water1vals);
+        waterVals.Add(spellBook.water2vals);
+        waterVals.Add(spellBook.water3vals);
+        waterVals.Add(spellBook.water4vals);
+
+        iceVariants.Add(spellBook.ice1);
+        iceVariants.Add(spellBook.ice2);
+        iceVariants.Add(spellBook.ice3);
+        iceVariants.Add(spellBook.ice4);
+
+        iceVals.Add(spellBook.ice1vals);
+        iceVals.Add(spellBook.ice2vals);
+        iceVals.Add(spellBook.ice3vals);
+        iceVals.Add(spellBook.ice4vals);
+
+        masterElements.Add(lightVariants);
+        masterElements.Add(fireVariants);
+        masterElements.Add(waterVariants);
+        masterElements.Add(iceVariants);
+
+        masterValues.Add(lightVals);
+        masterValues.Add(fireVals);
+        masterValues.Add(waterVals);
+        masterValues.Add(iceVals);
+        #endregion
+        
+        
+
     }
 
     void OnEnable()
@@ -212,13 +286,13 @@ public class MagicController : MonoBehaviour
             else
             {
                 lightMasterOrb.SetActive(false);
-                sound.orbAmbienceFX.Pause();
+                //sound.orbAmbienceFX.Pause();
             }
         }
         else
         {
             lightMasterOrb.SetActive(false);
-            sound.orbAmbienceFX.Pause();
+            //sound.orbAmbienceFX.Pause();
         }
     }
 
@@ -229,109 +303,158 @@ public class MagicController : MonoBehaviour
         message.address = address;
         message.values.Add(value);
         osc.Send(message);
-        Debug.Log("Sending OSC: " + address + " " + value); // todo remove
+        //Debug.Log("Sending OSC: " + address + " " + value); // todo remove
     }
 
     private void LiveDMX()
     {
-        
-        if (currEl == Element.light)
+        for (int channel = 0; channel < masterElements[elementID][variantID].Count; channel++)
         {
-            if (lightChannels.Count == 0) return;
+            List<int> adjustedValues = new List<int>();
 
-            if (lightChannels.Count == lightValues.Count)
+            foreach (int value in masterValues[elementID][variantID])
             {
-                // calc float per channel value
-                List<int> adjustedValues = new List<int>();
-
-                foreach (int value in lightValues)
-                {
-                    int adjVal = Mathf.RoundToInt(value * elementScale);
-                    adjustedValues.Add(adjVal);
-                }
-
-                // sendDMX
-                for (int i = 0; i < lightChannels.Count; i++)
-                {
-                    dmx.SetAddress(lightChannels[i], adjustedValues[i]);
-                }
-
-                Debug.Log(adjustedValues[0]); // remove
+                int adjVal = Mathf.RoundToInt(value * elementScale);
+                adjustedValues.Add(adjVal);
             }
-            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
+
+            dmx.SetAddress(masterElements[elementID][variantID][channel], adjustedValues[channel]);
+        }
+        
+
+
+
+
+
+        /*if (currEl == Element.light)
+        {
+            for (int i = 0; i < lightVariants.Count; i++)
+            {
+                if (i == variantID)
+                {
+                    if (lightVariants[i].Count == 0) return;
+
+                    if (lightVariants[i].Count == lightVals[i].Count)
+                    {
+                        // calc float per channel value based on max chan values
+                        List<int> adjustedValues = new List<int>();
+
+                        foreach (int value in lightVals[i])
+                        {
+                            int adjVal = Mathf.RoundToInt(value * elementScale);
+                            adjustedValues.Add(adjVal);
+                        }
+
+                        // sendDMX
+                        for (int n = 0; n < lightVariants[i].Count; n++)
+                        {
+                            dmx.SetAddress(lightVariants[i][n], adjustedValues[n]);
+                            //Debug.Log("Sending DMX chan: " + lightVariants[i][n] + ", val: " + adjustedValues[n]); // remove
+                        }
+                    }
+                    else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
+                }
+                else return;
+            }
+            
+            
         }
 
         if (currEl == Element.fire)
         {
-            if (fireChannels.Count == 0) return;
-
-            if (fireChannels.Count == fireValues.Count)
+            for (int i = 0; i < fireVariants.Count; i++)
             {
-                // calc float per channel value
-                List<int> adjustedValues = new List<int>();
-
-                foreach (int value in fireValues)
+                if (i == variantID)
                 {
-                    int adjVal = Mathf.RoundToInt(value * elementScale);
-                    adjustedValues.Add(adjVal);
-                }
+                    if (fireVariants[i].Count == 0) return;
 
-                // sendDMX
-                for (int i = 0; i < fireChannels.Count; i++)
-                {
-                    dmx.SetAddress(fireChannels[i], adjustedValues[i]);
+                    if (fireVariants[i].Count == fireVals[i].Count)
+                    {
+                        // calc float per channel value based on max chan values
+                        List<int> adjustedValues = new List<int>();
+
+                        foreach (int value in fireVals[i])
+                        {
+                            int adjVal = Mathf.RoundToInt(value * elementScale);
+                            adjustedValues.Add(adjVal);
+                        }
+
+                        // sendDMX
+                        for (int n = 0; n < fireVariants[i].Count; n++)
+                        {
+                            dmx.SetAddress(fireVariants[i][n], adjustedValues[n]);
+                            //Debug.Log("Sending DMX chan: " + fireVariants[i][n] + ", val: " + adjustedValues[n]); // remove
+                        }
+                    }
+                    else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
                 }
+                else return;
             }
-            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
         }
 
         if (currEl == Element.water)
         {
-            if (waterChannels.Count == 0) return;
-
-            if (waterChannels.Count == waterValues.Count)
+            for (int i = 0; i < waterVariants.Count; i++)
             {
-                // calc float per channel value
-                List<int> adjustedValues = new List<int>();
-
-                foreach (int value in waterValues)
+                if (i == variantID)
                 {
-                    int adjVal = Mathf.RoundToInt(value * elementScale);
-                    adjustedValues.Add(adjVal);
-                }
+                    if (waterVariants[i].Count == 0) return;
 
-                // sendDMX
-                for (int i = 0; i < waterChannels.Count; i++)
-                {
-                    dmx.SetAddress(waterChannels[i], adjustedValues[i]);
+                    if (waterVariants[i].Count == waterVals[i].Count)
+                    {
+                        // calc float per channel value based on max chan values
+                        List<int> adjustedValues = new List<int>();
+
+                        foreach (int value in waterVals[i])
+                        {
+                            int adjVal = Mathf.RoundToInt(value * elementScale);
+                            adjustedValues.Add(adjVal);
+                        }
+
+                        // sendDMX
+                        for (int n = 0; n < waterVariants[i].Count; n++)
+                        {
+                            dmx.SetAddress(waterVariants[i][n], adjustedValues[n]);
+                            //Debug.Log("Sending DMX chan: " + waterVariants[i][n] + ", val: " + adjustedValues[n]); // remove
+                        }
+                    }
+                    else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
                 }
+                else return;
             }
-            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
         }
 
         if (currEl == Element.ice)
         {
-            if (iceChannels.Count == 0) return;
-
-            if (iceChannels.Count == iceValues.Count)
+            for (int i = 0; i < iceVariants.Count; i++)
             {
-                // calc float per channel value
-                List<int> adjustedValues = new List<int>();
-
-                foreach (int value in iceValues)
+                if (i == variantID)
                 {
-                    int adjVal = Mathf.RoundToInt(value * elementScale);
-                    adjustedValues.Add(adjVal);
-                }
+                    if (iceVariants[i].Count == 0) return;
 
-                // sendDMX
-                for (int i = 0; i < iceChannels.Count; i++)
-                {
-                    dmx.SetAddress(iceChannels[i], adjustedValues[i]);
+                    if (iceVariants[i].Count == iceVals[i].Count)
+                    {
+                        // calc float per channel value based on max chan values
+                        List<int> adjustedValues = new List<int>();
+
+                        foreach (int value in iceVals[i])
+                        {
+                            int adjVal = Mathf.RoundToInt(value * elementScale);
+                            adjustedValues.Add(adjVal);
+                        }
+
+                        // sendDMX
+                        for (int n = 0; n < iceVariants[i].Count; n++)
+                        {
+                            dmx.SetAddress(iceVariants[i][n], adjustedValues[n]);
+                            //Debug.Log("Sending DMX chan: " + iceVariants[i][n] + ", val: " + adjustedValues[n]); // remove
+                        }
+                    }
+                    else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
                 }
+                else return;
             }
-            else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
-        }
+        }*/
     }
     #endregion
 
@@ -647,13 +770,13 @@ public class MagicController : MonoBehaviour
         // todo fix sound not firing
         if (currEl == Element.fire)
         {
-            sound.fireStreamFX.Play();
-            sound.waterIceStreamFX.Pause();
+            //sound.fireStreamFX.Play();
+            //sound.waterIceStreamFX.Pause();
         }
         else
         {
-            sound.waterIceStreamFX.Play();
-            sound.fireStreamFX.Pause();
+            //sound.waterIceStreamFX.Play();
+            //sound.fireStreamFX.Pause();
         }
     }
 
@@ -709,13 +832,13 @@ public class MagicController : MonoBehaviour
 
         if (currEl == Element.fire)
         {
-            sound.fireStreamFX.Play();
-            sound.waterIceStreamFX.Pause();
+            //sound.fireStreamFX.Play();
+            //sound.waterIceStreamFX.Pause();
         }
         else
         {
-            sound.waterIceStreamFX.Play();
-            sound.fireStreamFX.Pause();
+            //sound.waterIceStreamFX.Play();
+            //sound.fireStreamFX.Pause();
         }
     }
 
