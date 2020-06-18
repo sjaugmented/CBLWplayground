@@ -198,7 +198,7 @@ public class Director : MonoBehaviour
         
     }
 
-    #region GazeFunctions
+    #region Hook ups
     public void MagicMode()
     {
         currentMode = Mode.Magic;

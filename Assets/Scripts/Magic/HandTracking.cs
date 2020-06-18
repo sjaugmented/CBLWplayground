@@ -297,7 +297,7 @@ public class HandTracking : MonoBehaviour
                 // look for pull ups
                 else if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 180, bigMargin) && IsWithinRange(ltPalmUpCamFor, 180, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 170, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 70, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 170, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 70, bigMargin) ||
                     //debug: unity standard airtap
-                    IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 0, bigMargin) && IsWithinRange(ltPalmUpCamFor, 0, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+                    IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 180, bigMargin) && IsWithinRange(ltPalmUpCamFor, 180, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
                 {
                     palmsIn = false;
                     fistsIn = false;

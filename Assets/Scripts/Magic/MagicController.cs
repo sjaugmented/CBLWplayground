@@ -8,29 +8,26 @@ using UnityEngine.UIElements;
 
 public class MagicController : MonoBehaviour
 {
-    
+    #region Inspector Fields
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
     
-    [SerializeField] GameObject masterOrb;
     [SerializeField] GameObject elementMenu;
+    [SerializeField] GameObject lightMasterOrb;
+    [SerializeField] GameObject fireMasterOrb;
+    [SerializeField] GameObject waterMasterOrb;
+    [SerializeField] GameObject iceMasterOrb;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
-    public Vector3 particleCastOffset = new Vector3(0, 0, 0.1f); // todo hardcode
     [SerializeField] Vector3 elMenuOffset = new Vector3(0, 0, 0); // todo hardcode
 
-    [Header("Caster transforms for particles/streams")]
+    [Header("Caster transforms for streams")]
     [SerializeField] Transform rightHandCaster;
     [SerializeField] Transform leftHandCaster;
 
     [Header("Rates of Fire")]
     [SerializeField] [Range(1, 20)] float orbsPerSecond = 1f;
-    [SerializeField] [Range(1, 20)] float particlesPerSecond = 20f;
 
-    [Header("Palm Conjure")]
-    [Tooltip("Max distance between palms for conjuring")]
-    [SerializeField] [Range( 0.2f, 0.6f)] float maxXAxisDist = 0.5f;
-    [SerializeField] [Range(0f, 0.2f)] float palmDistOffset = 0.05f;
-    [SerializeField] Vector3 palmMidpointOffset;
+    
 
     [Header("OSC controller")]
     public List<String> conjureOSCMessages;
@@ -46,12 +43,36 @@ public class MagicController : MonoBehaviour
     public List<int> waterValues;
     public List<int> iceChannels;
     public List<int> iceValues;
+    #endregion
 
+    #region public vars
     float conjureValueOSC = 0;
 
     public enum Element { light, fire, water, ice };
     public Element currEl = Element.light;
     int elementID = 0;
+    int variantID = 0;
+
+    public enum LightVariants { light1, light2, light3, light4, none };
+    public LightVariants currLight = LightVariants.none;
+    int lightID = 4;
+
+    public enum FireVariants { fire1, fire2, fire3, fire4, none };
+    public FireVariants currFire = FireVariants.none;
+    int fireID = 4;
+
+    public enum WaterVariants { water1, water2, water3, water4, none };
+    public WaterVariants currWater = WaterVariants.none;
+    int waterID = 4;
+
+    public enum IceVariants { ice1, ice2, ice3, ice4, none };
+    public IceVariants currIce = IceVariants.none;
+    int iceID = 4;
+
+    // parameters for conjure floats
+    float maxXAxisDist = 0.5f;
+    float palmDistOffset = 0.15f;
+    Vector3 palmMidpointOffset = new Vector3(0, 0.05f, 0);
 
     // coordinates for conjuring
     Vector3 masterOrbPos;
@@ -65,12 +86,15 @@ public class MagicController : MonoBehaviour
     // used to create rate of fire for spells
     bool ableToCast = true;
     public bool fromOrbScaler = false;
+
+    // hover orbs
     public bool hoverOrb = false;
     bool hoverSelectFromMenu = false;
-    bool activeLightHover = false;   //
-    bool activeFireHover = false;    // todo
-    bool activeWaterHover = false;   //  make private
-    bool activeIceHover = false;     //
+    bool activeLightHover = false;   
+    bool activeFireHover = false;    
+    bool activeWaterHover = false;   
+    bool activeIceHover = false;     
+    #endregion
 
     HandTracking handTracking;
     SpellBook spellBook;
@@ -79,14 +103,6 @@ public class MagicController : MonoBehaviour
     DMXChannels dmxChan;
     SoundManager sound;
     AudioSource audio;
-
-    private void ConvertElementToID() // allows for quick selection in inspector for testing various elements and forms
-    {
-        if (currEl == Element.light) elementID = 0;
-        if (currEl == Element.fire) elementID = 1;
-        if (currEl == Element.water) elementID = 2;
-        if (currEl == Element.ice) elementID = 3;
-    }
 
     void Awake()
     {
@@ -98,7 +114,7 @@ public class MagicController : MonoBehaviour
         sound = FindObjectOfType<SoundManager>();
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
-        masterOrb.SetActive(false);
+        lightMasterOrb.SetActive(false);
         elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
@@ -138,7 +154,7 @@ public class MagicController : MonoBehaviour
             {
                 CastOrb();
                 sound.orbAmbienceFX.Pause();
-                masterOrb.SetActive(false);
+                lightMasterOrb.SetActive(false);
                 
 
             }
@@ -173,17 +189,18 @@ public class MagicController : MonoBehaviour
             }
             else
             {
-                masterOrb.SetActive(false);
+                lightMasterOrb.SetActive(false);
                 sound.orbAmbienceFX.Pause();
             }
         }
         else
         {
-            masterOrb.SetActive(false);
+            lightMasterOrb.SetActive(false);
             sound.orbAmbienceFX.Pause();
         }
     }
 
+    #region OSC/DMX
     private void SendOSCMessage(string address, float value)
     {
         OscMessage message = new OscMessage();
@@ -294,6 +311,21 @@ public class MagicController : MonoBehaviour
             else Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
         }
     }
+    #endregion
+
+
+    private void ConvertElementToID() // allows for quick selection in inspector for testing various elements and forms
+    {
+        if (currEl == Element.light) elementID = 0;
+        if (currEl == Element.fire) elementID = 1;
+        if (currEl == Element.water) elementID = 2;
+        if (currEl == Element.ice) elementID = 3;
+    }
+
+    private void ConvertVariantToID()
+    {
+
+    }
 
     private void CalcHandPositions()
     {
@@ -311,88 +343,101 @@ public class MagicController : MonoBehaviour
     {
         fromOrbScaler = false;
 
-        masterOrb.SetActive(false);
+        if (!elementMenu.activeInHierarchy)
+        {
+            lightMasterOrb.SetActive(false);
+            elementMenu.SetActive(true);
+            ResetElementSelection();
+            StartCoroutine("MenuTimeOut", 20);
+
+            Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
+            elementMenu.transform.position = midpointPalms + elMenuOffset;
+            elementMenu.transform.localRotation = Camera.main.transform.rotation;
+        }
     }
+
+    
 
     private void VariantSelector()
     {
         fromOrbScaler = false;
 
-        masterOrb.SetActive(true);
-        masterOrb.transform.position = masterOrbPos;
-        masterOrb.GetComponent<MasterOrbRotater>().xRotation = 1;
+        elementMenu.SetActive(false);
 
-        float elSlotSize = (maxXAxisDist - palmDistOffset) / spellBook.masterOrbElements.Count;
+        float elSlotSize = (maxXAxisDist - palmDistOffset) / spellBook.lightMasterOrb.Count;
 
-        // select element based on distance between palms
+        List<GameObject> masterOrbs = new List<GameObject>();
+        masterOrbs.Add(lightMasterOrb);
+        masterOrbs.Add(fireMasterOrb);
+        masterOrbs.Add(waterMasterOrb);
+        masterOrbs.Add(iceMasterOrb);
+
+        // select variant based on distance between palms
         if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxXAxisDist - (elSlotSize * 3)))
         {
             dmx.ResetDMX();
-            currEl = Element.light;
-
-            // play soundfx as you leave the zone
-            if (palmDist == maxXAxisDist - (elSlotSize * 3))
-            {
-                sound.elementSwitchFX.Play();
-                Debug.Log("switch!");
-            }
+            variantID = 0;
         }
         else if (palmDist > maxXAxisDist - (elSlotSize * 3) && palmDist <= maxXAxisDist - (elSlotSize * 2))
         {
             dmx.ResetDMX();
-            currEl = Element.fire;
-            // activate corresponding element
-            for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
-
-                // play soundfx as you leave the zone
-                if (palmDist == maxXAxisDist - (elSlotSize * 2)) sound.elementSwitchFX.Play();
-
+            variantID = 1;
         }
         else if (palmDist > maxXAxisDist - (elSlotSize * 2) && palmDist <= maxXAxisDist - elSlotSize)
         {
             dmx.ResetDMX();
-            currEl = Element.water;
-
-            // play soundfx as you leave the zone
-            if (palmDist == maxXAxisDist - elSlotSize) sound.elementSwitchFX.Play();
-
+            variantID = 2;
         }
         else if (palmDist > maxXAxisDist - elSlotSize && palmDist <= maxXAxisDist)
         {
             dmx.ResetDMX();
-            currEl = Element.ice;
+            variantID = 3;
         }
 
-        // activate corresponding element
-        for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
+        // activate element orb
+        for (int i = 0; i < masterOrbs.Count; i++)
         {
-            if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-            else spellBook.masterOrbElements[i].SetActive(false);
+            if (i == elementID)
+            {
+                masterOrbs[i].SetActive(true);
+                masterOrbs[i].transform.position = masterOrbPos;
+                masterOrbs[i].GetComponent<MasterOrbRotater>().xRotation = 1;
+            }
+            else masterOrbs[i].SetActive(false);
+
+            List<Transform> variants = new List<Transform>();
+
+            foreach(Transform child in masterOrbs[i].transform)
+            {
+                variants.Add(child);
+            }
+
+            for (int n = 0; n < variants.Count; n++)
+            {
+                if (n == variantID)
+                {
+                    variants[n].gameObject.SetActive(true);
+                    variants[n].localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                }
+                else variants[n].gameObject.SetActive(false);
+            }
         }
-
-        // keep orb element scaled at 0.5 for best visibility
-        spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-
     }
 
     private void ElementScaler()
     {
         fromOrbScaler = true;
-        DisableRightStreams();
-        DisableLeftStreams();
 
-        
-
-        masterOrb.SetActive(true);
-        //elementMenu.SetActive(false);
-        masterOrb.transform.position = masterOrbPos;
-        masterOrb.GetComponent<MasterOrbRotater>().xRotation = 100 * elementScale;
+        elementMenu.SetActive(false);
+        lightMasterOrb.SetActive(true);
+        lightMasterOrb.transform.position = masterOrbPos;
+        lightMasterOrb.GetComponent<MasterOrbRotater>().xRotation = 100 * elementScale;
 
         // activate correct orb element
-        for (int i = 0; i < spellBook.masterOrbElements.Count; i++)
+        for (int i = 0; i < spellBook.lightMasterOrb.Count; i++)
         {
-            if (i == elementID) spellBook.masterOrbElements[i].SetActive(true);
-            else spellBook.masterOrbElements[i].SetActive(false);
+            if (i == elementID) spellBook.lightMasterOrb[i].SetActive(true);
+            else spellBook.lightMasterOrb[i].SetActive(false);
         }
 
         // determine scale
@@ -408,7 +453,7 @@ public class MagicController : MonoBehaviour
         else return;
 
         // apply scale based on orb element
-        spellBook.masterOrbElements[elementID].transform.localScale = new Vector3(elementScale, elementScale, elementScale);
+        spellBook.lightMasterOrb[elementID].transform.localScale = new Vector3(elementScale, elementScale, elementScale);
     }
 
     private void CastOrb()
@@ -652,30 +697,72 @@ public class MagicController : MonoBehaviour
         ableToCast = true;
     }
 
+    IEnumerator MenuTimeOut(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        elementMenu.SetActive(false);
+    }
+
+    IEnumerator ElementSelection()
+    {
+        List<Transform> elements = new List<Transform>();
+
+        foreach (Transform child in elementMenu.transform)
+        {
+            elements.Add(child);
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < elements.Count; i++)
+        {
+            if (i != elementID)
+            {
+                elements[i].gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void ResetElementSelection()
+    {
+        foreach (Transform child in elementMenu.transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+    }
+
     public int GetElementID()
     {
         return elementID;
     }
 
-    #region UI Hook Ups
+    #region Hook Ups
     public void SetLight()
     {
         currEl = Element.light;
+        StartCoroutine("MenuTimeOut", 1);
+        StartCoroutine("ElementSelection");
     }
 
     public void SetFire()
     {
         currEl = Element.fire;
+        StartCoroutine("MenuTimeOut", 1);
+        StartCoroutine("ElementSelection");
     }
 
     public void SetWater()
     {
         currEl = Element.water;
+        StartCoroutine("MenuTimeOut", 1);
+        StartCoroutine("ElementSelection");
     }
 
     public void SetIce()
     {
         currEl = Element.ice;
+        StartCoroutine("MenuTimeOut", 1);
+        StartCoroutine("ElementSelection");
     }
 
     public void HoverOrbYes()
