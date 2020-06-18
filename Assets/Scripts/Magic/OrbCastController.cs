@@ -51,7 +51,7 @@ public class OrbCastController : MonoBehaviour
         eyeTracking = GetComponent<EyeTrackingTarget>();
         eyeTracking.enabled = false;
         
-        SendDMX();
+        /*SendDMX();
         SendOSCMessage(); //todo refactor for lockOSCvalueToDMX
 
         osc.SetAddressHandler(OSCtoReceive, OnReceiveOSC);
@@ -59,7 +59,7 @@ public class OrbCastController : MonoBehaviour
         if (timedBlackout)
         {
             StartCoroutine("TimedLight");
-        }
+        }*/
 
         StartCoroutine("SelfDestruct");
     }
@@ -67,10 +67,10 @@ public class OrbCastController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (dimOverTime)
+        /*if (dimOverTime)
         {
             DimLight();
-        }
+        }*/
     }
 
     private void SendDMX()

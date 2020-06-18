@@ -95,6 +95,12 @@ public class PrecisionController : MonoBehaviour
         SendDMX(dmxChan.SkyPanel2[xOverChan], 0);
     }
 
+    void OnDisable()
+    {
+        rightKelvinObj.SetActive(false);
+        leftKelvinObj.SetActive(false);
+    }
+
     // Update is called once per frame
     void Update()
     {

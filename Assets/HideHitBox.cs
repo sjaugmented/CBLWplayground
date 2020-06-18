@@ -36,13 +36,13 @@ public class HideHitBox : MonoBehaviour
 
     public void LookedAt()
     {
-        this.transform.Rotate(0, 2, 0);
+        //this.transform.Rotate(0, 2, 0);
         thisRenderer.material = gazedMaterial;
     }
 
     public void LookedAway()
     {
-        this.transform.Rotate(0, 0, 0);
+        //this.transform.Rotate(0, 0, 0);
         thisRenderer.material = defaultMaterial;
         
     }
