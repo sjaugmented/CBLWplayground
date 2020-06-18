@@ -81,7 +81,7 @@ public class RGBController : MonoBehaviour
 
             horStackObj.SetActive(true);
             horStackObj.transform.position = midpointIndexes;
-            xFloatText.text = xOSCFloat.ToString();
+            xFloatText.text = redVal.ToString();
         }
         else horStackObj.SetActive(false);
         
@@ -99,7 +99,7 @@ public class RGBController : MonoBehaviour
 
             vertStackObj.SetActive(true);
             vertStackObj.transform.position = midpointIndexes;
-            yFloatText.text = yOSCFloat.ToString();
+            yFloatText.text = greenVal.ToString();
         }
         else
         {
@@ -120,7 +120,7 @@ public class RGBController : MonoBehaviour
 
             forStackObj.SetActive(true);
             forStackObj.transform.position = midpointIndexes;
-            zFloatText.text = zOSCFloat.ToString();
+            zFloatText.text = blueVal.ToString();
         }
         else
         {
