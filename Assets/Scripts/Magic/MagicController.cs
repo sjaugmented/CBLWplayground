@@ -13,6 +13,7 @@ public class MagicController : MonoBehaviour
     [SerializeField] bool floatPassthru = true;
     
     [SerializeField] GameObject masterOrb;
+    [SerializeField] GameObject elementMenu;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
     public Vector3 particleCastOffset = new Vector3(0, 0, 0.1f); // todo hardcode
     [SerializeField] Vector3 elMenuOffset = new Vector3(0, 0, 0); // todo hardcode
@@ -98,6 +99,7 @@ public class MagicController : MonoBehaviour
         audio = FindObjectOfType<SoundManager>().GetComponent<AudioSource>();
 
         masterOrb.SetActive(false);
+        elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
     }
@@ -142,9 +144,15 @@ public class MagicController : MonoBehaviour
             }
 
             // element menu
-            else if (handTracking.fistsIn || manualElMenu)
+            if (handTracking.pullUps)
             {
                 ElementSelector();
+            }
+
+            // variant menu
+            else if (handTracking.fistsIn || manualElMenu)
+            {
+                VariantSelector();
                 if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
 
@@ -301,9 +309,13 @@ public class MagicController : MonoBehaviour
 
     private void ElementSelector()
     {
-        DisableRightStreams();
-        DisableLeftStreams();
+        fromOrbScaler = false;
 
+        masterOrb.SetActive(false);
+    }
+
+    private void VariantSelector()
+    {
         fromOrbScaler = false;
 
         masterOrb.SetActive(true);

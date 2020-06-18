@@ -30,6 +30,8 @@ public class Director : MonoBehaviour
     GameObject rgbComponents;
     GameObject precisionComponents;
 
+    bool chinUpsActive = false;
+
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
@@ -77,21 +79,25 @@ public class Director : MonoBehaviour
 
         if (handTracking.chinUps)
         {
-            if (!menuActive)
+            if (!chinUpsActive)
             {
-                //ResetSelectorPositions();
-                topLevelMenu.SetActive(true);
-                //NoGravity();
-                StartCoroutine("MenuTimeOut", menuTimer);
+                if (!menuActive)
+                {
+                    //ResetSelectorPositions();
+                    topLevelMenu.SetActive(true);
+                    //NoGravity();
+                    StartCoroutine("MenuTimeOut", menuTimer);
 
-                Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-                topLevelMenu.transform.position = midpointPalms + menuOffset;
-                topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
+                    Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
+                    topLevelMenu.transform.position = midpointPalms + menuOffset;
+                    topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
+                }
+                else topLevelMenu.SetActive(false);
+
+                chinUpsActive = true;
             }
-            else return;
-            
-            
         }
+        else chinUpsActive = false;
         
     }
 
