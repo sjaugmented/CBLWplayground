@@ -203,14 +203,19 @@ public class MagicController : MonoBehaviour
     void OnEnable()
     {
         // set global dimmer and color crossfade to max on skypanel
-        dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
-        dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
-        dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
-        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
+        SetSkyPanelXOvers();
 
         Color color = transparency.color;
         color.a = 0;
         transparency.color = color;
+    }
+
+    private void SetSkyPanelXOvers()
+    {
+        dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
     }
 
     // Update is called once per frame

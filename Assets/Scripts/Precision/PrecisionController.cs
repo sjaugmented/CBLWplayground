@@ -101,7 +101,9 @@ public class PrecisionController : MonoBehaviour
 
     void OnEnable()
     {
+        SendDMX(dmxChan.SkyPanel1[dimmerChan], 0);
         SendDMX(dmxChan.SkyPanel1[xOverChan], 0);
+        SendDMX(dmxChan.SkyPanel2[dimmerChan], 0);
         SendDMX(dmxChan.SkyPanel2[xOverChan], 0);
     }
 
