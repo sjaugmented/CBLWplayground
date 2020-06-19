@@ -4,12 +4,28 @@ using UnityEngine;
 
 public class Director : MonoBehaviour
 {
+    [Header("Hand Rings")]
+    [SerializeField] GameObject rightRingParent;
+    [SerializeField] GameObject leftRingParent;
+    [SerializeField] Renderer rightRing;
+    [SerializeField] Renderer leftRing;
+    [SerializeField] Material redMat;
+    [SerializeField] Material greenMat;
+    [SerializeField] Material blueMat;
+    [SerializeField] Material lightMat;
+    [SerializeField] Material fireMat;
+    [SerializeField] Material waterMat;
+    [SerializeField] Material iceMat;
+
+
+    [Header("Menus")]
     [SerializeField] GameObject topLevelMenu;
     [SerializeField] Vector3 menuOffset;
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material selectedMaterial;
     [SerializeField] float menuTimer = 5f;
     [SerializeField] float menuSelectDelay = 0.5f;
+
     public List<Renderer> selectorPlatonics = new List<Renderer>();
 
     public enum Mode { Magic, RGB, Precision, Throw, ResetDMX };
@@ -70,6 +86,7 @@ public class Director : MonoBehaviour
     {
         ConvertIndex();
         SetSelectorMaterial();
+        RingControl();
 
         if (topLevelMenu.activeInHierarchy)
         {
@@ -99,6 +116,90 @@ public class Director : MonoBehaviour
         }
         else chinUpsActive = false;
         
+    }
+
+    private void RingControl()
+    {
+        // right ring
+        if (handTracking.rightHand && currentMode == Mode.Magic)
+        {
+            rightRingParent.SetActive(true);
+            if (magicController.elementID == 0)
+            {
+                rightRing.material = lightMat;
+            }
+            if (magicController.elementID == 1)
+            {
+                rightRing.material = fireMat;
+            }
+            if (magicController.elementID == 2)
+            {
+                rightRing.material = waterMat;
+            }
+            if (magicController.elementID == 3)
+            {
+                rightRing.material = iceMat;
+            }
+        }
+        else if (handTracking.rightHand && currentMode == Mode.RGB)
+        {
+            rightRingParent.SetActive(true);
+            if (handTracking.rightHand && rgbController.currentMode == RGBController.RGB.red)
+            {
+                rightRing.material = redMat;
+            }
+            if (handTracking.rightHand && rgbController.currentMode == RGBController.RGB.green)
+            {
+                rightRing.material = greenMat;
+            }
+            if (handTracking.rightHand && rgbController.currentMode == RGBController.RGB.blue)
+            {
+                rightRing.material = blueMat;
+            }
+
+        }
+        else rightRingParent.SetActive(false);
+
+        // left ring
+        if (handTracking.leftHand && currentMode == Mode.Magic)
+        {
+            leftRingParent.SetActive(true);
+            if (magicController.elementID == 0)
+            {
+                leftRing.material = lightMat;
+            }
+            if (magicController.elementID == 1)
+            {
+                leftRing.material = fireMat;
+            }
+            if (magicController.elementID == 2)
+            {
+                leftRing.material = waterMat;
+            }
+            if (magicController.elementID == 3)
+            {
+                leftRing.material = iceMat;
+            }
+
+        }
+        else if (handTracking.leftHand && currentMode == Mode.RGB)
+        {
+            leftRingParent.SetActive(true);
+            if (handTracking.leftHand && rgbController.currentMode == RGBController.RGB.red)
+            {
+                leftRing.material = redMat;
+            }
+            if (handTracking.leftHand && rgbController.currentMode == RGBController.RGB.green)
+            {
+                leftRing.material = greenMat;
+            }
+            if (handTracking.leftHand && rgbController.currentMode == RGBController.RGB.blue)
+            {
+                leftRing.material = blueMat;
+            }
+
+        }
+        else leftRingParent.SetActive(false);
     }
 
     IEnumerator MenuTimeOut(float delay)

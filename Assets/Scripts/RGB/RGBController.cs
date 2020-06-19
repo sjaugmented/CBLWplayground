@@ -47,6 +47,9 @@ public class RGBController : MonoBehaviour
     int blueChan = 6;
     int whiteChan = 7;
 
+    public enum RGB { red, green, blue };
+    public RGB currentMode = RGB.red;
+
 
     void Awake()
     {
@@ -79,6 +82,7 @@ public class RGBController : MonoBehaviour
 
         if (handTracking.palmsIn)
         {
+            currentMode = RGB.red;
             float xOSCFloat;
 
             xOSCFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
@@ -97,6 +101,7 @@ public class RGBController : MonoBehaviour
         
         if (handTracking.verticalStack)
         {
+            currentMode = RGB.green;
             float yOSCFloat;
 
             yOSCFloat = 1 - (indexMidDist - floatOffset) / (maxYAxisDist - floatOffset);
@@ -118,6 +123,7 @@ public class RGBController : MonoBehaviour
 
         if (handTracking.forwardStack)
         {
+            currentMode = RGB.blue;
             float zOSCFloat;
 
             zOSCFloat = 1 - (indexMidDist - floatOffset) / (maxZAxisDist - floatOffset);
