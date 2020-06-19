@@ -322,7 +322,7 @@ public class PrecisionController : MonoBehaviour
             if (Vector3.Distance(handTracking.rightPalm.Position, rightKelvinMax.position) > maxDistance) rightKelvinFloat = 0;
 
             // display in HUD
-            rightHandText.text = Mathf.RoundToInt(Mathf.Clamp(rightKelvinFloat * 10000, 2200, 10000)).ToString();
+            rightHandText.text = Mathf.RoundToInt(Mathf.Clamp(rightKelvinFloat * 10000, 2800, 10000)).ToString();
 
             // convert float to DMX
             int kelvinVal = Mathf.RoundToInt(rightKelvinFloat * 255);
@@ -432,7 +432,7 @@ public class PrecisionController : MonoBehaviour
             if (Vector3.Distance(handTracking.leftPalm.Position, leftKelvinMax.position) > maxDistance) leftKelvinFloat = 0;
 
             // display in HUD
-            leftHandText.text = Mathf.RoundToInt(Mathf.Clamp(leftKelvinFloat * 10000, 2200, 10000)).ToString();
+            leftHandText.text = Mathf.RoundToInt(Mathf.Clamp(leftKelvinFloat * 10000, 2800, 10000)).ToString();
 
             // convert float to DMX
             int kelvinVal = Mathf.RoundToInt(leftKelvinFloat * 255);
