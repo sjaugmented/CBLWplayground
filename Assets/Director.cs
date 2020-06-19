@@ -15,7 +15,7 @@ public class Director : MonoBehaviour
     public enum Mode { Magic, RGB, Precision, Throw, ResetDMX };
     public Mode currentMode = Mode.Magic;
     int modeIndex = 1;
-    bool menuActive = false;
+    public bool menuActive = false;
 
     List<Vector3> platonicStartPos = new List<Vector3>();
     

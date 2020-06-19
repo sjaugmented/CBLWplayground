@@ -57,22 +57,6 @@ public class MagicController : MonoBehaviour
     public int variantID = 0;
     public int channelID = 0;
 
-    /*public enum LightVariants { light1, light2, light3, light4, none };
-    public LightVariants currLight = LightVariants.none;
-    int lightID = 4;
-
-    public enum FireVariants { fire1, fire2, fire3, fire4, none };
-    public FireVariants currFire = FireVariants.none;
-    int fireID = 4;
-
-    public enum WaterVariants { water1, water2, water3, water4, none };
-    public WaterVariants currWater = WaterVariants.none;
-    int waterID = 4;
-
-    public enum IceVariants { ice1, ice2, ice3, ice4, none };
-    public IceVariants currIce = IceVariants.none;
-    int iceID = 4;*/
-
     // parameters for conjure floats
     float maxXAxisDist = 0.5f;
     float palmDistOffset = 0.15f;
@@ -434,12 +418,12 @@ public class MagicController : MonoBehaviour
         else if (palmDist > maxXAxisDist) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
 
-        if (!hoverSelectFromMenu)
+        /*if (!hoverSelectFromMenu)
         {
             if (elementScale < 0.2) hoverOrb = true;
             else hoverOrb = false;
         }
-        else return;
+        else return;*/
 
         // activate current element and variant
         for (int i = 0; i < masterOrbs.Count; i++)

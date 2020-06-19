@@ -25,6 +25,8 @@ public class HandTracking : MonoBehaviour
     float castFingerUpThresh = 0.3f;
     bool castFingerOut = false;
 
+    public bool rightHand = false;
+    public bool leftHand = false;
     public bool twoHands = false;
     public bool palmsIn = false;
     public bool fistsIn = false;
@@ -138,6 +140,8 @@ public class HandTracking : MonoBehaviour
         // look for only right fingers
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm))
         {
+            rightHand = true;
+            
             // look for rockOn
             if (IsWithinRange(rtIndForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && !IsWithinRange(rtMidForPalmFor, 0, bigMargin))
             {
@@ -181,6 +185,7 @@ public class HandTracking : MonoBehaviour
         }
         else
         {
+            rightHand = false;
             rockOnRight = false;
             rightFist = false;
             rightFlatHand = false;
@@ -191,6 +196,8 @@ public class HandTracking : MonoBehaviour
         // look for only left fingers
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
         {
+            leftHand = true;
+            
             // look for rockOn
             if (IsWithinRange(ltIndForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && !IsWithinRange(ltMidForPalmFor, 0, bigMargin))
             {
@@ -227,6 +234,7 @@ public class HandTracking : MonoBehaviour
         }
         else
         {
+            leftHand = false;
             rockOnLeft = false;
             leftFist = false;
             leftFlatHand = false;
