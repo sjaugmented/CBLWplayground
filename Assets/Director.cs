@@ -12,10 +12,12 @@ public class Director : MonoBehaviour
     [SerializeField] Material redMat;
     [SerializeField] Material greenMat;
     [SerializeField] Material blueMat;
-    [SerializeField] Material lightMat;
-    [SerializeField] Material fireMat;
-    [SerializeField] Material waterMat;
-    [SerializeField] Material iceMat;
+
+    [Header("Hand Clouds")]
+    [SerializeField] GameObject rightCloudParent;
+    [SerializeField] GameObject leftCloudParent;
+    public List<GameObject> rightClouds;
+    public List<GameObject> leftClouds;
 
 
     [Header("Menus")]
@@ -86,7 +88,7 @@ public class Director : MonoBehaviour
     {
         ConvertIndex();
         SetSelectorMaterial();
-        RingControl();
+        HandHUDControl();
 
         if (topLevelMenu.activeInHierarchy)
         {
@@ -118,31 +120,25 @@ public class Director : MonoBehaviour
         
     }
 
-    private void RingControl()
+    private void HandHUDControl()
     {
         // right ring
         if (handTracking.rightHand && currentMode == Mode.Magic)
         {
-            rightRingParent.SetActive(true);
-            if (magicController.elementID == 0)
+            rightRingParent.SetActive(false);
+            rightCloudParent.SetActive(true);
+            for (int i = 0; i < rightClouds.Count; i++)
             {
-                rightRing.material = lightMat;
-            }
-            if (magicController.elementID == 1)
-            {
-                rightRing.material = fireMat;
-            }
-            if (magicController.elementID == 2)
-            {
-                rightRing.material = waterMat;
-            }
-            if (magicController.elementID == 3)
-            {
-                rightRing.material = iceMat;
+                if (i == magicController.elementID)
+                {
+                    rightClouds[i].SetActive(true);
+                }
+                else rightClouds[i].SetActive(false);
             }
         }
         else if (handTracking.rightHand && currentMode == Mode.RGB)
         {
+            rightCloudParent.SetActive(false);
             rightRingParent.SetActive(true);
             if (handTracking.rightHand && rgbController.currentMode == RGBController.RGB.red)
             {
@@ -158,32 +154,31 @@ public class Director : MonoBehaviour
             }
 
         }
-        else rightRingParent.SetActive(false);
+        else
+        {
+            rightRingParent.SetActive(false);
+            rightCloudParent.SetActive(false);
+
+        }
 
         // left ring
         if (handTracking.leftHand && currentMode == Mode.Magic)
         {
-            leftRingParent.SetActive(true);
-            if (magicController.elementID == 0)
-            {
-                leftRing.material = lightMat;
-            }
-            if (magicController.elementID == 1)
-            {
-                leftRing.material = fireMat;
-            }
-            if (magicController.elementID == 2)
-            {
-                leftRing.material = waterMat;
-            }
-            if (magicController.elementID == 3)
-            {
-                leftRing.material = iceMat;
-            }
+            leftRingParent.SetActive(false);
+            leftCloudParent.SetActive(true);
 
+            for (int i = 0; i < leftClouds.Count; i++)
+            {
+                if (i == magicController.elementID)
+                {
+                    leftClouds[i].SetActive(true);
+                }
+                else leftClouds[i].SetActive(false);
+            }
         }
         else if (handTracking.leftHand && currentMode == Mode.RGB)
         {
+            leftCloudParent.SetActive(false);
             leftRingParent.SetActive(true);
             if (handTracking.leftHand && rgbController.currentMode == RGBController.RGB.red)
             {
@@ -199,7 +194,12 @@ public class Director : MonoBehaviour
             }
 
         }
-        else leftRingParent.SetActive(false);
+        else
+        {
+            leftRingParent.SetActive(false);
+            leftCloudParent.SetActive(false);
+
+        }
     }
 
     IEnumerator MenuTimeOut(float delay)

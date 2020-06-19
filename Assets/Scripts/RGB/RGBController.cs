@@ -89,13 +89,16 @@ public class RGBController : MonoBehaviour
             if (indexMidDist > maxXAxisDist) xOSCFloat = 0;
             if (indexMidDist < floatOffset) xOSCFloat = 1;
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
+            var redText = Mathf.RoundToInt(xOSCFloat * 100);
 
             SendOSCMessage(xOSCMessage, xOSCFloat);
             dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+            dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+
 
             horStackObj.SetActive(true);
             horStackObj.transform.position = midpointIndexes;
-            xFloatText.text = redVal.ToString();
+            xFloatText.text = redText + "%".ToString();
         }
         else horStackObj.SetActive(false);
         
@@ -108,13 +111,17 @@ public class RGBController : MonoBehaviour
             if (indexMidDist > maxYAxisDist) yOSCFloat = 0;
             if (indexMidDist < floatOffset) yOSCFloat = 1;
             greenVal = Mathf.RoundToInt(yOSCFloat * 255);
+            var greenText = Mathf.RoundToInt(yOSCFloat * 100);
+
 
             SendOSCMessage(yOSCMessage, yOSCFloat);
             dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+            dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
+
 
             vertStackObj.SetActive(true);
             vertStackObj.transform.position = midpointIndexes;
-            yFloatText.text = greenVal.ToString();
+            yFloatText.text = greenText + "%".ToString();
         }
         else
         {
@@ -130,13 +137,17 @@ public class RGBController : MonoBehaviour
             if (indexMidDist > maxZAxisDist) zOSCFloat = 0;
             if (indexMidDist < floatOffset) zOSCFloat = 1;
             blueVal = Mathf.RoundToInt(zOSCFloat * 255);
+            var blueText = Mathf.RoundToInt(zOSCFloat * 100);
+
 
             SendOSCMessage(zOSCMessage, zOSCFloat);
             dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
+            dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
+
 
             forStackObj.SetActive(true);
             forStackObj.transform.position = midpointIndexes;
-            zFloatText.text = blueVal.ToString();
+            zFloatText.text = blueText + "%".ToString();
         }
         else
         {
