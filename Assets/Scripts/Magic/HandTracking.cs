@@ -63,16 +63,28 @@ public class HandTracking : MonoBehaviour
         ProcessHands();
     }
 
+    float staffForCamUp;
+    float staffForCamFor;
+    float staffForFloorUp;
+    float staffForFloorFor;
+
     private void ProcessHands()
     {
         #region Palm Ref Angles
         // get reference angles
-        // palm to palm
+        // wizard staff angles
+        Vector3 wizardStaff = rightPalm.Position - leftPalm.Position;
+         staffForCamUp = Vector3.Angle(wizardStaff, cam.up);
+        staffForCamFor = Vector3.Angle(wizardStaff, cam.forward);
+         staffForFloorUp = Vector3.Angle(wizardStaff, floor.up);
+        staffForFloorFor = Vector3.Angle(wizardStaff, floor.forward);
+
+        // palm to palm angles
         float p2pUp = Vector3.Angle(rightPalm.Up, leftPalm.Up);
         float p2pRt = Vector3.Angle(rightPalm.Right, leftPalm.Right);
         float p2pFor = Vector3.Angle(rightPalm.Forward, leftPalm.Forward);
 
-        // right palm
+        // right palm angles
         float rtPalmUpCamFor = Vector3.Angle(rightPalm.Up, cam.forward);
         float rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);
         float rtPalmUpFloorFor = Vector3.Angle(rightPalm.Up, floor.forward);
@@ -87,7 +99,7 @@ public class HandTracking : MonoBehaviour
         float rtPalmRtFloorRt = Vector3.Angle(rightPalm.Right, floor.right);
 
 
-        // left palm
+        // left palm angles
         float ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
         float ltPalmUpFloorUp = Vector3.Angle(leftPalm.Up, floor.up);
         float ltPalmUpFloorFor = Vector3.Angle(leftPalm.Up, floor.forward);
@@ -395,5 +407,25 @@ public class HandTracking : MonoBehaviour
         else withinRange = false;
 
         return withinRange;
+    }
+
+    public float GetFloorUp()
+    {
+        return staffForFloorUp;
+    }
+
+    public float GetFloorForward()
+    {
+        return staffForFloorFor;
+    }
+
+    public float GetCamUp()
+    {
+        return staffForCamUp;
+    }
+
+    public float GetCamForward()
+    {
+        return staffForCamFor;
     }
 }
