@@ -84,23 +84,23 @@ public class RGBController : MonoBehaviour
         if (handTracking.palmsOpposed && handTracking.staffCamUp90)
         {
             currentMode = RGB.red;
-            float xOSCFloat;
+            float xFloat;
 
-            xOSCFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
-            if (indexMidDist > maxXAxisDist) xOSCFloat = 0;
-            if (indexMidDist < floatOffset) xOSCFloat = 1;
-            redVal = Mathf.RoundToInt(xOSCFloat * 255);
-            var redText = Mathf.RoundToInt(redVal / 255 * 100);
+            xFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
+            if (indexMidDist > maxXAxisDist) xFloat = 0;
+            if (indexMidDist < floatOffset) xFloat = 1;
+            var redText = Mathf.RoundToInt(xFloat * 100);
 
             xFloatObj.SetActive(true);
             xFloatObj.transform.position = midpointIndexes;
+            xFloatText.text = redText + "%".ToString();
 
             if (handTracking.rightOpen && handTracking.leftOpen)
             {
-                SendOSCMessage(xOSCMessage, xOSCFloat);
+                redVal = Mathf.RoundToInt(xFloat * 255);
+                SendOSCMessage(xOSCMessage, xFloat);
                 dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
                 dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
-                xFloatText.text = redText + "%".ToString();
             }
         }
         else xFloatObj.SetActive(false);
@@ -109,23 +109,23 @@ public class RGBController : MonoBehaviour
         if (handTracking.palmsOpposed && handTracking.staffCamUp45)
         {
             currentMode = RGB.green;
-            float yOSCFloat;
+            float yFloat;
 
-            yOSCFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
-            if (indexMidDist > maxXAxisDist) yOSCFloat = 0;
-            if (indexMidDist < floatOffset) yOSCFloat = 1;
-            greenVal = Mathf.RoundToInt(yOSCFloat * 255);
-            var greenText = Mathf.RoundToInt((greenVal / 255) * 100);
+            yFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
+            if (indexMidDist > maxXAxisDist) yFloat = 0;
+            if (indexMidDist < floatOffset) yFloat = 1;
+            var greenText = Mathf.RoundToInt(yFloat * 100);
 
             yFloatObj.SetActive(true);
             yFloatObj.transform.position = midpointIndexes;
+            yFloatText.text = greenText + "%".ToString();
 
             if (handTracking.rightOpen && handTracking.leftOpen)
             {
-                SendOSCMessage(yOSCMessage, yOSCFloat);
+                greenVal = Mathf.RoundToInt(yFloat * 255);
+                SendOSCMessage(yOSCMessage, yFloat);
                 dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
                 dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
-                yFloatText.text = greenText + "%".ToString();
             }
         }
         else
@@ -137,23 +137,23 @@ public class RGBController : MonoBehaviour
         if (handTracking.palmsOpposed && handTracking.staffCamUp135)
         {
             currentMode = RGB.blue;
-            float zOSCFloat;
+            float zFloat;
 
-            zOSCFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
-            if (indexMidDist > maxXAxisDist) zOSCFloat = 0;
-            if (indexMidDist < floatOffset) zOSCFloat = 1;
-            blueVal = Mathf.RoundToInt(zOSCFloat * 255);
-            var blueText = Mathf.RoundToInt((blueVal / 255) * 100);
+            zFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
+            if (indexMidDist > maxXAxisDist) zFloat = 0;
+            if (indexMidDist < floatOffset) zFloat = 1;
+            var blueText = Mathf.RoundToInt(zFloat * 100);
 
             zFloatObj.SetActive(true);
             zFloatObj.transform.position = midpointIndexes;
+            zFloatText.text = blueText + "%".ToString();
 
             if (handTracking.rightOpen && handTracking.leftOpen)
             {
-                SendOSCMessage(zOSCMessage, zOSCFloat);
+                blueVal = Mathf.RoundToInt(zFloat * 255);
+                SendOSCMessage(zOSCMessage, zFloat);
                 dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
                 dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
-                zFloatText.text = blueText + "%".ToString();
             }
         }
         else
