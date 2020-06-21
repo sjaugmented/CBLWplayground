@@ -63,8 +63,9 @@ public class HandTracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessWizardStaff();
-        ProcessHands();
+        ProcessStaffAngle();
+        ProcessPalmToPalm();
+        ProcessFingers();
     }
 
     float staffForCamUp;
@@ -72,13 +73,13 @@ public class HandTracking : MonoBehaviour
     float staffForFloorUp;
     float staffForCamRight;
 
-    public bool staff00 = false;
-    public bool staff45 = false;
-    public bool staff90 = false;
-    public bool staff135 = false;
-    public bool staff180 = false;
+    public bool staffCamUp00 = false;
+    public bool staffCamUp45 = false;
+    public bool staffCamUp90 = false;
+    public bool staffCamUp135 = false;
+    public bool staffCamUp180 = false;
 
-    private void ProcessWizardStaff()
+    private void ProcessStaffAngle()
     {
         // wizard staff angles
         Vector3 wizardStaff = rightPalm.Position - leftPalm.Position;
@@ -89,39 +90,37 @@ public class HandTracking : MonoBehaviour
 
         if (staffForCamUp >= 0 && staffForCamUp < 30)
         {
-            staff00 = true;
+            staffCamUp00 = true;
         }
-        else staff00 = false;
+        else staffCamUp00 = false;
 
         if (staffForCamUp >= 30 && staffForCamUp < 75)
         {
-            staff45 = true;
+            staffCamUp45 = true;
         }
-        else staff45 = false;
+        else staffCamUp45 = false;
 
         if (staffForCamUp >= 75 && staffForCamUp < 105)
         {
-            staff90 = true;
+            staffCamUp90 = true;
         }
-        else staff90 = false;
+        else staffCamUp90 = false;
 
         if (staffForCamUp >= 105 && staffForCamUp < 135)
         {
-            staff135 = true;
+            staffCamUp135 = true;
         }
-        else staff135 = false;
+        else staffCamUp135 = false;
 
         if (staffForCamUp >= 135 && staffForCamUp <= 180)
         {
-            staff180 = true;
+            staffCamUp180 = true;
         }
-        else staff180 = false;
+        else staffCamUp180 = false;
     }
 
-    private void ProcessHands()
+    private void ProcessPalmToPalm()
     {
-        
-        
         #region Palm Ref Angles
         // get reference angles
 
@@ -194,117 +193,6 @@ public class HandTracking : MonoBehaviour
         float rtIndMidForLtIndMidFor = Vector3.Angle(rtIndexMid.Forward, ltIndexMid.Forward);
         float rtIndMidUpLtIndMidUp = Vector3.Angle(rtIndexMid.Up, ltIndexMid.Up);
         #endregion
-
-        // look for only right fingers
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm))
-        {
-            rightHand = true;
-            
-            // look for rockOn
-            if (IsWithinRange(rtIndForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && !IsWithinRange(rtMidForPalmFor, 0, bigMargin))
-            {
-                rockOnRight = true;
-            }
-            else
-            {
-                rockOnRight = false;
-            }
-
-            // look for right fist
-            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) ||
-            //unity standard tap for debug
-            IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
-            {
-
-                rightFist = true;
-            }
-            else rightFist = false;
-
-            // look for right flat
-            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 0, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 0, bigMargin))
-            {
-                rightFlatHand = true;
-            }
-            else rightFlatHand = false;
-
-            // look for right knife
-            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 90, bigMargin))
-            {
-                rightKnifeHand = true;
-            }
-            else rightKnifeHand = false;
-
-            // look for palm out throw
-            if (IsWithinRange(rtIndMidForPalmFor, 20, bigMargin) && IsWithinRange(rtMidForPalmFor, 20, bigMargin) && IsWithinRange(rtPinkForPalmFor, 20, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 60, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 0, bigMargin))
-            {
-                rightThrower = true;
-            }
-            else rightThrower = false;
-        }
-        else
-        {
-            rightHand = false;
-            rockOnRight = false;
-            rightFist = false;
-            rightFlatHand = false;
-            rightKnifeHand = false;
-            rightThrower = false;
-        }
-
-        // look for only left fingers
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
-        {
-            leftHand = true;
-            
-            // look for rockOn
-            if (IsWithinRange(ltIndForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && !IsWithinRange(ltMidForPalmFor, 0, bigMargin))
-            {
-                rockOnLeft = true;
-            }
-            else
-            {
-                rockOnLeft = false;
-            }
-
-            // look for left fist
-            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) ||
-                // debug unity standard tap
-                IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
-            {
-
-                leftFist = true;
-            }
-            else leftFist = false;
-
-            // look for left flat
-            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 0, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 0, bigMargin))
-            {
-                leftFlatHand = true;
-            }
-            else leftFlatHand = false;
-
-            // look for left knife
-            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 90, bigMargin))
-            {
-                leftKnifeHand = true;
-            }
-            else leftKnifeHand = false;
-
-            // look for palm out throw
-            if (IsWithinRange(ltIndMidForPalmFor, 20, bigMargin) && IsWithinRange(ltMidForPalmFor, 20, bigMargin) && IsWithinRange(ltPinkForPalmFor, 20, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 60, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 0, bigMargin))
-            {
-                leftThrower = true;
-            }
-            else leftThrower = false;
-        }
-        else
-        {
-            leftHand = false;
-            rockOnLeft = false;
-            leftFist = false;
-            leftFlatHand = false;
-            leftKnifeHand = false;
-        }
 
         // look for two palms
         if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
@@ -464,6 +352,192 @@ public class HandTracking : MonoBehaviour
             pullUps = false;
             verticalStack = false;
             forwardStack = false;
+        }
+    }
+
+    private void ProcessFingers()
+    {
+        #region Palm Ref Angles
+        // get reference angles
+
+        // palm to palm angles
+        float p2pUp = Vector3.Angle(rightPalm.Up, leftPalm.Up);
+        float p2pRt = Vector3.Angle(rightPalm.Right, leftPalm.Right);
+        float p2pFor = Vector3.Angle(rightPalm.Forward, leftPalm.Forward);
+
+        // right palm angles
+        float rtPalmUpCamFor = Vector3.Angle(rightPalm.Up, cam.forward);
+        float rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);
+        float rtPalmUpFloorFor = Vector3.Angle(rightPalm.Up, floor.forward);
+        float rtPalmForCamFor = Vector3.Angle(rightPalm.Forward, cam.forward);
+        float rtPalmRtCamFor = Vector3.Angle(rightPalm.Right, cam.forward);
+        float rtPalmRtCamRt = Vector3.Angle(rightPalm.Right, cam.right);
+        float rtPalmRtCamUp = Vector3.Angle(rightPalm.Right, cam.up);
+        float rtPalmForFloorFor = Vector3.Angle(rightPalm.Forward, floor.forward);
+        float rtPalmRtFloorFor = Vector3.Angle(rightPalm.Right, floor.forward);
+        float rtPalmUpCamRt = Vector3.Angle(rightPalm.Up, cam.right);
+        float rtPalmForCamRt = Vector3.Angle(rightPalm.Forward, cam.right);
+        float rtPalmRtFloorRt = Vector3.Angle(rightPalm.Right, floor.right);
+
+
+        // left palm angles
+        float ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
+        float ltPalmUpFloorUp = Vector3.Angle(leftPalm.Up, floor.up);
+        float ltPalmUpFloorFor = Vector3.Angle(leftPalm.Up, floor.forward);
+        float ltPalmForCamFor = Vector3.Angle(leftPalm.Forward, cam.forward);
+        float ltPalmRtCamFor = Vector3.Angle(leftPalm.Right, cam.forward);
+        float ltPalmRtCamRt = Vector3.Angle(leftPalm.Right, cam.right);
+        float ltPalmRtCamUp = Vector3.Angle(leftPalm.Right, cam.up);
+        float ltPalmForFloorFor = Vector3.Angle(leftPalm.Forward, floor.forward);
+        float ltPalmRtFloorFor = Vector3.Angle(leftPalm.Right, floor.forward);
+        float ltPalmUpCamRt = Vector3.Angle(leftPalm.Up, cam.right);
+        float ltPalmForCamRt = Vector3.Angle(leftPalm.Forward, cam.right);
+        float ltPalmRtFloorRt = Vector3.Angle(leftPalm.Right, floor.right);
+
+        #endregion
+        #region Finger Ref Angles
+        // get right finger angles
+        float rtIndForPalmFor = Vector3.Angle(rtIndexTip.Forward, rightPalm.Forward);
+        float rtIndForCamFor = Vector3.Angle(rtIndexTip.Forward, cam.forward);
+        float rtMidForPalmFor = Vector3.Angle(rtMiddleTip.Forward, rightPalm.Forward);
+        float rtPinkForPalmFor = Vector3.Angle(rtPinkyTip.Forward, rightPalm.Forward);
+        float rtThumbForCamFor = Vector3.Angle(rtThumbTip.Forward, cam.forward);
+        float rtThumbForPalmFor = Vector3.Angle(rtThumbTip.Forward, rightPalm.Forward);
+        float rtIndMidForCamRt = Vector3.Angle(rtIndexMid.Forward, cam.right);
+        float rtIndMidForPalmFor = Vector3.Angle(rtIndexMid.Forward, rightPalm.Forward);
+        float rtIndMidUpCamFor = Vector3.Angle(rtIndexMid.Up, cam.forward);
+        float rtIndMidUpFloorFor = Vector3.Angle(rtIndexMid.Up, floor.forward);
+        float rtIndMidUpFloorUp = Vector3.Angle(rtIndexMid.Up, floor.up);
+        float rtIndKnuckForPalmFor = Vector3.Angle(rtIndexKnuckle.Forward, rightPalm.Forward);
+
+        // get left finger angles
+        float ltIndForPalmFor = Vector3.Angle(ltIndexTip.Forward, leftPalm.Forward);
+        float ltIndForCamFor = Vector3.Angle(ltIndexTip.Forward, cam.forward);
+        float ltMidForPalmFor = Vector3.Angle(ltMiddleTip.Forward, leftPalm.Forward);
+        float ltPinkForPalmFor = Vector3.Angle(ltPinkyTip.Forward, leftPalm.Forward);
+        float ltThumbForCamFor = Vector3.Angle(ltThumbTip.Forward, cam.forward);
+        float ltThumbForPalmFor = Vector3.Angle(ltThumbTip.Forward, leftPalm.Forward);
+        float ltIndMidForCamRt = Vector3.Angle(ltIndexMid.Forward, cam.right);
+        float ltIndMidForPalmFor = Vector3.Angle(ltIndexMid.Forward, leftPalm.Forward);
+        float ltIndMidUpCamFor = Vector3.Angle(ltIndexMid.Up, cam.forward);
+        float ltIndMidUpFloorFor = Vector3.Angle(ltIndexMid.Up, floor.forward);
+        float ltIndMidUpFloorUp = Vector3.Angle(ltIndexMid.Up, floor.up);
+        float ltIndKnuckForPalmFor = Vector3.Angle(ltIndexKnuckle.Forward, leftPalm.Forward);
+
+        // compare fingers on both hands
+        float rtIndMidForLtIndMidFor = Vector3.Angle(rtIndexMid.Forward, ltIndexMid.Forward);
+        float rtIndMidUpLtIndMidUp = Vector3.Angle(rtIndexMid.Up, ltIndexMid.Up);
+        #endregion
+
+        // right hand
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm))
+        {
+            rightHand = true;
+
+            // look for rockOn
+            if (IsWithinRange(rtIndForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && !IsWithinRange(rtMidForPalmFor, 0, bigMargin))
+            {
+                rockOnRight = true;
+            }
+            else
+            {
+                rockOnRight = false;
+            }
+
+            // look for right fist
+            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) ||
+            //unity standard tap for debug
+            IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
+            {
+
+                rightFist = true;
+            }
+            else rightFist = false;
+
+            // look for right flat
+            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 0, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 0, bigMargin))
+            {
+                rightFlatHand = true;
+            }
+            else rightFlatHand = false;
+
+            // look for right knife
+            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 90, bigMargin))
+            {
+                rightKnifeHand = true;
+            }
+            else rightKnifeHand = false;
+
+            // look for palm out throw
+            if (IsWithinRange(rtIndMidForPalmFor, 20, bigMargin) && IsWithinRange(rtMidForPalmFor, 20, bigMargin) && IsWithinRange(rtPinkForPalmFor, 20, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 60, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 0, bigMargin))
+            {
+                rightThrower = true;
+            }
+            else rightThrower = false;
+        }
+        else
+        {
+            rightHand = false;
+            rockOnRight = false;
+            rightFist = false;
+            rightFlatHand = false;
+            rightKnifeHand = false;
+            rightThrower = false;
+        }
+
+        // left hand
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
+        {
+            leftHand = true;
+
+            // look for rockOn
+            if (IsWithinRange(ltIndForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && !IsWithinRange(ltMidForPalmFor, 0, bigMargin))
+            {
+                rockOnLeft = true;
+            }
+            else
+            {
+                rockOnLeft = false;
+            }
+
+            // look for left fist
+            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) ||
+                // debug unity standard tap
+                IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+            {
+
+                leftFist = true;
+            }
+            else leftFist = false;
+
+            // look for left flat
+            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 0, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 0, bigMargin))
+            {
+                leftFlatHand = true;
+            }
+            else leftFlatHand = false;
+
+            // look for left knife
+            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 90, bigMargin))
+            {
+                leftKnifeHand = true;
+            }
+            else leftKnifeHand = false;
+
+            // look for palm out throw
+            if (IsWithinRange(ltIndMidForPalmFor, 20, bigMargin) && IsWithinRange(ltMidForPalmFor, 20, bigMargin) && IsWithinRange(ltPinkForPalmFor, 20, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 60, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 0, bigMargin))
+            {
+                leftThrower = true;
+            }
+            else leftThrower = false;
+        }
+        else
+        {
+            leftHand = false;
+            rockOnLeft = false;
+            leftFist = false;
+            leftFlatHand = false;
+            leftKnifeHand = false;
         }
     }
 
