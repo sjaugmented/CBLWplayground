@@ -22,7 +22,8 @@ public class Director : MonoBehaviour
 
     [Header("Menus")]
     [SerializeField] GameObject topLevelMenu;
-    [SerializeField] Vector3 menuOffset;
+    [SerializeField] float zOffset;
+    [SerializeField] float yOffset;
     [SerializeField] Material defaultMaterial;
     [SerializeField] Material selectedMaterial;
     [SerializeField] float menuTimer = 5f;
@@ -108,7 +109,9 @@ public class Director : MonoBehaviour
                     StartCoroutine("MenuTimeOut", menuTimer);
 
                     Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-                    topLevelMenu.transform.position = midpointPalms + menuOffset;
+                    var camZOffset = Camera.main.transform.forward * zOffset;
+                    var camYOffset = Camera.main.transform.up * yOffset;
+                    topLevelMenu.transform.position = midpointPalms + camZOffset + camYOffset;
                     topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
                 }
                 else topLevelMenu.SetActive(false);
