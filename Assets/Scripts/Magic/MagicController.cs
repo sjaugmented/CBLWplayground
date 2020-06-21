@@ -20,6 +20,8 @@ public class MagicController : MonoBehaviour
     [SerializeField] GameObject iceMasterOrb;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
     [SerializeField] Vector3 elMenuOffset = new Vector3(0, 0, 0); // todo hardcode
+    [SerializeField] float zOffset;
+    [SerializeField] float yOffset;
 
     [Header("Caster transforms for streams")]
     [SerializeField] Transform rightHandCaster;
@@ -81,9 +83,10 @@ public class MagicController : MonoBehaviour
     bool activeLightHover = false;   
     bool activeFireHover = false;    
     bool activeWaterHover = false;   
-    bool activeIceHover = false;     
+    bool activeIceHover = false;
     #endregion
 
+    Director director;
     HandTracking handTracking;
     SpellBook spellBook;
     OSC osc;
@@ -99,6 +102,8 @@ public class MagicController : MonoBehaviour
     int greenChan = 5;
     int blueChan = 6;
     int whiteChan = 7;
+
+    public bool elMenuActive = false;
 
     List<List<List<int>>> masterElements = new List<List<List<int>>>();
     List<List<List<int>>> masterValues = new List<List<List<int>>>();
@@ -120,6 +125,7 @@ public class MagicController : MonoBehaviour
 
     void Awake()
     {
+        director = FindObjectOfType<Director>();
         handTracking = FindObjectOfType<HandTracking>();
         spellBook = GetComponent<SpellBook>();
         osc = FindObjectOfType<OSC>();
@@ -235,12 +241,14 @@ public class MagicController : MonoBehaviour
             // two handed casting
             if (handTracking.palmsOut)
             {
+                TurnOffMasterOrbs();
                 CastOrb();
                 //sound.orbAmbienceFX.Pause();
-                lightMasterOrb.SetActive(false);
+
+                /*lightMasterOrb.SetActive(false);
                 fireMasterOrb.SetActive(false);
                 waterMasterOrb.SetActive(false);
-                iceMasterOrb.SetActive(false);
+                iceMasterOrb.SetActive(false);*/
 
                 if (variantID == 0 || variantID == 1) LiveDMX();
 
@@ -277,14 +285,24 @@ public class MagicController : MonoBehaviour
             }
             else
             {
-                lightMasterOrb.SetActive(false);
+                TurnOffMasterOrbs();
+                //lightMasterOrb.SetActive(false);
                 //sound.orbAmbienceFX.Pause();
             }
         }
         else
         {
-            lightMasterOrb.SetActive(false);
+            TurnOffMasterOrbs();
+            //lightMasterOrb.SetActive(false);
             //sound.orbAmbienceFX.Pause();
+        }
+    }
+
+    private void TurnOffMasterOrbs()
+    {
+        foreach (GameObject orb in masterOrbs)
+        {
+            orb.SetActive(false);
         }
     }
 
@@ -341,16 +359,19 @@ public class MagicController : MonoBehaviour
     {
         fromOrbScaler = false;
 
-        if (!elementMenu.activeInHierarchy)
+        if (!elementMenu.activeInHierarchy && director.menuActive == false)
         {
-            lightMasterOrb.SetActive(false);
+            TurnOffMasterOrbs();
+            //lightMasterOrb.SetActive(false);
             elementMenu.SetActive(true);
             ResetElementSelection();
-            StartCoroutine("MenuTimeOut", 20);
+            StartCoroutine("OnElementSelection", 20);
 
             Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
             elementMenu.transform.position = midpointPalms + elMenuOffset;
             elementMenu.transform.localRotation = Camera.main.transform.rotation;
+
+            elMenuActive = true;
         }
     }
 
@@ -709,7 +730,7 @@ public class MagicController : MonoBehaviour
         elementMenu.SetActive(false);
     }
 
-    IEnumerator ElementSelection()
+    IEnumerator OnElementSelection()
     {
         List<Transform> elements = new List<Transform>();
 
@@ -727,10 +748,13 @@ public class MagicController : MonoBehaviour
                 elements[i].gameObject.SetActive(false);
             }
         }
-        
+
+        elMenuActive = false;
+
         Color color = transparency.color;
         color.a = 0;
         transparency.color = color;
+
     }
 
     private void ResetElementSelection()
@@ -744,6 +768,12 @@ public class MagicController : MonoBehaviour
     public int GetElementID()
     {
         return elementID;
+    }
+
+    public void ElMenuOverride()
+    {
+        elementMenu.SetActive(false);
+        elMenuActive = false;
     }
 
     #region Hook Ups

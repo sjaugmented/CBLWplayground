@@ -113,6 +113,11 @@ public class Director : MonoBehaviour
                     var camYOffset = Camera.main.transform.up * yOffset;
                     topLevelMenu.transform.position = midpointPalms + camZOffset + camYOffset;
                     topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
+
+                    if (magicController.elMenuActive == true)
+                    {
+                        magicController.ElMenuOverride();
+                    }
                 }
                 else topLevelMenu.SetActive(false);
 
