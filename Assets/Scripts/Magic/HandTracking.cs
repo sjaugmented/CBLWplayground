@@ -45,6 +45,8 @@ public class HandTracking : MonoBehaviour
     public bool rightThrower;
     public bool leftFlatHand = false;
     public bool leftKnifeHand = false;
+    public bool leftThrower = false;
+
 
 
 
@@ -287,6 +289,13 @@ public class HandTracking : MonoBehaviour
                 leftKnifeHand = true;
             }
             else leftKnifeHand = false;
+
+            // look for palm out throw
+            if (IsWithinRange(ltIndMidForPalmFor, 20, bigMargin) && IsWithinRange(ltMidForPalmFor, 20, bigMargin) && IsWithinRange(ltPinkForPalmFor, 20, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 60, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 0, bigMargin))
+            {
+                leftThrower = true;
+            }
+            else leftThrower = false;
         }
         else
         {
