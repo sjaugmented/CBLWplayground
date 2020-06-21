@@ -8,16 +8,21 @@ public class StaffTester : MonoBehaviour
 {
     [SerializeField] Transform wizardStaff;
     [SerializeField] TextMeshPro floorUpText;
-    [SerializeField] TextMeshPro floorForText;
+    [SerializeField] TextMeshPro camRightText;
     [SerializeField] TextMeshPro camUpText;
     [SerializeField] TextMeshPro camForText;
 
     HandTracking handTracker;
 
+    void Awake()
+    {
+        handTracker = FindObjectOfType<HandTracking>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        handTracker = FindObjectOfType<HandTracking>();
+        
     }
 
     // Update is called once per frame
@@ -31,8 +36,9 @@ public class StaffTester : MonoBehaviour
             wizardStaff.localScale = new Vector3(0.004223645f, 0.004223645f, staffLength);
             Vector3 direction = handTracker.rightPalm.Position - handTracker.leftPalm.Position;
             wizardStaff.rotation = Quaternion.LookRotation(direction, Camera.main.transform.up);
+
             floorUpText.text = Mathf.RoundToInt(handTracker.GetFloorUp()).ToString();
-            floorForText.text = Mathf.RoundToInt(handTracker.GetFloorForward()).ToString();
+            camRightText.text = Mathf.RoundToInt(handTracker.GetCamRight()).ToString();
             camUpText.text = Mathf.RoundToInt(handTracker.GetCamUp()).ToString();
             camForText.text = Mathf.RoundToInt(handTracker.GetCamForward()).ToString();
         }

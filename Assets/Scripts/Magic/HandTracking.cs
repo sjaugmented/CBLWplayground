@@ -30,6 +30,7 @@ public class HandTracking : MonoBehaviour
     public bool twoHands = false;
     public bool palmsIn = false;
     public bool fistsIn = false;
+    public bool monitors = false;
     public bool chinUps = false;
     public bool pullUps = false;
     public bool palmsOut = false;
@@ -60,24 +61,67 @@ public class HandTracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ProcessWizardStaff();
         ProcessHands();
     }
 
     float staffForCamUp;
     float staffForCamFor;
     float staffForFloorUp;
-    float staffForFloorFor;
+    float staffForCamRight;
+
+    public bool staff00 = false;
+    public bool staff45 = false;
+    public bool staff90 = false;
+    public bool staff135 = false;
+    public bool staff180 = false;
+
+    private void ProcessWizardStaff()
+    {
+        // wizard staff angles
+        Vector3 wizardStaff = rightPalm.Position - leftPalm.Position;
+        staffForCamUp = Vector3.Angle(wizardStaff, cam.up);
+        staffForCamFor = Vector3.Angle(wizardStaff, cam.forward);
+        staffForFloorUp = Vector3.Angle(wizardStaff, floor.up);
+        staffForCamRight = Vector3.Angle(wizardStaff, cam.right);
+
+        if (staffForCamUp >= 0 && staffForCamUp < 30)
+        {
+            staff00 = true;
+        }
+        else staff00 = false;
+
+        if (staffForCamUp >= 30 && staffForCamUp < 75)
+        {
+            staff45 = true;
+        }
+        else staff45 = false;
+
+        if (staffForCamUp >= 75 && staffForCamUp < 105)
+        {
+            staff90 = true;
+        }
+        else staff90 = false;
+
+        if (staffForCamUp >= 105 && staffForCamUp < 135)
+        {
+            staff135 = true;
+        }
+        else staff135 = false;
+
+        if (staffForCamUp >= 135 && staffForCamUp <= 180)
+        {
+            staff180 = true;
+        }
+        else staff180 = false;
+    }
 
     private void ProcessHands()
     {
+        
+        
         #region Palm Ref Angles
         // get reference angles
-        // wizard staff angles
-        Vector3 wizardStaff = rightPalm.Position - leftPalm.Position;
-         staffForCamUp = Vector3.Angle(wizardStaff, cam.up);
-        staffForCamFor = Vector3.Angle(wizardStaff, cam.forward);
-         staffForFloorUp = Vector3.Angle(wizardStaff, floor.up);
-        staffForFloorFor = Vector3.Angle(wizardStaff, floor.forward);
 
         // palm to palm angles
         float p2pUp = Vector3.Angle(rightPalm.Up, leftPalm.Up);
@@ -266,6 +310,7 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = true;
                     fistsIn = false;
+                    monitors = false;
                     palmsOut = false;
                     chinUps = false;
                     pullUps = false;
@@ -281,6 +326,23 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = false;
                     fistsIn = true;
+                    monitors = false;
+                    palmsOut = false;
+                    chinUps = false;
+                    pullUps = false;
+                    verticalStack = false;
+                    forwardStack = false;
+                }
+
+                // look for monitors
+                else if (IsWithinRange(p2pUp, 180, bigMargin) && IsWithinRange(p2pRt, 180, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 90, smallMargin) && IsWithinRange(ltPalmUpCamFor, 90, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin)
+                    ||
+                    //debug: unity standard airtap
+                    IsWithinRange(p2pUp, 180, bigMargin) && IsWithinRange(p2pRt, 180, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 90, bigMargin) && IsWithinRange(ltPalmUpCamFor, 90, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtThumbForPalmFor, 36, smallMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+                {
+                    palmsIn = false;
+                    fistsIn = false;
+                    monitors = true;
                     palmsOut = false;
                     chinUps = false;
                     pullUps = false;
@@ -293,6 +355,7 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = false;
                     fistsIn = false;
+                    monitors = false;
                     palmsOut = true;
                     chinUps = false;
                     pullUps = false;
@@ -307,6 +370,7 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = false;
                     fistsIn = false;
+                    monitors = false;
                     palmsOut = false;
                     chinUps = true;
                     pullUps = false;
@@ -321,6 +385,7 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = false;
                     fistsIn = false;
+                    monitors = false;
                     palmsOut = false;
                     chinUps = false;
                     pullUps = true;
@@ -333,6 +398,7 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = false;
                     fistsIn = false;
+                    monitors = false;
                     palmsOut = false;
                     chinUps = false;
                     pullUps = false;
@@ -345,6 +411,7 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = false;
                     fistsIn = false;
+                    monitors = false;
                     palmsOut = false;
                     chinUps = false;
                     pullUps = false;
@@ -356,6 +423,7 @@ public class HandTracking : MonoBehaviour
                 {
                     palmsIn = false;
                     fistsIn = false;
+                    monitors = false;
                     palmsOut = false;
                     chinUps = false;
                     pullUps = false;
@@ -367,6 +435,7 @@ public class HandTracking : MonoBehaviour
             {
                 palmsIn = false;
                 fistsIn = false;
+                monitors = false;
                 palmsOut = false;
                 chinUps = false;
                 pullUps = false;
@@ -380,6 +449,7 @@ public class HandTracking : MonoBehaviour
             twoHands = false;
             fistsIn = false;
             palmsIn = false;
+            monitors = false;
             palmsOut = false;
             chinUps = false;
             pullUps = false;
@@ -414,9 +484,9 @@ public class HandTracking : MonoBehaviour
         return staffForFloorUp;
     }
 
-    public float GetFloorForward()
+    public float GetCamRight()
     {
-        return staffForFloorFor;
+        return staffForCamRight;
     }
 
     public float GetCamUp()

@@ -31,7 +31,7 @@ public class Director : MonoBehaviour
 
     public List<Renderer> selectorPlatonics = new List<Renderer>();
 
-    public enum Mode { Magic, RGB, Precision, Throw, ResetDMX };
+    public enum Mode { Magic, RGB, Precision, Staff };
     public Mode currentMode = Mode.Magic;
     int modeIndex = 1;
     public bool menuActive = false;
@@ -44,10 +44,12 @@ public class Director : MonoBehaviour
     RGBController rgbController;
     PrecisionController precisionController;
     ThrowController throwController;
+    StaffTester staffController;
 
     GameObject magicComponents;
     GameObject rgbComponents;
     GameObject precisionComponents;
+    GameObject staffComponents;
 
     bool chinUpsActive = false;
 
@@ -59,15 +61,19 @@ public class Director : MonoBehaviour
         rgbController = FindObjectOfType<RGBController>();
         precisionController = FindObjectOfType<PrecisionController>();
         throwController = FindObjectOfType<ThrowController>();
+        staffController = FindObjectOfType<StaffTester>();
+
 
         magicComponents = FindObjectOfType<MagicID>().gameObject;
         rgbComponents = FindObjectOfType<RGBID>().gameObject;
         precisionComponents = FindObjectOfType<PrecisionID>().gameObject;
+        staffComponents = FindObjectOfType<StaffTester>().gameObject;
 
         magicController.enabled = false;
         rgbController.enabled = false;
         precisionController.enabled = false;
         throwController.enabled = false;
+        staffController.enabled = false;
     }
     
     // Start is called before the first frame update
@@ -267,15 +273,10 @@ public class Director : MonoBehaviour
             SetGameObjects(false, false, true, false);
         }
 
-        if (currentMode == Mode.Throw)
+        if (currentMode == Mode.Staff)
         {
             modeIndex = 3;
             SetGameObjects(false, false, false, true);
-        }
-
-        if (currentMode == Mode.ResetDMX)
-        {
-            modeIndex = 4;
         }
     }
 
@@ -294,16 +295,17 @@ public class Director : MonoBehaviour
         }
     }
 
-    private void SetGameObjects(bool mag, bool rgb, bool prec, bool thrower)
+    private void SetGameObjects(bool mag, bool rgb, bool prec, bool staff)
     {
         magicController.enabled = mag;
         rgbController.enabled = rgb;
         precisionController.enabled = prec;
-        throwController.enabled = thrower;
+        staffController.enabled = staff;
 
         magicComponents.SetActive(mag);
         rgbComponents.SetActive(rgb);
         precisionComponents.SetActive(prec);
+        staffComponents.SetActive(staff);
         
     }
 
@@ -331,9 +333,9 @@ public class Director : MonoBehaviour
 
     }
 
-    public void ThrowMode()
+    public void StaffMode()
     {
-        currentMode = Mode.Throw;
+        currentMode = Mode.Staff;
         StartCoroutine("MenuTimeOut", menuSelectDelay);
         //StartCoroutine("Gravity");
     }
@@ -341,8 +343,31 @@ public class Director : MonoBehaviour
     public void ResetDMX()
     {
         DMXcontroller dmx = FindObjectOfType<DMXcontroller>();
+        DMXChannels dmxChan = FindObjectOfType<DMXChannels>();
+
+        int dimmerChan = 0;
+        int kelvinChan = 1;
+        int xOverChan = 3;
+
         dmx.ResetDMX();
-        currentMode = Mode.ResetDMX;
+
+        if (currentMode == Mode.Magic || currentMode == Mode.RGB)
+        {
+            dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+            dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
+            dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
+            dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
+        }
+        /*else if (currentMode == Mode.Precision)
+        {
+            dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel1[kelvinChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel2[kelvinChan], 0);
+        }*/
+
         StartCoroutine("MenuTimeOut", menuSelectDelay);
         //StartCoroutine("Gravity");
     }
