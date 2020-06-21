@@ -239,7 +239,7 @@ public class MagicController : MonoBehaviour
         if (handTracking.twoHands)
         {   
             // two handed casting
-            if (handTracking.palmsOut)
+            if (handTracking.palmsOut && handTracking.staffCamUp90)
             {
                 TurnOffMasterOrbs();
                 CastOrb();
@@ -255,20 +255,20 @@ public class MagicController : MonoBehaviour
             }
 
             // element menu
-            if (handTracking.pullUps)
+            if (handTracking.palmsOut && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90)
             {
                 ElementSelector();
             }
 
             // variant menu
-            else if (handTracking.fistsIn || manualElMenu)
+            else if (handTracking.palmsOpposed && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90 || manualElMenu)
             {
                 VariantSelector();
                 //if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
             }
 
             // element scaler
-            else if (handTracking.palmsIn)
+            else if (handTracking.palmsOpposed && handTracking.rightOpen && handTracking.leftOpen && handTracking.staffCamUp90)
             {
                 LiveScaler();
                 //if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();

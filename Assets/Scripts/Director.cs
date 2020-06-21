@@ -103,7 +103,7 @@ public class Director : MonoBehaviour
         }
         else menuActive = false;
 
-        if (handTracking.chinUps)
+        if (handTracking.palmsIn && handTracking.rightFist && handTracking.leftFist)
         {
             if (!chinUpsActive)
             {

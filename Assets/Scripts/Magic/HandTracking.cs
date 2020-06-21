@@ -6,13 +6,6 @@ using UnityEngine;
 
 public class HandTracking : MonoBehaviour
 {
-    [Header("Thresholds")]
-    [Tooltip("Min Velocity at which spells are cast")]
-    [SerializeField] float minVelocity = 2f;
-    [Tooltip("Max Velocity at which spells are cast")]
-    [SerializeField] float maxVelocity = 10f;
-    [Tooltip("How far forward the finger must point before casting can happen")]
-    [SerializeField] float fingerForwardThreshold = 0.7f;
     [Tooltip("Margins of error for poses")]
     [SerializeField] int bigMargin = 50;
     [SerializeField] int smallMargin = 25;
@@ -22,33 +15,41 @@ public class HandTracking : MonoBehaviour
     public MixedRealityPose rightPalm, rtIndexTip, rtIndexMid, rtIndexKnuckle, rtMiddleTip, rtMiddleKnuckle, rtPinkyTip, rtThumbTip;
     // left hand joints
     public MixedRealityPose leftPalm, ltIndexTip, ltIndexMid, ltIndexKnuckle, ltMiddleTip, ltMiddleKnuckle, ltPinkyTip, ltThumbTip;
-    float castFingerUpThresh = 0.3f;
-    bool castFingerOut = false;
 
-    public bool rightHand = false;
-    public bool leftHand = false;
+    #region public position booleans
+    // staff
+    public bool staffCamUp00 = false;
+    public bool staffCamUp45 = false;
+    public bool staffCamUp90 = false;
+    public bool staffCamUp135 = false;
+    public bool staffCamUp180 = false;
+
+    // palms
     public bool twoHands = false;
+    public bool palmsOpposed = false;
     public bool palmsIn = false;
-    public bool fistsIn = false;
-    public bool monitors = false;
-    public bool chinUps = false;
-    public bool pullUps = false;
+    public bool palmsParallel = false;
     public bool palmsOut = false;
-    public bool verticalStack = false;
-    public bool forwardStack = false;
+
+    // right fingers
+    public bool rightHand = false;
     public bool rockOnRight = false;
-    public bool rockOnLeft = false;
     public bool rightFist = false;
+    public bool rightOpen = false;
+    public bool rightThrower = false;
+    public bool rightMonitor = false;
+
+    // left fingers
+    public bool leftHand = false;
+    public bool rockOnLeft = false;
     public bool leftFist = false;
-    public bool rightFlatHand = false;
-    public bool rightKnifeHand = false;
-    public bool rightThrower;
-    public bool leftFlatHand = false;
-    public bool leftKnifeHand = false;
+    public bool leftOpen = false;
     public bool leftThrower = false;
+    public bool leftMonitor = false;
+    #endregion
 
-
-
+    public float rtPalmUpFloorUp;
+    public float ltPalmUpFloorUp;
 
     Transform cam;
     Transform floor;
@@ -68,16 +69,11 @@ public class HandTracking : MonoBehaviour
         ProcessFingers();
     }
 
+    // public for StaffTester Vector scene - todo remove
     float staffForCamUp;
     float staffForCamFor;
     float staffForFloorUp;
     float staffForCamRight;
-
-    public bool staffCamUp00 = false;
-    public bool staffCamUp45 = false;
-    public bool staffCamUp90 = false;
-    public bool staffCamUp135 = false;
-    public bool staffCamUp180 = false;
 
     private void ProcessStaffAngle()
     {
@@ -131,7 +127,7 @@ public class HandTracking : MonoBehaviour
 
         // right palm angles
         float rtPalmUpCamFor = Vector3.Angle(rightPalm.Up, cam.forward);
-        float rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);
+        rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);
         float rtPalmUpFloorFor = Vector3.Angle(rightPalm.Up, floor.forward);
         float rtPalmForCamFor = Vector3.Angle(rightPalm.Forward, cam.forward);
         float rtPalmRtCamFor = Vector3.Angle(rightPalm.Right, cam.forward);
@@ -146,7 +142,7 @@ public class HandTracking : MonoBehaviour
 
         // left palm angles
         float ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
-        float ltPalmUpFloorUp = Vector3.Angle(leftPalm.Up, floor.up);
+        ltPalmUpFloorUp = Vector3.Angle(leftPalm.Up, floor.up);
         float ltPalmUpFloorFor = Vector3.Angle(leftPalm.Up, floor.forward);
         float ltPalmForCamFor = Vector3.Angle(leftPalm.Forward, cam.forward);
         float ltPalmRtCamFor = Vector3.Angle(leftPalm.Right, cam.forward);
@@ -199,159 +195,39 @@ public class HandTracking : MonoBehaviour
         {
             twoHands = true;
 
-            // look for fingers both hands
-            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip))
+            // look for palmsOpposed
+            if (IsWithinRange(p2pUp, 180, bigMargin))
             {
-                // look for palms in
-                if (IsWithinRange(p2pUp, 180, bigMargin) && IsWithinRange(p2pRt, 180, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 90, bigMargin) && IsWithinRange(ltPalmUpCamFor, 90, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtIndForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin))
-                {
-                    palmsIn = true;
-                    fistsIn = false;
-                    monitors = false;
-                    palmsOut = false;
-                    chinUps = false;
-                    pullUps = false;
-                    verticalStack = false;
-                    forwardStack = false;
-                }
+                palmsOpposed = true;
 
-                // look for fists in
-                else if (IsWithinRange(p2pUp, 180, bigMargin) && IsWithinRange(p2pRt, 180, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 90, smallMargin) && IsWithinRange(ltPalmUpCamFor, 90, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 170, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 70, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 170, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 70, bigMargin) 
-                    ||
-                    //debug: unity standard airtap
-                    IsWithinRange(p2pUp, 180, bigMargin) && IsWithinRange(p2pRt, 180, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 90, bigMargin) && IsWithinRange(ltPalmUpCamFor, 90, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
-                {
-                    palmsIn = false;
-                    fistsIn = true;
-                    monitors = false;
-                    palmsOut = false;
-                    chinUps = false;
-                    pullUps = false;
-                    verticalStack = false;
-                    forwardStack = false;
-                }
-
-                // look for monitors
-                else if (IsWithinRange(p2pUp, 180, bigMargin) && IsWithinRange(p2pRt, 180, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 90, smallMargin) && IsWithinRange(ltPalmUpCamFor, 90, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin)
-                    ||
-                    //debug: unity standard airtap
-                    IsWithinRange(p2pUp, 180, bigMargin) && IsWithinRange(p2pRt, 180, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 90, bigMargin) && IsWithinRange(ltPalmUpCamFor, 90, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtThumbForPalmFor, 36, smallMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
-                {
-                    palmsIn = false;
-                    fistsIn = false;
-                    monitors = true;
-                    palmsOut = false;
-                    chinUps = false;
-                    pullUps = false;
-                    verticalStack = false;
-                    forwardStack = false;
-                }
-
-                // look for palmsOut, neutral fingers
-                else if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 180, bigMargin) && IsWithinRange(ltPalmUpCamFor, 180, bigMargin) && IsWithinRange(rtIndForPalmFor, 20, bigMargin) && IsWithinRange(rtPinkForPalmFor, 20, bigMargin) && IsWithinRange(rtMidForPalmFor, 20, bigMargin) && IsWithinRange(ltIndForPalmFor, 20, bigMargin) && IsWithinRange(ltPinkForPalmFor, 20, bigMargin) && IsWithinRange(ltMidForPalmFor, 20, bigMargin))
-                {
-                    palmsIn = false;
-                    fistsIn = false;
-                    monitors = false;
-                    palmsOut = true;
-                    chinUps = false;
-                    pullUps = false;
-                    verticalStack = false;
-                    forwardStack = false;
-                }
-
-                // look for chin ups
-                else if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 0, bigMargin) && IsWithinRange(ltPalmUpCamFor, 0, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 170, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 70, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 170, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 70, bigMargin) ||
-                    //debug: unity standard airtap
-                    IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 0, bigMargin) && IsWithinRange(ltPalmUpCamFor, 0, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
-                {
-                    palmsIn = false;
-                    fistsIn = false;
-                    monitors = false;
-                    palmsOut = false;
-                    chinUps = true;
-                    pullUps = false;
-                    verticalStack = false;
-                    forwardStack = false;
-                }
-
-                // look for pull ups
-                else if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 180, bigMargin) && IsWithinRange(ltPalmUpCamFor, 180, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 170, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 70, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 170, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 70, bigMargin) ||
-                    //debug: unity standard airtap
-                    IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 180, bigMargin) && IsWithinRange(ltPalmUpCamFor, 180, bigMargin) && IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
-                {
-                    palmsIn = false;
-                    fistsIn = false;
-                    monitors = false;
-                    palmsOut = false;
-                    chinUps = false;
-                    pullUps = true;
-                    verticalStack = false;
-                    forwardStack = false;
-                }
-
-                // look for vertical stack
-                else if (IsWithinRange(rtIndMidForLtIndMidFor, 180, bigMargin) && IsWithinRange(rtIndMidUpLtIndMidUp, 0, bigMargin) && IsWithinRange(rtIndMidUpFloorUp, 0, bigMargin) && IsWithinRange(ltIndMidUpFloorUp, 0, bigMargin) && IsWithinRange(rtIndMidForCamRt, 180, bigMargin) && IsWithinRange(ltIndMidForCamRt, 0, bigMargin))
-                {
-                    palmsIn = false;
-                    fistsIn = false;
-                    monitors = false;
-                    palmsOut = false;
-                    chinUps = false;
-                    pullUps = false;
-                    verticalStack = true;
-                    forwardStack = false;
-                }
-
-                // look for forward stack
-                else if (IsWithinRange(rtIndMidForLtIndMidFor, 180, bigMargin) && IsWithinRange(rtIndMidUpLtIndMidUp, 0, bigMargin) && IsWithinRange(rtIndMidUpFloorFor, 0, bigMargin) && IsWithinRange(ltIndMidUpFloorFor, 0, bigMargin) && IsWithinRange(rtIndMidForCamRt, 180, bigMargin) && IsWithinRange(ltIndMidForCamRt, 0, bigMargin))
-                {
-                    palmsIn = false;
-                    fistsIn = false;
-                    monitors = false;
-                    palmsOut = false;
-                    chinUps = false;
-                    pullUps = false;
-                    verticalStack = false;
-                    forwardStack = true;
-                }
-
-                else
-                {
-                    palmsIn = false;
-                    fistsIn = false;
-                    monitors = false;
-                    palmsOut = false;
-                    chinUps = false;
-                    pullUps = false;
-                    verticalStack = false;
-                    forwardStack = false;
-                }
             }
-            else
+            else palmsOpposed = false;
+
+            // look for palmsOut, neutral fingers
+            if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 180, bigMargin) && IsWithinRange(ltPalmUpCamFor, 180, bigMargin))
             {
-                palmsIn = false;
-                fistsIn = false;
-                monitors = false;
-                palmsOut = false;
-                chinUps = false;
-                pullUps = false;
-                verticalStack = false;
-                forwardStack = false;
+                palmsOut = true;
             }
+            else palmsOut = false;
+
+            // look for palmsIn, neutral fingers
+            if (IsWithinRange(p2pUp, 0, bigMargin) && IsWithinRange(p2pRt, 0, bigMargin) && IsWithinRange(p2pFor, 0, bigMargin) && IsWithinRange(rtPalmUpCamFor, 0, bigMargin) && IsWithinRange(ltPalmUpCamFor, 0, bigMargin))
+            {
+                palmsIn = true;
+            }
+            else palmsIn = false;
+
+            // look for palmsParallel
+            if (IsWithinRange(p2pUp, 0, bigMargin))
+            {
+                palmsParallel = true;
+            }
+            else palmsParallel = false;
 
         }
         else
         {
-            twoHands = false;
-            fistsIn = false;
-            palmsIn = false;
-            monitors = false;
-            palmsOut = false;
-            chinUps = false;
-            pullUps = false;
-            verticalStack = false;
-            forwardStack = false;
+            
         }
     }
 
@@ -455,18 +331,11 @@ public class HandTracking : MonoBehaviour
             else rightFist = false;
 
             // look for right flat
-            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 0, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 0, bigMargin))
+            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin))
             {
-                rightFlatHand = true;
+                rightOpen = true;
             }
-            else rightFlatHand = false;
-
-            // look for right knife
-            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 90, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 90, bigMargin))
-            {
-                rightKnifeHand = true;
-            }
-            else rightKnifeHand = false;
+            else rightOpen = false;
 
             // look for palm out throw
             if (IsWithinRange(rtIndMidForPalmFor, 20, bigMargin) && IsWithinRange(rtMidForPalmFor, 20, bigMargin) && IsWithinRange(rtPinkForPalmFor, 20, bigMargin) && IsWithinRange(rtPalmUpFloorUp, 60, bigMargin) && IsWithinRange(rtPalmRtFloorRt, 0, bigMargin))
@@ -474,14 +343,22 @@ public class HandTracking : MonoBehaviour
                 rightThrower = true;
             }
             else rightThrower = false;
+
+            // look for right monitor
+            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) || 
+                // unity editor pose
+                IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtThumbForPalmFor, 36, smallMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
+            {
+                rightMonitor = true;
+            }
+            else rightMonitor = false;
         }
         else
         {
             rightHand = false;
             rockOnRight = false;
             rightFist = false;
-            rightFlatHand = false;
-            rightKnifeHand = false;
+            rightOpen = false;
             rightThrower = false;
         }
 
@@ -511,18 +388,11 @@ public class HandTracking : MonoBehaviour
             else leftFist = false;
 
             // look for left flat
-            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 0, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 0, bigMargin))
+            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin))
             {
-                leftFlatHand = true;
+                leftOpen = true;
             }
-            else leftFlatHand = false;
-
-            // look for left knife
-            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 90, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 90, bigMargin))
-            {
-                leftKnifeHand = true;
-            }
-            else leftKnifeHand = false;
+            else leftOpen = false;
 
             // look for palm out throw
             if (IsWithinRange(ltIndMidForPalmFor, 20, bigMargin) && IsWithinRange(ltMidForPalmFor, 20, bigMargin) && IsWithinRange(ltPinkForPalmFor, 20, bigMargin) && IsWithinRange(ltPalmUpFloorUp, 60, bigMargin) && IsWithinRange(ltPalmRtFloorRt, 0, bigMargin))
@@ -530,14 +400,22 @@ public class HandTracking : MonoBehaviour
                 leftThrower = true;
             }
             else leftThrower = false;
+
+            // look for left monitor
+            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) ||
+                // unity editor pose
+                IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+            {
+                leftMonitor = true;
+            }
+            else leftMonitor = false;
         }
         else
         {
             leftHand = false;
             rockOnLeft = false;
             leftFist = false;
-            leftFlatHand = false;
-            leftKnifeHand = false;
+            leftOpen = false;
         }
     }
 

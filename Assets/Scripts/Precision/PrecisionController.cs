@@ -127,10 +127,10 @@ public class PrecisionController : MonoBehaviour
 
         if (rightTether)
         {
-            if (handTracking.rightFlatHand) rightDimmer = true;
+            if (handTracking.rightOpen && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp <= 30) rightDimmer = true;
             else rightDimmer = false;
 
-            if (handTracking.rightKnifeHand) rightKelvin = true;
+            if (handTracking.rightOpen && handTracking.rtPalmUpFloorUp >= 75 && handTracking.rtPalmUpFloorUp <= 105) rightKelvin = true;
             else rightKelvin = false;
         }
 
@@ -145,10 +145,10 @@ public class PrecisionController : MonoBehaviour
 
         if (leftTether)
         {
-            if (handTracking.leftFlatHand) leftDimmer = true;
+            if (handTracking.leftOpen && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp <= 30) leftDimmer = true;
             else leftDimmer = false;
 
-            if (handTracking.leftKnifeHand) leftKelvin = true;
+            if (handTracking.leftOpen && handTracking.rtPalmUpFloorUp >= 75 && handTracking.rtPalmUpFloorUp <= 105) leftKelvin = true;
             else leftKelvin = false;
         }
 

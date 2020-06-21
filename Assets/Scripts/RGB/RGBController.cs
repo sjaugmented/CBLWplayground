@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class RGBController : MonoBehaviour
 {
-    [SerializeField] GameObject horStackObj;
+    [SerializeField] GameObject xFloatObj;
     [SerializeField] TextMeshPro xFloatText;
-    [SerializeField] GameObject vertStackObj;
+    [SerializeField] GameObject yFloatObj;
     [SerializeField] TextMeshPro yFloatText;
-    [SerializeField] GameObject forStackObj;
+    [SerializeField] GameObject zFloatObj;
     [SerializeField] TextMeshPro zFloatText;
 
     [SerializeField] [Range(0.2f, 0.6f)] float maxXAxisDist = 0.5f;
@@ -24,9 +24,9 @@ public class RGBController : MonoBehaviour
     [SerializeField] string zOSCMessage = "/zOSCfloat/";
 
     [Header("DMX values")]
-    [SerializeField] [Range(0, 255)] int redVal;
-    [SerializeField] [Range(0, 255)] int greenVal;
-    [SerializeField] [Range(0, 255)] int blueVal;
+    public int redVal = 0;
+    public int greenVal = 0;
+    public int blueVal = 0;
 
 
     HandTracking handTracking;
@@ -80,7 +80,8 @@ public class RGBController : MonoBehaviour
     {
         CalcHandPositions();
 
-        if (handTracking.palmsIn)
+        // red
+        if (handTracking.palmsOpposed && handTracking.staffCamUp90)
         {
             currentMode = RGB.red;
             float xOSCFloat;
@@ -89,69 +90,75 @@ public class RGBController : MonoBehaviour
             if (indexMidDist > maxXAxisDist) xOSCFloat = 0;
             if (indexMidDist < floatOffset) xOSCFloat = 1;
             redVal = Mathf.RoundToInt(xOSCFloat * 255);
-            var redText = Mathf.RoundToInt(xOSCFloat * 100);
+            var redText = Mathf.RoundToInt(redVal / 255 * 100);
 
-            SendOSCMessage(xOSCMessage, xOSCFloat);
-            dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
-            dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+            xFloatObj.SetActive(true);
+            xFloatObj.transform.position = midpointIndexes;
 
-
-            horStackObj.SetActive(true);
-            horStackObj.transform.position = midpointIndexes;
-            xFloatText.text = redText + "%".ToString();
+            if (handTracking.rightOpen && handTracking.leftOpen)
+            {
+                SendOSCMessage(xOSCMessage, xOSCFloat);
+                dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+                dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+                xFloatText.text = redText + "%".ToString();
+            }
         }
-        else horStackObj.SetActive(false);
+        else xFloatObj.SetActive(false);
         
-        if (handTracking.verticalStack)
+        // green
+        if (handTracking.palmsOpposed && handTracking.staffCamUp45)
         {
             currentMode = RGB.green;
             float yOSCFloat;
 
-            yOSCFloat = 1 - (indexMidDist - floatOffset) / (maxYAxisDist - floatOffset);
-            if (indexMidDist > maxYAxisDist) yOSCFloat = 0;
+            yOSCFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
+            if (indexMidDist > maxXAxisDist) yOSCFloat = 0;
             if (indexMidDist < floatOffset) yOSCFloat = 1;
             greenVal = Mathf.RoundToInt(yOSCFloat * 255);
-            var greenText = Mathf.RoundToInt(yOSCFloat * 100);
+            var greenText = Mathf.RoundToInt((greenVal / 255) * 100);
 
+            yFloatObj.SetActive(true);
+            yFloatObj.transform.position = midpointIndexes;
 
-            SendOSCMessage(yOSCMessage, yOSCFloat);
-            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
-            dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
-
-
-            vertStackObj.SetActive(true);
-            vertStackObj.transform.position = midpointIndexes;
-            yFloatText.text = greenText + "%".ToString();
+            if (handTracking.rightOpen && handTracking.leftOpen)
+            {
+                SendOSCMessage(yOSCMessage, yOSCFloat);
+                dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+                dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
+                yFloatText.text = greenText + "%".ToString();
+            }
         }
         else
         {
-            vertStackObj.SetActive(false);
+            yFloatObj.SetActive(false);
         }
 
-        if (handTracking.forwardStack)
+        // blue
+        if (handTracking.palmsOpposed && handTracking.staffCamUp135)
         {
             currentMode = RGB.blue;
             float zOSCFloat;
 
-            zOSCFloat = 1 - (indexMidDist - floatOffset) / (maxZAxisDist - floatOffset);
-            if (indexMidDist > maxZAxisDist) zOSCFloat = 0;
+            zOSCFloat = 1 - (indexMidDist - floatOffset) / (maxXAxisDist - floatOffset);
+            if (indexMidDist > maxXAxisDist) zOSCFloat = 0;
             if (indexMidDist < floatOffset) zOSCFloat = 1;
             blueVal = Mathf.RoundToInt(zOSCFloat * 255);
-            var blueText = Mathf.RoundToInt(zOSCFloat * 100);
+            var blueText = Mathf.RoundToInt((blueVal / 255) * 100);
 
+            zFloatObj.SetActive(true);
+            zFloatObj.transform.position = midpointIndexes;
 
-            SendOSCMessage(zOSCMessage, zOSCFloat);
-            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
-            dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
-
-
-            forStackObj.SetActive(true);
-            forStackObj.transform.position = midpointIndexes;
-            zFloatText.text = blueText + "%".ToString();
+            if (handTracking.rightOpen && handTracking.leftOpen)
+            {
+                SendOSCMessage(zOSCMessage, zOSCFloat);
+                dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
+                dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
+                zFloatText.text = blueText + "%".ToString();
+            }
         }
         else
         {
-            forStackObj.SetActive(false);
+            zFloatObj.SetActive(false);
         }
     }
 
