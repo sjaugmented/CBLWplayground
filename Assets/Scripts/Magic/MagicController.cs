@@ -239,7 +239,7 @@ public class MagicController : MonoBehaviour
         if (handTracking.twoHands)
         {   
             // two handed casting
-            if (handTracking.palmsOut && handTracking.staffCamUp90)
+            if (handTracking.palmsOut && handTracking.staffCamUp90 && handTracking.rightOpen && handTracking.leftOpen)
             {
                 TurnOffMasterOrbs();
                 CastOrb();
@@ -355,6 +355,8 @@ public class MagicController : MonoBehaviour
         leftStreamPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltPinkyTip.Position, 0.5f);
     }
 
+    bool menuTimerActive = false;
+
     private void ElementSelector()
     {
         fromOrbScaler = false;
@@ -365,10 +367,16 @@ public class MagicController : MonoBehaviour
             //lightMasterOrb.SetActive(false);
             elementMenu.SetActive(true);
             ResetElementSelection();
-            StartCoroutine("OnElementSelection", 20);
+            if (!menuTimerActive)
+            {
+                StartCoroutine("MenuTimeOut", 20);
+                menuTimerActive = true;
+            }
 
             Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-            elementMenu.transform.position = midpointPalms + elMenuOffset;
+            var camZOffset = Camera.main.transform.forward * zOffset;
+            var camYOffset = Camera.main.transform.up * yOffset;
+            elementMenu.transform.position = midpointPalms + camYOffset + camZOffset;
             elementMenu.transform.localRotation = Camera.main.transform.rotation;
 
             elMenuActive = true;
@@ -750,6 +758,7 @@ public class MagicController : MonoBehaviour
         }
 
         elMenuActive = false;
+        menuTimerActive = false;
 
         Color color = transparency.color;
         color.a = 0;
@@ -782,7 +791,7 @@ public class MagicController : MonoBehaviour
         currEl = Element.light;
         variantID = 0;
         StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("ElementSelection");
+        StartCoroutine("OnElementSelection");
     }
 
     public void SetFire()
@@ -790,7 +799,7 @@ public class MagicController : MonoBehaviour
         currEl = Element.fire;
         variantID = 0;
         StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("ElementSelection");
+        StartCoroutine("OnElementSelection");
     }
 
     public void SetWater()
@@ -798,7 +807,7 @@ public class MagicController : MonoBehaviour
         currEl = Element.water;
         variantID = 0;
         StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("ElementSelection");
+        StartCoroutine("OnElementSelection");
     }
 
     public void SetIce()
@@ -806,7 +815,7 @@ public class MagicController : MonoBehaviour
         currEl = Element.ice;
         variantID = 0;
         StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("ElementSelection");
+        StartCoroutine("OnElementSelection");
     }
 
     public void HoverOrbYes()
