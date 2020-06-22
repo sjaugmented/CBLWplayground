@@ -33,19 +33,21 @@ public class HandTracking : MonoBehaviour
 
     // right fingers
     public bool rightHand = false;
-    public bool rockOnRight = false;
+    public bool rightRockOn = false;
     public bool rightFist = false;
     public bool rightOpen = false;
     public bool rightThrower = false;
-    public bool rightMonitor = false;
+    public bool rightPoint = false;
+    public bool rightThumbsUp = false;
 
     // left fingers
     public bool leftHand = false;
-    public bool rockOnLeft = false;
+    public bool leftRockOn = false;
     public bool leftFist = false;
     public bool leftOpen = false;
     public bool leftThrower = false;
-    public bool leftMonitor = false;
+    public bool leftPoint = false;
+    public bool leftThumbsUp = false;
     #endregion
 
     public float rtPalmUpFloorUp;
@@ -84,35 +86,47 @@ public class HandTracking : MonoBehaviour
         staffForFloorUp = Vector3.Angle(wizardStaff, floor.up);
         staffForCamRight = Vector3.Angle(wizardStaff, cam.right);
 
-        if (staffForCamUp >= 0 && staffForCamUp < 30)
+        if (twoHands)
         {
-            staffCamUp00 = true;
-        }
-        else staffCamUp00 = false;
+            if (staffForCamUp >= 0 && staffForCamUp < 30)
+            {
+                staffCamUp00 = true;
+            }
+            else staffCamUp00 = false;
 
-        if (staffForCamUp >= 30 && staffForCamUp < 75)
-        {
-            staffCamUp45 = true;
-        }
-        else staffCamUp45 = false;
+            if (staffForCamUp >= 30 && staffForCamUp < 75)
+            {
+                staffCamUp45 = true;
+            }
+            else staffCamUp45 = false;
 
-        if (staffForCamUp >= 75 && staffForCamUp < 105)
-        {
-            staffCamUp90 = true;
-        }
-        else staffCamUp90 = false;
+            if (staffForCamUp >= 75 && staffForCamUp < 105)
+            {
+                staffCamUp90 = true;
+            }
+            else staffCamUp90 = false;
 
-        if (staffForCamUp >= 105 && staffForCamUp < 135)
-        {
-            staffCamUp135 = true;
-        }
-        else staffCamUp135 = false;
+            if (staffForCamUp >= 105 && staffForCamUp < 135)
+            {
+                staffCamUp135 = true;
+            }
+            else staffCamUp135 = false;
 
-        if (staffForCamUp >= 135 && staffForCamUp <= 180)
-        {
-            staffCamUp180 = true;
+            if (staffForCamUp >= 135 && staffForCamUp <= 180)
+            {
+                staffCamUp180 = true;
+            }
+            else staffCamUp180 = false;
         }
-        else staffCamUp180 = false;
+        else
+        {
+            staffCamUp00 = false;
+            staffCamUp45 = false;
+            staffCamUp90 = false;
+            staffCamUp135 = false;
+            staffCamUp180 = false;
+        }
+        
     }
 
     private void ProcessPalmToPalm()
@@ -223,11 +237,14 @@ public class HandTracking : MonoBehaviour
                 palmsParallel = true;
             }
             else palmsParallel = false;
-
         }
         else
         {
-            
+            twoHands = false;
+            palmsOpposed = false;
+            palmsOut = false;
+            palmsIn = false;
+            palmsParallel = false;
         }
     }
 
@@ -304,7 +321,11 @@ public class HandTracking : MonoBehaviour
         Vector3 rtThumbVector = rtThumbTip.Position - rtThumbDistal.Position;
         Vector3 ltThumbVector = ltThumbTip.Position - ltThumbDistal.Position;
         float rtThumbVecPalmFor = Vector3.Angle(rtThumbVector, rightPalm.Forward);
+        float rtThumbVecPalmRight = Vector3.Angle(rtThumbVector, rightPalm.Right);
         float ltThumbVecPalmFor = Vector3.Angle(ltThumbVector, leftPalm.Forward);
+        float ltThumbVecPalmRight = Vector3.Angle(ltThumbVector, leftPalm.Right);
+
+        Debug.Log(rtThumbVecPalmRight);
 
         // compare fingers on both hands
         float rtIndMidForLtIndMidFor = Vector3.Angle(rtIndexMid.Forward, ltIndexMid.Forward);
@@ -319,22 +340,32 @@ public class HandTracking : MonoBehaviour
             // look for rockOn
             if (IsWithinRange(rtIndForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && !IsWithinRange(rtMidForPalmFor, 0, bigMargin))
             {
-                rockOnRight = true;
+                rightRockOn = true;
             }
             else
             {
-                rockOnRight = false;
+                rightRockOn = false;
             }
 
             // look for right fist
-            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) ||
+            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) && !IsWithinRange(rtThumbVecPalmRight, 160, bigMargin) ||
             //unity standard tap for debug
-            IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
+            IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && !IsWithinRange(rtThumbVecPalmRight, 160, bigMargin))
             {
 
                 rightFist = true;
             }
             else rightFist = false;
+
+            // look for right thumbs up
+            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) && IsWithinRange(rtThumbVecPalmFor, 70, smallMargin) && IsWithinRange(rtThumbVecPalmRight, 160, smallMargin)
+                // unity standard thumbs up
+                //IsWithinRange(rtThumbVecPalmFor, 61, 10)
+                )
+            {
+                rightThumbsUp = true;
+            }
+            else rightThumbsUp = false;
 
             // look for right flat
             if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin))
@@ -351,21 +382,25 @@ public class HandTracking : MonoBehaviour
             else rightThrower = false;
 
             // look for right monitor
-            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) || 
+            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) ||
                 // unity editor pose
                 IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtThumbForPalmFor, 36, smallMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
             {
-                rightMonitor = true;
+                rightPoint = true;
             }
-            else rightMonitor = false;
+            else rightPoint = false;
+
+            
         }
         else
         {
             rightHand = false;
-            rockOnRight = false;
+            rightRockOn = false;
             rightFist = false;
             rightOpen = false;
             rightThrower = false;
+            rightPoint = false;
+            rightThumbsUp = false;
         }
 
         // left hand
@@ -376,22 +411,31 @@ public class HandTracking : MonoBehaviour
             // look for rockOn
             if (IsWithinRange(ltIndForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && !IsWithinRange(ltMidForPalmFor, 0, bigMargin))
             {
-                rockOnLeft = true;
+                leftRockOn = true;
             }
             else
             {
-                rockOnLeft = false;
+                leftRockOn = false;
             }
 
             // look for left fist
-            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) ||
+            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 160, bigMargin) ||
                 // debug unity standard tap
-                IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+                IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 160, bigMargin))
             {
 
                 leftFist = true;
             }
             else leftFist = false;
+
+            // look for left thumbs up
+            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && IsWithinRange(ltThumbVecPalmFor, 70, smallMargin) && IsWithinRange(ltThumbVecPalmRight, 160, smallMargin) /*||
+                // unity standard thumbs up
+                IsWithinRange(ltThumbVecPalmFor, 61, 10)*/)
+            {
+                leftThumbsUp = true;
+            }
+            else leftThumbsUp = false;
 
             // look for left flat
             if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin))
@@ -412,16 +456,22 @@ public class HandTracking : MonoBehaviour
                 // unity editor pose
                 IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
             {
-                leftMonitor = true;
+                leftPoint = true;
             }
-            else leftMonitor = false;
+            else leftPoint = false;
+
+            
+
         }
         else
         {
             leftHand = false;
-            rockOnLeft = false;
+            leftRockOn = false;
             leftFist = false;
             leftOpen = false;
+            leftThrower = false;
+            leftPoint = false;
+            leftThumbsUp = false;
         }
     }
 

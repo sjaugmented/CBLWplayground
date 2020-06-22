@@ -249,10 +249,10 @@ public class MagicController : MonoBehaviour
         CalcHandPositions();
         ProcessHandClouds();
 
-        if (handTracking.rockOnRight) EnableRightStreams();
+        if (handTracking.rightRockOn) EnableRightStreams();
         else DisableRightStreams();
 
-        if (handTracking.rockOnLeft) EnableLeftStreams();
+        if (handTracking.leftRockOn) EnableLeftStreams();
         else DisableLeftStreams();
 
         if (handTracking.twoHands)
