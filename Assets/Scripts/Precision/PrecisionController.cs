@@ -118,38 +118,40 @@ public class PrecisionController : MonoBehaviour
     void Update()
     {
         // right hand control
-        if (handTracking.rightFist && !hasMadeRightFist)
+        if (handTracking.rightThumbsUp/* && !hasMadeRightFist*/)
         {
             ToggleRightTether();
-            hasMadeRightFist = true;
+            //hasMadeRightFist = true;
         }
+        else rightTether = false;
 
-        if (!handTracking.rightFist) hasMadeRightFist = false;
+        //if (!handTracking.rightFist) hasMadeRightFist = false;
 
         if (rightTether)
         {
-            if (handTracking.rightOpen && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp <= 30) rightDimmer = true;
+            if (/*handTracking.rightThumbsUp &&*/ handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp <= 30) rightDimmer = true;
             else rightDimmer = false;
 
-            if (handTracking.rightOpen && handTracking.rtPalmUpFloorUp >= 75 && handTracking.rtPalmUpFloorUp <= 105) rightKelvin = true;
+            if (/*handTracking.rightThumbsUp &&*/ handTracking.rtPalmUpFloorUp >= 75 && handTracking.rtPalmUpFloorUp <= 105) rightKelvin = true;
             else rightKelvin = false;
         }
 
         // left hand control
-        if (handTracking.leftFist && !hasMadeLeftFist)
+        if (handTracking.leftThumbsUp /*&& !hasMadeLeftFist*/)
         {
             ToggleLeftTether();
-            hasMadeLeftFist = true;
+            //hasMadeLeftFist = true;
         }
+        else leftTether = false;
 
-        if (!handTracking.leftFist) hasMadeLeftFist = false;
+        //if (!handTracking.leftFist) hasMadeLeftFist = false;
 
         if (leftTether)
         {
-            if (handTracking.leftOpen && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp <= 30) leftDimmer = true;
+            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp <= 30) leftDimmer = true;
             else leftDimmer = false;
 
-            if (handTracking.leftOpen && handTracking.ltPalmUpFloorUp >= 75 && handTracking.ltPalmUpFloorUp <= 105) leftKelvin = true;
+            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 75 && handTracking.ltPalmUpFloorUp <= 105) leftKelvin = true;
             else leftKelvin = false;
         }
 
@@ -179,7 +181,7 @@ public class PrecisionController : MonoBehaviour
 
     private void ToggleRightTether()
     {
-        if (!rightTether)
+        /*if (!rightTether)
         {
             if (gazeLight == Lights.SkyPanel1) rightControl = Lights.SkyPanel1;
             else if (gazeLight == Lights.SkyPanel2) rightControl = Lights.SkyPanel2;
@@ -205,12 +207,31 @@ public class PrecisionController : MonoBehaviour
         {
             if (gazeLight == Lights.reset) rightControl = Lights.none;
             rightTether = false;
+        }*/
+
+        if (gazeLight == Lights.SkyPanel1) rightControl = Lights.SkyPanel1;
+        else if (gazeLight == Lights.SkyPanel2) rightControl = Lights.SkyPanel2;
+        else if (rightControl == Lights.none)
+        {
+            if (gazeLight == Lights.SkyPanel1)
+            {
+                rightControl = Lights.SkyPanel1;
+            }
+
+            else if (gazeLight == Lights.SkyPanel2)
+            {
+                rightControl = Lights.SkyPanel2;
+            }
+
+            else return;
         }
+
+        rightTether = true;
     }
 
     private void ToggleLeftTether()
     {
-        if (!leftTether)
+        /*if (!leftTether)
         {
             if (gazeLight == Lights.SkyPanel1) leftControl = Lights.SkyPanel1;
             else if (gazeLight == Lights.SkyPanel2) leftControl = Lights.SkyPanel2;
@@ -236,7 +257,26 @@ public class PrecisionController : MonoBehaviour
         {
             if (gazeLight == Lights.reset) leftControl = Lights.none;
             leftTether = false;
+        }*/
+
+        if (gazeLight == Lights.SkyPanel1) leftControl = Lights.SkyPanel1;
+        else if (gazeLight == Lights.SkyPanel2) leftControl = Lights.SkyPanel2;
+        else if (leftControl == Lights.none)
+        {
+            if (gazeLight == Lights.SkyPanel1)
+            {
+                leftControl = Lights.SkyPanel1;
+            }
+
+            else if (gazeLight == Lights.SkyPanel2)
+            {
+                leftControl = Lights.SkyPanel2;
+            }
+
+            else return;
         }
+
+        leftTether = true;
     }
 
 
