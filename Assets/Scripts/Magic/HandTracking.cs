@@ -205,7 +205,7 @@ public class HandTracking : MonoBehaviour
         #endregion
 
         // look for two palms
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Right, out rtMiddleKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Left, out ltMiddleKnuckle))
         {
             twoHands = true;
 
@@ -325,8 +325,6 @@ public class HandTracking : MonoBehaviour
         float ltThumbVecPalmFor = Vector3.Angle(ltThumbVector, leftPalm.Forward);
         float ltThumbVecPalmRight = Vector3.Angle(ltThumbVector, leftPalm.Right);
 
-        Debug.Log(rtThumbVecPalmRight);
-
         // compare fingers on both hands
         float rtIndMidForLtIndMidFor = Vector3.Angle(rtIndexMid.Forward, ltIndexMid.Forward);
         float rtIndMidUpLtIndMidUp = Vector3.Angle(rtIndexMid.Up, ltIndexMid.Up);
@@ -419,9 +417,9 @@ public class HandTracking : MonoBehaviour
             }
 
             // look for left fist
-            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 160, bigMargin) ||
+            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 20, bigMargin) ||
                 // debug unity standard tap
-                IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 160, bigMargin))
+                IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 20, bigMargin))
             {
 
                 leftFist = true;
@@ -429,7 +427,7 @@ public class HandTracking : MonoBehaviour
             else leftFist = false;
 
             // look for left thumbs up
-            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && IsWithinRange(ltThumbVecPalmFor, 70, smallMargin) && IsWithinRange(ltThumbVecPalmRight, 160, smallMargin) /*||
+            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && IsWithinRange(ltThumbVecPalmFor, 70, smallMargin) && IsWithinRange(ltThumbVecPalmRight, 20, smallMargin) /*||
                 // unity standard thumbs up
                 IsWithinRange(ltThumbVecPalmFor, 61, 10)*/)
             {

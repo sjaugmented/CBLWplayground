@@ -72,7 +72,7 @@ public class RGBController : MonoBehaviour
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
         osc = FindObjectOfType<OSC>();
-        DisableRings();
+        //DisableRings();
     }
 
     // Start is called before the first frame update
@@ -93,7 +93,7 @@ public class RGBController : MonoBehaviour
 
     void OnDisable()
     {
-        DisableRings();
+        //DisableRings();
     }
 
     private void DisableRings()

@@ -9,6 +9,14 @@ using UnityEngine.UIElements;
 public class MagicController : MonoBehaviour
 {
     #region Inspector Fields
+    [Header("Master Orbs Appearance")]
+    [SerializeField] Material clearTrans;
+    [SerializeField] Material cyanTrans;
+    [SerializeField] Material magentaTrans;
+    [SerializeField] Material yellowTrans;
+    [SerializeField] Material greenTrans;
+
+
     [Header("Hand Clouds")]
     [SerializeField] GameObject rightCloudParent;
     [SerializeField] GameObject leftCloudParent;
@@ -41,8 +49,11 @@ public class MagicController : MonoBehaviour
     [Header("OSC controller")]
     public List<String> elementOSC;
     public List<String> variantOSC;
-    [SerializeField] string yOSCMessage = "/yOSCfloat/";
-    [SerializeField] string zOSCMessage = "/zOSCfloat/";
+    [SerializeField] string oscMessage0 = "/0degreeOSC/";
+    [SerializeField] string oscMessage45 = "/45degreeOSC/";
+    [SerializeField] string oscMessage90 = "/90degreeOSC/";
+    [SerializeField] string oscMessage135 = "/135degreeOSC/";
+    [SerializeField] string oscMessage180 = "/180degreeOSC/";
 
     [Header("DMX values")]
     public List<int> lightChannels;
@@ -64,6 +75,9 @@ public class MagicController : MonoBehaviour
     public int elementID = 0;
     public int variantID = 0;
     public int channelID = 0;
+
+    public enum Scaler { deg00, deg45, deg90, deg135, deg180 }
+    public Scaler currScaler = Scaler.deg90;
 
     // parameters for conjure floats
     float maxXAxisDist = 0.5f;
@@ -100,6 +114,7 @@ public class MagicController : MonoBehaviour
     DMXChannels dmxChan;
     SoundManager sound;
     AudioSource audio;
+    Renderer orbRender;
 
     int dimmerChan = 0;
     int kelvinChan = 1;
@@ -147,7 +162,7 @@ public class MagicController : MonoBehaviour
         elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
-        DisableClouds();
+        //DisableClouds();
     }
 
     // Start is called before the first frame update
@@ -225,7 +240,7 @@ public class MagicController : MonoBehaviour
 
     void OnDisable()
     {
-        DisableClouds();
+        //DisableClouds();
     }
 
     private void DisableClouds()
@@ -257,6 +272,7 @@ public class MagicController : MonoBehaviour
 
         if (handTracking.twoHands)
         {   
+            ///////// PALMS OUT
             // two handed casting
             if (handTracking.palmsOut && handTracking.staffCamUp90 && handTracking.rightOpen && handTracking.leftOpen)
             {
@@ -274,34 +290,85 @@ public class MagicController : MonoBehaviour
             }
 
             // element menu
-            if (handTracking.palmsOut && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90)
+            else if (handTracking.palmsOut && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90)
             {
                 ElementSelector();
             }
 
-            // variant menu
-            else if (handTracking.palmsOpposed && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90 || manualElMenu)
+            ///////// PALMS OPPOSED
+            // floats
+            // 0
+            else if (handTracking.palmsOpposed && handTracking.staffCamUp00)
             {
-                VariantSelector();
-                //if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
+                currScaler = Scaler.deg00;
+
+                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                {
+                    VariantScaler();
+                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                    orbRender.material = yellowTrans;
+                }
             }
 
-            // element scaler
-            else if (handTracking.palmsOpposed && handTracking.rightOpen && handTracking.leftOpen && handTracking.staffCamUp90)
+            // 45
+            else if (handTracking.palmsOpposed && handTracking.staffCamUp45)
             {
-                LiveScaler();
-                //if (!sound.orbAmbienceFX.isPlaying) sound.orbAmbienceFX.Play();
+                currScaler = Scaler.deg45;
 
-                /*conjureValueOSC = 1 - (palmDist - palmDistOffset) / (maxPalmDistance - palmDistOffset);
-                if (conjureValueOSC < 0) conjureValueOSC = 0;
-                if (conjureValueOSC > 1) conjureValueOSC = 1;*/
-                conjureValueOSC = elementScale;
-                //Debug.Log(conjureValueOSC); // remove
-
-                SendOSCMessage(elementOSC[elementID]+variantOSC[variantID], conjureValueOSC);
-                if (variantID == 2 || variantID == 3) LiveDMX();
-
+                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                {
+                    VariantScaler();
+                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                    orbRender.material = cyanTrans;
+                }
             }
+
+            // 90
+            else if (handTracking.palmsOpposed && handTracking.staffCamUp90)
+            {
+                currScaler = Scaler.deg90;
+
+                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                {
+                    VariantScaler();
+                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                    orbRender.material = clearTrans;
+                }
+
+                if (handTracking.rightThumbsUp && handTracking.leftThumbsUp)
+                {
+                    VariantSelector();
+                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                    orbRender.material = clearTrans;
+                }
+            }
+
+            // 135
+            else if (handTracking.palmsOpposed && handTracking.staffCamUp135)
+            {
+                currScaler = Scaler.deg135;
+                
+                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                {
+                    VariantScaler();
+                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                    orbRender.material = magentaTrans;
+                }
+            }
+
+            // 180
+            else if (handTracking.palmsOpposed && handTracking.staffCamUp180)
+            {
+                currScaler = Scaler.deg180;
+                
+                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                {
+                    VariantScaler();
+                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                    orbRender.material = greenTrans;
+                }
+            }
+
             else
             {
                 TurnOffMasterOrbs();
@@ -403,8 +470,8 @@ public class MagicController : MonoBehaviour
         indexMidDist = Vector3.Distance(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position);
         midpointIndexes = Vector3.Lerp(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position, 0.5f);
 
-        var midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-        masterOrbPos = midpointPalms + palmMidpointOffset;
+        var midpointHands = Vector3.Lerp(handTracking.rtMiddleKnuckle.Position, handTracking.ltMiddleKnuckle.Position, 0.5f);
+        masterOrbPos = midpointHands;
         rightStreamPos = Vector3.Lerp(handTracking.rtIndexTip.Position, handTracking.rtPinkyTip.Position, 0.5f);
         leftStreamPos = Vector3.Lerp(handTracking.ltIndexTip.Position, handTracking.ltPinkyTip.Position, 0.5f);
     }
@@ -495,7 +562,7 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    private void LiveScaler()
+    private void VariantScaler()
     {
         fromOrbScaler = true;
 
@@ -505,13 +572,6 @@ public class MagicController : MonoBehaviour
         if (palmDist >= palmDistOffset && palmDist <= maxXAxisDist) elementScale = 1 - (palmDist - palmDistOffset) / (maxXAxisDist - palmDistOffset);
         else if (palmDist > maxXAxisDist) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
-
-        /*if (!hoverSelectFromMenu)
-        {
-            if (elementScale < 0.2) hoverOrb = true;
-            else hoverOrb = false;
-        }
-        else return;*/
 
         // activate current element and variant
         for (int i = 0; i < masterOrbs.Count; i++)
@@ -541,6 +601,39 @@ public class MagicController : MonoBehaviour
                     variants[n].localScale = new Vector3(elementScale, elementScale, elementScale);
                 }
                 else variants[n].gameObject.SetActive(false);
+            }
+        }
+
+        if (handTracking.rightOpen && handTracking.leftOpen)
+        {
+            if (currScaler == Scaler.deg00)
+            {
+                SendOSCMessage(oscMessage0, conjureValueOSC);
+                LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg45)
+            {
+                SendOSCMessage(oscMessage45, conjureValueOSC);
+                if (variantID == 2 || variantID == 3) LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg90)
+            {
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID], conjureValueOSC);
+                if (variantID == 2 || variantID == 3) LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg135)
+            {
+                SendOSCMessage(oscMessage135, conjureValueOSC);
+                if (variantID == 2 || variantID == 3) LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg180)
+            {
+                SendOSCMessage(oscMessage180, conjureValueOSC);
+                LiveDMX();
             }
         }
     }
