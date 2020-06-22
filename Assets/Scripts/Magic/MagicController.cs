@@ -369,7 +369,7 @@ public class MagicController : MonoBehaviour
             ResetElementSelection();
             if (!menuTimerActive)
             {
-                StartCoroutine("MenuTimeOut", 20);
+                StartCoroutine("MenuTimeOut", 5);
                 menuTimerActive = true;
             }
 
