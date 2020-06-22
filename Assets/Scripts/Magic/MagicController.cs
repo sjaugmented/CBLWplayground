@@ -9,6 +9,12 @@ using UnityEngine.UIElements;
 public class MagicController : MonoBehaviour
 {
     #region Inspector Fields
+    [Header("Hand Clouds")]
+    [SerializeField] GameObject rightCloudParent;
+    [SerializeField] GameObject leftCloudParent;
+    public List<GameObject> rightClouds;
+    public List<GameObject> leftClouds;
+
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
     [SerializeField] Material transparency;
@@ -141,6 +147,7 @@ public class MagicController : MonoBehaviour
         elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
+        DisableClouds();
     }
 
     // Start is called before the first frame update
@@ -216,6 +223,17 @@ public class MagicController : MonoBehaviour
         transparency.color = color;
     }
 
+    void OnDisable()
+    {
+        DisableClouds();
+    }
+
+    private void DisableClouds()
+    {
+        rightCloudParent.SetActive(false);
+        leftCloudParent.SetActive(false);
+    }
+
     private void SetSkyPanelXOvers()
     {
         dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
@@ -229,6 +247,7 @@ public class MagicController : MonoBehaviour
     {
         ConvertElementToID();
         CalcHandPositions();
+        ProcessHandClouds();
 
         if (handTracking.rockOnRight) EnableRightStreams();
         else DisableRightStreams();
@@ -296,6 +315,41 @@ public class MagicController : MonoBehaviour
             //lightMasterOrb.SetActive(false);
             //sound.orbAmbienceFX.Pause();
         }
+    }
+
+    private void ProcessHandClouds()
+    {
+        // right cloud
+        if (handTracking.rightHand)
+        {
+            rightCloudParent.SetActive(true);
+            for (int i = 0; i < rightClouds.Count; i++)
+            {
+                if (i == elementID)
+                {
+                    rightClouds[i].SetActive(true);
+                }
+                else rightClouds[i].SetActive(false);
+            }
+        }
+        else rightCloudParent.SetActive(false);
+
+
+        // left cloud
+        if (handTracking.leftHand)
+        {
+            leftCloudParent.SetActive(true);
+
+            for (int i = 0; i < leftClouds.Count; i++)
+            {
+                if (i == elementID)
+                {
+                    leftClouds[i].SetActive(true);
+                }
+                else leftClouds[i].SetActive(false);
+            }
+        }
+        else leftCloudParent.SetActive(false);
     }
 
     private void TurnOffMasterOrbs()

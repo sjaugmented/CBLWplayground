@@ -4,22 +4,6 @@ using UnityEngine;
 
 public class Director : MonoBehaviour
 {
-    [Header("Hand Rings")]
-    [SerializeField] GameObject rightRingParent;
-    [SerializeField] GameObject leftRingParent;
-    [SerializeField] Renderer rightRing;
-    [SerializeField] Renderer leftRing;
-    [SerializeField] Material redMat;
-    [SerializeField] Material greenMat;
-    [SerializeField] Material blueMat;
-
-    [Header("Hand Clouds")]
-    [SerializeField] GameObject rightCloudParent;
-    [SerializeField] GameObject leftCloudParent;
-    public List<GameObject> rightClouds;
-    public List<GameObject> leftClouds;
-
-
     [Header("Menus")]
     [SerializeField] GameObject topLevelMenu;
     [SerializeField] float zOffset;
@@ -95,7 +79,6 @@ public class Director : MonoBehaviour
     {
         ConvertIndex();
         SetSelectorMaterial();
-        HandHUDControl();
 
         if (topLevelMenu.activeInHierarchy)
         {
@@ -132,88 +115,6 @@ public class Director : MonoBehaviour
         }
         else chinUpsActive = false;
         
-    }
-
-    private void HandHUDControl()
-    {
-        // right ring
-        if (handTracking.rightHand && currentMode == Mode.Magic)
-        {
-            rightRingParent.SetActive(false);
-            rightCloudParent.SetActive(true);
-            for (int i = 0; i < rightClouds.Count; i++)
-            {
-                if (i == magicController.elementID)
-                {
-                    rightClouds[i].SetActive(true);
-                }
-                else rightClouds[i].SetActive(false);
-            }
-        }
-        else if (handTracking.rightHand && currentMode == Mode.RGB)
-        {
-            rightCloudParent.SetActive(false);
-            rightRingParent.SetActive(true);
-            if (handTracking.rightHand && rgbController.currentMode == RGBController.RGB.red)
-            {
-                rightRing.material = redMat;
-            }
-            if (handTracking.rightHand && rgbController.currentMode == RGBController.RGB.green)
-            {
-                rightRing.material = greenMat;
-            }
-            if (handTracking.rightHand && rgbController.currentMode == RGBController.RGB.blue)
-            {
-                rightRing.material = blueMat;
-            }
-
-        }
-        else
-        {
-            rightRingParent.SetActive(false);
-            rightCloudParent.SetActive(false);
-
-        }
-
-        // left ring
-        if (handTracking.leftHand && currentMode == Mode.Magic)
-        {
-            leftRingParent.SetActive(false);
-            leftCloudParent.SetActive(true);
-
-            for (int i = 0; i < leftClouds.Count; i++)
-            {
-                if (i == magicController.elementID)
-                {
-                    leftClouds[i].SetActive(true);
-                }
-                else leftClouds[i].SetActive(false);
-            }
-        }
-        else if (handTracking.leftHand && currentMode == Mode.RGB)
-        {
-            leftCloudParent.SetActive(false);
-            leftRingParent.SetActive(true);
-            if (handTracking.leftHand && rgbController.currentMode == RGBController.RGB.red)
-            {
-                leftRing.material = redMat;
-            }
-            if (handTracking.leftHand && rgbController.currentMode == RGBController.RGB.green)
-            {
-                leftRing.material = greenMat;
-            }
-            if (handTracking.leftHand && rgbController.currentMode == RGBController.RGB.blue)
-            {
-                leftRing.material = blueMat;
-            }
-
-        }
-        else
-        {
-            leftRingParent.SetActive(false);
-            leftCloudParent.SetActive(false);
-
-        }
     }
 
     IEnumerator MenuTimeOut(float delay)
