@@ -121,10 +121,10 @@ public class PrecisionController : MonoBehaviour
 
         if (rightTether)
         {
-            if (/*handTracking.rightThumbsUp &&*/ handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp <= 30) rightDimmer = true;
+            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50) rightDimmer = true;
             else rightDimmer = false;
 
-            if (/*handTracking.rightThumbsUp &&*/ handTracking.rtPalmUpFloorUp >= 75 && handTracking.rtPalmUpFloorUp <= 105) rightKelvin = true;
+            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >=50  && handTracking.rtPalmUpFloorUp <= 135) rightKelvin = true;
             else rightKelvin = false;
         }
 
@@ -140,10 +140,10 @@ public class PrecisionController : MonoBehaviour
 
         if (leftTether)
         {
-            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp <= 30) leftDimmer = true;
+            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50) leftDimmer = true;
             else leftDimmer = false;
 
-            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 75 && handTracking.ltPalmUpFloorUp <= 105) leftKelvin = true;
+            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 50 && handTracking.ltPalmUpFloorUp <= 135) leftKelvin = true;
             else leftKelvin = false;
         }
         #endregion
