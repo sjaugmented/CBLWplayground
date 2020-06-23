@@ -7,6 +7,7 @@ public class HideHitBox : MonoBehaviour
 {
     [SerializeField] Material gazedMaterial;
     Material defaultMaterial;
+    float defaultAlpha;
     
     Renderer thisRenderer;
     bool visible = true;
@@ -17,6 +18,7 @@ public class HideHitBox : MonoBehaviour
     {
         thisRenderer = GetComponent<Renderer>();
         defaultMaterial = thisRenderer.material;
+        defaultAlpha = thisRenderer.material.color.a;
     }
 
     public void HideBox()
@@ -38,12 +40,12 @@ public class HideHitBox : MonoBehaviour
     {
         //this.transform.Rotate(0, 2, 0);
         thisRenderer.material = gazedMaterial;
+        
     }
 
     public void LookedAway()
     {
         //this.transform.Rotate(0, 0, 0);
         thisRenderer.material = defaultMaterial;
-        
     }
 }
