@@ -45,6 +45,7 @@ public class RGBController : MonoBehaviour
 
 
     HandTracking handTracking;
+    PrecisionController precision;
     DMXcontroller dmx;
     DMXChannels dmxChan;
     OSC osc;
@@ -69,6 +70,7 @@ public class RGBController : MonoBehaviour
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
+        precision = FindObjectOfType<PrecisionController>();
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
         osc = FindObjectOfType<OSC>();
@@ -85,15 +87,19 @@ public class RGBController : MonoBehaviour
 
     void OnEnable()
     {
-        dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+        /*dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
         dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
         dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
-        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
+        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);*/
     }
 
     void OnDisable()
     {
         //DisableRings();
+        /*dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
+        dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
+        dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
+        dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);*/
     }
 
     private void DisableRings()
@@ -123,6 +129,7 @@ public class RGBController : MonoBehaviour
 
             xFloatObj.SetActive(true);
             xFloatObj.transform.position = midpointIndexes;
+            xFloatObj.transform.rotation = Camera.main.transform.rotation;
             xFloatText.text = redText + "%".ToString();
 
             if (handTracking.rightOpen && handTracking.leftOpen)
@@ -131,8 +138,19 @@ public class RGBController : MonoBehaviour
                 redLiveBox.SetActive(true);
                 redVal = Mathf.RoundToInt(xFloat * 255);
                 SendOSCMessage(xOSCMessage, xFloat);
-                dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
-                dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+
+                if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+                }
+                if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+                }
+                if (precision.rgbControl == PrecisionController.Lights.none)
+                {
+                    return;
+                }
             }
             else
             {
@@ -155,6 +173,7 @@ public class RGBController : MonoBehaviour
 
             yFloatObj.SetActive(true);
             yFloatObj.transform.position = midpointIndexes;
+            yFloatObj.transform.rotation = Camera.main.transform.rotation;
             yFloatText.text = greenText + "%".ToString();
 
             if (handTracking.rightOpen && handTracking.leftOpen)
@@ -163,8 +182,18 @@ public class RGBController : MonoBehaviour
                 greenLiveBox.SetActive(true);
                 greenVal = Mathf.RoundToInt(yFloat * 255);
                 SendOSCMessage(yOSCMessage, yFloat);
-                dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
-                dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
+                if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+                }
+                if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
+                }
+                if (precision.rgbControl == PrecisionController.Lights.none)
+                {
+                    return;
+                }
             }
             else
             {
@@ -190,6 +219,7 @@ public class RGBController : MonoBehaviour
 
             zFloatObj.SetActive(true);
             zFloatObj.transform.position = midpointIndexes;
+            zFloatObj.transform.rotation = Camera.main.transform.rotation;
             zFloatText.text = blueText + "%".ToString();
 
             if (handTracking.rightOpen && handTracking.leftOpen)
@@ -198,8 +228,18 @@ public class RGBController : MonoBehaviour
                 blueLiveBox.SetActive(true);
                 blueVal = Mathf.RoundToInt(zFloat * 255);
                 SendOSCMessage(zOSCMessage, zFloat);
-                dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
-                dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
+                if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
+                }
+                if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
+                }
+                if (precision.rgbControl == PrecisionController.Lights.none)
+                {
+                    return;
+                }
             }
             else
             {

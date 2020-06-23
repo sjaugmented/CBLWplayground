@@ -25,13 +25,13 @@ public class Director : MonoBehaviour
     HandTracking handTracking;
 
     MagicController magicController;
-    RGBController rgbController;
+    //RGBController rgbController;
     PrecisionController precisionController;
     ThrowController throwController;
     StaffTester staffController;
 
     GameObject magicComponents;
-    GameObject rgbComponents;
+    //GameObject rgbComponents;
     GameObject precisionComponents;
     GameObject staffComponents;
 
@@ -42,19 +42,19 @@ public class Director : MonoBehaviour
         handTracking = FindObjectOfType<HandTracking>();
 
         magicController = FindObjectOfType<MagicController>();
-        rgbController = FindObjectOfType<RGBController>();
+        //rgbController = FindObjectOfType<RGBController>();
         precisionController = FindObjectOfType<PrecisionController>();
         throwController = FindObjectOfType<ThrowController>();
         staffController = FindObjectOfType<StaffTester>();
 
 
         magicComponents = FindObjectOfType<MagicID>().gameObject;
-        rgbComponents = FindObjectOfType<RGBID>().gameObject;
+        //rgbComponents = FindObjectOfType<RGBID>().gameObject;
         precisionComponents = FindObjectOfType<PrecisionID>().gameObject;
         staffComponents = FindObjectOfType<StaffTester>().gameObject;
 
         magicController.enabled = false;
-        rgbController.enabled = false;
+        //rgbController.enabled = false;
         precisionController.enabled = false;
         throwController.enabled = false;
         staffController.enabled = false;
@@ -199,12 +199,12 @@ public class Director : MonoBehaviour
     private void SetGameObjects(bool mag, bool rgb, bool prec, bool staff)
     {
         magicController.enabled = mag;
-        rgbController.enabled = rgb;
+        //rgbController.enabled = rgb;
         precisionController.enabled = prec;
         staffController.enabled = staff;
 
         magicComponents.SetActive(mag);
-        rgbComponents.SetActive(rgb);
+        //rgbComponents.SetActive(rgb);
         precisionComponents.SetActive(prec);
         staffComponents.SetActive(staff);
         
@@ -252,7 +252,7 @@ public class Director : MonoBehaviour
 
         dmx.ResetDMX();
 
-        if (currentMode == Mode.Magic || currentMode == Mode.RGB)
+        if (currentMode == Mode.Magic || precisionController.rgbMode == true)
         {
             dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
             dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);

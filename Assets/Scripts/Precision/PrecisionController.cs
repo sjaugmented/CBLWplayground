@@ -6,24 +6,6 @@ using UnityEngine;
 
 public class PrecisionController : MonoBehaviour
 {
-    [Header("Right Hand HUD")]
-    [SerializeField] GameObject rightSkyPanel;
-    [SerializeField] GameObject rightSpot;
-    [SerializeField] GameObject rightNone;
-    [SerializeField] GameObject rightDimmerText;
-    [SerializeField] GameObject rightKelvinText;
-    [SerializeField] TextMeshPro rightDimmerVal;
-    [SerializeField] TextMeshPro rightKelvinVal;
-
-    [Header("Left Hand HUD")]
-    [SerializeField] GameObject leftSkyPanel;
-    [SerializeField] GameObject leftSpot;
-    [SerializeField] GameObject leftNone;
-    [SerializeField] GameObject leftDimmerText;
-    [SerializeField] GameObject leftKelvinText;
-    [SerializeField] TextMeshPro leftDimmerVal;
-    [SerializeField] TextMeshPro leftKelvinVal;
-
     [Header("Hand HUDs")]
     [SerializeField] GameObject rightHandHUD;
     [SerializeField] GameObject leftHandHUD;
@@ -64,9 +46,12 @@ public class PrecisionController : MonoBehaviour
 
 
     HandTracking handTracking;
+    RGBController rgb;
     DMXcontroller dmx;
     DMXChannels dmxChan;
     OSC osc;
+
+    GameObject rgbComponents;
 
     bool hasMadeLeftFist = false;
     bool leftTether = false;
@@ -84,9 +69,12 @@ public class PrecisionController : MonoBehaviour
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
+        rgb = FindObjectOfType<RGBController>();
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
         osc = FindObjectOfType<OSC>();
+
+        rgbComponents = FindObjectOfType<RGBController>().gameObject;
 
         rightDimmerObj.SetActive(false);
         rightKelvinObj.SetActive(false);
@@ -114,9 +102,13 @@ public class PrecisionController : MonoBehaviour
         leftKelvinObj.SetActive(false);
     }
 
+    bool kelvinMode = true;
+    public bool rgbMode = false;
+
     // Update is called once per frame
     void Update()
     {
+        #region Dimmer/Kelvin controls
         // right hand control
         if (handTracking.rightThumbsUp/* && !hasMadeRightFist*/)
         {
@@ -154,29 +146,43 @@ public class PrecisionController : MonoBehaviour
             if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 75 && handTracking.ltPalmUpFloorUp <= 105) leftKelvin = true;
             else leftKelvin = false;
         }
+        #endregion
 
-        
-        ProcessRightHandControls();
-        ProcessLeftHandControls();
-
-        if (hudOn)
+        if (!handTracking.rightThumbsUp && !handTracking.leftThumbsUp && handTracking.twoHands && handTracking.palmsOpposed)
         {
-            ProcessHUD();
+            rgb.enabled = true;
+            rgbComponents.SetActive(true);
+            kelvinMode = false;
+            if (!rgbMode)
+            {
+                dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+                dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
+                dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
+                dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
+                rgbMode = true;
+            }
+            
         }
         else
         {
-            rightNone.SetActive(false);
-            rightSkyPanel.SetActive(false);
-            rightSpot.SetActive(false);
-            rightDimmerText.SetActive(false);
-            rightKelvinText.SetActive(false);
-
-            leftNone.SetActive(false);
-            leftSpot.SetActive(false);
-            leftSkyPanel.SetActive(false);
-            leftDimmerText.SetActive(false);
-            leftKelvinText.SetActive(false);
+            rgb.enabled = false;
+            rgbComponents.SetActive(false);
+            rgbMode = false;
+            if (!kelvinMode)
+            {
+                dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
+                dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
+                dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
+                dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
+                kelvinMode = true;
+            }
+            
         }
+
+        ProcessRightHandControls();
+        ProcessLeftHandControls();
+
+        ProcessHUD();
     }
 
     private void ToggleRightTether()
