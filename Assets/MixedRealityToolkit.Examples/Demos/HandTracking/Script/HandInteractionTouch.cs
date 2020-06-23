@@ -30,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void Start()
         {
-            TargetRenderer = GetComponentInChildren<Renderer>();
+            //TargetRenderer = GetComponentInChildren<Renderer>();
             if ((TargetRenderer != null) && (TargetRenderer.sharedMaterial != null))
             {
                 originalColor = TargetRenderer.sharedMaterial.color;

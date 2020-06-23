@@ -5,18 +5,6 @@ using UnityEngine;
 
 public class RGBController : MonoBehaviour
 {
-    [Header("Hand Rings")]
-    [SerializeField] GameObject rightRingParent;
-    [SerializeField] GameObject leftRingParent;
-    [SerializeField] Renderer rightRing;
-    [SerializeField] Renderer leftRing;
-    [SerializeField] Material redLive;
-    [SerializeField] Material greenLive;
-    [SerializeField] Material blueLive;
-    [SerializeField] Material redStealth;
-    [SerializeField] Material greenStealth;
-    [SerializeField] Material blueStealth;
-
     [SerializeField] GameObject xFloatObj;
     [SerializeField] TextMeshPro xFloatText;
     [SerializeField] GameObject redLiveBox;
@@ -102,19 +90,12 @@ public class RGBController : MonoBehaviour
         dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);*/
     }
 
-    private void DisableRings()
-    {
-        rightRingParent.SetActive(false);
-        leftRingParent.SetActive(false);
-    }
-
     bool live = false;
 
     // Update is called once per frame
     void Update()
     {
         CalcHandPositions();
-        ProcessHandRings();
 
         // red
         if (handTracking.palmsOpposed && handTracking.staffCamUp90)
@@ -251,56 +232,6 @@ public class RGBController : MonoBehaviour
         {
             zFloatObj.SetActive(false);
         }
-    }
-
-    private void ProcessHandRings()
-    {
-        // right hand
-        if (handTracking.rightHand)
-        {
-            rightRingParent.SetActive(true);
-
-            if (currentMode == RGB.red)
-            {
-                if (!live) rightRing.material = redStealth;
-                else rightRing.material = redLive;
-
-            }
-            if (currentMode == RGB.green)
-            {
-                if (!live) rightRing.material = greenStealth;
-                else rightRing.material = greenLive;
-            }
-            if (currentMode == RGB.blue)
-            {
-                if (!live) rightRing.material = blueStealth;
-                else rightRing.material = blueLive;
-            }
-        }
-        else rightRingParent.SetActive(false);
-
-        // left hand
-        if (handTracking.leftHand)
-        {
-            leftRingParent.SetActive(true);
-            if (currentMode == RGB.red)
-            {
-                if (!live) leftRing.material = redStealth;
-                else leftRing.material = redLive;
-
-            }
-            if (currentMode == RGB.green)
-            {
-                if (!live) leftRing.material = greenStealth;
-                else leftRing.material = greenLive;
-            }
-            if (currentMode == RGB.blue)
-            {
-                if (!live) leftRing.material = blueStealth;
-                else leftRing.material = blueLive;
-            }
-        }
-        else leftRingParent.SetActive(false);
     }
 
     private void CalcHandPositions()

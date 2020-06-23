@@ -13,6 +13,10 @@ public class Director : MonoBehaviour
     [SerializeField] float menuTimer = 5f;
     [SerializeField] float menuSelectDelay = 0.5f;
 
+    [Header("Mode Touch Toggles")]
+    [SerializeField] GameObject rightHandToggle;
+    [SerializeField] GameObject leftHandToggle;
+
     public List<Renderer> selectorPlatonics = new List<Renderer>();
 
     public enum Mode { Magic, RGB, Precision, Staff };
@@ -77,6 +81,11 @@ public class Director : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (handTracking.rightHand) rightHandToggle.SetActive(true);
+        else rightHandToggle.SetActive(false);
+        if (handTracking.leftHand) leftHandToggle.SetActive(true);
+        else leftHandToggle.SetActive(false);
+
         ConvertIndex();
         SetSelectorMaterial();
 
@@ -88,7 +97,7 @@ public class Director : MonoBehaviour
 
         if (handTracking.palmsIn && handTracking.rightFist && handTracking.leftFist)
         {
-            if (!chinUpsActive)
+            /*if (!chinUpsActive)
             {
                 if (!menuActive)
                 {
@@ -111,9 +120,11 @@ public class Director : MonoBehaviour
                 else topLevelMenu.SetActive(false);
 
                 chinUpsActive = true;
-            }
+            }*/
+
+            ResetDMX();
         }
-        else chinUpsActive = false;
+        //else chinUpsActive = false;
         
     }
 
@@ -211,10 +222,19 @@ public class Director : MonoBehaviour
     }
 
     #region Hook ups
+
+    public void ToggleMode()
+    {
+        if (currentMode == Mode.Magic) currentMode = Mode.Precision;
+        else currentMode = Mode.Magic;
+        Debug.Log("touched");
+
+    }
     public void MagicMode()
     {
         currentMode = Mode.Magic;
-        StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("DelayTouch");
         //StartCoroutine("Gravity");
     }
 
@@ -229,7 +249,8 @@ public class Director : MonoBehaviour
     public void PrecisionMode()
     {
         currentMode = Mode.Precision;
-        StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("DelayTouch");
         //StartCoroutine("Gravity");
 
     }
@@ -241,8 +262,10 @@ public class Director : MonoBehaviour
         //StartCoroutine("Gravity");
     }
 
-    public void ResetDMX()
+    private void ResetDMX()
     {
+        Debug.Log("resetDMX");
+
         DMXcontroller dmx = FindObjectOfType<DMXcontroller>();
         DMXChannels dmxChan = FindObjectOfType<DMXChannels>();
 
@@ -252,7 +275,7 @@ public class Director : MonoBehaviour
 
         dmx.ResetDMX();
 
-        if (currentMode == Mode.Magic || precisionController.rgbMode == true)
+        if (currentMode == Mode.Magic)
         {
             dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
             dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
@@ -269,7 +292,7 @@ public class Director : MonoBehaviour
             dmx.SetAddress(dmxChan.SkyPanel2[kelvinChan], 0);
         }*/
 
-        StartCoroutine("MenuTimeOut", menuSelectDelay);
+        //StartCoroutine("MenuTimeOut", menuSelectDelay);
         //StartCoroutine("Gravity");
     }
     #endregion

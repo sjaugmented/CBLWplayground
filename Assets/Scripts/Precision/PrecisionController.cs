@@ -34,7 +34,8 @@ public class PrecisionController : MonoBehaviour
     bool rightDimmer = false;
     bool rightKelvin = false;
 
-
+    public enum Mode { kelvin, rgb };
+    public Mode currMode = Mode.rgb;
 
     public enum Lights { none, SkyPanel1, SkyPanel2, DJ, reset };
     public Lights gazeLight = Lights.none;
@@ -42,7 +43,6 @@ public class PrecisionController : MonoBehaviour
     public Lights leftControl = Lights.none;
     public Lights rgbControl = Lights.none;
 
-    public bool hudOn = false; // todo make private
 
 
     HandTracking handTracking;
@@ -103,19 +103,42 @@ public class PrecisionController : MonoBehaviour
     }
 
     bool kelvinMode = true;
-    public bool rgbMode = false;
+    public bool rgbActive = false;
 
     // Update is called once per frame
     void Update()
     {
         #region Dimmer/Kelvin controls
+        if (handTracking.rightThumbsUp || handTracking.leftThumbsUp)
+        {
+            currMode = Mode.kelvin;
+            rgb.enabled = false;
+            rgbComponents.SetActive(false);
+            rgbActive = false;
+            if (!kelvinMode)
+            {
+                dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
+                dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
+                dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
+                dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
+                kelvinMode = true;
+            }
+        }
+        else
+        {
+            currMode = Mode.rgb;
+        }
+
         // right hand control
         if (handTracking.rightThumbsUp/* && !hasMadeRightFist*/)
         {
             ToggleRightTether();
             //hasMadeRightFist = true;
         }
-        else rightTether = false;
+        else
+        {
+            rightTether = false;
+        }
 
         //if (!handTracking.rightFist) hasMadeRightFist = false;
 
@@ -134,7 +157,10 @@ public class PrecisionController : MonoBehaviour
             ToggleLeftTether();
             //hasMadeLeftFist = true;
         }
-        else leftTether = false;
+        else
+        {
+            leftTether = false;
+        }
 
         //if (!handTracking.leftFist) hasMadeLeftFist = false;
 
@@ -153,13 +179,13 @@ public class PrecisionController : MonoBehaviour
             rgb.enabled = true;
             rgbComponents.SetActive(true);
             kelvinMode = false;
-            if (!rgbMode)
+            if (!rgbActive)
             {
                 dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
                 dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
                 dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
                 dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
-                rgbMode = true;
+                rgbActive = true;
             }
             
         }
@@ -167,21 +193,13 @@ public class PrecisionController : MonoBehaviour
         {
             rgb.enabled = false;
             rgbComponents.SetActive(false);
-            rgbMode = false;
-            if (!kelvinMode)
-            {
-                dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
-                dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
-                dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
-                dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
-                kelvinMode = true;
-            }
-            
+            rgbActive = false;
         }
 
         ProcessRightHandControls();
         ProcessLeftHandControls();
 
+        ProcessHandRings();
         ProcessHUD();
     }
 
@@ -537,12 +555,83 @@ public class PrecisionController : MonoBehaviour
     {
         gazeLight = Lights.reset;
     }
-
-    public void ToggleHUD()
-    {
-        hudOn = !hudOn;
-    }
     #endregion
+
+    ////////// RGB /////////////
+    [Header("Hand Rings")]
+    [SerializeField] GameObject rightRingParent;
+    [SerializeField] GameObject leftRingParent;
+    [SerializeField] Renderer rightRing;
+    [SerializeField] Renderer leftRing;
+    [SerializeField] Material redLive;
+    [SerializeField] Material greenLive;
+    [SerializeField] Material blueLive;
+    [SerializeField] Material redStealth;
+    [SerializeField] Material greenStealth;
+    [SerializeField] Material blueStealth;
+
+    public enum RGB { red, green, blue };
+    public RGB currColor = RGB.red;
+
+    bool live = false;
+
+    private void ProcessHandRings()
+    {
+        if (currMode == Mode.rgb)
+        {
+            // right hand
+            if (handTracking.rightHand)
+            {
+                rightRingParent.SetActive(true);
+
+                if (currColor == RGB.red)
+                {
+                    if (!live) rightRing.material = redStealth;
+                    else rightRing.material = redLive;
+
+                }
+                if (currColor == RGB.green)
+                {
+                    if (!live) rightRing.material = greenStealth;
+                    else rightRing.material = greenLive;
+                }
+                if (currColor == RGB.blue)
+                {
+                    if (!live) rightRing.material = blueStealth;
+                    else rightRing.material = blueLive;
+                }
+            }
+            else rightRingParent.SetActive(false);
+
+            // left hand
+            if (handTracking.leftHand)
+            {
+                leftRingParent.SetActive(true);
+                if (currColor == RGB.red)
+                {
+                    if (!live) leftRing.material = redStealth;
+                    else leftRing.material = redLive;
+
+                }
+                if (currColor == RGB.green)
+                {
+                    if (!live) leftRing.material = greenStealth;
+                    else leftRing.material = greenLive;
+                }
+                if (currColor == RGB.blue)
+                {
+                    if (!live) leftRing.material = blueStealth;
+                    else leftRing.material = blueLive;
+                }
+            }
+            else leftRingParent.SetActive(false);
+        }
+        else
+        {
+            rightRingParent.SetActive(false);
+            leftRingParent.SetActive(false);
+        }
+    }
 
     private void ProcessHUD()
     {
