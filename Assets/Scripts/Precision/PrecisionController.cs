@@ -13,8 +13,6 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] TextMeshPro leftHandText;
     [SerializeField] Material skyPanel1Mat;
     [SerializeField] Material skyPanel2Mat;
-    [SerializeField] Vector3 dimmerHUDOffset;
-    [SerializeField] Vector3 kelvinHUDOffset;
 
     [Header("Float GameObjects")]
     [SerializeField] GameObject rightDimmerObj;
@@ -147,7 +145,7 @@ public class PrecisionController : MonoBehaviour
             if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50) rightDimmer = true;
             else rightDimmer = false;
 
-            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >=50  && handTracking.rtPalmUpFloorUp <= 135) rightKelvin = true;
+            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >=70  && handTracking.rtPalmUpFloorUp <= 135) rightKelvin = true;
             else rightKelvin = false;
         }
 
@@ -169,7 +167,7 @@ public class PrecisionController : MonoBehaviour
             if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50) leftDimmer = true;
             else leftDimmer = false;
 
-            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 50 && handTracking.ltPalmUpFloorUp <= 135) leftKelvin = true;
+            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135) leftKelvin = true;
             else leftKelvin = false;
         }
         #endregion
@@ -450,8 +448,7 @@ public class PrecisionController : MonoBehaviour
 
             leftDimmerFloat = handDistToMin / maxDistance;
             if (leftDimmerFloat > 1) leftDimmerFloat = 1;
-            if (leftDimmerFloat < 0) leftDimmerFloat = 0;
-
+            if (handTracking.leftPalm.Position.y < leftDimmerObj.transform.position.y - 0.125) leftDimmerFloat = 0;
 
             // display in HUD
             leftHandText.text = Mathf.RoundToInt(leftDimmerFloat * 100) + "%".ToString();

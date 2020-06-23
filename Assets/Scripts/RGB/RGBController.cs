@@ -15,9 +15,7 @@ public class RGBController : MonoBehaviour
     [SerializeField] TextMeshPro zFloatText;
     [SerializeField] GameObject blueLiveBox;
 
-    [SerializeField] [Range(0.2f, 0.6f)] float maxFloatDist = 0.5f;
-    [SerializeField] [Range(0.2f, 0.6f)] float maxYAxisDist = 0.3f;
-    [SerializeField] [Range(0.2f, 0.6f)] float maxZAxisDist = 0.3f;
+    [SerializeField] [Range(0.2f, 0.6f)] float maxFloatDist = 0.3f;
     [SerializeField] [Range(0f, 0.2f)] float floatOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 

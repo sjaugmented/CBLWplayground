@@ -14,7 +14,6 @@ public class Director : MonoBehaviour
     [SerializeField] float menuSelectDelay = 0.5f;
 
     [Header("Mode Touch Toggles")]
-    [SerializeField] GameObject rightHandToggle;
     [SerializeField] GameObject leftHandToggle;
 
     public List<Renderer> selectorPlatonics = new List<Renderer>();
@@ -81,8 +80,6 @@ public class Director : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (handTracking.rightHand) rightHandToggle.SetActive(true);
-        else rightHandToggle.SetActive(false);
         if (handTracking.leftHand) leftHandToggle.SetActive(true);
         else leftHandToggle.SetActive(false);
 

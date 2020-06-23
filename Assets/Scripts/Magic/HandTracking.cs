@@ -356,7 +356,7 @@ public class HandTracking : MonoBehaviour
             else rightFist = false;
 
             // look for right thumbs up
-            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) && IsWithinRange(rtThumbVecPalmFor, 70, 70) && IsWithinRange(rtThumbVecPalmRight, 160, 70)
+            if (!IsWithinRange(rtIndMidForPalmFor, 0, 100) && !IsWithinRange(rtMidForPalmFor, 0, 100) && !IsWithinRange(rtPinkForPalmFor, 0, 100) && IsWithinRange(rtThumbVecPalmFor, 70, 70) && IsWithinRange(rtThumbVecPalmRight, 160, 70)
                 // unity standard thumbs up
                 //IsWithinRange(rtThumbVecPalmFor, 61, 10)
                 )
@@ -427,7 +427,7 @@ public class HandTracking : MonoBehaviour
             else leftFist = false;
 
             // look for left thumbs up
-            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && IsWithinRange(ltThumbVecPalmFor, 70, 70) && IsWithinRange(ltThumbVecPalmRight, 20, 70) /*||
+            if (!IsWithinRange(ltIndMidForPalmFor, 0, 100) && !IsWithinRange(ltMidForPalmFor, 0, 100) && !IsWithinRange(ltPinkForPalmFor, 0, 100) && IsWithinRange(ltThumbVecPalmFor, 70, 70) && IsWithinRange(ltThumbVecPalmRight, 20, 70) /*||
                 // unity standard thumbs up
                 IsWithinRange(ltThumbVecPalmFor, 61, 10)*/)
             {
