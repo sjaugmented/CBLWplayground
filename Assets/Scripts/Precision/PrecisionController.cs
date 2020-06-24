@@ -1146,7 +1146,7 @@ public class PrecisionController : MonoBehaviour
 
     IEnumerator CycleRingColors(Renderer ring)
     {
-        while (!live)
+        while (!live && currColor == RGB.all)
         {
             ring.material = redStealth;
             yield return new WaitForSeconds(0.4f);
@@ -1159,7 +1159,8 @@ public class PrecisionController : MonoBehaviour
             if (hasAmber) ring.material = amberStealth;
             yield return new WaitForSeconds(0.4f);
         }
-        while (live)
+
+        while (live && currColor == RGB.all)
         {
             ring.material = redLive;
             yield return new WaitForSeconds(0.5f);
