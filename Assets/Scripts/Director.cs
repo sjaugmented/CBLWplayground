@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Director : MonoBehaviour
@@ -40,6 +41,15 @@ public class Director : MonoBehaviour
 
     bool chinUpsActive = false;
 
+    public bool readGestures = true;
+    [SerializeField] GameObject gestureToggleObj;
+    [SerializeField] GameObject gesturesOffHUD;
+
+    public void ToggleGestures()
+    {
+        readGestures = !readGestures;
+    }
+
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
@@ -67,6 +77,7 @@ public class Director : MonoBehaviour
     void Start()
     {
         topLevelMenu.SetActive(false);
+        gestureToggleObj.SetActive(false);
 
         foreach (Renderer selector in selectorPlatonics)
         {
@@ -80,8 +91,46 @@ public class Director : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (readGestures) gesturesOffHUD.SetActive(false);
+        else gesturesOffHUD.SetActive(true);
+        if (handTracking.rightHand) gestureToggleObj.SetActive(true);
+        else gestureToggleObj.SetActive(false);
         if (handTracking.leftHand) leftHandToggle.SetActive(true);
         else leftHandToggle.SetActive(false);
+
+        if (readGestures)
+        {
+            if (handTracking.palmsIn && handTracking.rightFist && handTracking.leftFist)
+            {
+                /*if (!chinUpsActive)
+                {
+                    if (!menuActive)
+                    {
+                        //ResetSelectorPositions();
+                        topLevelMenu.SetActive(true);
+                        //NoGravity();
+                        StartCoroutine("MenuTimeOut", menuTimer);
+
+                        Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
+                        var camZOffset = Camera.main.transform.forward * zOffset;
+                        var camYOffset = Camera.main.transform.up * yOffset;
+                        topLevelMenu.transform.position = midpointPalms + camZOffset + camYOffset;
+                        topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
+
+                        if (magicController.elMenuActive == true)
+                        {
+                            magicController.ElMenuOverride();
+                        }
+                    }
+                    else topLevelMenu.SetActive(false);
+
+                    chinUpsActive = true;
+                }*/
+
+                ResetDMX();
+            }
+            //else chinUpsActive = false;
+        }
 
         ConvertIndex();
         SetSelectorMaterial();
@@ -92,36 +141,7 @@ public class Director : MonoBehaviour
         }
         else menuActive = false;
 
-        if (handTracking.palmsIn && handTracking.rightFist && handTracking.leftFist)
-        {
-            /*if (!chinUpsActive)
-            {
-                if (!menuActive)
-                {
-                    //ResetSelectorPositions();
-                    topLevelMenu.SetActive(true);
-                    //NoGravity();
-                    StartCoroutine("MenuTimeOut", menuTimer);
-
-                    Vector3 midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);
-                    var camZOffset = Camera.main.transform.forward * zOffset;
-                    var camYOffset = Camera.main.transform.up * yOffset;
-                    topLevelMenu.transform.position = midpointPalms + camZOffset + camYOffset;
-                    topLevelMenu.transform.localRotation = Camera.main.transform.rotation;
-
-                    if (magicController.elMenuActive == true)
-                    {
-                        magicController.ElMenuOverride();
-                    }
-                }
-                else topLevelMenu.SetActive(false);
-
-                chinUpsActive = true;
-            }*/
-
-            ResetDMX();
-        }
-        //else chinUpsActive = false;
+        
         
     }
 

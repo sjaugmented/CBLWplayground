@@ -264,111 +264,120 @@ public class MagicController : MonoBehaviour
         CalcHandPositions();
         ProcessHandClouds();
 
-        if (handTracking.rightRockOn) EnableRightStreams();
-        else DisableRightStreams();
+        if (director.readGestures)
+        {
+            if (handTracking.rightRockOn) EnableRightStreams();
+            else DisableRightStreams();
 
-        if (handTracking.leftRockOn) EnableLeftStreams();
-        else DisableLeftStreams();
+            if (handTracking.leftRockOn) EnableLeftStreams();
+            else DisableLeftStreams();
 
-        if (handTracking.twoHands)
-        {   
-            ///////// PALMS OUT
-            // two handed casting
-            if (handTracking.palmsOut && handTracking.staffCamUp90 && handTracking.rightOpen && handTracking.leftOpen)
+            if (handTracking.twoHands)
             {
-                TurnOffMasterOrbs();
-                CastOrb();
-                //sound.orbAmbienceFX.Pause();
-
-                /*lightMasterOrb.SetActive(false);
-                fireMasterOrb.SetActive(false);
-                waterMasterOrb.SetActive(false);
-                iceMasterOrb.SetActive(false);*/
-
-                if (variantID == 0 || variantID == 1) LiveDMX();
-
-            }
-
-            // element menu
-            else if (handTracking.palmsOut && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90)
-            {
-                ElementSelector();
-            }
-
-            ///////// PALMS OPPOSED
-            // floats
-            // 0
-            else if (handTracking.palmsOpposed && handTracking.staffCamUp00)
-            {
-                currScaler = Scaler.deg00;
-
-                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                ///////// PALMS OUT
+                // two handed casting
+                if (handTracking.palmsOut && handTracking.staffCamUp90 && handTracking.rightOpen && handTracking.leftOpen)
                 {
-                    VariantScaler();
-                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                    orbRender.material = yellowTrans;
-                }
-            }
+                    TurnOffMasterOrbs();
+                    CastOrb();
+                    //sound.orbAmbienceFX.Pause();
 
-            // 45
-            else if (handTracking.palmsOpposed && handTracking.staffCamUp45)
-            {
-                currScaler = Scaler.deg45;
+                    /*lightMasterOrb.SetActive(false);
+                    fireMasterOrb.SetActive(false);
+                    waterMasterOrb.SetActive(false);
+                    iceMasterOrb.SetActive(false);*/
 
-                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
-                {
-                    VariantScaler();
-                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                    orbRender.material = cyanTrans;
-                }
-            }
+                    if (variantID == 0 || variantID == 1) LiveDMX();
 
-            // 90
-            else if (handTracking.palmsOpposed && handTracking.staffCamUp90)
-            {
-                currScaler = Scaler.deg90;
-
-                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
-                {
-                    VariantScaler();
-                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                    orbRender.material = clearTrans;
                 }
 
-                if (handTracking.rightThumbsUp && handTracking.leftThumbsUp)
+                // element menu
+                else if (handTracking.palmsOut && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90)
                 {
-                    VariantSelector();
-                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                    orbRender.material = clearTrans;
+                    ElementSelector();
+                }
+
+                ///////// PALMS OPPOSED
+                // floats
+                // 0
+                else if (handTracking.palmsOpposed && handTracking.staffCamUp00)
+                {
+                    currScaler = Scaler.deg00;
+
+                    if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                    {
+                        VariantScaler();
+                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                        orbRender.material = yellowTrans;
+                    }
+                }
+
+                // 45
+                else if (handTracking.palmsOpposed && handTracking.staffCamUp45)
+                {
+                    currScaler = Scaler.deg45;
+
+                    if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                    {
+                        VariantScaler();
+                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                        orbRender.material = cyanTrans;
+                    }
+                }
+
+                // 90
+                else if (handTracking.palmsOpposed && handTracking.staffCamUp90)
+                {
+                    currScaler = Scaler.deg90;
+
+                    if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                    {
+                        VariantScaler();
+                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                        orbRender.material = clearTrans;
+                    }
+
+                    if (handTracking.rightThumbsUp && handTracking.leftThumbsUp)
+                    {
+                        VariantSelector();
+                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                        orbRender.material = clearTrans;
+                    }
+                }
+
+                // 135
+                else if (handTracking.palmsOpposed && handTracking.staffCamUp135)
+                {
+                    currScaler = Scaler.deg135;
+
+                    if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                    {
+                        VariantScaler();
+                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                        orbRender.material = magentaTrans;
+                    }
+                }
+
+                // 180
+                else if (handTracking.palmsOpposed && handTracking.staffCamUp180)
+                {
+                    currScaler = Scaler.deg180;
+
+                    if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
+                    {
+                        VariantScaler();
+                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+                        orbRender.material = greenTrans;
+                    }
+                }
+
+                else
+                {
+                    TurnOffMasterOrbs();
+                    //lightMasterOrb.SetActive(false);
+                    //sound.orbAmbienceFX.Pause();
                 }
             }
-
-            // 135
-            else if (handTracking.palmsOpposed && handTracking.staffCamUp135)
-            {
-                currScaler = Scaler.deg135;
-                
-                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
-                {
-                    VariantScaler();
-                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                    orbRender.material = magentaTrans;
-                }
-            }
-
-            // 180
-            else if (handTracking.palmsOpposed && handTracking.staffCamUp180)
-            {
-                currScaler = Scaler.deg180;
-                
-                if (handTracking.rightFist && handTracking.leftFist || handTracking.rightOpen && handTracking.leftOpen)
-                {
-                    VariantScaler();
-                    orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                    orbRender.material = greenTrans;
-                }
-            }
-
             else
             {
                 TurnOffMasterOrbs();
@@ -376,12 +385,8 @@ public class MagicController : MonoBehaviour
                 //sound.orbAmbienceFX.Pause();
             }
         }
-        else
-        {
-            TurnOffMasterOrbs();
-            //lightMasterOrb.SetActive(false);
-            //sound.orbAmbienceFX.Pause();
-        }
+        else return;
+        
     }
 
     private void ProcessHandClouds()

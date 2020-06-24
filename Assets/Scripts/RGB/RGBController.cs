@@ -31,6 +31,7 @@ public class RGBController : MonoBehaviour
 
 
     HandTracking handTracking;
+    Director director;
     PrecisionController precision;
     DMXcontroller dmx;
     DMXChannels dmxChan;
@@ -56,6 +57,7 @@ public class RGBController : MonoBehaviour
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
+        director = FindObjectOfType<Director>();
         precision = FindObjectOfType<PrecisionController>();
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
@@ -95,141 +97,146 @@ public class RGBController : MonoBehaviour
     {
         CalcHandPositions();
 
-        // red
-        if (handTracking.palmsOpposed && handTracking.staffCamUp90)
+        if (director.readGestures)
         {
-            currentMode = RGB.red;
-            float xFloat;
-
-            xFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-            if (indexMidDist > maxFloatDist) xFloat = 0;
-            if (indexMidDist < floatOffset) xFloat = 1;
-            var redText = Mathf.RoundToInt(xFloat * 100);
-
-            xFloatObj.SetActive(true);
-            xFloatObj.transform.position = midpointIndexes;
-            xFloatObj.transform.rotation = Camera.main.transform.rotation;
-            xFloatText.text = redText + "%".ToString();
-
-            if (handTracking.rightOpen && handTracking.leftOpen)
+            // red
+            if (handTracking.palmsOpposed && handTracking.staffCamUp90)
             {
-                live = true;
-                redLiveBox.SetActive(true);
-                redVal = Mathf.RoundToInt(xFloat * 255);
-                SendOSCMessage(xOSCMessage, xFloat);
+                currentMode = RGB.red;
+                float xFloat;
 
-                if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                xFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                if (indexMidDist > maxFloatDist) xFloat = 0;
+                if (indexMidDist < floatOffset) xFloat = 1;
+                var redText = Mathf.RoundToInt(xFloat * 100);
+
+                xFloatObj.SetActive(true);
+                xFloatObj.transform.position = midpointIndexes;
+                xFloatObj.transform.rotation = Camera.main.transform.rotation;
+                xFloatText.text = redText + "%".ToString();
+
+                if (handTracking.rightOpen && handTracking.leftOpen)
                 {
-                    dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+                    live = true;
+                    redLiveBox.SetActive(true);
+                    redVal = Mathf.RoundToInt(xFloat * 255);
+                    SendOSCMessage(xOSCMessage, xFloat);
+
+                    if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                    {
+                        dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+                    }
+                    if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                    {
+                        dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+                    }
+                    if (precision.rgbControl == PrecisionController.Lights.none)
+                    {
+                        return;
+                    }
                 }
-                if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                else
                 {
-                    dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+                    live = false;
+                    redLiveBox.SetActive(false);
                 }
-                if (precision.rgbControl == PrecisionController.Lights.none)
+            }
+            else xFloatObj.SetActive(false);
+
+            // green
+            if (handTracking.palmsOpposed && handTracking.staffCamUp45)
+            {
+                currentMode = RGB.green;
+                float yFloat;
+
+                yFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                if (indexMidDist > maxFloatDist) yFloat = 0;
+                if (indexMidDist < floatOffset) yFloat = 1;
+                var greenText = Mathf.RoundToInt(yFloat * 100);
+
+                yFloatObj.SetActive(true);
+                yFloatObj.transform.position = midpointIndexes;
+                yFloatObj.transform.rotation = Camera.main.transform.rotation;
+                yFloatText.text = greenText + "%".ToString();
+
+                if (handTracking.rightOpen && handTracking.leftOpen)
                 {
-                    return;
+                    live = true;
+                    greenLiveBox.SetActive(true);
+                    greenVal = Mathf.RoundToInt(yFloat * 255);
+                    SendOSCMessage(yOSCMessage, yFloat);
+                    if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                    {
+                        dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+                    }
+                    if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                    {
+                        dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
+                    }
+                    if (precision.rgbControl == PrecisionController.Lights.none)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    live = false;
+                    greenLiveBox.SetActive(false);
                 }
             }
             else
             {
-                live = false;
-                redLiveBox.SetActive(false);
+                yFloatObj.SetActive(false);
             }
-        }
-        else xFloatObj.SetActive(false);
 
-        // green
-        if (handTracking.palmsOpposed && handTracking.staffCamUp45)
-        {
-            currentMode = RGB.green;
-            float yFloat;
-
-            yFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-            if (indexMidDist > maxFloatDist) yFloat = 0;
-            if (indexMidDist < floatOffset) yFloat = 1;
-            var greenText = Mathf.RoundToInt(yFloat * 100);
-
-            yFloatObj.SetActive(true);
-            yFloatObj.transform.position = midpointIndexes;
-            yFloatObj.transform.rotation = Camera.main.transform.rotation;
-            yFloatText.text = greenText + "%".ToString();
-
-            if (handTracking.rightOpen && handTracking.leftOpen)
+            // blue
+            if (handTracking.palmsOpposed && handTracking.staffCamUp135)
             {
-                live = true;
-                greenLiveBox.SetActive(true);
-                greenVal = Mathf.RoundToInt(yFloat * 255);
-                SendOSCMessage(yOSCMessage, yFloat);
-                if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                currentMode = RGB.blue;
+                float zFloat;
+
+                zFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                if (indexMidDist > maxFloatDist) zFloat = 0;
+                if (indexMidDist < floatOffset) zFloat = 1;
+                var blueText = Mathf.RoundToInt(zFloat * 100);
+
+                zFloatObj.SetActive(true);
+                zFloatObj.transform.position = midpointIndexes;
+                zFloatObj.transform.rotation = Camera.main.transform.rotation;
+                zFloatText.text = blueText + "%".ToString();
+
+                if (handTracking.rightOpen && handTracking.leftOpen)
                 {
-                    dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+                    live = true;
+                    blueLiveBox.SetActive(true);
+                    blueVal = Mathf.RoundToInt(zFloat * 255);
+                    SendOSCMessage(zOSCMessage, zFloat);
+                    if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
+                    {
+                        dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
+                    }
+                    if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                    {
+                        dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
+                    }
+                    if (precision.rgbControl == PrecisionController.Lights.none)
+                    {
+                        return;
+                    }
                 }
-                if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
+                else
                 {
-                    dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
-                }
-                if (precision.rgbControl == PrecisionController.Lights.none)
-                {
-                    return;
+                    live = false;
+                    blueLiveBox.SetActive(false);
                 }
             }
             else
             {
-                live = false;
-                greenLiveBox.SetActive(false);
+                zFloatObj.SetActive(false);
             }
         }
-        else
-        {
-            yFloatObj.SetActive(false);
-        }
-
-        // blue
-        if (handTracking.palmsOpposed && handTracking.staffCamUp135)
-        {
-            currentMode = RGB.blue;
-            float zFloat;
-
-            zFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-            if (indexMidDist > maxFloatDist) zFloat = 0;
-            if (indexMidDist < floatOffset) zFloat = 1;
-            var blueText = Mathf.RoundToInt(zFloat * 100);
-
-            zFloatObj.SetActive(true);
-            zFloatObj.transform.position = midpointIndexes;
-            zFloatObj.transform.rotation = Camera.main.transform.rotation;
-            zFloatText.text = blueText + "%".ToString();
-
-            if (handTracking.rightOpen && handTracking.leftOpen)
-            {
-                live = true;
-                blueLiveBox.SetActive(true);
-                blueVal = Mathf.RoundToInt(zFloat * 255);
-                SendOSCMessage(zOSCMessage, zFloat);
-                if (precision.rgbControl == PrecisionController.Lights.SkyPanel1)
-                {
-                    dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
-                }
-                if (precision.rgbControl == PrecisionController.Lights.SkyPanel2)
-                {
-                    dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
-                }
-                if (precision.rgbControl == PrecisionController.Lights.none)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                live = false;
-                blueLiveBox.SetActive(false);
-            }
-        }
-        else
-        {
-            zFloatObj.SetActive(false);
-        }
+        else return;
+        
     }
 
     private void CalcHandPositions()

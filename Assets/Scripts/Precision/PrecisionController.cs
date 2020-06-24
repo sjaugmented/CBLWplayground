@@ -44,6 +44,7 @@ public class PrecisionController : MonoBehaviour
 
 
     HandTracking handTracking;
+    Director director;
     RGBController rgb;
     DMXcontroller dmx;
     DMXChannels dmxChan;
@@ -67,6 +68,7 @@ public class PrecisionController : MonoBehaviour
     void Awake()
     {
         handTracking = FindObjectOfType<HandTracking>();
+        director = FindObjectOfType<Director>();
         rgb = FindObjectOfType<RGBController>();
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
@@ -106,96 +108,100 @@ public class PrecisionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        #region Dimmer/Kelvin controls
-        if (handTracking.rightThumbsUp || handTracking.leftThumbsUp)
+        if (director.readGestures)
         {
-            currMode = Mode.kelvin;
-            rgb.enabled = false;
-            rgbComponents.SetActive(false);
-            rgbActive = false;
-            if (!kelvinMode)
+            #region Dimmer/Kelvin controls
+            if (handTracking.rightThumbsUp || handTracking.leftThumbsUp)
             {
-                dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
-                dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
-                dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
-                dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
-                kelvinMode = true;
+                currMode = Mode.kelvin;
+                rgb.enabled = false;
+                rgbComponents.SetActive(false);
+                rgbActive = false;
+                if (!kelvinMode)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
+                    dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
+                    dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
+                    dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
+                    kelvinMode = true;
+                }
             }
-        }
-        else
-        {
-            currMode = Mode.rgb;
-        }
-
-        // right hand control
-        if (handTracking.rightThumbsUp/* && !hasMadeRightFist*/)
-        {
-            ToggleRightTether();
-            //hasMadeRightFist = true;
-        }
-        else
-        {
-            rightTether = false;
-        }
-
-        //if (!handTracking.rightFist) hasMadeRightFist = false;
-
-        if (rightTether)
-        {
-            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50) rightDimmer = true;
-            else rightDimmer = false;
-
-            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >=70  && handTracking.rtPalmUpFloorUp <= 135) rightKelvin = true;
-            else rightKelvin = false;
-        }
-
-        // left hand control
-        if (handTracking.leftThumbsUp /*&& !hasMadeLeftFist*/)
-        {
-            ToggleLeftTether();
-            //hasMadeLeftFist = true;
-        }
-        else
-        {
-            leftTether = false;
-        }
-
-        //if (!handTracking.leftFist) hasMadeLeftFist = false;
-
-        if (leftTether)
-        {
-            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50) leftDimmer = true;
-            else leftDimmer = false;
-
-            if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135) leftKelvin = true;
-            else leftKelvin = false;
-        }
-        #endregion
-
-        if (!handTracking.rightThumbsUp && !handTracking.leftThumbsUp && handTracking.twoHands && handTracking.palmsOpposed)
-        {
-            rgb.enabled = true;
-            rgbComponents.SetActive(true);
-            kelvinMode = false;
-            if (!rgbActive)
+            else
             {
-                dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
-                dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
-                dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
-                dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
-                rgbActive = true;
+                currMode = Mode.rgb;
             }
-            
-        }
-        else
-        {
-            rgb.enabled = false;
-            rgbComponents.SetActive(false);
-            rgbActive = false;
-        }
 
-        ProcessRightHandControls();
-        ProcessLeftHandControls();
+            // right hand control
+            if (handTracking.rightThumbsUp/* && !hasMadeRightFist*/)
+            {
+                ToggleRightTether();
+                //hasMadeRightFist = true;
+            }
+            else
+            {
+                rightTether = false;
+            }
+
+            //if (!handTracking.rightFist) hasMadeRightFist = false;
+
+            if (rightTether)
+            {
+                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50) rightDimmer = true;
+                else rightDimmer = false;
+
+                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135) rightKelvin = true;
+                else rightKelvin = false;
+            }
+
+            // left hand control
+            if (handTracking.leftThumbsUp /*&& !hasMadeLeftFist*/)
+            {
+                ToggleLeftTether();
+                //hasMadeLeftFist = true;
+            }
+            else
+            {
+                leftTether = false;
+            }
+
+            //if (!handTracking.leftFist) hasMadeLeftFist = false;
+
+            if (leftTether)
+            {
+                if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50) leftDimmer = true;
+                else leftDimmer = false;
+
+                if (/*handTracking.leftOpen && */handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135) leftKelvin = true;
+                else leftKelvin = false;
+            }
+            #endregion
+
+            if (!handTracking.rightThumbsUp && !handTracking.leftThumbsUp && handTracking.twoHands && handTracking.palmsOpposed)
+            {
+                rgb.enabled = true;
+                rgbComponents.SetActive(true);
+                kelvinMode = false;
+                if (!rgbActive)
+                {
+                    dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+                    dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
+                    dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
+                    dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
+                    rgbActive = true;
+                }
+
+            }
+            else
+            {
+                rgb.enabled = false;
+                rgbComponents.SetActive(false);
+                rgbActive = false;
+            }
+
+            ProcessRightHandControls();
+            ProcessLeftHandControls();
+        }
+        else return;
 
         ProcessHandRings();
         ProcessHUD();
