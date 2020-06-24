@@ -23,6 +23,8 @@ public class HandTracking : MonoBehaviour
     public bool staffCamUp90 = false;
     public bool staffCamUp135 = false;
     public bool staffCamUp180 = false;
+    public bool staffFloorFor00 = false;
+    public bool staffFloorFor90 = false;
 
     // palms
     public bool twoHands = false;
@@ -74,6 +76,7 @@ public class HandTracking : MonoBehaviour
     // public for StaffTester Vector scene - todo remove
     float staffForCamUp;
     float staffForCamFor;
+    float staffForFloorFor;
     float staffForFloorUp;
     float staffForCamRight;
 
@@ -83,6 +86,7 @@ public class HandTracking : MonoBehaviour
         Vector3 wizardStaff = rightPalm.Position - leftPalm.Position;
         staffForCamUp = Vector3.Angle(wizardStaff, cam.up);
         staffForCamFor = Vector3.Angle(wizardStaff, cam.forward);
+        staffForFloorFor = Vector3.Angle(wizardStaff, floor.forward);
         staffForFloorUp = Vector3.Angle(wizardStaff, floor.up);
         staffForCamRight = Vector3.Angle(wizardStaff, cam.right);
 
@@ -117,6 +121,18 @@ public class HandTracking : MonoBehaviour
                 staffCamUp180 = true;
             }
             else staffCamUp180 = false;
+
+            if (staffForFloorFor >= 0 && staffForFloorFor < 30)
+            {
+                staffFloorFor00 = true;
+            }
+            else staffFloorFor00 = false;
+
+            if (staffForFloorFor >= 75 && staffForFloorFor <= 105)
+            {
+                staffFloorFor90 = true;
+            }
+            else staffFloorFor90 = false;
         }
         else
         {

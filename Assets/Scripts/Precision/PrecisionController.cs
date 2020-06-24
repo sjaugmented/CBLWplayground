@@ -41,7 +41,6 @@ public class PrecisionController : MonoBehaviour
     DMXcontroller dmx;
     DMXChannels dmxChan;
     OSC osc;
-    GameObject rgbComponents;
 
     bool rightTether = false;
     bool rightDimmer = false;
@@ -61,6 +60,8 @@ public class PrecisionController : MonoBehaviour
     int greenChan = 5;
     int blueChan = 6;
     int whiteChan = 7;
+    int amberChan = 8;
+    public bool hasAmber = false;
     #endregion
 
     void Awake()
@@ -70,8 +71,6 @@ public class PrecisionController : MonoBehaviour
         dmx = FindObjectOfType<DMXcontroller>();
         dmxChan = FindObjectOfType<DMXChannels>();
         osc = FindObjectOfType<OSC>();
-
-        rgbComponents = FindObjectOfType<RGBController>().gameObject;
 
         rightDimmerObj.SetActive(false);
         rightKelvinObj.SetActive(false);
@@ -104,8 +103,11 @@ public class PrecisionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ProcessHUD();
+        CalcHandPositions();
+        ProcessHandHUDs();
         ProcessHandRings();
+        KelvinFloats();
+        RGBChannels();
 
         if (director.readGestures)
         {
@@ -113,7 +115,6 @@ public class PrecisionController : MonoBehaviour
             if (handTracking.rightThumbsUp || handTracking.leftThumbsUp)
             {
                 currMode = Mode.kelvin;
-                rgbComponents.SetActive(false);
                 rgbActive = false;
                 if (!kelvinMode)
                 {
@@ -124,7 +125,6 @@ public class PrecisionController : MonoBehaviour
                     kelvinMode = true;
                 }
                 
-                KelvinFloats();
             }
             else
             {
@@ -133,9 +133,8 @@ public class PrecisionController : MonoBehaviour
             #endregion
 
             #region RGB controls
-            if (!handTracking.rightThumbsUp && !handTracking.leftThumbsUp && handTracking.twoHands && handTracking.palmsOpposed)
+            if (!handTracking.rightThumbsUp && !handTracking.leftThumbsUp && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
             {
-                rgbComponents.SetActive(true);
                 kelvinMode = false;
                 if (!rgbActive)
                 {
@@ -146,161 +145,183 @@ public class PrecisionController : MonoBehaviour
                     rgbActive = true;
                 }
 
-                RGBFloats();
             }
             else
             {
-                rgbComponents.SetActive(false);
                 rgbActive = false;
+                redChanObj.SetActive(false);
+                greenChanObj.SetActive(false);
+                blueChanObj.SetActive(false);
+                whiteChanObj.SetActive(false);
+                amberChanObj.SetActive(false);
+                globalDimmerObj.SetActive(false);
             }
             #endregion
 
             
         }
-        else return;
-
-        
+        else
+        {
+            rightHandHUD.SetActive(false);
+            leftHandHUD.SetActive(false);
+            rightRingParent.SetActive(false);
+            leftRingParent.SetActive(false);
+        }
     }
 
     private void KelvinFloats()
     {
-        // right hand control
-        if (handTracking.rightThumbsUp)
+        if (currMode == Mode.kelvin)
         {
-            ToggleRightTether();
-        }
-        else
-        {
-            rightTether = false;
-        }
-
-        if (rightTether)
-        {
-            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50)
+            // right hand control
+            if (handTracking.rightThumbsUp)
             {
-                rightDimmer = true;
-                ProcessRightHandControls();
+                ToggleRightTether();
             }
-            else rightDimmer = false;
-
-            if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135)
+            else
             {
-                rightKelvin = true;
-                ProcessRightHandControls();
+                rightTether = false;
             }
-            else rightKelvin = false;
-        }
 
-        // left hand control
-        if (handTracking.leftThumbsUp)
-        {
-            ToggleLeftTether();
-        }
-        else
-        {
-            leftTether = false;
-        }
-
-        if (leftTether)
-        {
-            if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50)
-            {
-                leftDimmer = true;
-                ProcessLeftHandControls();
-            }
-            else leftDimmer = false;
-
-            if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135)
-            {
-                leftKelvin = true;
-                ProcessLeftHandControls();
-            }
-            else leftKelvin = false;
-        }
-    }
-
-    private void ProcessHUD()
-    {
-        // right hand
-        if (handTracking.rightHand)
-        {
             if (rightTether)
             {
-                if (rightControl == Lights.SkyPanel1)
+                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50)
                 {
-                    rightHandHUD.SetActive(true);
-                    rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
+                    rightDimmer = true;
+                    ProcessRightHandControls();
                 }
-                else if (rightControl == Lights.SkyPanel2)
+                else rightDimmer = false;
+
+                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135)
                 {
-                    rightHandHUD.SetActive(true);
-                    rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                    rightKelvin = true;
+                    ProcessRightHandControls();
                 }
-                else if (rightControl == Lights.none)
+                else rightKelvin = false;
+            }
+
+            // left hand control
+            if (handTracking.leftThumbsUp)
+            {
+                ToggleLeftTether();
+            }
+            else
+            {
+                leftTether = false;
+            }
+
+            if (leftTether)
+            {
+                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50)
+                {
+                    leftDimmer = true;
+                    ProcessLeftHandControls();
+                }
+                else leftDimmer = false;
+
+                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135)
+                {
+                    leftKelvin = true;
+                    ProcessLeftHandControls();
+                }
+                else leftKelvin = false;
+            }
+        }
+        else return;
+    }
+
+    private void ProcessHandHUDs()
+    {
+        if (currMode == Mode.kelvin)
+        {
+            // right hand
+            if (handTracking.rightHand)
+            {
+                if (rightTether)
+                {
+                    if (rightControl == Lights.SkyPanel1)
+                    {
+                        rightHandHUD.SetActive(true);
+                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
+                    }
+                    else if (rightControl == Lights.SkyPanel2)
+                    {
+                        rightHandHUD.SetActive(true);
+                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                    }
+                    else if (rightControl == Lights.none)
+                    {
+                        rightHandHUD.SetActive(false);
+                    }
+                }
+                else
                 {
                     rightHandHUD.SetActive(false);
                 }
-            }
-            else
-            {
-                rightHandHUD.SetActive(false);
-            }
 
-            if (rightTether && rightDimmer)
-            {
-                rightHandText.gameObject.SetActive(true);
-            }
-
-            else if (rightTether && rightKelvin)
-            {
-                rightHandText.gameObject.SetActive(true);
-
-            }
-            else rightHandText.gameObject.SetActive(false);
-        }
-        else rightHandHUD.SetActive(false);
-
-
-
-        // left hand
-        if (handTracking.leftHand)
-        {
-            if (leftTether)
-            {
-                if (leftControl == Lights.SkyPanel1)
+                if (rightTether && rightDimmer)
                 {
-                    leftHandHUD.SetActive(true);
-                    leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
-                }
-                else if (leftControl == Lights.SkyPanel2)
-                {
-                    leftHandHUD.SetActive(true);
-                    leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                    rightHandText.gameObject.SetActive(true);
                 }
 
-                else if (leftControl == Lights.none)
+                else if (rightTether && rightKelvin)
+                {
+                    rightHandText.gameObject.SetActive(true);
+
+                }
+                else rightHandText.gameObject.SetActive(false);
+            }
+            else rightHandHUD.SetActive(false);
+
+
+
+            // left hand
+            if (handTracking.leftHand)
+            {
+                if (leftTether)
+                {
+                    if (leftControl == Lights.SkyPanel1)
+                    {
+                        leftHandHUD.SetActive(true);
+                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
+                    }
+                    else if (leftControl == Lights.SkyPanel2)
+                    {
+                        leftHandHUD.SetActive(true);
+                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                    }
+
+                    else if (leftControl == Lights.none)
+                    {
+                        leftHandHUD.SetActive(false);
+                    }
+                }
+                else
                 {
                     leftHandHUD.SetActive(false);
                 }
-            }
-            else
-            {
-                leftHandHUD.SetActive(false);
-            }
 
-            if (leftTether && leftDimmer)
-            {
-                leftHandText.gameObject.SetActive(true);
-            }
+                if (leftTether && leftDimmer)
+                {
+                    leftHandText.gameObject.SetActive(true);
+                }
 
-            else if (leftTether && leftKelvin)
-            {
-                leftHandText.gameObject.SetActive(true);
+                else if (leftTether && leftKelvin)
+                {
+                    leftHandText.gameObject.SetActive(true);
 
+                }
+                else leftHandText.gameObject.SetActive(false);
             }
-            else leftHandText.gameObject.SetActive(false);
+            else leftHandHUD.SetActive(false);
         }
-        else leftHandHUD.SetActive(false);
+        else
+        {
+            rightHandHUD.SetActive(false);
+            leftHandHUD.SetActive(false);
+        }
+        
+
     }
 
     private void ToggleRightTether()
@@ -656,7 +677,11 @@ public class PrecisionController : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// RGB MODE
+    /// </summary>
     #region RGB
+    #region Inspector Fields
     [Header("RGB", order =0)]
     [Header("Hand Rings", order =1)]
     [SerializeField] GameObject rightRingParent;
@@ -666,37 +691,57 @@ public class PrecisionController : MonoBehaviour
     [SerializeField] Material redLive;
     [SerializeField] Material greenLive;
     [SerializeField] Material blueLive;
+    [SerializeField] Material whiteLive;
+    [SerializeField] Material amberLive;
     [SerializeField] Material redStealth;
     [SerializeField] Material greenStealth;
     [SerializeField] Material blueStealth;
+    [SerializeField] Material whiteStealth;
+    [SerializeField] Material amberStealth;
 
     [Header("Floats and Float objects")]
-    [SerializeField] GameObject xFloatObj;
-    [SerializeField] TextMeshPro xFloatText;
+    [SerializeField] GameObject redChanObj;
+    [SerializeField] TextMeshPro redChanText;
     [SerializeField] GameObject redLiveBox;
-    [SerializeField] GameObject yFloatObj;
-    [SerializeField] TextMeshPro yFloatText;
+    [SerializeField] GameObject greenChanObj;
+    [SerializeField] TextMeshPro greenChanText;
     [SerializeField] GameObject greenLiveBox;
-    [SerializeField] GameObject zFloatObj;
-    [SerializeField] TextMeshPro zFloatText;
+    [SerializeField] GameObject blueChanObj;
+    [SerializeField] TextMeshPro blueChanText;
     [SerializeField] GameObject blueLiveBox;
+    [SerializeField] GameObject whiteChanObj;
+    [SerializeField] TextMeshPro whiteChanText;
+    [SerializeField] GameObject whiteLiveBox;
+    [SerializeField] GameObject amberChanObj;
+    [SerializeField] TextMeshPro amberChanText;
+    [SerializeField] GameObject amberLiveBox;
+    [SerializeField] GameObject globalDimmerObj;
+    [SerializeField] TextMeshPro globalDimmerText;
+    [SerializeField] GameObject globalLiveBox;
 
     [SerializeField] [Range(0.2f, 0.6f)] float maxFloatDist = 0.3f;
     [SerializeField] [Range(0f, 0.2f)] float floatOffset = 0.05f;
     [SerializeField] Vector3 palmMidpointOffset;
 
     [Header("OSC controller")]
-    [SerializeField] string xOSCMessage = "/xOSCfloat/";
-    [SerializeField] string yOSCMessage = "/yOSCfloat/";
-    [SerializeField] string zOSCMessage = "/zOSCfloat/";
+    [SerializeField] string redOSCMessage = "/redOSCfloat/";
+    [SerializeField] string greenOSCMessage = "/greenOSCfloat/";
+    [SerializeField] string blueOSCMessage = "/blueOSCfloat/";
+    [SerializeField] string whiteOSCMessage = "/whiteOSCfloat/";
+    [SerializeField] string amberOSCMessage = "/amberOSCfloat/";
+    [SerializeField] string globalOSCMessage = "/globalOSCfloat/";
 
-    public enum RGB { red, green, blue };
+    public enum RGB { red, green, blue, white, amber, all };
     public RGB currColor = RGB.red;
 
     [Header("DMX values")]
     public int redVal = 0;
     public int greenVal = 0;
     public int blueVal = 0;
+    public int whiteVal = 0;
+    public int amberVal = 0;
+    public int globalDimmerVal = 0;
+    #endregion
 
     bool live = false;
     float palmDist;
@@ -705,145 +750,295 @@ public class PrecisionController : MonoBehaviour
     Vector3 midpointIndexes;
     Vector3 masterOrbPos;
 
-    private void RGBFloats()
+    private void RGBChannels()
     {
         if (director.readGestures)
         {
-            // red
-            if (handTracking.palmsOpposed && handTracking.staffCamUp90)
+            if (currMode == Mode.rgb)
             {
-                currColor = RGB.red;
-                float xFloat;
-
-                xFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-                if (indexMidDist > maxFloatDist) xFloat = 0;
-                if (indexMidDist < floatOffset) xFloat = 1;
-                var redText = Mathf.RoundToInt(xFloat * 100);
-
-                xFloatObj.SetActive(true);
-                xFloatObj.transform.position = midpointIndexes;
-                xFloatObj.transform.rotation = Camera.main.transform.rotation;
-                xFloatText.text = redText + "%".ToString();
-
-                if (handTracking.rightOpen && handTracking.leftOpen)
+                // red
+                if (handTracking.palmsOpposed && handTracking.staffCamUp90 && handTracking.staffFloorFor90)
                 {
-                    live = true;
-                    redLiveBox.SetActive(true);
-                    redVal = Mathf.RoundToInt(xFloat * 255);
-                    SendOSC(xOSCMessage, xFloat);
+                    currColor = RGB.red;
+                    float redFloat;
 
-                    if (rgbControl == Lights.SkyPanel1)
+                    redFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                    if (indexMidDist > maxFloatDist) redFloat = 0;
+                    if (indexMidDist < floatOffset) redFloat = 1;
+                    var redText = Mathf.RoundToInt(redFloat * 100);
+
+                    redChanObj.SetActive(true);
+                    redChanObj.transform.position = midpointIndexes;
+                    redChanObj.transform.rotation = Camera.main.transform.rotation;
+                    redChanText.text = redText + "%".ToString();
+
+                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
                     {
-                        dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+                        live = true;
+                        redLiveBox.SetActive(true);
+                        redVal = Mathf.RoundToInt(redFloat * 255);
+                        SendOSC(redOSCMessage, redFloat);
+
+                        if (rgbControl == Lights.SkyPanel1)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], redVal);
+                        }
+                        if (rgbControl == Lights.SkyPanel2)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+                        }
+                        if (rgbControl == PrecisionController.Lights.none)
+                        {
+                            return;
+                        }
                     }
-                    if (rgbControl == Lights.SkyPanel2)
+                    else
                     {
-                        dmx.SetAddress(dmxChan.SkyPanel2[redChan], redVal);
+                        live = false;
+                        redLiveBox.SetActive(false);
                     }
-                    if (rgbControl == PrecisionController.Lights.none)
+                }
+                else redChanObj.SetActive(false);
+
+                // green
+                if (handTracking.palmsOpposed && handTracking.staffCamUp45 && handTracking.staffFloorFor90)
+                {
+                    currColor = RGB.green;
+                    float greenFloat;
+
+                    greenFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                    if (indexMidDist > maxFloatDist) greenFloat = 0;
+                    if (indexMidDist < floatOffset) greenFloat = 1;
+                    var greenText = Mathf.RoundToInt(greenFloat * 100);
+
+                    greenChanObj.SetActive(true);
+                    greenChanObj.transform.position = midpointIndexes;
+                    greenChanObj.transform.rotation = Camera.main.transform.rotation;
+                    greenChanText.text = greenText + "%".ToString();
+
+                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
                     {
-                        return;
+                        live = true;
+                        greenLiveBox.SetActive(true);
+                        greenVal = Mathf.RoundToInt(greenFloat * 255);
+                        SendOSC(greenOSCMessage, greenFloat);
+                        if (rgbControl == Lights.SkyPanel1)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+                        }
+                        if (rgbControl == Lights.SkyPanel2)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
+                        }
+                        if (rgbControl == Lights.none)
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        live = false;
+                        greenLiveBox.SetActive(false);
                     }
                 }
                 else
                 {
-                    live = false;
-                    redLiveBox.SetActive(false);
+                    greenChanObj.SetActive(false);
                 }
-            }
-            else xFloatObj.SetActive(false);
 
-            // green
-            if (handTracking.palmsOpposed && handTracking.staffCamUp45)
-            {
-                currColor = RGB.green;
-                float yFloat;
-
-                yFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-                if (indexMidDist > maxFloatDist) yFloat = 0;
-                if (indexMidDist < floatOffset) yFloat = 1;
-                var greenText = Mathf.RoundToInt(yFloat * 100);
-
-                yFloatObj.SetActive(true);
-                yFloatObj.transform.position = midpointIndexes;
-                yFloatObj.transform.rotation = Camera.main.transform.rotation;
-                yFloatText.text = greenText + "%".ToString();
-
-                if (handTracking.rightOpen && handTracking.leftOpen)
+                // blue
+                if (handTracking.palmsOpposed && handTracking.staffCamUp135 && handTracking.staffFloorFor90)
                 {
-                    live = true;
-                    greenLiveBox.SetActive(true);
-                    greenVal = Mathf.RoundToInt(yFloat * 255);
-                    SendOSC(yOSCMessage, yFloat);
-                    if (rgbControl == Lights.SkyPanel1)
+                    currColor = RGB.blue;
+                    float blueFloat;
+
+                    blueFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                    if (indexMidDist > maxFloatDist) blueFloat = 0;
+                    if (indexMidDist < floatOffset) blueFloat = 1;
+                    var blueText = Mathf.RoundToInt(blueFloat * 100);
+
+                    blueChanObj.SetActive(true);
+                    blueChanObj.transform.position = midpointIndexes;
+                    blueChanObj.transform.rotation = Camera.main.transform.rotation;
+                    blueChanText.text = blueText + "%".ToString();
+
+                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
                     {
-                        dmx.SetAddress(dmxChan.SkyPanel1[greenChan], greenVal);
+                        live = true;
+                        blueLiveBox.SetActive(true);
+                        blueVal = Mathf.RoundToInt(blueFloat * 255);
+                        SendOSC(blueOSCMessage, blueFloat);
+                        if (rgbControl == Lights.SkyPanel1)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
+                        }
+                        if (rgbControl == Lights.SkyPanel2)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
+                        }
+                        if (rgbControl == Lights.none)
+                        {
+                            return;
+                        }
                     }
-                    if (rgbControl == Lights.SkyPanel2)
+                    else
                     {
-                        dmx.SetAddress(dmxChan.SkyPanel2[greenChan], greenVal);
-                    }
-                    if (rgbControl == Lights.none)
-                    {
-                        return;
+                        live = false;
+                        blueLiveBox.SetActive(false);
                     }
                 }
                 else
                 {
-                    live = false;
-                    greenLiveBox.SetActive(false);
+                    blueChanObj.SetActive(false);
                 }
-            }
-            else
-            {
-                yFloatObj.SetActive(false);
-            }
 
-            // blue
-            if (handTracking.palmsOpposed && handTracking.staffCamUp135)
-            {
-                currColor = RGB.blue;
-                float zFloat;
-
-                zFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-                if (indexMidDist > maxFloatDist) zFloat = 0;
-                if (indexMidDist < floatOffset) zFloat = 1;
-                var blueText = Mathf.RoundToInt(zFloat * 100);
-
-                zFloatObj.SetActive(true);
-                zFloatObj.transform.position = midpointIndexes;
-                zFloatObj.transform.rotation = Camera.main.transform.rotation;
-                zFloatText.text = blueText + "%".ToString();
-
-                if (handTracking.rightOpen && handTracking.leftOpen)
+                // white
+                if (handTracking.palmsOpposed && handTracking.staffCamUp00 && handTracking.staffFloorFor90)
                 {
-                    live = true;
-                    blueLiveBox.SetActive(true);
-                    blueVal = Mathf.RoundToInt(zFloat * 255);
-                    SendOSC(zOSCMessage, zFloat);
-                    if (rgbControl == Lights.SkyPanel1)
+                    currColor = RGB.white;
+                    float whiteFloat;
+
+                    whiteFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                    if (indexMidDist > maxFloatDist) whiteFloat = 0;
+                    if (indexMidDist < floatOffset) whiteFloat = 1;
+                    var whiteText = Mathf.RoundToInt(whiteFloat * 100);
+
+                    whiteChanObj.SetActive(true);
+                    whiteChanObj.transform.position = midpointIndexes;
+                    whiteChanObj.transform.rotation = Camera.main.transform.rotation;
+                    whiteChanText.text = whiteText + "%".ToString();
+
+                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
                     {
-                        dmx.SetAddress(dmxChan.SkyPanel1[blueChan], blueVal);
+                        live = true;
+                        whiteLiveBox.SetActive(true);
+                        whiteVal = Mathf.RoundToInt(whiteFloat * 255);
+                        SendOSC(whiteOSCMessage, whiteFloat);
+                        if (rgbControl == Lights.SkyPanel1)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], whiteVal);
+                        }
+                        if (rgbControl == Lights.SkyPanel2)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel2[whiteChan], whiteVal);
+                        }
+                        if (rgbControl == Lights.none)
+                        {
+                            return;
+                        }
                     }
-                    if (rgbControl == Lights.SkyPanel2)
+                    else
                     {
-                        dmx.SetAddress(dmxChan.SkyPanel2[blueChan], blueVal);
-                    }
-                    if (rgbControl == Lights.none)
-                    {
-                        return;
+                        live = false;
+                        whiteLiveBox.SetActive(false);
                     }
                 }
                 else
                 {
-                    live = false;
-                    blueLiveBox.SetActive(false);
+                    whiteChanObj.SetActive(false);
+                }
+
+                // amber
+                if (hasAmber)
+                {
+                    if (handTracking.palmsOpposed && handTracking.staffCamUp180 && handTracking.staffFloorFor90)
+                    {
+                        currColor = RGB.amber;
+                        float amberFloat;
+
+                        amberFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                        if (indexMidDist > maxFloatDist) amberFloat = 0;
+                        if (indexMidDist < floatOffset) amberFloat = 1;
+                        var amberText = Mathf.RoundToInt(amberFloat * 100);
+
+                        amberChanObj.SetActive(true);
+                        amberChanObj.transform.position = midpointIndexes;
+                        amberChanObj.transform.rotation = Camera.main.transform.rotation;
+                        amberChanText.text = amberText + "%".ToString();
+
+                        if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
+                        {
+                            live = true;
+                            amberLiveBox.SetActive(true);
+                            amberVal = Mathf.RoundToInt(amberFloat * 255);
+                            SendOSC(amberOSCMessage, amberFloat);
+                            if (rgbControl == Lights.SkyPanel1)
+                            {
+                                dmx.SetAddress(dmxChan.SkyPanel1[amberChan], amberVal);
+                            }
+                            if (rgbControl == Lights.SkyPanel2)
+                            {
+                                dmx.SetAddress(dmxChan.SkyPanel2[amberChan], amberVal);
+                            }
+                            if (rgbControl == Lights.none)
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            live = false;
+                            amberLiveBox.SetActive(false);
+                        }
+                    }
+                    else
+                    {
+                        amberChanObj.SetActive(false);
+                    }
+                }                   
+                else
+                {
+                    return;
+                }
+
+                // global dimmer
+                if (handTracking.palmsOpposed && handTracking.staffFloorFor00 && handTracking.staffCamUp90 || handTracking.palmsParallel && handTracking.staffFloorFor00 && handTracking.staffCamUp90)
+                {
+                    currColor = RGB.all;
+                    float allFloat;
+
+                    allFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                    if (indexMidDist > maxFloatDist) allFloat = 0;
+                    if (indexMidDist < floatOffset) allFloat = 1;
+                    var globalText = Mathf.RoundToInt(allFloat * 100);
+
+                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
+                    {
+                        live = true;
+                        globalLiveBox.SetActive(true);
+                        globalDimmerVal = Mathf.RoundToInt(allFloat * 255);
+                        SendOSC(globalOSCMessage, allFloat);
+                        
+                        if (rgbControl == Lights.SkyPanel1)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
+                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
+                        }
+                        if (rgbControl == Lights.SkyPanel2)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
+                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
+                        }
+                        else return;
+                    }
+                    else
+                    {
+                        live = false;
+                        globalLiveBox.SetActive(false);
+                    }
+                }
+                else
+                {
+                    globalDimmerObj.SetActive(false);
                 }
             }
-            else
-            {
-                zFloatObj.SetActive(false);
-            }
+            else return;
         }
         else return;
     }
@@ -860,70 +1055,118 @@ public class PrecisionController : MonoBehaviour
 
     private void ProcessHandRings()
     {
-        if (!director.readGestures)
+        if (currMode == Mode.rgb)
+        {
+            // right hand
+            if (handTracking.rightHand)
+            {
+                rightRingParent.SetActive(true);
+
+                if (currColor == RGB.red)
+                {
+                    if (!live) rightRing.material = redStealth;
+                    else rightRing.material = redLive;
+
+                }
+                if (currColor == RGB.green)
+                {
+                    if (!live) rightRing.material = greenStealth;
+                    else rightRing.material = greenLive;
+                }
+                if (currColor == RGB.blue)
+                {
+                    if (!live) rightRing.material = blueStealth;
+                    else rightRing.material = blueLive;
+                }
+                if (currColor == RGB.white)
+                {
+                    if (!live) rightRing.material = whiteStealth;
+                    else rightRing.material = whiteLive;
+                }
+                if (currColor == RGB.amber)
+                {
+                    if (!live) rightRing.material = amberStealth;
+                    else rightRing.material = amberLive;
+                }
+                if (currColor == RGB.all)
+                {
+                    StartCoroutine("CycleRingColors", rightRing);
+                }
+            }
+            else rightRingParent.SetActive(false);
+
+            // left hand
+            if (handTracking.leftHand)
+            {
+                leftRingParent.SetActive(true);
+                if (currColor == RGB.red)
+                {
+                    if (!live) leftRing.material = redStealth;
+                    else leftRing.material = redLive;
+
+                }
+                if (currColor == RGB.green)
+                {
+                    if (!live) leftRing.material = greenStealth;
+                    else leftRing.material = greenLive;
+                }
+                if (currColor == RGB.blue)
+                {
+                    if (!live) leftRing.material = blueStealth;
+                    else leftRing.material = blueLive;
+                }
+                if (currColor == RGB.white)
+                {
+                    if (!live) leftRing.material = whiteStealth;
+                    else leftRing.material = whiteLive;
+                }
+                if (currColor == RGB.amber)
+                {
+                    if (!live) leftRing.material = amberStealth;
+                    else leftRing.material = amberLive;
+                }
+                if (currColor == RGB.all)
+                {
+                    StartCoroutine("CycleRingColors", leftRing);
+                }
+            }
+            else leftRingParent.SetActive(false);
+        }
+        else
         {
             rightRingParent.SetActive(false);
             leftRingParent.SetActive(false);
         }
-        else
+    }
+
+    IEnumerator CycleRingColors(Renderer ring)
+    {
+        while (!live)
         {
-            if (currMode == Mode.rgb)
-            {
-                // right hand
-                if (handTracking.rightHand)
-                {
-                    rightRingParent.SetActive(true);
-
-                    if (currColor == RGB.red)
-                    {
-                        if (!live) rightRing.material = redStealth;
-                        else rightRing.material = redLive;
-
-                    }
-                    if (currColor == RGB.green)
-                    {
-                        if (!live) rightRing.material = greenStealth;
-                        else rightRing.material = greenLive;
-                    }
-                    if (currColor == RGB.blue)
-                    {
-                        if (!live) rightRing.material = blueStealth;
-                        else rightRing.material = blueLive;
-                    }
-                }
-                else rightRingParent.SetActive(false);
-
-                // left hand
-                if (handTracking.leftHand)
-                {
-                    leftRingParent.SetActive(true);
-                    if (currColor == RGB.red)
-                    {
-                        if (!live) leftRing.material = redStealth;
-                        else leftRing.material = redLive;
-
-                    }
-                    if (currColor == RGB.green)
-                    {
-                        if (!live) leftRing.material = greenStealth;
-                        else leftRing.material = greenLive;
-                    }
-                    if (currColor == RGB.blue)
-                    {
-                        if (!live) leftRing.material = blueStealth;
-                        else leftRing.material = blueLive;
-                    }
-                }
-                else leftRingParent.SetActive(false);
-            }
-            else
-            {
-                rightRingParent.SetActive(false);
-                leftRingParent.SetActive(false);
-            }
+            ring.material = redStealth;
+            yield return new WaitForSeconds(0.2f);
+            ring.material = greenStealth;
+            yield return new WaitForSeconds(0.2f);
+            ring.material = blueStealth;
+            yield return new WaitForSeconds(0.2f);
+            ring.material = whiteStealth;
+            yield return new WaitForSeconds(0.2f);
+            if (hasAmber) ring.material = amberStealth;
+            yield return new WaitForSeconds(0.2f);
         }
-        
-        
+        while (live)
+        {
+            ring.material = redLive;
+            yield return new WaitForSeconds(0.2f);
+            ring.material = greenLive;
+            yield return new WaitForSeconds(0.2f);
+            ring.material = blueLive;
+            yield return new WaitForSeconds(0.2f);
+            ring.material = whiteLive;
+            yield return new WaitForSeconds(0.2f);
+            if (hasAmber) ring.material = amberLive;
+            yield return new WaitForSeconds(0.2f);
+        }
     }
     #endregion
 

@@ -91,8 +91,16 @@ public class Director : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (readGestures) gesturesOffHUD.SetActive(false);
-        else gesturesOffHUD.SetActive(true);
+        if (readGestures)
+        {
+            gesturesOffHUD.SetActive(false);
+        }
+        else
+        {
+            if (handTracking.rightHand) gesturesOffHUD.SetActive(true);
+            else gesturesOffHUD.SetActive(false);
+        }
+
         if (handTracking.rightHand) gestureToggleObj.SetActive(true);
         else gestureToggleObj.SetActive(false);
         if (handTracking.leftHand) leftHandToggle.SetActive(true);
