@@ -756,6 +756,58 @@ public class PrecisionController : MonoBehaviour
         {
             if (currMode == Mode.rgb)
             {
+                // global dimmer
+                if (handTracking.staffFloorFor00)
+                {
+                    currColor = RGB.all;
+                    float allFloat;
+
+                    allFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
+                    if (indexMidDist > maxFloatDist) allFloat = 0;
+                    if (indexMidDist < floatOffset) allFloat = 1;
+                    var globalText = Mathf.RoundToInt(allFloat * 100);
+
+                    globalDimmerObj.SetActive(true);
+                    globalDimmerObj.transform.position = midpointIndexes;
+                    globalDimmerObj.transform.rotation = Camera.main.transform.rotation;
+                    globalDimmerText.text = globalText + "%".ToString();
+
+                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
+                    {
+                        live = true;
+                        globalLiveBox.SetActive(true);
+                        globalDimmerVal = Mathf.RoundToInt(allFloat * 255);
+                        SendOSC(globalOSCMessage, allFloat);
+
+                        if (rgbControl == Lights.SkyPanel1)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
+                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
+                        }
+                        if (rgbControl == Lights.SkyPanel2)
+                        {
+                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
+                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
+                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
+                        }
+                        else return;
+                    }
+                    else
+                    {
+                        live = false;
+                        globalLiveBox.SetActive(false);
+                    }
+                }
+                else
+                {
+                    globalDimmerObj.SetActive(false);
+                }
+
                 // red
                 if (handTracking.palmsOpposed && handTracking.staffCamUp90 && handTracking.staffFloorFor90)
                 {
@@ -990,53 +1042,6 @@ public class PrecisionController : MonoBehaviour
                 {
                     return;
                 }
-
-                // global dimmer
-                if (handTracking.palmsOpposed && handTracking.staffFloorFor00 && handTracking.staffCamUp90 || handTracking.palmsParallel && handTracking.staffFloorFor00 && handTracking.staffCamUp90)
-                {
-                    currColor = RGB.all;
-                    float allFloat;
-
-                    allFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-                    if (indexMidDist > maxFloatDist) allFloat = 0;
-                    if (indexMidDist < floatOffset) allFloat = 1;
-                    var globalText = Mathf.RoundToInt(allFloat * 100);
-
-                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
-                    {
-                        live = true;
-                        globalLiveBox.SetActive(true);
-                        globalDimmerVal = Mathf.RoundToInt(allFloat * 255);
-                        SendOSC(globalOSCMessage, allFloat);
-                        
-                        if (rgbControl == Lights.SkyPanel1)
-                        {
-                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
-                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
-                        }
-                        if (rgbControl == Lights.SkyPanel2)
-                        {
-                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
-                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
-                        }
-                        else return;
-                    }
-                    else
-                    {
-                        live = false;
-                        globalLiveBox.SetActive(false);
-                    }
-                }
-                else
-                {
-                    globalDimmerObj.SetActive(false);
-                }
             }
             else return;
         }
@@ -1144,28 +1149,28 @@ public class PrecisionController : MonoBehaviour
         while (!live)
         {
             ring.material = redStealth;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.4f);
             ring.material = greenStealth;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.4f);
             ring.material = blueStealth;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.4f);
             ring.material = whiteStealth;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.4f);
             if (hasAmber) ring.material = amberStealth;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.4f);
         }
         while (live)
         {
             ring.material = redLive;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             ring.material = greenLive;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             ring.material = blueLive;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             ring.material = whiteLive;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             if (hasAmber) ring.material = amberLive;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
     #endregion
