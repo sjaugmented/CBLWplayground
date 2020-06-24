@@ -391,37 +391,47 @@ public class MagicController : MonoBehaviour
 
     private void ProcessHandClouds()
     {
-        // right cloud
-        if (handTracking.rightHand)
+        if (!director.readGestures)
         {
-            rightCloudParent.SetActive(true);
-            for (int i = 0; i < rightClouds.Count; i++)
-            {
-                if (i == elementID)
-                {
-                    rightClouds[i].SetActive(true);
-                }
-                else rightClouds[i].SetActive(false);
-            }
+            rightCloudParent.SetActive(false);
+            leftCloudParent.SetActive(false);
         }
-        else rightCloudParent.SetActive(false);
-
-
-        // left cloud
-        if (handTracking.leftHand)
+        else
         {
-            leftCloudParent.SetActive(true);
-
-            for (int i = 0; i < leftClouds.Count; i++)
+            // right cloud
+            if (handTracking.rightHand)
             {
-                if (i == elementID)
+                rightCloudParent.SetActive(true);
+                for (int i = 0; i < rightClouds.Count; i++)
                 {
-                    leftClouds[i].SetActive(true);
+                    if (i == elementID)
+                    {
+                        rightClouds[i].SetActive(true);
+                    }
+                    else rightClouds[i].SetActive(false);
                 }
-                else leftClouds[i].SetActive(false);
             }
+            else rightCloudParent.SetActive(false);
+
+
+            // left cloud
+            if (handTracking.leftHand)
+            {
+                leftCloudParent.SetActive(true);
+
+                for (int i = 0; i < leftClouds.Count; i++)
+                {
+                    if (i == elementID)
+                    {
+                        leftClouds[i].SetActive(true);
+                    }
+                    else leftClouds[i].SetActive(false);
+                }
+            }
+            else leftCloudParent.SetActive(false);
         }
-        else leftCloudParent.SetActive(false);
+
+        
     }
 
     private void TurnOffMasterOrbs()

@@ -96,7 +96,11 @@ public class RGBController : MonoBehaviour
     void Update()
     {
         CalcHandPositions();
+        RGBFloats();
+    }
 
+    private void RGBFloats()
+    {
         if (director.readGestures)
         {
             // red
@@ -236,7 +240,6 @@ public class RGBController : MonoBehaviour
             }
         }
         else return;
-        
     }
 
     private void CalcHandPositions()
