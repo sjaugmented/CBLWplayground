@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
@@ -112,19 +113,11 @@ public class PrecisionController : MonoBehaviour
         if (director.readGestures)
         {
             #region Dimmer/Kelvin controls
-            if (handTracking.rightThumbsUp || handTracking.leftThumbsUp)
+            if (handTracking.rightRockOn || handTracking.leftThumbsUp)
             {
                 currMode = Mode.kelvin;
-                rgbActive = false;
-                if (!kelvinMode)
-                {
-                    dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
-                    dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
-                    dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
-                    dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
-                    kelvinMode = true;
-                }
-                
+                SetKelvinXover();
+
             }
             else
             {
@@ -133,17 +126,9 @@ public class PrecisionController : MonoBehaviour
             #endregion
 
             #region RGB controls
-            if (!handTracking.rightThumbsUp && !handTracking.leftThumbsUp && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
+            if (!handTracking.rightRockOn && !handTracking.leftThumbsUp && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
             {
-                kelvinMode = false;
-                if (!rgbActive)
-                {
-                    dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
-                    dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
-                    dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
-                    dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
-                    rgbActive = true;
-                }
+                
 
             }
             else
@@ -169,12 +154,41 @@ public class PrecisionController : MonoBehaviour
         }
     }
 
+    private void SetKelvinXover()
+    {
+        rgbActive = false;
+        if (!kelvinMode)
+        {
+            dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 0);
+            dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 0);
+            kelvinMode = true;
+        }
+    }
+
+    private void SetRGBXover()
+    {
+        kelvinMode = false;
+        if (!rgbActive)
+        {
+            dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
+            dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);
+            dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], 255);
+            dmx.SetAddress(dmxChan.SkyPanel2[xOverChan], 255);
+            rgbActive = true;
+        }
+    }
+
+    public bool initialCheckLeft;
+    public int timerLeft = 60;
+
     private void KelvinFloats()
     {
         if (currMode == Mode.kelvin)
         {
             // right hand control
-            if (handTracking.rightThumbsUp)
+            if (handTracking.rightRockOn)
             {
                 ToggleRightTether();
             }
@@ -185,14 +199,14 @@ public class PrecisionController : MonoBehaviour
 
             if (rightTether)
             {
-                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50)
+                if (handTracking.rightRockOn && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 70 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
                 {
                     rightDimmer = true;
                     ProcessRightHandControls();
                 }
                 else rightDimmer = false;
 
-                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135)
+                if (handTracking.rightRockOn && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135 && handTracking.rtPalmRtCamRt >= 60 && handTracking.rtPalmRtCamRt < 115)
                 {
                     rightKelvin = true;
                     ProcessRightHandControls();
@@ -203,23 +217,45 @@ public class PrecisionController : MonoBehaviour
             // left hand control
             if (handTracking.leftThumbsUp)
             {
-                ToggleLeftTether();
+                if (!initialCheckLeft)
+                {
+                    initialCheckLeft = true;
+                }
+                else
+                {
+                    ToggleLeftTether();
+
+                    if (timerLeft > 0)
+                    {
+                        timerLeft--;
+                    }
+                    else
+                    {
+                        initialCheckLeft = false;
+                        timerLeft = 60;
+                    }
+                }
+
+                
+                //ToggleLeftTether();
             }
             else
             {
                 leftTether = false;
+                initialCheckLeft = false;
+                timerLeft = 60;
             }
 
             if (leftTether)
             {
-                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50)
+                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50 && handTracking.ltPalmRtCamRt >= 0 && handTracking.ltPalmRtCamRt < 50)
                 {
                     leftDimmer = true;
                     ProcessLeftHandControls();
                 }
                 else leftDimmer = false;
 
-                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135)
+                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135 && handTracking.ltPalmRtCamRt >= 70 && handTracking.ltPalmRtCamRt < 105)
                 {
                     leftKelvin = true;
                     ProcessLeftHandControls();

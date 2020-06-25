@@ -12,9 +12,9 @@ public class HandTracking : MonoBehaviour
     //[SerializeField] bool fingerCasting = true;
 
     // right hand joints
-    public MixedRealityPose rightPalm, rtIndexTip, rtIndexMid, rtIndexKnuckle, rtMiddleTip, rtMiddleKnuckle, rtPinkyTip, rtThumbTip, rtThumbDistal;
+    public MixedRealityPose rightPalm, rtIndexTip, rtIndexMid, rtIndexKnuckle, rtMiddleTip, rtMiddleKnuckle, rtRingTip, rtPinkyTip, rtThumbTip, rtThumbDistal;
     // left hand joints
-    public MixedRealityPose leftPalm, ltIndexTip, ltIndexMid, ltIndexKnuckle, ltMiddleTip, ltMiddleKnuckle, ltPinkyTip, ltThumbTip, ltThumbDistal;
+    public MixedRealityPose leftPalm, ltIndexTip, ltIndexMid, ltIndexKnuckle, ltMiddleTip, ltMiddleKnuckle, ltRingTip, ltPinkyTip, ltThumbTip, ltThumbDistal;
 
     #region public position booleans
     // staff
@@ -53,7 +53,9 @@ public class HandTracking : MonoBehaviour
     #endregion
 
     public float rtPalmUpFloorUp;
+    public float rtPalmRtCamRt;
     public float ltPalmUpFloorUp;
+    public float ltPalmRtCamRt;
 
     Transform cam;
     Transform floor;
@@ -161,7 +163,7 @@ public class HandTracking : MonoBehaviour
         float rtPalmUpFloorFor = Vector3.Angle(rightPalm.Up, floor.forward);
         float rtPalmForCamFor = Vector3.Angle(rightPalm.Forward, cam.forward);
         float rtPalmRtCamFor = Vector3.Angle(rightPalm.Right, cam.forward);
-        float rtPalmRtCamRt = Vector3.Angle(rightPalm.Right, cam.right);
+        rtPalmRtCamRt = Vector3.Angle(rightPalm.Right, cam.right);
         float rtPalmRtCamUp = Vector3.Angle(rightPalm.Right, cam.up);
         float rtPalmForFloorFor = Vector3.Angle(rightPalm.Forward, floor.forward);
         float rtPalmRtFloorFor = Vector3.Angle(rightPalm.Right, floor.forward);
@@ -176,7 +178,7 @@ public class HandTracking : MonoBehaviour
         float ltPalmUpFloorFor = Vector3.Angle(leftPalm.Up, floor.forward);
         float ltPalmForCamFor = Vector3.Angle(leftPalm.Forward, cam.forward);
         float ltPalmRtCamFor = Vector3.Angle(leftPalm.Right, cam.forward);
-        float ltPalmRtCamRt = Vector3.Angle(leftPalm.Right, cam.right);
+        ltPalmRtCamRt = Vector3.Angle(leftPalm.Right, cam.right);
         float ltPalmRtCamUp = Vector3.Angle(leftPalm.Right, cam.up);
         float ltPalmForFloorFor = Vector3.Angle(leftPalm.Forward, floor.forward);
         float ltPalmRtFloorFor = Vector3.Angle(leftPalm.Right, floor.forward);
@@ -309,6 +311,7 @@ public class HandTracking : MonoBehaviour
         float rtIndForPalmFor = Vector3.Angle(rtIndexTip.Forward, rightPalm.Forward);
         float rtIndForCamFor = Vector3.Angle(rtIndexTip.Forward, cam.forward);
         float rtMidForPalmFor = Vector3.Angle(rtMiddleTip.Forward, rightPalm.Forward);
+        float rtRingForPalmFor = Vector3.Angle(rtRingTip.Forward, rightPalm.Forward);
         float rtPinkForPalmFor = Vector3.Angle(rtPinkyTip.Forward, rightPalm.Forward);
         float rtThumbForCamFor = Vector3.Angle(rtThumbTip.Forward, cam.forward);
         float rtThumbForPalmFor = Vector3.Angle(rtThumbTip.Forward, rightPalm.Forward);
@@ -323,6 +326,7 @@ public class HandTracking : MonoBehaviour
         float ltIndForPalmFor = Vector3.Angle(ltIndexTip.Forward, leftPalm.Forward);
         float ltIndForCamFor = Vector3.Angle(ltIndexTip.Forward, cam.forward);
         float ltMidForPalmFor = Vector3.Angle(ltMiddleTip.Forward, leftPalm.Forward);
+        float ltRingForPalmFor = Vector3.Angle(ltRingTip.Forward, leftPalm.Forward);
         float ltPinkForPalmFor = Vector3.Angle(ltPinkyTip.Forward, leftPalm.Forward);
         float ltThumbForCamFor = Vector3.Angle(ltThumbTip.Forward, cam.forward);
         float ltThumbForPalmFor = Vector3.Angle(ltThumbTip.Forward, leftPalm.Forward);
@@ -347,12 +351,12 @@ public class HandTracking : MonoBehaviour
         #endregion
 
         // right hand
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbDistalJoint, Handedness.Right, out rtThumbDistal) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm))
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Right, out rtIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Right, out rtIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.RingTip, Handedness.Right, out rtRingTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbDistalJoint, Handedness.Right, out rtThumbDistal) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm))
         {
             rightHand = true;
 
             // look for rockOn
-            if (IsWithinRange(rtIndForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && !IsWithinRange(rtMidForPalmFor, 0, bigMargin))
+            if (IsWithinRange(rtIndForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin) && !IsWithinRange(rtMidForPalmFor, 0, 90) && !IsWithinRange(rtRingForPalmFor, 0, 90))
             {
                 rightRockOn = true;
             }
@@ -418,12 +422,12 @@ public class HandTracking : MonoBehaviour
         }
 
         // left hand
-        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbDistalJoint, Handedness.Left, out ltThumbDistal) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
+        if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndexTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexMiddleJoint, Handedness.Left, out ltIndexMid) && HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexKnuckle, Handedness.Left, out ltIndexKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddleTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.RingTip, Handedness.Left, out ltRingTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinkyTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumbTip) && HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbDistalJoint, Handedness.Left, out ltThumbDistal) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm))
         {
             leftHand = true;
 
             // look for rockOn
-            if (IsWithinRange(ltIndForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && !IsWithinRange(ltMidForPalmFor, 0, bigMargin))
+            if (IsWithinRange(ltIndForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin) && !IsWithinRange(ltMidForPalmFor, 0, 90) && !IsWithinRange(ltRingForPalmFor, 0, 90))
             {
                 leftRockOn = true;
             }
