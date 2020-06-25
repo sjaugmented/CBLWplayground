@@ -782,6 +782,7 @@ public class PrecisionController : MonoBehaviour
     bool live = false;
     float palmDist;
     float indexMidDist;
+    float indexThumbdist;
     int floatScale;
     Vector3 midpointIndexes;
     Vector3 masterOrbPos;
@@ -792,15 +793,15 @@ public class PrecisionController : MonoBehaviour
         {
             if (currMode == Mode.rgb)
             {
-                // global dimmer
-                if (handTracking.staffFloorFor00)
+                // global dimmer - viewfinder pose, reads either hand on top
+                if (handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmRtFloorUp >= 0 && handTracking.rtPalmRtFloorUp < 40 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt >130 && handTracking.ltPalmRtFloorUp >= 0 && handTracking.ltPalmRtFloorUp < 40 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50 || handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmRtFloorUp <= 180 && handTracking.rtPalmRtFloorUp > 140 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt > 130 && handTracking.ltPalmRtFloorUp <= 180 && handTracking.ltPalmRtFloorUp > 140 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50)
                 {
                     currColor = RGB.all;
                     float allFloat;
 
-                    allFloat = 1 - (indexMidDist - floatOffset) / (0.2f - floatOffset);
-                    if (indexMidDist > 0.2f) allFloat = 0;
-                    if (indexMidDist < floatOffset) allFloat = 1;
+                    allFloat = 1 - (indexThumbdist - floatOffset) / (maxFloatDist - floatOffset);
+                    if (indexThumbdist > 0.2f) allFloat = 0;
+                    if (indexThumbdist < floatOffset) allFloat = 1;
                     var globalText = Mathf.RoundToInt(allFloat * 100);
 
                     globalDimmerObj.SetActive(true);
@@ -1088,6 +1089,7 @@ public class PrecisionController : MonoBehaviour
     {
         palmDist = Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position);
         indexMidDist = Vector3.Distance(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position);
+        indexThumbdist = Vector3.Distance(handTracking.rtIndexTip.Position, handTracking.ltThumbTip.Position);
         midpointIndexes = Vector3.Lerp(handTracking.rtIndexMid.Position, handTracking.ltIndexMid.Position, 0.5f);
 
         var midpointPalms = Vector3.Lerp(handTracking.rightPalm.Position, handTracking.leftPalm.Position, 0.5f);

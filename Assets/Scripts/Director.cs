@@ -112,7 +112,7 @@ public class Director : MonoBehaviour
         if (handTracking.leftHand) leftHandToggle.SetActive(true);
         else leftHandToggle.SetActive(false);
 
-        if (handTracking.rightFist && handTracking.leftFist && handTracking.palmsOpposed && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.1f || handTracking.rightOpen && handTracking.leftOpen && handTracking.palmsOpposed && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.1f || handTracking.rightOpen && handTracking.leftOpen && handTracking.palmsParallel && Vector3.Angle(handTracking.rightPalm.Forward, handTracking.leftPalm.Forward) >=150 && Vector3.Angle(handTracking.rightPalm.Forward, handTracking.leftPalm.Forward) >= 180 && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.1f)
+        if (handTracking.rightFist && handTracking.leftFist && handTracking.palmsOpposed && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.2f || handTracking.rightOpen && handTracking.leftOpen && handTracking.palmsOpposed && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.2f || handTracking.rightOpen && handTracking.leftOpen && handTracking.palmsParallel && Vector3.Angle(handTracking.rightPalm.Forward, handTracking.leftPalm.Forward) >=150 && Vector3.Angle(handTracking.rightPalm.Forward, handTracking.leftPalm.Forward) >= 180 && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.2f)
         {
             rightPointer.SetActive(false);
             leftPointer.SetActive(false);
