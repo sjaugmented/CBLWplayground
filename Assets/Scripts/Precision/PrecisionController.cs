@@ -113,7 +113,7 @@ public class PrecisionController : MonoBehaviour
         if (director.readGestures)
         {
             #region Dimmer/Kelvin controls
-            if (handTracking.rightRockOn || handTracking.leftThumbsUp)
+            if (handTracking.rightPoint || handTracking.leftThumbsUp)
             {
                 currMode = Mode.kelvin;
                 SetKelvinXover();
@@ -126,7 +126,7 @@ public class PrecisionController : MonoBehaviour
             #endregion
 
             #region RGB controls
-            if (!handTracking.rightRockOn && !handTracking.leftThumbsUp && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
+            if (!handTracking.rightPoint && !handTracking.leftThumbsUp && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
             {
                 
 
@@ -188,7 +188,7 @@ public class PrecisionController : MonoBehaviour
         if (currMode == Mode.kelvin)
         {
             // right hand control
-            if (handTracking.rightRockOn)
+            if (handTracking.rightPoint)
             {
                 ToggleRightTether();
             }
@@ -199,14 +199,14 @@ public class PrecisionController : MonoBehaviour
 
             if (rightTether)
             {
-                if (handTracking.rightRockOn && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 70 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
+                if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 70 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
                 {
                     rightDimmer = true;
                     ProcessRightHandControls();
                 }
                 else rightDimmer = false;
 
-                if (handTracking.rightRockOn && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135 && handTracking.rtPalmRtCamRt >= 60 && handTracking.rtPalmRtCamRt < 115)
+                if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135 && handTracking.rtPalmRtCamRt >= 60 && handTracking.rtPalmRtCamRt < 115)
                 {
                     rightKelvin = true;
                     ProcessRightHandControls();
@@ -798,8 +798,8 @@ public class PrecisionController : MonoBehaviour
                     currColor = RGB.all;
                     float allFloat;
 
-                    allFloat = 1 - (indexMidDist - floatOffset) / (maxFloatDist - floatOffset);
-                    if (indexMidDist > maxFloatDist) allFloat = 0;
+                    allFloat = 1 - (indexMidDist - floatOffset) / (0.2f - floatOffset);
+                    if (indexMidDist > 0.2f) allFloat = 0;
                     if (indexMidDist < floatOffset) allFloat = 1;
                     var globalText = Mathf.RoundToInt(allFloat * 100);
 

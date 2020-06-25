@@ -17,10 +17,17 @@ public class GestureToggleObj : MonoBehaviour
     }private void OnTriggerEnter(Collider other)
     {
         
-        if (other.CompareTag("Pointer"))
+        if (other.CompareTag("Left Pointer"))
         {
             Director director = FindObjectOfType<Director>();
             director.ToggleGestures();
+            Debug.Log("collided!");
+        }
+
+        if (other.CompareTag("Right Pointer"))
+        {
+            Director director = FindObjectOfType<Director>();
+            director.ToggleMode();
             Debug.Log("collided!");
         }
     }

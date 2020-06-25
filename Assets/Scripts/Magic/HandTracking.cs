@@ -400,7 +400,7 @@ public class HandTracking : MonoBehaviour
             else rightThrower = false;
 
             // look for right monitor
-            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) ||
+            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) ||
                 // unity editor pose
                 IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtThumbForPalmFor, 36, smallMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
             {
@@ -470,7 +470,7 @@ public class HandTracking : MonoBehaviour
             else leftThrower = false;
 
             // look for left monitor
-            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) ||
+            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) ||
                 // unity editor pose
                 IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
             {
