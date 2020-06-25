@@ -113,7 +113,7 @@ public class PrecisionController : MonoBehaviour
         if (director.readGestures)
         {
             #region Dimmer/Kelvin controls
-            if (handTracking.rightPoint || handTracking.leftThumbsUp)
+            if (handTracking.rightPoint || handTracking.leftPoint)
             {
                 currMode = Mode.kelvin;
                 SetKelvinXover();
@@ -126,7 +126,7 @@ public class PrecisionController : MonoBehaviour
             #endregion
 
             #region RGB controls
-            if (!handTracking.rightPoint && !handTracking.leftThumbsUp && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
+            if (!handTracking.rightPoint && !handTracking.leftPoint && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
             {
                 
 
@@ -215,7 +215,7 @@ public class PrecisionController : MonoBehaviour
             }
 
             // left hand control
-            if (handTracking.leftThumbsUp)
+            if (handTracking.leftPoint)
             {
                 if (!initialCheckLeft)
                 {
@@ -248,14 +248,14 @@ public class PrecisionController : MonoBehaviour
 
             if (leftTether)
             {
-                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50 && handTracking.ltPalmRtCamRt >= 0 && handTracking.ltPalmRtCamRt < 50)
+                if (handTracking.leftPoint && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50 && handTracking.ltPalmRtCamRt >= 0 && handTracking.ltPalmRtCamRt < 50)
                 {
                     leftDimmer = true;
                     ProcessLeftHandControls();
                 }
                 else leftDimmer = false;
 
-                if (handTracking.leftThumbsUp && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135 && handTracking.ltPalmRtCamRt >= 70 && handTracking.ltPalmRtCamRt < 105)
+                if (handTracking.leftPoint && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135 && handTracking.ltPalmRtCamRt >= 70 && handTracking.ltPalmRtCamRt < 105)
                 {
                     leftKelvin = true;
                     ProcessLeftHandControls();

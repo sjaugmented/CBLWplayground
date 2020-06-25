@@ -16,6 +16,11 @@ public class Director : MonoBehaviour
 
     [Header("Mode Touch Toggles")]
     [SerializeField] GameObject leftHandToggle;
+    [SerializeField] GameObject rightHandToggle;
+    [SerializeField] GameObject leftPointer;
+    [SerializeField] GameObject rightPointer;
+    [SerializeField] GameObject gesturesOffHUD;
+
 
     public List<Renderer> selectorPlatonics = new List<Renderer>();
 
@@ -42,8 +47,7 @@ public class Director : MonoBehaviour
     bool chinUpsActive = false;
 
     public bool readGestures = true;
-    [SerializeField] GameObject gestureToggleObj;
-    [SerializeField] GameObject gesturesOffHUD;
+    
 
     public void ToggleGestures()
     {
@@ -77,7 +81,9 @@ public class Director : MonoBehaviour
     void Start()
     {
         topLevelMenu.SetActive(false);
-        gestureToggleObj.SetActive(false);
+        leftHandToggle.SetActive(false);
+        rightHandToggle.SetActive(false);
+
 
         foreach (Renderer selector in selectorPlatonics)
         {
@@ -101,10 +107,21 @@ public class Director : MonoBehaviour
             else gesturesOffHUD.SetActive(false);
         }
 
-        if (handTracking.rightHand) gestureToggleObj.SetActive(true);
-        else gestureToggleObj.SetActive(false);
+        if (handTracking.rightHand) rightHandToggle.SetActive(true);
+        else rightHandToggle.SetActive(false);
         if (handTracking.leftHand) leftHandToggle.SetActive(true);
         else leftHandToggle.SetActive(false);
+
+        if (handTracking.rightFist && handTracking.leftFist && handTracking.palmsOpposed && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.1f || handTracking.rightOpen && handTracking.leftOpen && handTracking.palmsOpposed && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.1f || handTracking.rightOpen && handTracking.leftOpen && handTracking.palmsParallel && Vector3.Angle(handTracking.rightPalm.Forward, handTracking.leftPalm.Forward) >=150 && Vector3.Angle(handTracking.rightPalm.Forward, handTracking.leftPalm.Forward) >= 180 && Vector3.Distance(handTracking.rightPalm.Position, handTracking.leftPalm.Position) <= 0.1f)
+        {
+            rightPointer.SetActive(false);
+            leftPointer.SetActive(false);
+        }
+        else
+        {
+            rightPointer.SetActive(true);
+            leftPointer.SetActive(true);
+        }
 
         if (readGestures)
         {
