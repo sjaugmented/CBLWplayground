@@ -397,7 +397,7 @@ public class HandTracking : MonoBehaviour
             else rightThumbsUp = false;
 
             // look for right flat
-            if (IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtPinkForPalmFor, 0, bigMargin))
+            if (IsWithinRange(rtIndMidForPalmFor, 0, 70) && IsWithinRange(rtMidForPalmFor, 0, 70) && IsWithinRange(rtPinkForPalmFor, 0, 70))
             {
                 rightOpen = true;
             }
@@ -474,7 +474,7 @@ public class HandTracking : MonoBehaviour
             else leftThumbsUp = false;
 
             // look for left flat
-            if (IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltPinkForPalmFor, 0, bigMargin))
+            if (IsWithinRange(ltIndMidForPalmFor, 0, 70) && IsWithinRange(ltMidForPalmFor, 0, 70) && IsWithinRange(ltPinkForPalmFor, 0, 70))
             {
                 leftOpen = true;
             }
