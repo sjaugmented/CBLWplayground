@@ -260,7 +260,7 @@ public class Director : MonoBehaviour
         //rgbComponents.SetActive(rgb);
         precisionComponents.SetActive(prec);
         //staffComponents.SetActive(staff);
-        
+         
     }
 
     #region Hook ups
