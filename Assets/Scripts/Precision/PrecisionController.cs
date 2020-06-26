@@ -717,6 +717,8 @@ public class PrecisionController : MonoBehaviour
             if (rightKelvinFloat > 1) rightKelvinFloat = 1;
             if (Vector3.Distance(handTracking.rightPalm.Position, rightKelvinMax.position) > maxDistance) rightKelvinFloat = 0;
 
+            rightHandText.text = rightControl.ToString();
+
             /*// display in HUD
             rightHandText.text = Mathf.RoundToInt(Mathf.Clamp(rightKelvinFloat * 10000, 2800, 10000)) + "k".ToString();
 
@@ -826,6 +828,8 @@ public class PrecisionController : MonoBehaviour
             if (leftKelvinFloat > 1) leftKelvinFloat = 1;
             if (Vector3.Distance(handTracking.leftPalm.Position, leftKelvinMax.position) > maxDistance) leftKelvinFloat = 0;
 
+            leftHandText.text = leftControl.ToString();
+
             /*// display in HUD
             leftHandText.text = Mathf.RoundToInt(Mathf.Clamp(leftKelvinFloat * 10000, 2800, 10000)) + "k".ToString();
 
@@ -882,9 +886,11 @@ public class PrecisionController : MonoBehaviour
             }
         }
 
-        targets[0].transform.position = Camera.main.transform.position + recallVectorZ + recallVectorX * -0.5f;
-        targets[1].transform.position = Camera.main.transform.position + recallVectorZ + recallVectorX * 0.5f;
-        
+        targets[0].transform.position = Camera.main.transform.position + recallVectorZ + recallVectorX * -0.25f;
+        targets[0].transform.rotation = Camera.main.transform.rotation;
+        targets[1].transform.position = Camera.main.transform.position + recallVectorZ + recallVectorX * 0.25f;
+        targets[1].transform.rotation = Camera.main.transform.rotation;
+
         foreach (Transform target in targetChildren)
         {
             target.localScale = new Vector3(0.143685f, 0.143685f, 0.143685f);
