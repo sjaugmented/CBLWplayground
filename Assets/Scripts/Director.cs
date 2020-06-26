@@ -61,20 +61,20 @@ public class Director : MonoBehaviour
         magicController = FindObjectOfType<MagicController>();
         //rgbController = FindObjectOfType<RGBController>();
         precisionController = FindObjectOfType<PrecisionController>();
-        throwController = FindObjectOfType<ThrowController>();
-        staffController = FindObjectOfType<StaffTester>();
+        //throwController = FindObjectOfType<ThrowController>();
+        //staffController = FindObjectOfType<StaffTester>();
 
 
         magicComponents = FindObjectOfType<MagicID>().gameObject;
         //rgbComponents = FindObjectOfType<RGBID>().gameObject;
         precisionComponents = FindObjectOfType<PrecisionID>().gameObject;
-        staffComponents = FindObjectOfType<StaffTester>().gameObject;
+        //staffComponents = FindObjectOfType<StaffTester>().gameObject;
 
         magicController.enabled = false;
         //rgbController.enabled = false;
         precisionController.enabled = false;
-        throwController.enabled = false;
-        staffController.enabled = false;
+        //throwController.enabled = false;
+        //staffController.enabled = false;
     }
     
     // Start is called before the first frame update
@@ -254,12 +254,12 @@ public class Director : MonoBehaviour
         magicController.enabled = mag;
         //rgbController.enabled = rgb;
         precisionController.enabled = prec;
-        staffController.enabled = staff;
+        //staffController.enabled = staff;
 
         magicComponents.SetActive(mag);
         //rgbComponents.SetActive(rgb);
         precisionComponents.SetActive(prec);
-        staffComponents.SetActive(staff);
+        //staffComponents.SetActive(staff);
         
     }
 
