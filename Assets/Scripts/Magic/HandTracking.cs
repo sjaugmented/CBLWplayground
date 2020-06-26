@@ -56,10 +56,12 @@ public class HandTracking : MonoBehaviour
     #endregion
 
     public float rtPalmUpFloorUp;
+    public float rtPalmUpCamFor;
     public float rtPalmRtCamRt;
     public float rtPalmRtFloorUp;
     public float rtPalmForCamRt;
     public float ltPalmUpFloorUp;
+    public float ltPalmUpCamFor;
     public float ltPalmRtCamRt;
     public float ltPalmRtFloorUp;
     public float ltPalmForCamRt;
@@ -165,7 +167,7 @@ public class HandTracking : MonoBehaviour
         float p2pFor = Vector3.Angle(rightPalm.Forward, leftPalm.Forward);
 
         // right palm angles
-        float rtPalmUpCamFor = Vector3.Angle(rightPalm.Up, cam.forward);
+        rtPalmUpCamFor = Vector3.Angle(rightPalm.Up, cam.forward);
         rtPalmUpFloorUp = Vector3.Angle(rightPalm.Up, floor.up);
         rtPalmRtFloorUp = Vector3.Angle(rightPalm.Right, floor.up);
         float rtPalmUpFloorFor = Vector3.Angle(rightPalm.Up, floor.forward);
@@ -181,7 +183,7 @@ public class HandTracking : MonoBehaviour
 
 
         // left palm angles
-        float ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
+        ltPalmUpCamFor = Vector3.Angle(leftPalm.Up, cam.forward);
         ltPalmUpFloorUp = Vector3.Angle(leftPalm.Up, floor.up);
         ltPalmRtFloorUp = Vector3.Angle(leftPalm.Right, floor.up);
         float ltPalmUpFloorFor = Vector3.Angle(leftPalm.Up, floor.forward);
@@ -375,7 +377,7 @@ public class HandTracking : MonoBehaviour
             }
 
             // look for right fist
-            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) && !IsWithinRange(rtThumbVecPalmRight, 160, 70) ||
+            if (IsWithinRange(rtIndMidForPalmFor, 140, bigMargin) && IsWithinRange(rtMidForPalmFor, 140, bigMargin) && IsWithinRange(rtPinkForPalmFor, 130, bigMargin) && !IsWithinRange(rtThumbVecPalmRight, 180, 80) ||
             //unity standard tap for debug
             IsWithinRange(rtIndMidForPalmFor, 83, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) && !IsWithinRange(rtThumbVecPalmRight, 160, 70))
             {
@@ -385,7 +387,7 @@ public class HandTracking : MonoBehaviour
             else rightFist = false;
 
             // look for right thumbs up
-            if (!IsWithinRange(rtIndMidForPalmFor, 0, 100) && !IsWithinRange(rtMidForPalmFor, 0, 100) && !IsWithinRange(rtPinkForPalmFor, 0, 100) && IsWithinRange(rtThumbVecPalmFor, 180, 120) && IsWithinRange(rtThumbVecPalmRight, 180, 40)
+            if (IsWithinRange(rtThumbVecPalmRight, 180, 90) && !IsWithinRange(rtIndMidForPalmFor, 0, 100) && !IsWithinRange(rtMidForPalmFor, 0, 100) && !IsWithinRange(rtPinkForPalmFor, 0, 100)
                 // unity standard thumbs up
                 //IsWithinRange(rtThumbVecPalmFor, 61, 10)
                 )
@@ -409,7 +411,7 @@ public class HandTracking : MonoBehaviour
             else rightThrower = false;
 
             // look for right point
-            if (!IsWithinRange(rtThumbVecPalmRight, 180, 100) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) ||
+            if (!IsWithinRange(rtThumbVecPalmRight, 180, 80) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin) ||
                 // unity editor pose
                 IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtThumbForPalmFor, 36, smallMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
             {
@@ -417,7 +419,7 @@ public class HandTracking : MonoBehaviour
             }
             else rightPoint = false;
 
-            if (IsWithinRange(rtThumbVecPalmFor, 180, 120) && IsWithinRange(rtThumbVecPalmRight, 180, 40) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
+            if (IsWithinRange(rtThumbVecPalmRight, 180, 80) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
             {
                 rightL = true;
             }
@@ -453,7 +455,7 @@ public class HandTracking : MonoBehaviour
             }
 
             // look for left fist
-            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 20, 70) ||
+            if (IsWithinRange(ltIndMidForPalmFor, 140, bigMargin) && IsWithinRange(ltMidForPalmFor, 140, bigMargin) && IsWithinRange(ltPinkForPalmFor, 130, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 0, 80) ||
                 // debug unity standard tap
                 IsWithinRange(ltIndMidForPalmFor, 83, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) && !IsWithinRange(ltThumbVecPalmRight, 20, bigMargin))
             {
@@ -463,7 +465,7 @@ public class HandTracking : MonoBehaviour
             else leftFist = false;
 
             // look for left thumbs up
-            if (!IsWithinRange(ltIndMidForPalmFor, 0, 100) && !IsWithinRange(ltMidForPalmFor, 0, 100) && !IsWithinRange(ltPinkForPalmFor, 0, 100) && IsWithinRange(ltThumbVecPalmFor, 180, 120) && IsWithinRange(ltThumbVecPalmRight, 0, 40) /*||
+            if (IsWithinRange(ltThumbVecPalmRight, 0, 80) && !IsWithinRange(ltIndMidForPalmFor, 0, 100) && !IsWithinRange(ltMidForPalmFor, 0, 100) && !IsWithinRange(ltPinkForPalmFor, 0, 100) /*||
                 // unity standard thumbs up
                 IsWithinRange(ltThumbVecPalmFor, 61, 10)*/)
             {
@@ -486,16 +488,16 @@ public class HandTracking : MonoBehaviour
             else leftThrower = false;
 
             // look for left point
-            if (!IsWithinRange(ltThumbVecPalmRight, 0, 100) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) ||
+            if (!IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin)/* ||
                 // unity editor pose
-                IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+                IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin)*/)
             {
                 leftPoint = true;
             }
             else leftPoint = false;
 
             // look for left L
-            if (IsWithinRange(ltThumbVecPalmFor, 180, 120) && IsWithinRange(ltThumbVecPalmRight, 0, 40) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+            if (IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
             {
                 leftL = true;
             }

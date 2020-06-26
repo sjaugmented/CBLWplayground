@@ -112,8 +112,13 @@ public class PrecisionController : MonoBehaviour
 
         if (director.readGestures)
         {
+            if (handTracking.rightFist && handTracking.leftFist && handTracking.palmsOut && handTracking.staffCamUp90)
+            {
+                TargetRecall();
+            }
+            
             #region Dimmer/Kelvin controls
-            if (handTracking.rightPoint || handTracking.leftPoint)
+            if (handTracking.rightThumbsUp || handTracking.leftPoint)
             {
                 currMode = Mode.kelvin;
                 SetKelvinXover();
@@ -126,7 +131,7 @@ public class PrecisionController : MonoBehaviour
             #endregion
 
             #region RGB controls
-            if (!handTracking.rightPoint && !handTracking.leftPoint && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
+            if (!handTracking.rightThumbsUp && !handTracking.leftPoint && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
             {
                 
 
@@ -188,7 +193,7 @@ public class PrecisionController : MonoBehaviour
         if (currMode == Mode.kelvin)
         {
             // right hand control
-            if (handTracking.rightPoint)
+            if (handTracking.rightThumbsUp)
             {
                 ToggleRightTether();
             }
@@ -199,14 +204,14 @@ public class PrecisionController : MonoBehaviour
 
             if (rightTether)
             {
-                if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 70 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
+                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
                 {
                     rightDimmer = true;
                     ProcessRightHandControls();
                 }
                 else rightDimmer = false;
 
-                if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 135 && handTracking.rtPalmRtCamRt >= 60 && handTracking.rtPalmRtCamRt < 115)
+                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 150 && handTracking.rtPalmRtCamRt >= 70 && handTracking.rtPalmRtCamRt < 150)
                 {
                     rightKelvin = true;
                     ProcessRightHandControls();
@@ -232,7 +237,7 @@ public class PrecisionController : MonoBehaviour
                     else
                     {
                         initialCheckLeft = false;
-                        timerLeft = 60;
+                        timerLeft = 100;
                     }
                 }
 
@@ -255,7 +260,7 @@ public class PrecisionController : MonoBehaviour
                 }
                 else leftDimmer = false;
 
-                if (handTracking.leftPoint && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 135 && handTracking.ltPalmRtCamRt >= 70 && handTracking.ltPalmRtCamRt < 105)
+                if (handTracking.leftPoint && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 150 && handTracking.ltPalmRtCamRt >= 70 && handTracking.ltPalmRtCamRt < 150)
                 {
                     leftKelvin = true;
                     ProcessLeftHandControls();
@@ -689,6 +694,18 @@ public class PrecisionController : MonoBehaviour
         Debug.Log("OSC sending: " + message); // remove
     }
 
+    private void TargetRecall()
+    {
+        Vector3 recallVectorZ = Camera.main.transform.forward * 1;
+        Vector3 recallVectorX = Camera.main.transform.right;
+
+        Transform target1 = FindObjectOfType<SkyPanelBox>().transform;
+        Transform target2 = FindObjectOfType<SpotBox>().transform;
+
+        target1.position = Camera.main.transform.position + recallVectorZ + recallVectorX * 0.5f;
+        target2.position = Camera.main.transform.position + recallVectorZ + recallVectorX * -0.5f;
+    }
+
     #region Button/Gaze hookups
     public void GazeAtSkyPanel1()
     {
@@ -794,7 +811,7 @@ public class PrecisionController : MonoBehaviour
             if (currMode == Mode.rgb)
             {
                 // global dimmer - viewfinder pose, reads either hand on top
-                if (handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmRtFloorUp >= 0 && handTracking.rtPalmRtFloorUp < 40 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt >130 && handTracking.ltPalmRtFloorUp >= 0 && handTracking.ltPalmRtFloorUp < 40 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50 || handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmRtFloorUp <= 180 && handTracking.rtPalmRtFloorUp > 140 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt > 130 && handTracking.ltPalmRtFloorUp <= 180 && handTracking.ltPalmRtFloorUp > 140 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50)
+                if (handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmUpCamFor <= 180 && handTracking.rtPalmUpCamFor > 140/* && handTracking.rtPalmRtFloorUp >= 0 && handTracking.rtPalmRtFloorUp < 40 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt >130*/ && handTracking.ltPalmUpCamFor >= 0 && handTracking.ltPalmUpCamFor < 40 /*&& handTracking.ltPalmRtFloorUp >= 0 && handTracking.ltPalmRtFloorUp < 40 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50*/ || handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmUpCamFor >= 0 && handTracking.rtPalmUpCamFor < 40/* && handTracking.rtPalmRtFloorUp <= 180 && handTracking.rtPalmRtFloorUp > 140 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt > 130*/ && handTracking.ltPalmUpCamFor <= 180 && handTracking.ltPalmUpCamFor > 140/* && handTracking.ltPalmRtFloorUp <= 180 && handTracking.ltPalmRtFloorUp > 140 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50*/)
                 {
                     currColor = RGB.all;
                     float allFloat;
@@ -846,7 +863,7 @@ public class PrecisionController : MonoBehaviour
                 }
 
                 // red
-                if (handTracking.palmsOpposed && handTracking.staffCamUp90 && handTracking.staffFloorFor90)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp90 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
                 {
                     currColor = RGB.red;
                     float redFloat;
@@ -890,7 +907,7 @@ public class PrecisionController : MonoBehaviour
                 else redChanObj.SetActive(false);
 
                 // green
-                if (handTracking.palmsOpposed && handTracking.staffCamUp45 && handTracking.staffFloorFor90)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp45 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
                 {
                     currColor = RGB.green;
                     float greenFloat;
@@ -936,7 +953,7 @@ public class PrecisionController : MonoBehaviour
                 }
 
                 // blue
-                if (handTracking.palmsOpposed && handTracking.staffCamUp135 && handTracking.staffFloorFor90)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp135 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
                 {
                     currColor = RGB.blue;
                     float blueFloat;
@@ -982,7 +999,7 @@ public class PrecisionController : MonoBehaviour
                 }
 
                 // white
-                if (handTracking.palmsOpposed && handTracking.staffCamUp00 && handTracking.staffFloorFor90)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp00 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
                 {
                     currColor = RGB.white;
                     float whiteFloat;
@@ -1030,7 +1047,7 @@ public class PrecisionController : MonoBehaviour
                 // amber
                 if (hasAmber)
                 {
-                    if (handTracking.palmsOpposed && handTracking.staffCamUp180 && handTracking.staffFloorFor90)
+                    if (handTracking.palmsOpposed && handTracking.staffCamUp180 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
                     {
                         currColor = RGB.amber;
                         float amberFloat;

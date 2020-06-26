@@ -125,7 +125,7 @@ public class Director : MonoBehaviour
 
         if (readGestures)
         {
-            if (handTracking.palmsIn && handTracking.rightFist && handTracking.leftFist)
+            if (handTracking.palmsIn && handTracking.rightFist && handTracking.leftFist && handTracking.staffCamUp90)
             {
                 /*if (!chinUpsActive)
                 {
