@@ -78,6 +78,8 @@ public class PrecisionController : MonoBehaviour
         rightKelvinObj.SetActive(false);
         leftDimmerObj.SetActive(false);
         leftKelvinObj.SetActive(false);
+
+        SetRGBXover();
     }
 
     // Start is called before the first frame update
@@ -119,20 +121,20 @@ public class PrecisionController : MonoBehaviour
             }
             
             #region Dimmer/Kelvin controls
-            if (handTracking.rightThumbsUp || handTracking.leftPoint)
+            if (handTracking.rightPoint || handTracking.leftPoint)
             {
-                currMode = Mode.kelvin;
-                SetKelvinXover();
+                /*currMode = Mode.kelvin;
+                SetKelvinXover();*/
 
             }
             else
             {
-                currMode = Mode.rgb;
+                /*currMode = Mode.rgb;*/
             }
             #endregion
 
             #region RGB controls
-            if (!handTracking.rightThumbsUp && !handTracking.leftPoint && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
+            if (!handTracking.rightPoint && !handTracking.leftPoint && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
             {
                 
 
@@ -191,10 +193,10 @@ public class PrecisionController : MonoBehaviour
 
     private void KelvinFloats()
     {
-        if (currMode == Mode.kelvin)
+        /*if (currMode == Mode.kelvin)
         {
             // right hand control
-            if (handTracking.rightThumbsUp)
+            if (handTracking.rightPoint)
             {
                 ToggleRightTether();
             }
@@ -205,14 +207,14 @@ public class PrecisionController : MonoBehaviour
 
             if (rightTether)
             {
-                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
+                if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
                 {
                     rightDimmer = true;
                     ProcessRightHandControls();
                 }
                 else rightDimmer = false;
 
-                if (handTracking.rightThumbsUp && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 150 && handTracking.rtPalmRtCamRt >= 70 && handTracking.rtPalmRtCamRt < 150)
+                if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 150 && handTracking.rtPalmRtCamRt >= 70 && handTracking.rtPalmRtCamRt < 150)
                 {
                     rightKelvin = true;
                     ProcessRightHandControls();
@@ -269,12 +271,170 @@ public class PrecisionController : MonoBehaviour
                 else leftKelvin = false;
             }
         }
-        else return;
+        else return;*/
+
+        // right hand control
+        if (handTracking.rightPoint)
+        {
+            ToggleRightTether();
+        }
+        else
+        {
+            rightTether = false;
+        }
+
+        if (rightTether)
+        {
+            if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 0 && handTracking.rtPalmUpFloorUp < 50 && handTracking.rtPalmRtCamRt >= 0 && handTracking.rtPalmRtCamRt < 50)
+            {
+                rightDimmer = true;
+                ProcessRightHandControls();
+            }
+            else rightDimmer = false;
+
+            if (handTracking.rightPoint && handTracking.rtPalmUpFloorUp >= 70 && handTracking.rtPalmUpFloorUp <= 150 && handTracking.rtPalmRtCamRt >= 70 && handTracking.rtPalmRtCamRt < 150)
+            {
+                rightKelvin = true;
+                ProcessRightHandControls();
+            }
+            else rightKelvin = false;
+        }
+
+        // left hand control
+        if (handTracking.leftPoint)
+        {
+            if (!initialCheckLeft)
+            {
+                initialCheckLeft = true;
+            }
+            else
+            {
+                ToggleLeftTether();
+
+                if (timerLeft > 0)
+                {
+                    timerLeft--;
+                }
+                else
+                {
+                    initialCheckLeft = false;
+                    timerLeft = 100;
+                }
+            }
+
+
+            //ToggleLeftTether();
+        }
+        else
+        {
+            leftTether = false;
+            initialCheckLeft = false;
+            timerLeft = 60;
+        }
+
+        if (leftTether)
+        {
+            if (handTracking.leftPoint && handTracking.ltPalmUpFloorUp >= 0 && handTracking.ltPalmUpFloorUp < 50 && handTracking.ltPalmRtCamRt >= 0 && handTracking.ltPalmRtCamRt < 50)
+            {
+                leftDimmer = true;
+                ProcessLeftHandControls();
+            }
+            else leftDimmer = false;
+
+            if (handTracking.leftPoint && handTracking.ltPalmUpFloorUp >= 70 && handTracking.ltPalmUpFloorUp <= 150 && handTracking.ltPalmRtCamRt >= 70 && handTracking.ltPalmRtCamRt < 150)
+            {
+                leftKelvin = true;
+                ProcessLeftHandControls();
+            }
+            else leftKelvin = false;
+        }
     }
 
     private void ProcessHandHUDs()
     {
-        if (currMode == Mode.kelvin)
+        // right hand
+            if (handTracking.rightHand)
+            {
+                if (rightTether)
+                {
+                    if (rightControl == Lights.SkyPanel1)
+                    {
+                        rightHandHUD.SetActive(true);
+                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
+                    }
+                    else if (rightControl == Lights.SkyPanel2)
+                    {
+                        rightHandHUD.SetActive(true);
+                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                    }
+                    else if (rightControl == Lights.none)
+                    {
+                        rightHandHUD.SetActive(false);
+                    }
+                }
+                else
+                {
+                    rightHandHUD.SetActive(false);
+                }
+
+                if (rightTether && rightDimmer)
+                {
+                    rightHandText.gameObject.SetActive(true);
+                }
+
+                else if (rightTether && rightKelvin)
+                {
+                    rightHandText.gameObject.SetActive(true);
+
+                }
+                else rightHandText.gameObject.SetActive(false);
+            }
+            else rightHandHUD.SetActive(false);
+
+
+
+            // left hand
+            if (handTracking.leftHand)
+            {
+                if (leftTether)
+                {
+                    if (leftControl == Lights.SkyPanel1)
+                    {
+                        leftHandHUD.SetActive(true);
+                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
+                    }
+                    else if (leftControl == Lights.SkyPanel2)
+                    {
+                        leftHandHUD.SetActive(true);
+                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                    }
+
+                    else if (leftControl == Lights.none)
+                    {
+                        leftHandHUD.SetActive(false);
+                    }
+                }
+                else
+                {
+                    leftHandHUD.SetActive(false);
+                }
+
+                if (leftTether && leftDimmer)
+                {
+                    leftHandText.gameObject.SetActive(true);
+                }
+
+                else if (leftTether && leftKelvin)
+                {
+                    leftHandText.gameObject.SetActive(true);
+
+                }
+                else leftHandText.gameObject.SetActive(false);
+            }
+            else leftHandHUD.SetActive(false);
+    }
+        
+        /*if (currMode == Mode.kelvin)
         {
             // right hand
             if (handTracking.rightHand)
@@ -364,7 +524,7 @@ public class PrecisionController : MonoBehaviour
         }
         
 
-    }
+    }*/
 
     private void ToggleRightTether()
     {
@@ -551,7 +711,7 @@ public class PrecisionController : MonoBehaviour
             if (rightKelvinFloat > 1) rightKelvinFloat = 1;
             if (Vector3.Distance(handTracking.rightPalm.Position, rightKelvinMax.position) > maxDistance) rightKelvinFloat = 0;
 
-            // display in HUD
+            /*// display in HUD
             rightHandText.text = Mathf.RoundToInt(Mathf.Clamp(rightKelvinFloat * 10000, 2800, 10000)) + "k".ToString();
 
             // convert float to DMX
@@ -567,7 +727,7 @@ public class PrecisionController : MonoBehaviour
             {
                 dmx.SetAddress(dmxChan.SkyPanel2[kelvinChan], kelvinVal);
                 SendOSC("/SkyPanel2Kelvin/", rightKelvinFloat);
-            }
+            }*/
         }
         else
         {
@@ -660,7 +820,7 @@ public class PrecisionController : MonoBehaviour
             if (leftKelvinFloat > 1) leftKelvinFloat = 1;
             if (Vector3.Distance(handTracking.leftPalm.Position, leftKelvinMax.position) > maxDistance) leftKelvinFloat = 0;
 
-            // display in HUD
+            /*// display in HUD
             leftHandText.text = Mathf.RoundToInt(Mathf.Clamp(leftKelvinFloat * 10000, 2800, 10000)) + "k".ToString();
 
             // convert float to DMX
@@ -676,7 +836,7 @@ public class PrecisionController : MonoBehaviour
             {
                 dmx.SetAddress(dmxChan.SkyPanel2[kelvinChan], kelvinVal);
                 SendOSC("/SkyPanel2Kelvin/", rightKelvinFloat);
-            }
+            }*/
             
         }
         else
@@ -829,8 +989,8 @@ public class PrecisionController : MonoBehaviour
         {
             if (currMode == Mode.rgb)
             {
-                // global dimmer - viewfinder pose, reads either hand on top
-                if (handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmUpCamFor <= 180 && handTracking.rtPalmUpCamFor > 140/* && handTracking.rtPalmRtFloorUp >= 0 && handTracking.rtPalmRtFloorUp < 40 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt >130*/ && handTracking.ltPalmUpCamFor >= 0 && handTracking.ltPalmUpCamFor < 40 /*&& handTracking.ltPalmRtFloorUp >= 0 && handTracking.ltPalmRtFloorUp < 40 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50*/ || handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmUpCamFor >= 0 && handTracking.rtPalmUpCamFor < 40/* && handTracking.rtPalmRtFloorUp <= 180 && handTracking.rtPalmRtFloorUp > 140 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt > 130*/ && handTracking.ltPalmUpCamFor <= 180 && handTracking.ltPalmUpCamFor > 140/* && handTracking.ltPalmRtFloorUp <= 180 && handTracking.ltPalmRtFloorUp > 140 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50*/)
+                /*// global dimmer - viewfinder pose, reads either hand on top
+                if (handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmUpCamFor <= 180 && handTracking.rtPalmUpCamFor > 140*//* && handTracking.rtPalmRtFloorUp >= 0 && handTracking.rtPalmRtFloorUp < 40 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt >130*//* && handTracking.ltPalmUpCamFor >= 0 && handTracking.ltPalmUpCamFor < 40 *//*&& handTracking.ltPalmRtFloorUp >= 0 && handTracking.ltPalmRtFloorUp < 40 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50*//* || handTracking.rightL && handTracking.leftL && handTracking.palmsOpposed && handTracking.rtPalmUpCamFor >= 0 && handTracking.rtPalmUpCamFor < 40*//* && handTracking.rtPalmRtFloorUp <= 180 && handTracking.rtPalmRtFloorUp > 140 && handTracking.rtPalmForCamRt <= 180 && handTracking.rtPalmForCamRt > 130*//* && handTracking.ltPalmUpCamFor <= 180 && handTracking.ltPalmUpCamFor > 140*//* && handTracking.ltPalmRtFloorUp <= 180 && handTracking.ltPalmRtFloorUp > 140 && handTracking.ltPalmForCamRt >= 0 && handTracking.rtPalmForCamRt < 50*//*)
                 {
                     currColor = RGB.all;
                     float allFloat;
@@ -871,10 +1031,10 @@ public class PrecisionController : MonoBehaviour
                 else
                 {
                     globalDimmerObj.SetActive(false);
-                }
+                }*/
 
                 // red
-                if (handTracking.palmsOpposed && handTracking.staffCamUp90 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp90 && handTracking.staffFloorFor90/* && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120*/)
                 {
                     currColor = RGB.red;
                     float redFloat;
@@ -918,7 +1078,7 @@ public class PrecisionController : MonoBehaviour
                 else redChanObj.SetActive(false);
 
                 // green
-                if (handTracking.palmsOpposed && handTracking.staffCamUp45 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp45/* && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120*/)
                 {
                     currColor = RGB.green;
                     float greenFloat;
@@ -964,7 +1124,7 @@ public class PrecisionController : MonoBehaviour
                 }
 
                 // blue
-                if (handTracking.palmsOpposed && handTracking.staffCamUp135 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp135/* && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120*/)
                 {
                     currColor = RGB.blue;
                     float blueFloat;
@@ -1010,7 +1170,7 @@ public class PrecisionController : MonoBehaviour
                 }
 
                 // white
-                if (handTracking.palmsOpposed && handTracking.staffCamUp00 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
+                if (handTracking.palmsOpposed && handTracking.staffCamUp00/* && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120*/)
                 {
                     currColor = RGB.white;
                     float whiteFloat;
@@ -1058,7 +1218,7 @@ public class PrecisionController : MonoBehaviour
                 // amber
                 if (hasAmber)
                 {
-                    if (handTracking.palmsOpposed && handTracking.staffCamUp180 && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120)
+                    if (handTracking.palmsOpposed && handTracking.staffCamUp180/* && handTracking.staffFloorFor90 && handTracking.rtPalmUpCamFor >= 60 && handTracking.rtPalmUpCamFor < 120 && handTracking.ltPalmUpCamFor >= 60 && handTracking.ltPalmUpCamFor < 120*/)
                     {
                         currColor = RGB.amber;
                         float amberFloat;
@@ -1159,10 +1319,10 @@ public class PrecisionController : MonoBehaviour
                     if (!live) rightRing.material = amberStealth;
                     else rightRing.material = amberLive;
                 }
-                if (currColor == RGB.all)
+                /*if (currColor == RGB.all)
                 {
                     StartCoroutine("CycleRingColors", rightRing);
-                }
+                }*/
             }
             else rightRingParent.SetActive(false);
 
@@ -1196,10 +1356,10 @@ public class PrecisionController : MonoBehaviour
                     if (!live) leftRing.material = amberStealth;
                     else leftRing.material = amberLive;
                 }
-                if (currColor == RGB.all)
+                /*if (currColor == RGB.all)
                 {
                     StartCoroutine("CycleRingColors", leftRing);
-                }
+                }*/
             }
             else leftRingParent.SetActive(false);
         }

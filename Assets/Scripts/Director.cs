@@ -317,7 +317,7 @@ public class Director : MonoBehaviour
 
         dmx.ResetDMX();
 
-        if (currentMode == Mode.Magic)
+        if (currentMode == Mode.Magic || precisionController.currMode == PrecisionController.Mode.rgb)
         {
             dmx.SetAddress(dmxChan.SkyPanel1[dimmerChan], 255);
             dmx.SetAddress(dmxChan.SkyPanel1[xOverChan], 255);

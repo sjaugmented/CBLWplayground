@@ -488,9 +488,9 @@ public class HandTracking : MonoBehaviour
             else leftThrower = false;
 
             // look for left point
-            if (!IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin)/* ||
+            if (!IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin) ||
                 // unity editor pose
-                IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin)*/)
+                IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltThumbForPalmFor, 36, smallMargin) && IsWithinRange(ltMidForPalmFor, 160, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
             {
                 leftPoint = true;
             }
