@@ -54,6 +54,9 @@ public class PrecisionController : MonoBehaviour
     bool kelvinMode = true;
     public bool rgbActive = false;
 
+    float skyPanel1Dimmer;
+    float skyPanel2Dimmer;
+
     #region DMX channel ID's
     int dimmerChan = 0;
     int kelvinChan = 1;
@@ -628,7 +631,7 @@ public class PrecisionController : MonoBehaviour
 
 
     #region right globals
-    float rightDimmerFloat;
+    float rightDimmerFloat = 1;
     float rightDimmerYPos;
     bool rightDimmerYLocked = false;
 
@@ -650,9 +653,12 @@ public class PrecisionController : MonoBehaviour
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!rightDimmerYLocked)
             {
-                rightDimmerYPos = handTracking.rightPalm.Position.y;
+                rightDimmerYPos = handTracking.rightPalm.Position.y + 0.125f - 0.25f * rightDimmerFloat;
                 rightDimmerYLocked = true;
             }
+
+            // determine previous dimmer val
+            
 
             rightDimmerObj.transform.position = new Vector3(handTracking.rightPalm.Position.x, rightDimmerYPos, handTracking.rightPalm.Position.z);
 
@@ -760,7 +766,7 @@ public class PrecisionController : MonoBehaviour
             // set float.position.y to pose.position.y and store in memory - float.position.x/z tracks to pose.position.x/z
             if (!leftDimmerYLocked)
             {
-                leftDimmerYPos = handTracking.leftPalm.Position.y;
+                leftDimmerYPos = handTracking.leftPalm.Position.y + 0.125f - 0.25f * leftDimmerFloat; ;
                 leftDimmerYLocked = true;
             }
 
