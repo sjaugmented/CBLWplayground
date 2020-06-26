@@ -835,9 +835,9 @@ public class PrecisionController : MonoBehaviour
                     currColor = RGB.all;
                     float allFloat;
 
-                    allFloat = 1 - (indexThumbdist - 0.025f) / (maxFloatDist - 0.025f);
-                    if (indexThumbdist > maxFloatDist) allFloat = 0;
-                    if (indexThumbdist < 0.025f) allFloat = 1;
+                    allFloat = (indexThumbdist - 0.025f) / (maxFloatDist - 0.025f);
+                    if (indexThumbdist > maxFloatDist) allFloat = 1;
+                    if (indexThumbdist < 0.025f) allFloat = 0;
                     var globalText = Mathf.RoundToInt(allFloat * 100);
 
                     globalDimmerObj.SetActive(true);
