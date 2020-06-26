@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.MixedReality.Toolkit.Input;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -699,11 +700,29 @@ public class PrecisionController : MonoBehaviour
         Vector3 recallVectorZ = Camera.main.transform.forward * 1;
         Vector3 recallVectorX = Camera.main.transform.right;
 
-        Transform target1 = FindObjectOfType<SkyPanelBox>().transform;
-        Transform target2 = FindObjectOfType<SpotBox>().transform;
+        TargetID[] targets = FindObjectsOfType<TargetID>();
 
-        target1.position = Camera.main.transform.position + recallVectorZ + recallVectorX * 0.5f;
-        target2.position = Camera.main.transform.position + recallVectorZ + recallVectorX * -0.5f;
+        List<Transform> targetChildren = new List<Transform>();
+
+        foreach (TargetID target in targets)
+        {
+            foreach(Transform child in target.transform)
+            {
+                if (GetComponent<EyeTrackingTarget>())
+                {
+                    targetChildren.Add(child.transform);
+                    Debug.Log(child.gameObject.name);
+                }
+            }
+        }
+
+        targets[0].transform.position = Camera.main.transform.position + recallVectorZ + recallVectorX * -0.5f;
+        targets[1].transform.position = Camera.main.transform.position + recallVectorZ + recallVectorX * 0.5f;
+        
+        foreach (Transform target in targetChildren)
+        {
+            target.localScale = new Vector3(0.143685f, 0.143685f, 0.143685f);
+        }
     }
 
     #region Button/Gaze hookups
@@ -816,9 +835,9 @@ public class PrecisionController : MonoBehaviour
                     currColor = RGB.all;
                     float allFloat;
 
-                    allFloat = 1 - (indexThumbdist - floatOffset) / (maxFloatDist - floatOffset);
-                    if (indexThumbdist > 0.2f) allFloat = 0;
-                    if (indexThumbdist < floatOffset) allFloat = 1;
+                    allFloat = 1 - (indexThumbdist - 0.025f) / (maxFloatDist - 0.025f);
+                    if (indexThumbdist > maxFloatDist) allFloat = 0;
+                    if (indexThumbdist < 0.025f) allFloat = 1;
                     var globalText = Mathf.RoundToInt(allFloat * 100);
 
                     globalDimmerObj.SetActive(true);
