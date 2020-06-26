@@ -845,36 +845,28 @@ public class PrecisionController : MonoBehaviour
                     globalDimmerObj.transform.rotation = Camera.main.transform.rotation;
                     globalDimmerText.text = globalText + "%".ToString();
 
-                    if (handTracking.rightHand && handTracking.leftHand && handTracking.rightOpen && handTracking.leftOpen)
-                    {
-                        live = true;
-                        globalLiveBox.SetActive(true);
-                        globalDimmerVal = Mathf.RoundToInt(allFloat * 255);
-                        SendOSC(globalOSCMessage, allFloat);
+                    live = true;
+                    globalLiveBox.SetActive(true);
+                    globalDimmerVal = Mathf.RoundToInt(allFloat * 255);
+                    SendOSC(globalOSCMessage, allFloat);
 
-                        if (rgbControl == Lights.SkyPanel1)
-                        {
-                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
-                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
-                        }
-                        if (rgbControl == Lights.SkyPanel2)
-                        {
-                            dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
-                            dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
-                            if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
-                        }
-                        else return;
-                    }
-                    else
+                    if (rgbControl == Lights.SkyPanel1)
                     {
-                        live = false;
-                        globalLiveBox.SetActive(false);
+                        dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
+                        dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
+                        dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
+                        dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
+                        if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
                     }
+                    if (rgbControl == Lights.SkyPanel2)
+                    {
+                        dmx.SetAddress(dmxChan.SkyPanel1[redChan], Mathf.RoundToInt(redVal * allFloat));
+                        dmx.SetAddress(dmxChan.SkyPanel1[greenChan], Mathf.RoundToInt(greenChan * allFloat));
+                        dmx.SetAddress(dmxChan.SkyPanel1[blueChan], Mathf.RoundToInt(blueChan * allFloat));
+                        dmx.SetAddress(dmxChan.SkyPanel1[whiteChan], Mathf.RoundToInt(whiteChan * allFloat));
+                        if (hasAmber) dmx.SetAddress(dmxChan.SkyPanel1[amberChan], Mathf.RoundToInt(redVal * allFloat));
+                    }
+                    else return;
                 }
                 else
                 {
