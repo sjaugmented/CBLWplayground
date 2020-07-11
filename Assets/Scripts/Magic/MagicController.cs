@@ -85,6 +85,8 @@ public class MagicController : MonoBehaviour
     float palmDistOffset = 0.15f;
     Vector3 palmMidpointOffset = new Vector3(0, 0.05f, 0);
 
+    public bool orbActive = false;
+
     // coordinates for conjuring
     Vector3 masterOrbPos;
     Vector3 rightStreamPos;
@@ -403,7 +405,7 @@ public class MagicController : MonoBehaviour
 
     private void ProcessHandClouds()
     {
-        if (!director.readGestures)
+        if (!director.readGestures || orbActive == true)
         {
             rightCloudParent.SetActive(false);
             leftCloudParent.SetActive(false);
@@ -452,6 +454,8 @@ public class MagicController : MonoBehaviour
         {
             orb.SetActive(false);
         }
+
+        orbActive = false;
     }
 
     #region OSC/DMX
@@ -461,7 +465,7 @@ public class MagicController : MonoBehaviour
         message.address = address;
         message.values.Add(value);
         osc.Send(message);
-        //Debug.Log("Sending OSC: " + address + " " + value); // todo remove
+        Debug.Log("Sending OSC: " + address + " " + value); // todo remove
     }
 
     private void LiveDMX()
@@ -508,6 +512,7 @@ public class MagicController : MonoBehaviour
     private void ElementVariantSelector()
     {
         fromOrbScaler = false;
+        orbActive = true;
 
         /*if (!elementMenu.activeInHierarchy && director.menuActive == false)
         {
@@ -639,9 +644,16 @@ public class MagicController : MonoBehaviour
         }
     }
 
+    private void ShowStaffAngle(Material colorMat)
+    {
+        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+        orbRender.material = colorMat;
+    }
+
     private void VariantScaler()
     {
         fromOrbScaler = true;
+        orbActive = true;
 
         elementMenu.SetActive(false);
 
@@ -649,6 +661,47 @@ public class MagicController : MonoBehaviour
         if (palmDist >= palmDistOffset && palmDist <= maxXAxisDist) elementScale = 1 - (palmDist - palmDistOffset) / (maxXAxisDist - palmDistOffset);
         else if (palmDist > maxXAxisDist) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
+
+
+        // set staff angle
+        if (hands.staffCamUp00)
+        {
+            currScaler = Scaler.deg00;
+
+            ShowStaffAngle(yellowTrans);
+        }
+
+        // 45
+        else if (hands.staffCamUp45)
+        {
+            currScaler = Scaler.deg45;
+
+            ShowStaffAngle(magentaTrans);
+        }
+
+        // 90
+        else if (hands.staffCamUp90)
+        {
+            currScaler = Scaler.deg90;
+
+            ShowStaffAngle(transparency);
+        }
+
+        // 135
+        else if (hands.staffCamUp135)
+        {
+            currScaler = Scaler.deg135;
+
+            ShowStaffAngle(cyanTrans);
+        }
+
+        // 180
+        else if (hands.palmsOpposed && hands.staffCamUp180)
+        {
+            currScaler = Scaler.deg180;
+
+            ShowStaffAngle(greenTrans);
+        }
 
         // activate current element and variant
         for (int i = 0; i < masterOrbs.Count; i++)
@@ -685,31 +738,31 @@ public class MagicController : MonoBehaviour
         {
             if (currScaler == Scaler.deg00)
             {
-                SendOSCMessage(oscMessage0, conjureValueOSC);
+                SendOSCMessage(oscMessage0 + elementOSC[elementID] + variantOSC[variantID], elementScale);
                 LiveDMX();
             }
 
             if (currScaler == Scaler.deg45)
             {
-                SendOSCMessage(oscMessage45, conjureValueOSC);
-                if (variantID == 2 || variantID == 3) LiveDMX();
+                SendOSCMessage(oscMessage45 + elementOSC[elementID] + variantOSC[variantID], elementScale);
+                /*if (variantID == 2 || variantID == 3) */LiveDMX();
             }
 
             if (currScaler == Scaler.deg90)
             {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID], conjureValueOSC);
-                if (variantID == 2 || variantID == 3) LiveDMX();
+                //SendOSCMessage(elementOSC[elementID] + variantOSC[variantID], conjureValueOSC);
+                /*if (variantID == 2 || variantID == 3) LiveDMX();*/
             }
 
             if (currScaler == Scaler.deg135)
             {
-                SendOSCMessage(oscMessage135, conjureValueOSC);
-                if (variantID == 2 || variantID == 3) LiveDMX();
+                SendOSCMessage(oscMessage135 + elementOSC[elementID] + variantOSC[variantID], elementScale);
+                /*if (variantID == 2 || variantID == 3) */LiveDMX();
             }
 
             if (currScaler == Scaler.deg180)
             {
-                SendOSCMessage(oscMessage180, conjureValueOSC);
+                SendOSCMessage(oscMessage180 + elementOSC[elementID] + variantOSC[variantID], elementScale);
                 LiveDMX();
             }
         }
@@ -750,6 +803,12 @@ public class MagicController : MonoBehaviour
                         {
                             child.localScale = new Vector3(particleScale, particleScale, particleScale);
                         }
+                    }
+
+                    if (currScaler == Scaler.deg90)
+                    {
+                        SendOSCMessage(oscMessage90 + elementOSC[elementID] + variantOSC[variantID], elementScale);
+                        if (variantID == 2 || variantID == 3) LiveDMX();
                     }
                 }
                 else return;
