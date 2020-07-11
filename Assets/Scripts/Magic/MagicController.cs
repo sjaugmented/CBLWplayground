@@ -465,7 +465,7 @@ public class MagicController : MonoBehaviour
         message.address = address;
         message.values.Add(value);
         osc.Send(message);
-        Debug.Log("Sending OSC: " + address + " " + value); // todo remove
+        Debug.Log("Sending OSC:" + message); // todo remove
     }
 
     private void LiveDMX()
@@ -513,6 +513,7 @@ public class MagicController : MonoBehaviour
     {
         fromOrbScaler = false;
         orbActive = true;
+        ShowStaffAngle(clearTrans);
 
         /*if (!elementMenu.activeInHierarchy && director.menuActive == false)
         {
@@ -684,7 +685,7 @@ public class MagicController : MonoBehaviour
         {
             currScaler = Scaler.deg90;
 
-            ShowStaffAngle(transparency);
+            ShowStaffAngle(clearTrans);
         }
 
         // 135
@@ -738,14 +739,15 @@ public class MagicController : MonoBehaviour
         {
             if (currScaler == Scaler.deg00)
             {
-                SendOSCMessage(oscMessage0 + elementOSC[elementID] + variantOSC[variantID], elementScale);
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage0, elementScale);
                 LiveDMX();
             }
 
             if (currScaler == Scaler.deg45)
             {
-                SendOSCMessage(oscMessage45 + elementOSC[elementID] + variantOSC[variantID], elementScale);
-                /*if (variantID == 2 || variantID == 3) */LiveDMX();
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage45, elementScale);
+                /*if (variantID == 2 || variantID == 3) */
+                LiveDMX();
             }
 
             if (currScaler == Scaler.deg90)
@@ -756,13 +758,14 @@ public class MagicController : MonoBehaviour
 
             if (currScaler == Scaler.deg135)
             {
-                SendOSCMessage(oscMessage135 + elementOSC[elementID] + variantOSC[variantID], elementScale);
-                /*if (variantID == 2 || variantID == 3) */LiveDMX();
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage135, elementScale);
+                /*if (variantID == 2 || variantID == 3) */
+                LiveDMX();
             }
 
             if (currScaler == Scaler.deg180)
             {
-                SendOSCMessage(oscMessage180 + elementOSC[elementID] + variantOSC[variantID], elementScale);
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage180, elementScale);
                 LiveDMX();
             }
         }
@@ -807,7 +810,7 @@ public class MagicController : MonoBehaviour
 
                     if (currScaler == Scaler.deg90)
                     {
-                        SendOSCMessage(oscMessage90 + elementOSC[elementID] + variantOSC[variantID], elementScale);
+                        SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage90, elementScale);
                         if (variantID == 2 || variantID == 3) LiveDMX();
                     }
                 }
