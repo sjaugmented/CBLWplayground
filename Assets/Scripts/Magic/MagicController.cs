@@ -50,11 +50,12 @@ public class MagicController : MonoBehaviour
     [Header("OSC controller")]
     public List<String> elementOSC;
     public List<String> variantOSC;
-    [SerializeField] string oscMessage0 = "/0degreeOSC/";
+    public List<String> staffOSC;
+    /*[SerializeField] string oscMessage0 = "/0degreeOSC/";
     [SerializeField] string oscMessage45 = "/45degreeOSC/";
     [SerializeField] string oscMessage90 = "/90degreeOSC/";
     [SerializeField] string oscMessage135 = "/135degreeOSC/";
-    [SerializeField] string oscMessage180 = "/180degreeOSC/";
+    [SerializeField] string oscMessage180 = "/180degreeOSC/";*/
 
     [Header("DMX values")]
     public List<int> lightChannels;
@@ -79,6 +80,8 @@ public class MagicController : MonoBehaviour
 
     public enum Scaler { deg00, deg45, deg90, deg135, deg180 }
     public Scaler currScaler = Scaler.deg90;
+    public int staffID = 0;
+
 
     // parameters for conjure floats
     float maxXAxisDist = 0.5f;
@@ -264,6 +267,7 @@ public class MagicController : MonoBehaviour
     void Update()
     {
         ConvertElementToID();
+        ConvertStaffToID();
         CalcHandPositions();
         ProcessHandClouds();
 
@@ -465,7 +469,7 @@ public class MagicController : MonoBehaviour
         message.address = address;
         message.values.Add(value);
         osc.Send(message);
-        Debug.Log("Sending OSC:" + message); // todo remove
+        Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove
     }
 
     private void LiveDMX()
@@ -495,6 +499,16 @@ public class MagicController : MonoBehaviour
         if (currEl == Element.ice) elementID = 3;
     }
 
+    private void ConvertStaffToID()
+    {
+        if (currScaler == Scaler.deg00) staffID = 0;
+        if (currScaler == Scaler.deg45) staffID = 1;
+        if (currScaler == Scaler.deg90) staffID = 2;
+        if (currScaler == Scaler.deg135) staffID = 3;
+        if (currScaler == Scaler.deg180) staffID = 4;
+
+    }
+
     private void CalcHandPositions()
     {
         palmDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
@@ -512,7 +526,7 @@ public class MagicController : MonoBehaviour
     private void ElementVariantSelector()
     {
         fromOrbScaler = false;
-        orbActive = true;
+        orbActive = false;
         ShowStaffAngle(clearTrans);
 
         /*if (!elementMenu.activeInHierarchy && director.menuActive == false)
@@ -662,8 +676,78 @@ public class MagicController : MonoBehaviour
         if (palmDist >= palmDistOffset && palmDist <= maxXAxisDist) elementScale = 1 - (palmDist - palmDistOffset) / (maxXAxisDist - palmDistOffset);
         else if (palmDist > maxXAxisDist) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
+        GetStaffAngle();
 
+        // activate current element and variant
+        for (int i = 0; i < masterOrbs.Count; i++)
+        {
+            if (i == elementID)
+            {
+                masterOrbs[i].SetActive(true);
+                masterOrbs[i].transform.position = masterOrbPos;
+                masterOrbs[i].GetComponent<MasterOrbRotater>().xRotation = 100 * elementScale;
+            }
+            else masterOrbs[i].SetActive(false);
 
+            List<Transform> variants = new List<Transform>();
+
+            foreach (Transform child in masterOrbs[i].transform)
+            {
+                variants.Add(child);
+            }
+
+            for (int n = 0; n < variants.Count; n++)
+            {
+                if (n == variantID)
+                {
+                    variants[n].gameObject.SetActive(true);
+
+                    // apply scale based on orb element
+                    variants[n].localScale = new Vector3(elementScale, elementScale, elementScale);
+                }
+                else variants[n].gameObject.SetActive(false);
+            }
+        }
+
+        if (hands.rightOpen && hands.leftOpen)
+        {
+            SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
+            LiveDMX();
+
+            /*if (currScaler == Scaler.deg00)
+            {
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
+                LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg45)
+            {
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
+                LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg90)
+            {
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
+                LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg135)
+            {
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
+                LiveDMX();
+            }
+
+            if (currScaler == Scaler.deg180)
+            {
+                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
+                LiveDMX();
+            }*/
+        }
+    }
+
+    private void GetStaffAngle()
+    {
         // set staff angle
         if (hands.staffCamUp00)
         {
@@ -703,72 +787,6 @@ public class MagicController : MonoBehaviour
 
             ShowStaffAngle(greenTrans);
         }
-
-        // activate current element and variant
-        for (int i = 0; i < masterOrbs.Count; i++)
-        {
-            if (i == elementID)
-            {
-                masterOrbs[i].SetActive(true);
-                masterOrbs[i].transform.position = masterOrbPos;
-                masterOrbs[i].GetComponent<MasterOrbRotater>().xRotation = 100 * elementScale;
-            }
-            else masterOrbs[i].SetActive(false);
-
-            List<Transform> variants = new List<Transform>();
-
-            foreach (Transform child in masterOrbs[i].transform)
-            {
-                variants.Add(child);
-            }
-
-            for (int n = 0; n < variants.Count; n++)
-            {
-                if (n == variantID)
-                {
-                    variants[n].gameObject.SetActive(true);
-
-                    // apply scale based on orb element
-                    variants[n].localScale = new Vector3(elementScale, elementScale, elementScale);
-                }
-                else variants[n].gameObject.SetActive(false);
-            }
-        }
-
-        if (hands.rightOpen && hands.leftOpen)
-        {
-            if (currScaler == Scaler.deg00)
-            {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage0, elementScale);
-                LiveDMX();
-            }
-
-            if (currScaler == Scaler.deg45)
-            {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage45, elementScale);
-                /*if (variantID == 2 || variantID == 3) */
-                LiveDMX();
-            }
-
-            if (currScaler == Scaler.deg90)
-            {
-                //SendOSCMessage(elementOSC[elementID] + variantOSC[variantID], conjureValueOSC);
-                /*if (variantID == 2 || variantID == 3) LiveDMX();*/
-            }
-
-            if (currScaler == Scaler.deg135)
-            {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage135, elementScale);
-                /*if (variantID == 2 || variantID == 3) */
-                LiveDMX();
-            }
-
-            if (currScaler == Scaler.deg180)
-            {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage180, elementScale);
-                LiveDMX();
-            }
-        }
     }
 
     private void CastOrb()
@@ -776,7 +794,40 @@ public class MagicController : MonoBehaviour
         Quaternion palmsRotationMid = Quaternion.Slerp(hands.rightPalm.Rotation, hands.leftPalm.Rotation, 0.5f);
         Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
 
-        if (!hoverOrb)
+        if (ableToCast)
+        {
+            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+            StartCoroutine("CastDelay", orbsPerSecond);
+            spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
+
+            ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
+
+            OrbCastController spellController = spellOrb.GetComponent<OrbCastController>();
+            spellController.valueOSC = elementScale;
+
+            float spellForceRange = 1 - (palmDist / maxXAxisDist);
+
+            float spellForce = spellForceRange * 50;
+            if (spellForce < 1) spellForce = 2;
+            spellController.force = spellForce;
+
+            GetStaffAngle();
+            Debug.Log(spellController.GetMessageOSC() + variantOSC[variantID] + staffOSC[staffID]);
+            SendOSCMessage(spellController.GetMessageOSC() + variantOSC[variantID] + staffOSC[staffID], 1 - (palmDist / maxXAxisDist));
+
+
+            float particleScale = elementScale * 1.167388f;
+
+            foreach (Transform child in elParent.transform)
+            {
+                if (child.CompareTag("Spell"))
+                {
+                    child.localScale = new Vector3(particleScale, particleScale, particleScale);
+                }
+            }
+        }
+
+        /*if (!hoverOrb)
         {
             if (ableToCast)
             {
@@ -797,6 +848,9 @@ public class MagicController : MonoBehaviour
                     if (spellForce < 1) spellForce = 2;
                     spellController.force = spellForce;
 
+                    Debug.Log("GetMessageOSC: " + spellController.GetMessageOSC());
+                    SendOSCMessage(spellController.GetMessageOSC() + variantOSC[variantID] + staffOSC[staffID], elementScale);
+
 
                     float particleScale = elementScale * 1.167388f;
 
@@ -807,17 +861,11 @@ public class MagicController : MonoBehaviour
                             child.localScale = new Vector3(particleScale, particleScale, particleScale);
                         }
                     }
-
-                    if (currScaler == Scaler.deg90)
-                    {
-                        SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + oscMessage90, elementScale);
-                        if (variantID == 2 || variantID == 3) LiveDMX();
-                    }
                 }
                 else return;
             }
             else return;
-        }
+        }*/
         /*else
         {
             if (currEl == Element.light && !activeLightHover)

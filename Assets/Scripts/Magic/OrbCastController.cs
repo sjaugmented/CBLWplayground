@@ -41,6 +41,11 @@ public class OrbCastController : MonoBehaviour
     Collider collider;
     EyeTrackingTarget eyeTracking;
 
+    public string GetMessageOSC()
+    {
+        return messageOSC;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +55,7 @@ public class OrbCastController : MonoBehaviour
         collider = GetComponent<SphereCollider>();
         eyeTracking = GetComponent<EyeTrackingTarget>();
         eyeTracking.enabled = false;
-        
+
         /*SendDMX();
         SendOSCMessage(); //todo refactor for lockOSCvalueToDMX
 
@@ -89,13 +94,13 @@ public class OrbCastController : MonoBehaviour
             Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
         }  
     }
-    private void SendOSCMessage()
+    public void SendOSCMessage(string messOSC, float val)
     {
         OscMessage message = new OscMessage();
-        message.address = messageOSC;
-        message.values.Add(valueOSC);
+        message.address = messOSC;
+        message.values.Add(val);
         osc.Send(message);
-        Debug.Log("sending OSC: " + message); //todo remove
+        Debug.Log(this.gameObject.name + " sending OSC: " + message); //todo remove
     }
 
     void OnReceiveOSC(OscMessage message)
