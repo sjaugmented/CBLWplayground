@@ -523,6 +523,11 @@ public class MagicController : MonoBehaviour
 
     bool menuTimerActive = false;
 
+    bool switch0Sent = false;
+    bool switch1Sent = false;
+    bool switch2Sent = false;
+
+
     private void ElementVariantSelector()
     {
         fromOrbScaler = false;
@@ -550,24 +555,46 @@ public class MagicController : MonoBehaviour
             elMenuActive = true;
         }*/
 
+
         if (hands.staffCamUp00 || hands.staffCamUp45)
         {
+            switch1Sent = false;
+            switch2Sent = false;
+
             currEl = Element.fire;
-            SendOSCMessage('/switch0/', 1);
+            if (!switch0Sent)
+            {
+                SendOSCMessage("/switch0/", 1);
+                switch0Sent = true;
+            }
             VariantSelector();
         }
 
         else if (hands.staffCamUp90)
         {
+            switch0Sent = false;
+            switch2Sent = false;
+
             currEl = Element.light;
-            SendOSCMessage('/switch1/', 1);
+            if (!switch1Sent)
+            {
+                SendOSCMessage("/switch1/", 1);
+                switch1Sent = true;
+            }
             VariantSelector();
         }
 
         else if (hands.staffCamUp135 || hands.staffCamUp180)
         {
+            switch0Sent = false;
+            switch1Sent = false;
+
             currEl = Element.water;
-            SendOSCMessage('/switch2/', 1);
+            if (!switch2Sent)
+            {
+                SendOSCMessage("/switch2/", 1);
+                switch2Sent = true;
+            }
             VariantSelector();
         }
 
@@ -797,17 +824,24 @@ public class MagicController : MonoBehaviour
         Quaternion palmsRotationMid = Quaternion.Slerp(hands.rightPalm.Rotation, hands.leftPalm.Rotation, 0.5f);
         Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
 
-        if (ableToCast & floatPassthru)
+        if (ableToCast)
         {
             GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
             StartCoroutine("CastDelay", orbsPerSecond);
             spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
 
             ElementParent elParent = spellOrb.GetComponentInChildren<ElementParent>();
-
             OrbCastController spellController = spellOrb.GetComponent<OrbCastController>();
-            spellController.valueOSC = elementScale;
 
+            if (floatPassthru)
+            {
+                spellController.valueOSC = elementScale;
+            }
+            else
+            {
+                spellController.valueOSC = 1;
+            }
+            
             float spellForceRange = 1 - (palmDist / maxXAxisDist);
 
             float spellForce = spellForceRange * 50;
@@ -815,9 +849,7 @@ public class MagicController : MonoBehaviour
             spellController.force = spellForce;
 
             GetStaffAngle();
-            Debug.Log(spellController.GetMessageOSC() + variantOSC[variantID] + staffOSC[staffID]);
-            SendOSCMessage(spellController.GetMessageOSC() + variantOSC[variantID] + staffOSC[staffID], 1 - (palmDist / maxXAxisDist));
-
+            SendOSCMessage(spellController.GetMessageOSC() + variantOSC[variantID] + staffOSC[staffID], spellController.valueOSC);
 
             float particleScale = elementScale * 1.167388f;
 
