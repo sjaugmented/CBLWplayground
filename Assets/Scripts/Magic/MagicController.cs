@@ -523,9 +523,11 @@ public class MagicController : MonoBehaviour
 
     bool menuTimerActive = false;
 
-    bool switch0Sent = false;
-    bool switch1Sent = false;
-    bool switch2Sent = false;
+    bool switch00Sent = false;
+    bool switch45Sent = false;
+    bool switch90Sent = false;
+    bool switch135Sent = false;
+    bool switch180Sent = false;
 
 
     private void ElementVariantSelector()
@@ -558,43 +560,19 @@ public class MagicController : MonoBehaviour
 
         if (hands.staffCamUp00 || hands.staffCamUp45)
         {
-            switch1Sent = false;
-            switch2Sent = false;
-
             currEl = Element.fire;
-            if (!switch0Sent)
-            {
-                SendOSCMessage("/switch0/", 1);
-                switch0Sent = true;
-            }
             VariantSelector();
         }
 
         else if (hands.staffCamUp90)
         {
-            switch0Sent = false;
-            switch2Sent = false;
-
             currEl = Element.light;
-            if (!switch1Sent)
-            {
-                SendOSCMessage("/switch1/", 1);
-                switch1Sent = true;
-            }
             VariantSelector();
         }
 
         else if (hands.staffCamUp135 || hands.staffCamUp180)
         {
-            switch0Sent = false;
-            switch1Sent = false;
-
             currEl = Element.water;
-            if (!switch2Sent)
-            {
-                SendOSCMessage("/switch2/", 1);
-                switch2Sent = true;
-            }
             VariantSelector();
         }
 
@@ -744,35 +722,75 @@ public class MagicController : MonoBehaviour
             SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
             LiveDMX();
 
-            /*if (currScaler == Scaler.deg00)
+            if (currScaler == Scaler.deg00)
             {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
-                LiveDMX();
+                switch45Sent = false;
+                switch90Sent = false;
+                switch135Sent = false;
+                switch180Sent = false;
+                
+                if (!switch00Sent)
+                {
+                    SendOSCMessage("/switch00/", 1);
+                    switch00Sent = true;
+                }
             }
 
             if (currScaler == Scaler.deg45)
             {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
-                LiveDMX();
+                switch00Sent = false;
+                switch90Sent = false;
+                switch135Sent = false;
+                switch180Sent = false; 
+                
+                if (!switch45Sent)
+                {
+                    SendOSCMessage("/switch45/", 1);
+                    switch45Sent = true;
+                }
             }
 
             if (currScaler == Scaler.deg90)
             {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
-                LiveDMX();
+                switch45Sent = false;
+                switch45Sent = false;
+                switch135Sent = false;
+                switch180Sent = false; 
+                
+                if (!switch90Sent)
+                {
+                    SendOSCMessage("/switch90/", 1);
+                    switch90Sent = true;
+                }
             }
 
             if (currScaler == Scaler.deg135)
             {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
-                LiveDMX();
+                switch00Sent = false;
+                switch45Sent = false;
+                switch90Sent = false;
+                switch180Sent = false; 
+                
+                if (!switch135Sent)
+                {
+                    SendOSCMessage("/switch135/", 1);
+                    switch135Sent = true;
+                }
             }
 
             if (currScaler == Scaler.deg180)
             {
-                SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
-                LiveDMX();
-            }*/
+                switch00Sent = false;
+                switch45Sent = false;
+                switch90Sent = false;
+                switch135Sent = false;
+                
+                if (!switch180Sent)
+                {
+                    SendOSCMessage("/switch180/", 1);
+                    switch180Sent = true;
+                }
+            }
         }
     }
 
