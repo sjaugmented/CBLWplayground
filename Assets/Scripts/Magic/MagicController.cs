@@ -553,18 +553,21 @@ public class MagicController : MonoBehaviour
         if (hands.staffCamUp00 || hands.staffCamUp45)
         {
             currEl = Element.fire;
+            SendOSCMessage('/switch0/', 1);
             VariantSelector();
         }
 
         else if (hands.staffCamUp90)
         {
             currEl = Element.light;
+            SendOSCMessage('/switch1/', 1);
             VariantSelector();
         }
 
         else if (hands.staffCamUp135 || hands.staffCamUp180)
         {
             currEl = Element.water;
+            SendOSCMessage('/switch2/', 1);
             VariantSelector();
         }
 
@@ -794,7 +797,7 @@ public class MagicController : MonoBehaviour
         Quaternion palmsRotationMid = Quaternion.Slerp(hands.rightPalm.Rotation, hands.leftPalm.Rotation, 0.5f);
         Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
 
-        if (ableToCast)
+        if (ableToCast & floatPassthru)
         {
             GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
             StartCoroutine("CastDelay", orbsPerSecond);
