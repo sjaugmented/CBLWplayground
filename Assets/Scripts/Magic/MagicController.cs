@@ -121,6 +121,7 @@ public class MagicController : MonoBehaviour
     SoundManager sound;
     AudioSource audio;
     Renderer orbRender;
+    Transform staffIndicator;
 
     int dimmerChan = 0;
     int kelvinChan = 1;
@@ -232,6 +233,7 @@ public class MagicController : MonoBehaviour
         masterValues.Add(iceVals);
         #endregion
 
+        staffIndicator = FindObjectOfType<StaffID>().transform;
     }
 
     void OnEnable()
@@ -270,6 +272,7 @@ public class MagicController : MonoBehaviour
         ConvertStaffToID();
         CalcHandPositions();
         ProcessHandClouds();
+        ShowStaffAngle();
 
         if (director.readGestures)
         {
@@ -534,8 +537,8 @@ public class MagicController : MonoBehaviour
     {
         fromOrbScaler = false;
         orbActive = false;
-        ShowStaffAngle(clearTrans);
-
+/*        ShowStaffAngle(clearTrans);
+*/
         /*if (!elementMenu.activeInHierarchy && director.menuActive == false)
         {
             TurnOffMasterOrbs();
@@ -609,8 +612,6 @@ public class MagicController : MonoBehaviour
 
     }
 
-    
-
     private void VariantSelector()
     {
         fromOrbScaler = false;
@@ -667,10 +668,41 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    private void ShowStaffAngle(Material colorMat)
+    private void ShowStaffAngle()
     {
-        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-        orbRender.material = colorMat;
+        if (orbActive)
+        {
+            staffIndicator.gameObject.SetActive(true);
+            staffIndicator.position = masterOrbPos;
+            staffIndicator.rotation = Camera.main.transform.rotation;
+
+            if (currScaler == Scaler.deg00)
+            {
+                staffIndicator.localRotation = Quaternion.Euler(0, 0, 0);
+
+            }
+            else if (currScaler == Scaler.deg45)
+            {
+                staffIndicator.localRotation = Quaternion.Euler(0, 0, -45);
+
+            }
+            else if (currScaler == Scaler.deg90)
+            {
+                staffIndicator.localRotation = Quaternion.Euler(0, 0, -90);
+
+            }
+            else if (currScaler == Scaler.deg135)
+            {
+                staffIndicator.localRotation = Quaternion.Euler(0, 0, -135);
+
+            }
+            else if (currScaler == Scaler.deg180)
+            {
+                staffIndicator.localRotation = Quaternion.Euler(0, 0, -180);
+
+            }
+        }
+        else staffIndicator.gameObject.SetActive(false);
     }
 
     private void VariantScaler()
@@ -731,7 +763,7 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch00Sent)
                 {
-                    SendOSCMessage("/switch00/", 1);
+                    SendOSCMessage("/switch00/" + elementOSC[elementID] + variantOSC[variantID], 1);
                     switch00Sent = true;
                 }
             }
@@ -745,7 +777,7 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch45Sent)
                 {
-                    SendOSCMessage("/switch45/", 1);
+                    SendOSCMessage("/switch45/" + elementOSC[elementID] + variantOSC[variantID], 1);
                     switch45Sent = true;
                 }
             }
@@ -759,7 +791,7 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch90Sent)
                 {
-                    SendOSCMessage("/switch90/", 1);
+                    SendOSCMessage("/switch90/" + elementOSC[elementID] + variantOSC[variantID], 1);
                     switch90Sent = true;
                 }
             }
@@ -773,7 +805,7 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch135Sent)
                 {
-                    SendOSCMessage("/switch135/", 1);
+                    SendOSCMessage("/switch135/" + elementOSC[elementID] + variantOSC[variantID], 1);
                     switch135Sent = true;
                 }
             }
@@ -787,7 +819,7 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch180Sent)
                 {
-                    SendOSCMessage("/switch180/", 1);
+                    SendOSCMessage("/switch180/" + elementOSC[elementID] + variantOSC[variantID], 1);
                     switch180Sent = true;
                 }
             }
@@ -801,40 +833,40 @@ public class MagicController : MonoBehaviour
         {
             currScaler = Scaler.deg00;
 
-            ShowStaffAngle(yellowTrans);
-        }
+/*            ShowStaffAngle(yellowTrans);
+*/        }
 
         // 45
         else if (hands.staffCamUp45)
         {
             currScaler = Scaler.deg45;
 
-            ShowStaffAngle(magentaTrans);
-        }
+/*            ShowStaffAngle(magentaTrans);
+*/        }
 
         // 90
         else if (hands.staffCamUp90)
         {
             currScaler = Scaler.deg90;
 
-            ShowStaffAngle(clearTrans);
-        }
+/*            ShowStaffAngle(clearTrans);
+*/        }
 
         // 135
         else if (hands.staffCamUp135)
         {
             currScaler = Scaler.deg135;
 
-            ShowStaffAngle(cyanTrans);
-        }
+/*            ShowStaffAngle(cyanTrans);
+*/        }
 
         // 180
         else if (hands.palmsOpposed && hands.staffCamUp180)
         {
             currScaler = Scaler.deg180;
 
-            ShowStaffAngle(greenTrans);
-        }
+/*            ShowStaffAngle(greenTrans);
+*/        }
     }
 
     private void CastOrb()
