@@ -272,7 +272,6 @@ public class MagicController : MonoBehaviour
         ConvertStaffToID();
         CalcHandPositions();
         ProcessHandClouds();
-        ShowStaffAngle();
 
         if (director.readGestures)
         {
@@ -537,8 +536,8 @@ public class MagicController : MonoBehaviour
     {
         fromOrbScaler = false;
         orbActive = false;
-/*        ShowStaffAngle(clearTrans);
-*/
+        ShowStaffAngle(clearTrans);
+
         /*if (!elementMenu.activeInHierarchy && director.menuActive == false)
         {
             TurnOffMasterOrbs();
@@ -668,41 +667,10 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    private void ShowStaffAngle()
+    private void ShowStaffAngle(Material colorMat)
     {
-        if (orbActive)
-        {
-            staffIndicator.gameObject.SetActive(true);
-            staffIndicator.position = masterOrbPos;
-            staffIndicator.rotation = Camera.main.transform.rotation;
-
-            if (currScaler == Scaler.deg00)
-            {
-                staffIndicator.localRotation = Quaternion.Euler(0, 0, 0);
-
-            }
-            else if (currScaler == Scaler.deg45)
-            {
-                staffIndicator.localRotation = Quaternion.Euler(0, 0, -45);
-
-            }
-            else if (currScaler == Scaler.deg90)
-            {
-                staffIndicator.localRotation = Quaternion.Euler(0, 0, -90);
-
-            }
-            else if (currScaler == Scaler.deg135)
-            {
-                staffIndicator.localRotation = Quaternion.Euler(0, 0, -135);
-
-            }
-            else if (currScaler == Scaler.deg180)
-            {
-                staffIndicator.localRotation = Quaternion.Euler(0, 0, -180);
-
-            }
-        }
-        else staffIndicator.gameObject.SetActive(false);
+        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
+        orbRender.material = colorMat;
     }
 
     private void VariantScaler()
@@ -833,40 +801,41 @@ public class MagicController : MonoBehaviour
         {
             currScaler = Scaler.deg00;
 
-/*            ShowStaffAngle(yellowTrans);
-*/        }
+            if (currEl == Element.light) ShowStaffAngle(yellowTrans);
+
+        }
 
         // 45
         else if (hands.staffCamUp45)
         {
             currScaler = Scaler.deg45;
 
-/*            ShowStaffAngle(magentaTrans);
-*/        }
+            if (currEl == Element.light) ShowStaffAngle(magentaTrans);
+        }
 
         // 90
         else if (hands.staffCamUp90)
         {
             currScaler = Scaler.deg90;
 
-/*            ShowStaffAngle(clearTrans);
-*/        }
+            if (currEl == Element.light) ShowStaffAngle(clearTrans);
+        }
 
         // 135
         else if (hands.staffCamUp135)
         {
             currScaler = Scaler.deg135;
 
-/*            ShowStaffAngle(cyanTrans);
-*/        }
+            if (currEl == Element.light) ShowStaffAngle(cyanTrans);
+        }
 
         // 180
         else if (hands.palmsOpposed && hands.staffCamUp180)
         {
             currScaler = Scaler.deg180;
 
-/*            ShowStaffAngle(greenTrans);
-*/        }
+            if (currEl == Element.light) ShowStaffAngle(greenTrans);
+        }
     }
 
     private void CastOrb()
