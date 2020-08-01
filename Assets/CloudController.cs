@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MagicController))]
 public class CloudController : MonoBehaviour
 {
     [Header("Hand Clouds")]
@@ -45,7 +46,7 @@ public class CloudController : MonoBehaviour
                     rightCloudParent.SetActive(true);
                     for (int i = 0; i < rightClouds.Count; i++)
                     {
-                        if (i == magic.elementID)
+                        if (i == magic.elIndex)
                         {
                             rightClouds[i].SetActive(true);
                         }
@@ -62,7 +63,7 @@ public class CloudController : MonoBehaviour
 
                     for (int i = 0; i < leftClouds.Count; i++)
                     {
-                        if (i == magic.elementID)
+                        if (i == magic.elIndex)
                         {
                             leftClouds[i].SetActive(true);
                         }

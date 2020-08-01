@@ -28,7 +28,7 @@ public class ElementMenu : MonoBehaviour
     {
         for (int i = 0; i < elements.Count; i++)
         {
-            if (i == spellManager.GetElementID())
+            if (i == spellManager.elIndex)
             {
                 elements[i].localScale = new Vector3(defaultScale * selectedScale, defaultScale * selectedScale, defaultScale * selectedScale);
                 elements[i].Rotate(10, 1, -1);

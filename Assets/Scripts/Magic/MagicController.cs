@@ -7,28 +7,23 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.XR;
 
+[RequireComponent(typeof(SpellBook))]
+[RequireComponent(typeof(CloudController))]
 public class MagicController : MonoBehaviour
 {
     #region Inspector Fields
-    [Header("Master Orbs Appearance")]
+    /*[Header("Master Orbs Appearance")]
     [SerializeField] Material clearTrans;
     [SerializeField] Material cyanTrans;
     [SerializeField] Material magentaTrans;
     [SerializeField] Material yellowTrans;
-    [SerializeField] Material greenTrans;
+    [SerializeField] Material greenTrans;*/
 
-
-    /*[Header("Hand Clouds")]
-    [SerializeField] GameObject rightCloudParent;
-    [SerializeField] GameObject leftCloudParent;
-    public List<GameObject> rightClouds;
-    public List<GameObject> leftClouds;*/
 
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
     [SerializeField] Material transparency;
     
-    [SerializeField] GameObject elementMenu;
     [SerializeField] GameObject lightMasterOrb;
     [SerializeField] GameObject fireMasterOrb;
     [SerializeField] GameObject waterMasterOrb;
@@ -51,11 +46,6 @@ public class MagicController : MonoBehaviour
     public List<String> elementOSC;
     public List<String> variantOSC;
     public List<String> staffOSC;
-    /*[SerializeField] string oscMessage0 = "/0degreeOSC/";
-    [SerializeField] string oscMessage45 = "/45degreeOSC/";
-    [SerializeField] string oscMessage90 = "/90degreeOSC/";
-    [SerializeField] string oscMessage135 = "/135degreeOSC/";
-    [SerializeField] string oscMessage180 = "/180degreeOSC/";*/
 
     [Header("DMX values")]
     public List<int> lightChannels;
@@ -72,15 +62,18 @@ public class MagicController : MonoBehaviour
     #region public vars
     float conjureValueOSC = 0;
 
-    public enum Element { light, fire, water, ice };
-    public Element currEl = Element.light;
-    public int elementID = 0;
-    public int variantID = 0;
-    public int channelID = 0;
+    public enum State { selector, scaler, caster, neutral};
+    public State currState = State.neutral;
 
-    public enum Scaler { deg00, deg45, deg90, deg135, deg180 }
-    public Scaler currScaler = Scaler.deg90;
-    public int staffID = 0;
+    public enum Element { light, fire, water };
+    public Element currEl = Element.light;
+    public int elIndex = 0;
+    public int varIndex = 0;
+    public int chanIndex = 0;
+
+    public enum Angle { deg00, deg45, deg90, deg135, deg180 }
+    public Angle currAngle = Angle.deg90;
+    public int staffIndex = 0;
 
 
     // parameters for conjure floats
@@ -121,7 +114,7 @@ public class MagicController : MonoBehaviour
     SoundManager sound;
     AudioSource audio;
     Renderer orbRender;
-    Transform staffIndicator;
+    //Transform staffIndicator;
 
     int dimmerChan = 0;
     int kelvinChan = 1;
@@ -131,13 +124,14 @@ public class MagicController : MonoBehaviour
     int blueChan = 6;
     int whiteChan = 7;
 
-    public bool elMenuActive = false;
+    //public bool elMenuActive = false;
 
+    #region Orb/Variant Organization
     List<List<List<int>>> masterElements = new List<List<List<int>>>();
     List<List<List<int>>> masterValues = new List<List<List<int>>>();
 
 
-    List<GameObject> masterOrbs = new List<GameObject>();
+    public List<GameObject> masterOrbs = new List<GameObject>();
 
     List<List<int>> lightVariants = new List<List<int>>();
     List<List<int>> lightVals = new List<List<int>>();
@@ -150,6 +144,7 @@ public class MagicController : MonoBehaviour
 
     List<List<int>> iceVariants = new List<List<int>>();
     List<List<int>> iceVals = new List<List<int>>();
+    #endregion
 
     void Awake()
     {
@@ -166,10 +161,8 @@ public class MagicController : MonoBehaviour
         fireMasterOrb.SetActive(false);
         waterMasterOrb.SetActive(false);
         iceMasterOrb.SetActive(false);
-        elementMenu.SetActive(false);
         DisableRightStreams();
         DisableLeftStreams();
-        //DisableClouds();
     }
 
     // Start is called before the first frame update
@@ -233,7 +226,6 @@ public class MagicController : MonoBehaviour
         masterValues.Add(iceVals);
         #endregion
 
-        //staffIndicator = FindObjectOfType<StaffID>().transform;
     }
 
     void OnEnable()
@@ -241,21 +233,11 @@ public class MagicController : MonoBehaviour
         // set global dimmer and color crossfade to max on skypanel
         SetSkyPanelXOvers();
 
+        // reset orb transparency alpha to zero just to be safe
         Color color = transparency.color;
         color.a = 0;
         transparency.color = color;
     }
-
-    /*void OnDisable()
-    {
-        //DisableClouds();
-    }*/
-
-    /*private void DisableClouds()
-    {
-        rightCloudParent.SetActive(false);
-        leftCloudParent.SetActive(false);
-    }*/
 
     private void SetSkyPanelXOvers()
     {
@@ -269,9 +251,9 @@ public class MagicController : MonoBehaviour
     void Update()
     {
         ConvertElementToID();
-        ConvertStaffToID();
+        GetStaffAngle();
         CalcHandPositions();
-        //ProcessHandClouds();
+
 
         if (director.readGestures)
         {
@@ -296,7 +278,7 @@ public class MagicController : MonoBehaviour
                     waterMasterOrb.SetActive(false);
                     iceMasterOrb.SetActive(false);*/
 
-                    if (variantID == 0 || variantID == 1) LiveDMX();
+                    if (varIndex == 0 || varIndex == 1) LiveDMX();
 
                 }
 
@@ -394,65 +376,15 @@ public class MagicController : MonoBehaviour
                 else
                 {
                     TurnOffMasterOrbs();
-                    //lightMasterOrb.SetActive(false);
-                    //sound.orbAmbienceFX.Pause();
                 }
             }
             else
             {
                 TurnOffMasterOrbs();
-                //lightMasterOrb.SetActive(false);
-                //sound.orbAmbienceFX.Pause();
             }
         }
         else return;
-        
     }
-
-/*    private void ProcessHandClouds()
-    {
-        if (!director.readGestures || orbActive == true)
-        {
-            rightCloudParent.SetActive(false);
-            leftCloudParent.SetActive(false);
-        }
-        else
-        {
-            // right cloud
-            if (hands.rightHand)
-            {
-                rightCloudParent.SetActive(true);
-                for (int i = 0; i < rightClouds.Count; i++)
-                {
-                    if (i == elementID)
-                    {
-                        rightClouds[i].SetActive(true);
-                    }
-                    else rightClouds[i].SetActive(false);
-                }
-            }
-            else rightCloudParent.SetActive(false);
-
-
-            // left cloud
-            if (hands.leftHand)
-            {
-                leftCloudParent.SetActive(true);
-
-                for (int i = 0; i < leftClouds.Count; i++)
-                {
-                    if (i == elementID)
-                    {
-                        leftClouds[i].SetActive(true);
-                    }
-                    else leftClouds[i].SetActive(false);
-                }
-            }
-            else leftCloudParent.SetActive(false);
-        }
-
-
-    }*/
 
     private void TurnOffMasterOrbs()
     {
@@ -476,18 +408,18 @@ public class MagicController : MonoBehaviour
 
     private void LiveDMX()
     {
-        for (int channel = 0; channel < masterElements[elementID][variantID].Count; channel++)
+        for (int channel = 0; channel < masterElements[elIndex][varIndex].Count; channel++)
         {
             List<int> adjustedValues = new List<int>();
 
-            foreach (int value in masterValues[elementID][variantID])
+            foreach (int value in masterValues[elIndex][varIndex])
             {
                 int adjVal = Mathf.RoundToInt(value * elementScale);
                 adjustedValues.Add(adjVal);
             }
 
-            dmx.SetAddress(dmxChan.SkyPanel1[masterElements[elementID][variantID][channel]], adjustedValues[channel]);
-            dmx.SetAddress(dmxChan.SkyPanel2[masterElements[elementID][variantID][channel]], adjustedValues[channel]);
+            dmx.SetAddress(dmxChan.SkyPanel1[masterElements[elIndex][varIndex][channel]], adjustedValues[channel]);
+            dmx.SetAddress(dmxChan.SkyPanel2[masterElements[elIndex][varIndex][channel]], adjustedValues[channel]);
         }
     }
     #endregion
@@ -495,20 +427,9 @@ public class MagicController : MonoBehaviour
 
     private void ConvertElementToID() // allows for quick selection in inspector for testing various elements and forms
     {
-        if (currEl == Element.light) elementID = 0;
-        if (currEl == Element.fire) elementID = 1;
-        if (currEl == Element.water) elementID = 2;
-        if (currEl == Element.ice) elementID = 3;
-    }
-
-    private void ConvertStaffToID()
-    {
-        if (currScaler == Scaler.deg00) staffID = 0;
-        if (currScaler == Scaler.deg45) staffID = 1;
-        if (currScaler == Scaler.deg90) staffID = 2;
-        if (currScaler == Scaler.deg135) staffID = 3;
-        if (currScaler == Scaler.deg180) staffID = 4;
-
+        if (currEl == Element.light) elIndex = 0;
+        if (currEl == Element.fire) elIndex = 1;
+        if (currEl == Element.water) elIndex = 2;
     }
 
     private void CalcHandPositions()
@@ -534,9 +455,11 @@ public class MagicController : MonoBehaviour
 
     private void ElementVariantSelector()
     {
+        currState = State.selector;
+
         fromOrbScaler = false;
         orbActive = false;
-        ShowStaffAngle(clearTrans);
+        //ShowStaffAngle(clearTrans);
 
         /*if (!elementMenu.activeInHierarchy && director.menuActive == false)
         {
@@ -581,7 +504,7 @@ public class MagicController : MonoBehaviour
         // activate element orb
         for (int i = 0; i < masterOrbs.Count; i++)
         {
-            if (i == elementID)
+            if (i == elIndex)
             {
                 masterOrbs[i].SetActive(true);
                 masterOrbs[i].transform.position = masterOrbPos;
@@ -598,7 +521,7 @@ public class MagicController : MonoBehaviour
 
             for (int n = 0; n < variants.Count; n++)
             {
-                if (n == variantID)
+                if (n == varIndex)
                 {
                     variants[n].gameObject.SetActive(true);
                     variants[n].localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -615,32 +538,30 @@ public class MagicController : MonoBehaviour
     {
         fromOrbScaler = false;
 
-        elementMenu.SetActive(false);
-
         float elSlotSize = (maxXAxisDist - palmDistOffset) / spellBook.lightMasterOrb.Count;
 
         // select variant based on distance between palms
         if ((palmDist > 0 && palmDist <= palmDistOffset) || (palmDist > palmDistOffset && palmDist <= maxXAxisDist - (elSlotSize * 3)))
         {
-            variantID = 0;
+            varIndex = 0;
         }
         else if (palmDist > maxXAxisDist - (elSlotSize * 3) && palmDist <= maxXAxisDist - (elSlotSize * 2))
         {
-            variantID = 1;
+            varIndex = 1;
         }
         else if (palmDist > maxXAxisDist - (elSlotSize * 2) && palmDist <= maxXAxisDist - elSlotSize)
         {
-            variantID = 2;
+            varIndex = 2;
         }
         else if (palmDist > maxXAxisDist - elSlotSize && palmDist <= maxXAxisDist)
         {
-            variantID = 3;
+            varIndex = 3;
         }
 
         // activate element orb
         for (int i = 0; i < masterOrbs.Count; i++)
         {
-            if (i == elementID)
+            if (i == elIndex)
             {
                 masterOrbs[i].SetActive(true);
                 masterOrbs[i].transform.position = masterOrbPos;
@@ -657,7 +578,7 @@ public class MagicController : MonoBehaviour
 
             for (int n = 0; n < variants.Count; n++)
             {
-                if (n == variantID)
+                if (n == varIndex)
                 {
                     variants[n].gameObject.SetActive(true);
                     variants[n].localScale = new Vector3(0.5f, 0.5f, 0.5f);
@@ -667,29 +588,28 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    private void ShowStaffAngle(Material colorMat)
+    /*private void ShowStaffAngle(Material colorMat)
     {
         orbRender = masterOrbs[elementID].GetComponent<Renderer>();
         orbRender.material = colorMat;
-    }
+    }*/
 
     private void VariantScaler()
     {
+        currState = State.scaler;
+        
         fromOrbScaler = true;
         orbActive = true;
-
-        elementMenu.SetActive(false);
 
         // determine scale
         if (palmDist >= palmDistOffset && palmDist <= maxXAxisDist) elementScale = 1 - (palmDist - palmDistOffset) / (maxXAxisDist - palmDistOffset);
         else if (palmDist > maxXAxisDist) elementScale = 0;
         else if (palmDist < palmDistOffset) elementScale = 1;
-        GetStaffAngle();
 
         // activate current element and variant
         for (int i = 0; i < masterOrbs.Count; i++)
         {
-            if (i == elementID)
+            if (i == elIndex)
             {
                 masterOrbs[i].SetActive(true);
                 masterOrbs[i].transform.position = masterOrbPos;
@@ -706,7 +626,7 @@ public class MagicController : MonoBehaviour
 
             for (int n = 0; n < variants.Count; n++)
             {
-                if (n == variantID)
+                if (n == varIndex)
                 {
                     variants[n].gameObject.SetActive(true);
 
@@ -719,10 +639,10 @@ public class MagicController : MonoBehaviour
 
         if (hands.rightOpen && hands.leftOpen)
         {
-            SendOSCMessage(elementOSC[elementID] + variantOSC[variantID] + staffOSC[staffID], elementScale);
+            SendOSCMessage(elementOSC[elIndex] + variantOSC[varIndex] + staffOSC[staffIndex], elementScale);
             LiveDMX();
 
-            if (currScaler == Scaler.deg00)
+            if (currAngle == Angle.deg00)
             {
                 switch45Sent = false;
                 switch90Sent = false;
@@ -731,12 +651,12 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch00Sent)
                 {
-                    SendOSCMessage("/switch00/" + elementOSC[elementID] + variantOSC[variantID], 1);
+                    SendOSCMessage("/switch00/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
                     switch00Sent = true;
                 }
             }
 
-            if (currScaler == Scaler.deg45)
+            if (currAngle == Angle.deg45)
             {
                 switch00Sent = false;
                 switch90Sent = false;
@@ -745,12 +665,12 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch45Sent)
                 {
-                    SendOSCMessage("/switch45/" + elementOSC[elementID] + variantOSC[variantID], 1);
+                    SendOSCMessage("/switch45/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
                     switch45Sent = true;
                 }
             }
 
-            if (currScaler == Scaler.deg90)
+            if (currAngle == Angle.deg90)
             {
                 switch45Sent = false;
                 switch45Sent = false;
@@ -759,12 +679,12 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch90Sent)
                 {
-                    SendOSCMessage("/switch90/" + elementOSC[elementID] + variantOSC[variantID], 1);
+                    SendOSCMessage("/switch90/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
                     switch90Sent = true;
                 }
             }
 
-            if (currScaler == Scaler.deg135)
+            if (currAngle == Angle.deg135)
             {
                 switch00Sent = false;
                 switch45Sent = false;
@@ -773,12 +693,12 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch135Sent)
                 {
-                    SendOSCMessage("/switch135/" + elementOSC[elementID] + variantOSC[variantID], 1);
+                    SendOSCMessage("/switch135/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
                     switch135Sent = true;
                 }
             }
 
-            if (currScaler == Scaler.deg180)
+            if (currAngle == Angle.deg180)
             {
                 switch00Sent = false;
                 switch45Sent = false;
@@ -787,7 +707,7 @@ public class MagicController : MonoBehaviour
                 
                 if (!switch180Sent)
                 {
-                    SendOSCMessage("/switch180/" + elementOSC[elementID] + variantOSC[variantID], 1);
+                    SendOSCMessage("/switch180/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
                     switch180Sent = true;
                 }
             }
@@ -799,53 +719,50 @@ public class MagicController : MonoBehaviour
         // set staff angle
         if (hands.staffCamUp00)
         {
-            currScaler = Scaler.deg00;
-
-            if (currEl == Element.light) ShowStaffAngle(yellowTrans);
-
+            currAngle = Angle.deg00;
+            staffIndex = 0;
         }
 
         // 45
         else if (hands.staffCamUp45)
         {
-            currScaler = Scaler.deg45;
-
-            if (currEl == Element.light) ShowStaffAngle(magentaTrans);
+            currAngle = Angle.deg45;
+            staffIndex = 1;
         }
 
         // 90
         else if (hands.staffCamUp90)
         {
-            currScaler = Scaler.deg90;
-
-            if (currEl == Element.light) ShowStaffAngle(clearTrans);
+            currAngle = Angle.deg90;
+            staffIndex = 2;
         }
 
         // 135
         else if (hands.staffCamUp135)
         {
-            currScaler = Scaler.deg135;
-
-            if (currEl == Element.light) ShowStaffAngle(cyanTrans);
+            currAngle = Angle.deg135;
+            staffIndex = 3;
         }
 
         // 180
-        else if (hands.palmsOpposed && hands.staffCamUp180)
+        else if (/*hands.palmsOpposed && */hands.staffCamUp180)
         {
-            currScaler = Scaler.deg180;
-
-            if (currEl == Element.light) ShowStaffAngle(greenTrans);
+            currAngle = Angle.deg180;
+            staffIndex = 4;
         }
     }
 
+    #region Casting
     private void CastOrb()
     {
+        currState = State.caster;
+
         Quaternion palmsRotationMid = Quaternion.Slerp(hands.rightPalm.Rotation, hands.leftPalm.Rotation, 0.5f);
         Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
 
         if (ableToCast)
         {
-            GameObject spellOrb = Instantiate(spellBook.orbSpells[elementID], masterOrbPos, castRotation);
+            GameObject spellOrb = Instantiate(spellBook.orbSpells[elIndex], masterOrbPos, castRotation);
             StartCoroutine("CastDelay", orbsPerSecond);
             spellOrb.transform.localScale = new Vector3(0.05784709f, 0.05784709f, 0.05784709f);
 
@@ -867,8 +784,8 @@ public class MagicController : MonoBehaviour
             if (spellForce < 1) spellForce = 2;
             spellController.force = spellForce;
 
-            GetStaffAngle();
-            SendOSCMessage(spellController.GetMessageOSC() + variantOSC[variantID] + staffOSC[staffID], spellController.valueOSC);
+            //GetStaffAngle();
+            SendOSCMessage(spellController.GetMessageOSC() + variantOSC[varIndex] + staffOSC[staffIndex], spellController.valueOSC);
 
             float particleScale = elementScale * 1.167388f;
 
@@ -952,6 +869,13 @@ public class MagicController : MonoBehaviour
         }*/
     }
 
+    IEnumerator CastDelay(float delay)
+    {
+        ableToCast = false;
+        yield return new WaitForSeconds(1 / delay);
+        ableToCast = true;
+    }
+
     public void DestroyHoverOrb()
     {
         OrbHoverController[] gazeOrbs = FindObjectsOfType<OrbHoverController>();
@@ -978,17 +902,11 @@ public class MagicController : MonoBehaviour
                     Destroy(orb.gameObject);
                     activeWaterHover = false;
                 }
-
-                if (currEl == Element.ice && orb.CompareTag("Ice"))
-                {
-                    Destroy(orb.gameObject);
-                    activeIceHover = false;
-                }
             }
         }        
     }
 
-    
+    #region Rock On Streams
     public void DisableRightStreams()
     {
         foreach (ParticleSystem stream in spellBook.rightStreams)
@@ -1007,17 +925,17 @@ public class MagicController : MonoBehaviour
     {
         for(int i = 0; i < spellBook.rightStreams.Count; i++)
         {
-            if (i == elementID)
+            if (i == elIndex)
             {
                 var emission = spellBook.rightStreams[i].emission;
                 emission.enabled = true;
-                Transform streamParent = spellBook.rightStreams[elementID].transform.parent;
+                Transform streamParent = spellBook.rightStreams[elIndex].transform.parent;
                 
                 rightHandCaster.position = rightStreamPos;
                 streamParent.position = rightStreamPos;
                 streamParent.rotation = rightHandCaster.rotation;
 
-                foreach (Transform child in spellBook.rightStreams[elementID].transform)
+                foreach (Transform child in spellBook.rightStreams[elIndex].transform)
                 {
                     var childEmission = child.GetComponent<ParticleSystem>().emission;
                     childEmission.enabled = true;
@@ -1069,17 +987,17 @@ public class MagicController : MonoBehaviour
     {
         for (int i = 0; i < spellBook.leftStreams.Count; i++)
         {
-            if (i == elementID)
+            if (i == elIndex)
             {
                 var emission = spellBook.leftStreams[i].emission;
                 emission.enabled = true;
-                Transform streamParent = spellBook.leftStreams[elementID].transform.parent;
+                Transform streamParent = spellBook.leftStreams[elIndex].transform.parent;
                 
                 leftHandCaster.position = leftStreamPos;
                 streamParent.position = leftStreamPos;
                 streamParent.rotation = leftHandCaster.rotation;
 
-                foreach (Transform child in spellBook.leftStreams[elementID].transform)
+                foreach (Transform child in spellBook.leftStreams[elIndex].transform)
                 {
                     var childEmission = child.GetComponent<ParticleSystem>().emission;
                     childEmission.enabled = true;
@@ -1112,21 +1030,16 @@ public class MagicController : MonoBehaviour
             //sound.fireStreamFX.Pause();
         }
     }
+    #endregion
+    #endregion
 
-    IEnumerator CastDelay(float delay)
-    {
-        ableToCast = false;
-        yield return new WaitForSeconds(1 / delay);
-        ableToCast = true;
-    }
-
-    IEnumerator MenuTimeOut(float delay)
+    /*IEnumerator MenuTimeOut(float delay)
     {
         yield return new WaitForSeconds(delay);
         elementMenu.SetActive(false);
-    }
+    }*/
 
-    IEnumerator OnElementSelection()
+    /*IEnumerator OnElementSelection()
     {
         List<Transform> elements = new List<Transform>();
 
@@ -1152,32 +1065,32 @@ public class MagicController : MonoBehaviour
         color.a = 0;
         transparency.color = color;
 
-    }
+    }*/
 
-    private void ResetElementSelection()
+    /*private void ResetElementSelection()
     {
         foreach (Transform child in elementMenu.transform)
         {
             child.gameObject.SetActive(true);
         }
-    }
+    }*/
 
-    public int GetElementID()
+/*    public int GetElementID()
     {
-        return elementID;
+        return elIndex;
     }
-
-    public void ElMenuOverride()
+*/
+    /*public void ElMenuOverride()
     {
         elementMenu.SetActive(false);
         elMenuActive = false;
-    }
+    }*/
 
-    #region Hook Ups
+    #region Button/UI Hook Ups
     public void SetLight()
     {
         currEl = Element.light;
-        variantID = 0;
+        varIndex = 0;
         StartCoroutine("MenuTimeOut", 1);
         StartCoroutine("OnElementSelection");
     }
@@ -1185,7 +1098,7 @@ public class MagicController : MonoBehaviour
     public void SetFire()
     {
         currEl = Element.fire;
-        variantID = 0;
+        varIndex = 0;
         StartCoroutine("MenuTimeOut", 1);
         StartCoroutine("OnElementSelection");
     }
@@ -1193,15 +1106,7 @@ public class MagicController : MonoBehaviour
     public void SetWater()
     {
         currEl = Element.water;
-        variantID = 0;
-        StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("OnElementSelection");
-    }
-
-    public void SetIce()
-    {
-        currEl = Element.ice;
-        variantID = 0;
+        varIndex = 0;
         StartCoroutine("MenuTimeOut", 1);
         StartCoroutine("OnElementSelection");
     }
