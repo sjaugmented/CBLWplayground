@@ -18,11 +18,11 @@ public class MagicController : MonoBehaviour
     [SerializeField] Material greenTrans;
 
 
-    [Header("Hand Clouds")]
+    /*[Header("Hand Clouds")]
     [SerializeField] GameObject rightCloudParent;
     [SerializeField] GameObject leftCloudParent;
     public List<GameObject> rightClouds;
-    public List<GameObject> leftClouds;
+    public List<GameObject> leftClouds;*/
 
     [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
@@ -233,7 +233,7 @@ public class MagicController : MonoBehaviour
         masterValues.Add(iceVals);
         #endregion
 
-        staffIndicator = FindObjectOfType<StaffID>().transform;
+        //staffIndicator = FindObjectOfType<StaffID>().transform;
     }
 
     void OnEnable()
@@ -246,16 +246,16 @@ public class MagicController : MonoBehaviour
         transparency.color = color;
     }
 
-    void OnDisable()
+    /*void OnDisable()
     {
         //DisableClouds();
-    }
+    }*/
 
-    private void DisableClouds()
+    /*private void DisableClouds()
     {
         rightCloudParent.SetActive(false);
         leftCloudParent.SetActive(false);
-    }
+    }*/
 
     private void SetSkyPanelXOvers()
     {
@@ -271,7 +271,7 @@ public class MagicController : MonoBehaviour
         ConvertElementToID();
         ConvertStaffToID();
         CalcHandPositions();
-        ProcessHandClouds();
+        //ProcessHandClouds();
 
         if (director.readGestures)
         {
@@ -409,7 +409,7 @@ public class MagicController : MonoBehaviour
         
     }
 
-    private void ProcessHandClouds()
+/*    private void ProcessHandClouds()
     {
         if (!director.readGestures || orbActive == true)
         {
@@ -451,8 +451,8 @@ public class MagicController : MonoBehaviour
             else leftCloudParent.SetActive(false);
         }
 
-        
-    }
+
+    }*/
 
     private void TurnOffMasterOrbs()
     {
