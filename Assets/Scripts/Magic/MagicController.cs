@@ -9,18 +9,10 @@ using UnityEngine.XR;
 
 [RequireComponent(typeof(SpellBook))]
 [RequireComponent(typeof(CloudController))]
+[RequireComponent(typeof(OrbMaterialController))]
 public class MagicController : MonoBehaviour
 {
     #region Inspector Fields
-    /*[Header("Master Orbs Appearance")]
-    [SerializeField] Material clearTrans;
-    [SerializeField] Material cyanTrans;
-    [SerializeField] Material magentaTrans;
-    [SerializeField] Material yellowTrans;
-    [SerializeField] Material greenTrans;*/
-
-
-    [SerializeField] bool manualElMenu = false;
     [SerializeField] bool floatPassthru = true;
     [SerializeField] Material transparency;
     
@@ -29,9 +21,6 @@ public class MagicController : MonoBehaviour
     [SerializeField] GameObject waterMasterOrb;
     [SerializeField] GameObject iceMasterOrb;
     public Vector3 orbCastRotOffset = new Vector3(0, 0, 0); // todo hardcode
-    [SerializeField] Vector3 elMenuOffset = new Vector3(0, 0, 0); // todo hardcode
-    [SerializeField] float zOffset;
-    [SerializeField] float yOffset;
 
     [Header("Caster transforms for streams")]
     [SerializeField] Transform rightHandCaster;
@@ -88,8 +77,6 @@ public class MagicController : MonoBehaviour
     Vector3 rightStreamPos;
     Vector3 leftStreamPos;
     float palmDist;
-    float indexMidDist;
-    private Vector3 midpointIndexes;
     float elementScale;
 
     // used to create rate of fire for spells
@@ -103,6 +90,12 @@ public class MagicController : MonoBehaviour
     bool activeFireHover = false;    
     bool activeWaterHover = false;   
     bool activeIceHover = false;
+
+    bool switch00Sent = false;
+    bool switch45Sent = false;
+    bool switch90Sent = false;
+    bool switch135Sent = false;
+    bool switch180Sent = false;
     #endregion
 
     Director director;
@@ -111,9 +104,8 @@ public class MagicController : MonoBehaviour
     OSC osc;
     DMXcontroller dmx;
     DMXChannels dmxChan;
-    SoundManager sound;
-    AudioSource audio;
-    Renderer orbRender;
+    //SoundManager sound;
+    //AudioSource audio;
     //Transform staffIndicator;
 
     int dimmerChan = 0;
@@ -168,7 +160,7 @@ public class MagicController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        #region Magic lists
+        #region Element/Variant list creation
         //create lists for magic
         masterOrbs.Add(lightMasterOrb);
         masterOrbs.Add(fireMasterOrb);
@@ -225,7 +217,6 @@ public class MagicController : MonoBehaviour
         masterValues.Add(waterVals);
         masterValues.Add(iceVals);
         #endregion
-
     }
 
     void OnEnable()
@@ -273,11 +264,6 @@ public class MagicController : MonoBehaviour
                     CastOrb();
                     //sound.orbAmbienceFX.Pause();
 
-                    /*lightMasterOrb.SetActive(false);
-                    fireMasterOrb.SetActive(false);
-                    waterMasterOrb.SetActive(false);
-                    iceMasterOrb.SetActive(false);*/
-
                     if (varIndex == 0 || varIndex == 1) LiveDMX();
 
                 }
@@ -286,7 +272,7 @@ public class MagicController : MonoBehaviour
                 // element menu
                 else if (hands.palmsOpposed && hands.rightFist && hands.leftFist)
                 {
-                    ElementVariantSelector();
+                    ElementSelector();
                 }
 
                 else if (hands.palmsOpposed && hands.rightOpen && hands.leftOpen)
@@ -298,80 +284,6 @@ public class MagicController : MonoBehaviour
                 {
                     return;
                 }
-
-                
-                /*// floats
-                // 0
-                else if (hands.palmsOpposed && hands.staffCamUp00)
-                {
-                    currScaler = Scaler.deg00;
-
-                    if (hands.rightFist && hands.leftFist || hands.rightOpen && hands.leftOpen)
-                    {
-                        VariantScaler();
-                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                        orbRender.material = yellowTrans;
-                    }
-                }
-
-                // 45
-                else if (hands.palmsOpposed && hands.staffCamUp45)
-                {
-                    currScaler = Scaler.deg45;
-
-                    if (hands.rightFist && hands.leftFist || hands.rightOpen && hands.leftOpen)
-                    {
-                        VariantScaler();
-                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                        orbRender.material = cyanTrans;
-                    }
-                }
-
-                // 90
-                else if (hands.palmsOpposed && hands.staffCamUp90)
-                {
-                    currScaler = Scaler.deg90;
-
-                    if (hands.rightFist && hands.leftFist || hands.rightOpen && hands.leftOpen)
-                    {
-                        VariantScaler();
-                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                        orbRender.material = clearTrans;
-                    }
-
-                    if (hands.rightThumbsUp && hands.leftThumbsUp)
-                    {
-                        VariantSelector();
-                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                        orbRender.material = clearTrans;
-                    }
-                }
-
-                // 135
-                else if (hands.palmsOpposed && hands.staffCamUp135)
-                {
-                    currScaler = Scaler.deg135;
-
-                    if (hands.rightFist && hands.leftFist || hands.rightOpen && hands.leftOpen)
-                    {
-                        VariantScaler();
-                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                        orbRender.material = magentaTrans;
-                    }
-                }
-
-                // 180
-                else if (hands.palmsOpposed && hands.staffCamUp180)
-                {
-                    currScaler = Scaler.deg180;
-
-                    if (hands.rightFist && hands.leftFist || hands.rightOpen && hands.leftOpen)
-                    {
-                        VariantScaler();
-                        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-                        orbRender.material = greenTrans;
-                    }
-                }*/
 
                 else
                 {
@@ -425,18 +337,54 @@ public class MagicController : MonoBehaviour
     #endregion
 
 
-    private void ConvertElementToID() // allows for quick selection in inspector for testing various elements and forms
+    private void ConvertElementToID()
     {
         if (currEl == Element.light) elIndex = 0;
         if (currEl == Element.fire) elIndex = 1;
         if (currEl == Element.water) elIndex = 2;
     }
 
+    private void GetStaffAngle()
+    {
+        // set staff angle
+        if (hands.staffCamUp00)
+        {
+            currAngle = Angle.deg00;
+            staffIndex = 0;
+        }
+
+        // 45
+        else if (hands.staffCamUp45)
+        {
+            currAngle = Angle.deg45;
+            staffIndex = 1;
+        }
+
+        // 90
+        else if (hands.staffCamUp90)
+        {
+            currAngle = Angle.deg90;
+            staffIndex = 2;
+        }
+
+        // 135
+        else if (hands.staffCamUp135)
+        {
+            currAngle = Angle.deg135;
+            staffIndex = 3;
+        }
+
+        // 180
+        else if (/*hands.palmsOpposed && */hands.staffCamUp180)
+        {
+            currAngle = Angle.deg180;
+            staffIndex = 4;
+        }
+    }
+
     private void CalcHandPositions()
     {
         palmDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
-        indexMidDist = Vector3.Distance(hands.rtIndexMid.Position, hands.ltIndexMid.Position);
-        midpointIndexes = Vector3.Lerp(hands.rtIndexMid.Position, hands.ltIndexMid.Position, 0.5f);
 
         var midpointHands = Vector3.Lerp(hands.rtMiddleKnuckle.Position, hands.ltMiddleKnuckle.Position, 0.5f);
         masterOrbPos = midpointHands;
@@ -444,45 +392,13 @@ public class MagicController : MonoBehaviour
         leftStreamPos = Vector3.Lerp(hands.ltIndexTip.Position, hands.ltPinkyTip.Position, 0.5f);
     }
 
-    bool menuTimerActive = false;
-
-    bool switch00Sent = false;
-    bool switch45Sent = false;
-    bool switch90Sent = false;
-    bool switch135Sent = false;
-    bool switch180Sent = false;
-
-
-    private void ElementVariantSelector()
+    private void ElementSelector()
     {
         currState = State.selector;
 
         fromOrbScaler = false;
-        orbActive = false;
-        //ShowStaffAngle(clearTrans);
 
-        /*if (!elementMenu.activeInHierarchy && director.menuActive == false)
-        {
-            TurnOffMasterOrbs();
-            //lightMasterOrb.SetActive(false);
-            elementMenu.SetActive(true);
-            ResetElementSelection();
-            if (!menuTimerActive)
-            {
-                StartCoroutine("MenuTimeOut", 5);
-                menuTimerActive = true;
-            }
-
-            Vector3 midpointPalms = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
-            var camZOffset = Camera.main.transform.forward * zOffset;
-            var camYOffset = Camera.main.transform.up * yOffset;
-            elementMenu.transform.position = midpointPalms + camYOffset + camZOffset;
-            elementMenu.transform.localRotation = Camera.main.transform.rotation;
-
-            elMenuActive = true;
-        }*/
-
-
+        // determine element based on staff angle
         if (hands.staffCamUp00 || hands.staffCamUp45)
         {
             currEl = Element.fire;
@@ -529,9 +445,6 @@ public class MagicController : MonoBehaviour
                 else variants[n].gameObject.SetActive(false);
             }
         }
-
-
-
     }
 
     private void VariantSelector()
@@ -588,18 +501,11 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    /*private void ShowStaffAngle(Material colorMat)
-    {
-        orbRender = masterOrbs[elementID].GetComponent<Renderer>();
-        orbRender.material = colorMat;
-    }*/
-
     private void VariantScaler()
     {
         currState = State.scaler;
         
         fromOrbScaler = true;
-        orbActive = true;
 
         // determine scale
         if (palmDist >= palmDistOffset && palmDist <= maxXAxisDist) elementScale = 1 - (palmDist - palmDistOffset) / (maxXAxisDist - palmDistOffset);
@@ -714,43 +620,6 @@ public class MagicController : MonoBehaviour
         }
     }
 
-    private void GetStaffAngle()
-    {
-        // set staff angle
-        if (hands.staffCamUp00)
-        {
-            currAngle = Angle.deg00;
-            staffIndex = 0;
-        }
-
-        // 45
-        else if (hands.staffCamUp45)
-        {
-            currAngle = Angle.deg45;
-            staffIndex = 1;
-        }
-
-        // 90
-        else if (hands.staffCamUp90)
-        {
-            currAngle = Angle.deg90;
-            staffIndex = 2;
-        }
-
-        // 135
-        else if (hands.staffCamUp135)
-        {
-            currAngle = Angle.deg135;
-            staffIndex = 3;
-        }
-
-        // 180
-        else if (/*hands.palmsOpposed && */hands.staffCamUp180)
-        {
-            currAngle = Angle.deg180;
-            staffIndex = 4;
-        }
-    }
 
     #region Casting
     private void CastOrb()
@@ -1033,84 +902,7 @@ public class MagicController : MonoBehaviour
     #endregion
     #endregion
 
-    /*IEnumerator MenuTimeOut(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        elementMenu.SetActive(false);
-    }*/
-
-    /*IEnumerator OnElementSelection()
-    {
-        List<Transform> elements = new List<Transform>();
-
-        foreach (Transform child in elementMenu.transform)
-        {
-            elements.Add(child);
-        }
-
-        yield return new WaitForSeconds(0.1f);
-
-        for (int i = 0; i < elements.Count; i++)
-        {
-            if (i != elementID)
-            {
-                elements[i].gameObject.SetActive(false);
-            }
-        }
-
-        elMenuActive = false;
-        menuTimerActive = false;
-
-        Color color = transparency.color;
-        color.a = 0;
-        transparency.color = color;
-
-    }*/
-
-    /*private void ResetElementSelection()
-    {
-        foreach (Transform child in elementMenu.transform)
-        {
-            child.gameObject.SetActive(true);
-        }
-    }*/
-
-/*    public int GetElementID()
-    {
-        return elIndex;
-    }
-*/
-    /*public void ElMenuOverride()
-    {
-        elementMenu.SetActive(false);
-        elMenuActive = false;
-    }*/
-
     #region Button/UI Hook Ups
-    public void SetLight()
-    {
-        currEl = Element.light;
-        varIndex = 0;
-        StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("OnElementSelection");
-    }
-
-    public void SetFire()
-    {
-        currEl = Element.fire;
-        varIndex = 0;
-        StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("OnElementSelection");
-    }
-
-    public void SetWater()
-    {
-        currEl = Element.water;
-        varIndex = 0;
-        StartCoroutine("MenuTimeOut", 1);
-        StartCoroutine("OnElementSelection");
-    }
-
     public void HoverOrbYes()
     {
         hoverOrb = true;
