@@ -17,19 +17,11 @@ public class OrbMaterialController : MonoBehaviour
     [Header("Water Materials")]
     public List<Material> waterMats = new List<Material>();
 
-    HandTracking hands;
     MagicController magic;
 
     void Awake()
     {
-        hands = FindObjectOfType<HandTracking>();
         magic = GetComponent<MagicController>();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
     // Update is called once per frame
@@ -73,8 +65,6 @@ public class OrbMaterialController : MonoBehaviour
             }
         }
     }
-
-    
 
     private void ShowStaffAngle(Material colorMat)
     {       

@@ -269,19 +269,20 @@ public class MagicController : MonoBehaviour
                 }
 
                 ///////// PALMS OPPOSED
-                // element menu
+                // element selection
                 else if (hands.palmsOpposed && hands.rightFist && hands.leftFist)
                 {
                     ElementSelector();
                 }
-
+                // varient selection
                 else if (hands.palmsOpposed && hands.rightOpen && hands.leftOpen)
                 {
                     VariantScaler();
                 }
-
+                // neutral
                 else if (hands.palmsOpposed && hands.rightThumbsUp && hands.leftThumbsUp)
                 {
+                    currState = State.neutral;
                     return;
                 }
 
