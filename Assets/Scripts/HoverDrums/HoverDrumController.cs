@@ -14,7 +14,7 @@ namespace LW.HoverDrums
 
         void Update()
         {
-            
+            GetComponentInChildren<Renderer>().material.color = color;
         }
     }
 
