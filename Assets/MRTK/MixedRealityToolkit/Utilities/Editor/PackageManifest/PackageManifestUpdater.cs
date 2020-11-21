@@ -5,9 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Networking;
 using Version = System.Version;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Tests.EditModeTests")]
@@ -120,19 +118,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             // * (currentVersion == minVersion && minPrerelease != 0 && currentPrerelease >= minPrerelease)   return true;
             // * all other combinatons                                                                          return false;
             if (currentVersion > minVersion)
-            { 
-                return true; 
+            {
+                return true;
             }
             else if (currentVersion == minVersion)
             {
                 // The current and minumum versions are the same, check the prerelease portion
-                if (currentPrerelease == minPrerelease) 
-                { 
-                    return true; 
+                if (currentPrerelease == minPrerelease)
+                {
+                    return true;
                 }
-                else if ((minPrerelease != 0f) && (currentPrerelease >= minPrerelease)) 
-                { 
-                    return true; 
+                else if ((minPrerelease != 0f) && (currentPrerelease >= minPrerelease))
+                {
+                    return true;
                 };
             }
 

@@ -1,24 +1,25 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OrbCastController : MonoBehaviour
 {
     [Header("General")]
-    [Tooltip("Time before self-destruct")] 
+    [Tooltip("Time before self-destruct")]
     [SerializeField] float lifeSpan = 5f;
     public float force = 50;
-    
+
     [Header("DMX/OSC")]
-    [Tooltip("DMX channels to control")] 
+    [Tooltip("DMX channels to control")]
     [SerializeField] int[] DMXchannels;
-    [Tooltip("Brightness value for corresponding channel - ORDER MUST MATCH DMX CHANNEL ORDER!")] [Range(0, 255)] 
+    [Tooltip("Brightness value for corresponding channel - ORDER MUST MATCH DMX CHANNEL ORDER!")]
+    [Range(0, 255)]
     [SerializeField] int[] DMXvalues;
 
-    [Tooltip("Dim light(s) over time or leave at set values?")] 
+    [Tooltip("Dim light(s) over time or leave at set values?")]
     [SerializeField] bool dimOverTime = true;
-    [Tooltip("Percent of dimming per second")] [Range(0, 100)] 
+    [Tooltip("Percent of dimming per second")]
+    [Range(0, 100)]
     [SerializeField] int rateOfDim = 20;
 
     [Tooltip("OSC message to receive - triggers destruction/explosion of spell orb/particle")]
@@ -26,7 +27,7 @@ public class OrbCastController : MonoBehaviour
     [Tooltip("OSC message to send, either on cast or collision")]
     [SerializeField] string messageOSC;
     public float valueOSC = 1f;
-    [Tooltip("If Dim Over Time is true and you want OSC value to change with DMX. Converts the highest DMX value to an OSC float.")] 
+    [Tooltip("If Dim Over Time is true and you want OSC value to change with DMX. Converts the highest DMX value to an OSC float.")]
     [SerializeField] bool dimOSCwithDMX = false;
 
     [Header("Misc Controls")]
@@ -82,7 +83,7 @@ public class OrbCastController : MonoBehaviour
     {
         if (DMXchannels.Length == 0) return;
 
-        if(DMXchannels.Length == DMXvalues.Length)
+        if (DMXchannels.Length == DMXvalues.Length)
         {
             for (int i = 0; i < DMXchannels.Length; i++)
             {
@@ -92,7 +93,7 @@ public class OrbCastController : MonoBehaviour
         else
         {
             Debug.LogError("Mismatch between channels and values arrays - check inspector fields.");
-        }  
+        }
     }
     public void SendOSCMessage(string messOSC, float val)
     {
@@ -113,7 +114,7 @@ public class OrbCastController : MonoBehaviour
     {
         var dimPercentage = rateOfDim / 100;
 
-        if (DMXchannels.Length == 0) return; 
+        if (DMXchannels.Length == 0) return;
 
         for (int i = 0; i < DMXchannels.Length; i++)
         {
@@ -161,7 +162,7 @@ public class OrbCastController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    
+
 
     private void OnCollisionEnter(Collision other)
     {
@@ -176,5 +177,5 @@ public class OrbCastController : MonoBehaviour
         rigidBody.AddForce(transform.forward * force);
     }
 
-    
+
 }

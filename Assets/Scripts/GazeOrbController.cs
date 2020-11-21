@@ -1,5 +1,4 @@
-﻿using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Input;
+﻿using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +23,7 @@ public class GazeOrbController : MonoBehaviour
     DMXcontroller dmx;
     EyeTrackingTarget gaze;
     OrbHoverController hoverParent;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,7 +46,7 @@ public class GazeOrbController : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        
+
         if (timer < 0)
         {
             hoverParent.babySpawned = false;
@@ -106,7 +105,7 @@ public class GazeOrbController : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
 
             Renderer render = GetComponent<Renderer>();
-            
+
             render.enabled = false;
 
             yield return new WaitForSeconds(1);
@@ -116,6 +115,6 @@ public class GazeOrbController : MonoBehaviour
             Destroy(gameObject);
         }
         else yield break;
-        
+
     }
 }

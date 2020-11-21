@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
 
         internal void InitEdgeAxis()
-        { 
+        {
             edgeAxes = new CardinalAxisType[NumEdges];
             edgeAxes[0] = CardinalAxisType.X;
             edgeAxes[1] = CardinalAxisType.Y;
@@ -115,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             InitEdgeAxis();
             CreateHandles(parent, drawManipulationTether);
         }
-        
+
         private void CreateHandles(Transform parent, bool drawManipulationTether)
         {
             for (int i = 0; i < edgeCenters.Length; ++i)

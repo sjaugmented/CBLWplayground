@@ -35,12 +35,12 @@ namespace Microsoft.MixedReality.Toolkit.Windows.Utilities
             UniversalApiContractV3_IsAvailable = false;
 #endif
         }
-		
+
         /// <summary>
         /// Is the Universal API Contract v8.0 Available?
         /// </summary>
         public static bool UniversalApiContractV8_IsAvailable { get; private set; }
-        
+
         /// <summary>
         /// Is the Universal API Contract v7.0 Available?
         /// </summary>

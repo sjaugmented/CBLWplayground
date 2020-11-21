@@ -1,12 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -45,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit.UI.Editor
                 else
                 {
                     instance.SetSelection(currentIndex, true, true);
-                }  
+                }
             }
         }
 

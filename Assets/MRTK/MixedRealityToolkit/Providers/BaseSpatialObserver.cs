@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
             IMixedRealityServiceRegistrar registrar,
             IMixedRealitySpatialAwarenessSystem spatialAwarenessSystem,
             string name = null,
-            uint priority = DefaultPriority, 
+            uint priority = DefaultPriority,
             BaseMixedRealityProfile profile = null) : this(spatialAwarenessSystem, name, priority, profile)
         {
             Registrar = registrar;

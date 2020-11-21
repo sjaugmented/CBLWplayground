@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             get
             {
-                if(headForward.magnitude < Mathf.Epsilon)
+                if (headForward.magnitude < Mathf.Epsilon)
                 {
                     return false;
                 }

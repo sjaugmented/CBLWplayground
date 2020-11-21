@@ -551,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         protected float clickTime = 1.5f;
         protected Coroutine clickValidTimer;
-        
+
         /// <summary>
         /// Amount of time to "simulate" press states for interactions that do not utilize input up/down such as voice command
         /// This allows for visual feedbacks and other typical UX responsiveness and behavior to occur
@@ -733,7 +733,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                 }
                 else
                 {
-                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset." );
+                    Debug.LogWarning($"Empty event receiver found on {gameObject.name}, you may want to re-create this asset.");
                 }
             }
         }
@@ -762,7 +762,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// </summary>
         private void SetupThemes()
         {
-            allThemeDimensionPairs.Clear();   
+            allThemeDimensionPairs.Clear();
             // Profiles are one per GameObject/ThemeContainer
             // ThemeContainers are one per dimension
             // ThemeDefinitions are one per desired effect (i.e theme)
@@ -1365,7 +1365,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     focusingPointers.Add(eventData.Pointer);
                 }
             }
-            else if (eventData.OldFocusedObject != null 
+            else if (eventData.OldFocusedObject != null
                 && eventData.OldFocusedObject.transform.IsChildOf(gameObject.transform))
             {
                 focusingPointers.Remove(eventData.Pointer);

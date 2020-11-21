@@ -4,8 +4,8 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
 {
@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UnityAR
                 {
                     // Add a reference to the ARFoundation assembly
                     references.Add(arFoundationReference);
-                    changed = true; 
+                    changed = true;
                 }
 #endif
 #if UNITY_2019_1_OR_NEWER

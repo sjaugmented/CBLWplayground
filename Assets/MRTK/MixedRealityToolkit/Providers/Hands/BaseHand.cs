@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected void UpdateVelocity()
         {
-            if(frameOn < velocityUpdateInterval)
+            if (frameOn < velocityUpdateInterval)
             {
                 velocityPositionsCache[frameOn] = GetJointPosition(TrackedHandJoint.Palm);
                 velocityPositionsSum += velocityPositionsCache[frameOn];

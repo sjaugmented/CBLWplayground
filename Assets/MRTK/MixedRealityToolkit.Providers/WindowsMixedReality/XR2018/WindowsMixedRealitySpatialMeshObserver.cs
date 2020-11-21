@@ -286,11 +286,11 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.SpatialAwareness
             }
 
             // Cleanup the spare mesh object	
-            if (spareMeshObject != null)	
-            {	
+            if (spareMeshObject != null)
+            {
                 // Destroy the game object, destroy the meshes.	
-                SpatialAwarenessMeshObject.Cleanup(spareMeshObject);	
-                spareMeshObject = null;	
+                SpatialAwarenessMeshObject.Cleanup(spareMeshObject);
+                spareMeshObject = null;
             }
 
             if (wasRunning)

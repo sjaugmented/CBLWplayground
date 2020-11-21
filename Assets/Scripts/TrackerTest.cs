@@ -1,8 +1,5 @@
-﻿using Microsoft.MixedReality.Toolkit;
-using Microsoft.MixedReality.Toolkit.Input;
+﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -35,7 +32,7 @@ public class TrackerTest : MonoBehaviour
 
     void Update()
     {
-        ProcessVectors(); 
+        ProcessVectors();
     }
 
     private void ProcessVectors()

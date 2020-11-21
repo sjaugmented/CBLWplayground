@@ -129,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         }
 
         [SerializeField, Tooltip("A list of colors to display for different percentage of target frame rates.")]
-        private FrameRateColor[] frameRateColors = new FrameRateColor[] 
+        private FrameRateColor[] frameRateColors = new FrameRateColor[]
         {
             // Green
             new FrameRateColor() { percentageOfTarget = 0.95f, color = new Color(127 / 256.0f, 186 / 256.0f, 0 / 256.0f, 1.0f) },
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
                 else
                 {
                     // If a instanced material is not available, fall back to non-instanced rendering.
-                    for (int i  = 0; i < frameInfoMatrices.Length; ++i)
+                    for (int i = 0; i < frameInfoMatrices.Length; ++i)
                     {
                         frameInfoPropertyBlock.SetColor(colorID, frameInfoColors[i]);
                         Graphics.DrawMesh(quadMesh, parentLocalToWorldMatrix * frameInfoMatrices[i], defaultMaterial, 0, null, 0, frameInfoPropertyBlock, false, false, false);

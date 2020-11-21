@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -229,19 +227,19 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
             string fileName)
         {
             DirectoryInfo[] folders = root.GetDirectories(folderName);
-            if (folders.Length == 0) 
+            if (folders.Length == 0)
             {
-                return null; 
+                return null;
             }
-            if (folders.Length > 1) 
+            if (folders.Length > 1)
             {
                 Debug.LogWarning($"Too many instances of the {folderName} pattern, using the first one found.");
             }
 
             folders = folders[0].GetDirectories("Runtime");
-            if (folders.Length == 0) 
+            if (folders.Length == 0)
             {
-                return null; 
+                return null;
             }
 
             FileInfo[] files = folders[0].GetFiles(fileName);

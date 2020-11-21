@@ -33,13 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// Load a scene with contentScene.Name
         /// </summary>
         public void LoadContent()
-		{
-			ISceneTransitionService transitions = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
-			if (transitions.TransitionInProgress)
+        {
+            ISceneTransitionService transitions = MixedRealityToolkit.Instance.GetService<ISceneTransitionService>();
+            if (transitions.TransitionInProgress)
             {
                 return;
             }
             transitions.DoSceneTransition(() => CoreServices.SceneSystem.LoadContent(contentScene.Name, loadSceneMode));
         }
-	}
+    }
 }

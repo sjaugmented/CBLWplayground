@@ -12,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
     /// </summary>
     [HelpURL("https://microsoft.github.io/MixedRealityToolkit-Unity/Documentation/SpatialAwareness/SpatialAwarenessGettingStarted.html")]
     public class MixedRealitySpatialAwarenessSystem :
-        BaseDataProviderAccessCoreSystem, 
-        IMixedRealitySpatialAwarenessSystem, 
+        BaseDataProviderAccessCoreSystem,
+        IMixedRealitySpatialAwarenessSystem,
         IMixedRealityCapabilityCheck
     {
         /// <summary>
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialAwareness
         /// <inheritdoc />
         public bool CheckCapability(MixedRealityCapability capability)
         {
-            foreach(var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
+            foreach (var observer in GetDataProviders<IMixedRealitySpatialAwarenessObserver>())
             {
                 IMixedRealityCapabilityCheck capabilityChecker = observer as IMixedRealityCapabilityCheck;
 

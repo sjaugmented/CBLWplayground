@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine;
-using System.Collections.Generic;
-using System;
 using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
 {
@@ -29,9 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
         /// <param name="profile">The service's configuration profile.</param>
         [Obsolete("This constructor is obsolete (registrar parameter is no longer required) and will be removed in a future version of the Microsoft Mixed Reality Toolkit.")]
         public SceneTransitionService(
-            IMixedRealityServiceRegistrar registrar, 
-            string name, 
-            uint priority, 
+            IMixedRealityServiceRegistrar registrar,
+            string name,
+            uint priority,
             BaseMixedRealityProfile profile) : this(name, priority, profile)
         {
             Registrar = registrar;

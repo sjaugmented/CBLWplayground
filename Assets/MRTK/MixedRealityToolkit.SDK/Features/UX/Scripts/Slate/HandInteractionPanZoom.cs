@@ -5,13 +5,12 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
     [AddComponentMenu("Scripts/MRTK/SDK/HandInteractionPanZoom")]
-    public class HandInteractionPanZoom : 
+    public class HandInteractionPanZoom :
         BaseFocusHandler, IMixedRealityTouchHandler, IMixedRealityPointerHandler, IMixedRealitySourceStateHandler
     {
         /// <summary>
@@ -104,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// Returns the current pan delta (pan value - previous pan value)
         /// in UV coordinates (0 being no pan, 1, being pan of the entire ) 
         /// </summary>
-        public Vector2  CurrentPanDelta
+        public Vector2 CurrentPanDelta
         {
             get { return totalUVOffset; }
         }
@@ -218,13 +217,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #region Private Methods
         private bool TryGetMRControllerRayPoint(HandPanData data, out Vector3 rayPoint)
         {
-           
+
             if (data.currentPointer != null && data.currentController != null && data.currentController.IsPositionAvailable)
             {
                 rayPoint = data.touchingInitialPt + (SnapFingerToQuad(data.currentPointer.Position) - data.initialProjectedOffset);
                 return true;
             }
-          
+
             rayPoint = Vector3.zero;
             return false;
         }
@@ -268,11 +267,11 @@ namespace Microsoft.MixedReality.Toolkit.UI
         }
         private bool TryGetHandRayPoint(IMixedRealityController controller, out Vector3 handRayPoint)
         {
-           if (controller != null &&
-                controller.InputSource != null &&
-                controller.InputSource.Pointers != null &&
-                controller.InputSource.Pointers.Length > 0 &&
-                controller.InputSource.Pointers[0].Result != null)
+            if (controller != null &&
+                 controller.InputSource != null &&
+                 controller.InputSource.Pointers != null &&
+                 controller.InputSource.Pointers.Length > 0 &&
+                 controller.InputSource.Pointers[0].Result != null)
             {
                 handRayPoint = controller.InputSource.Pointers[0].Result.Details.Point;
                 return true;
@@ -305,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             currentMaterial = this.gameObject.GetComponent<Renderer>().material;
             proximityLightCenterColorID = Shader.PropertyToID("_ProximityLightCenterColorOverride");
             bool materialValid = currentMaterial != null && currentMaterial.HasProperty(proximityLightCenterColorID);
-            defaultProximityLightCenterColor = materialValid ? 
+            defaultProximityLightCenterColor = materialValid ?
                 currentMaterial.GetColor(proximityLightCenterColorID) :
                 new Color(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -657,7 +656,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                     {
                         data.touchingRayOffset = handRayPt - SnapFingerToQuad(touchPosition);
                     }
-                }              
+                }
             }
 
             //store value in case of MRController
@@ -699,7 +698,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         {
             var hand = controller as IMixedRealityHand;
             if (hand != null)
-            { 
+            {
                 if (hand.TryGetJoint(joint, out MixedRealityPose pose))
                 {
                     position = pose.Position;
@@ -763,7 +762,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
 
         #region BaseFocusHandler Methods
-        
+
         /// <inheritdoc />
         public override void OnFocusEnter(FocusEventData eventData) { }
 
@@ -802,13 +801,13 @@ namespace Microsoft.MixedReality.Toolkit.UI
         public void OnPointerDown(MixedRealityPointerEventData eventData)
         {
             oldIsTargetPositionLockedOnFocusLock = eventData.Pointer.IsTargetPositionLockedOnFocusLock;
-            if (! (eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
+            if (!(eventData.Pointer is IMixedRealityNearPointer) && eventData.Pointer.Controller.IsRotationAvailable)
             {
                 eventData.Pointer.IsTargetPositionLockedOnFocusLock = false;
             }
             SetAffordancesActive(false);
             EndTouch(eventData.SourceId);
-            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer,  false);
+            SetHandDataFromController(eventData.Pointer.Controller, eventData.Pointer, false);
             eventData.Use();
         }
         public void OnPointerUp(MixedRealityPointerEventData eventData)
@@ -816,7 +815,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             eventData.Pointer.IsTargetPositionLockedOnFocusLock = oldIsTargetPositionLockedOnFocusLock;
             EndTouch(eventData.SourceId);
             eventData.Use();
-        }    
+        }
         #endregion IMixedRealityInputHandler Methods
 
         #region IMixedRealitySourceStateHandler Methods
@@ -828,7 +827,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         #endregion IMixedRealitySourceStateHandler Methods
 
         #region Unused Methods
-        public void OnSourceDetected(SourceStateEventData eventData) { }   
+        public void OnSourceDetected(SourceStateEventData eventData) { }
         public void OnPointerDragged(MixedRealityPointerEventData eventData) { }
         public void OnPointerClicked(MixedRealityPointerEventData eventData) { }
         #endregion Unused Methods

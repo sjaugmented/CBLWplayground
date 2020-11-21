@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 Cursor.lockState = CursorLockMode.None;
 
                 // Process pointer events as mouse events.
-                foreach(var p in pointerDataToUpdate)
+                foreach (var p in pointerDataToUpdate)
                 {
                     PointerData pointerData = p.Value;
                     IMixedRealityPointer pointer = pointerData.pointer;
@@ -245,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void ResetMousePointerEventData(PointerData pointerData)
         {
             // Invalidate last mouse point.
-            pointerData.lastMousePoint3d = null; 
+            pointerData.lastMousePoint3d = null;
             pointerData.pointer.Result = null;
 
             pointerData.eventDataLeft.pointerCurrentRaycast = new RaycastResult();

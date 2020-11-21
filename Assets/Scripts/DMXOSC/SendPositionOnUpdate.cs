@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class SendPositionOnUpdate : MonoBehaviour {
+public class SendPositionOnUpdate : MonoBehaviour
+{
 
-	public OSC osc;
+    public OSC osc;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Use this for initialization
+    void Start()
+    {
 
-	  OscMessage message = new OscMessage();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+        OscMessage message = new OscMessage();
 
         message.address = "/UpdateXYZ";
         message.values.Add(transform.position.x);

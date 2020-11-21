@@ -69,6 +69,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf
                 Debug.Log("Import successful");
             }
         }
-        
+
     }
 }

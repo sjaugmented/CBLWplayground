@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             hits = new RaycastHit[maxObjects];
         }
 
-        private void Update() 
+        private void Update()
         {
             DateTime now = DateTime.UtcNow;
 
@@ -241,7 +241,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
                                                 distance,
                                                 UnityPhysics.DefaultRaycastLayers,
                                                 QueryTriggerInteraction.Ignore);
-            
+
             for (int i = 0; i < count; i++)
             {
                 IAudioInfluencer influencer = hits[i].collider.gameObject.GetComponentInParent<IAudioInfluencer>();

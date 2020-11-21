@@ -5,7 +5,6 @@ using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.UnityInput;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
@@ -31,9 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.OpenVR.Input
         public OpenVRDeviceManager(
             IMixedRealityServiceRegistrar registrar,
             IMixedRealityInputSystem inputSystem,
-            string name = null, 
-            uint priority = DefaultPriority, 
-            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile) 
+            string name = null,
+            uint priority = DefaultPriority,
+            BaseMixedRealityProfile profile = null) : this(inputSystem, name, priority, profile)
         {
             Registrar = registrar;
         }

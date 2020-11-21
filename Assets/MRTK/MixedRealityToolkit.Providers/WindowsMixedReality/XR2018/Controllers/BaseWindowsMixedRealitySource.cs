@@ -217,23 +217,23 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             switch (interactionMapping.AxisType)
             {
                 case AxisType.SixDof:
-                {
-                    // The data queried in UpdateSourceData is the grip pose.
-                    // Reuse that data to save two method calls and transforms.
-                    currentGripPose.Position = currentSourcePosition;
-                    currentGripPose.Rotation = currentSourceRotation;
-
-                    // Update the interaction data source
-                    interactionMapping.PoseData = currentGripPose;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
+                        // The data queried in UpdateSourceData is the grip pose.
+                        // Reuse that data to save two method calls and transforms.
+                        currentGripPose.Position = currentSourcePosition;
+                        currentGripPose.Rotation = currentSourceRotation;
+
+                        // Update the interaction data source
+                        interactionMapping.PoseData = currentGripPose;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
+                        {
+                            // Raise input system event if it's enabled
+                            CoreServices.InputSystem?.RaisePoseInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, currentGripPose);
+                        }
                     }
-                }
-                break;
+                    break;
             }
         }
 
@@ -246,80 +246,80 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.TriggerPress:
-                {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.grasped;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        if (interactionMapping.BoolData)
+                        // Update the interaction data source
+                        interactionMapping.BoolData = interactionSourceState.grasped;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // Raise input system event if it's enabled
+                            if (interactionMapping.BoolData)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
+                        break;
                     }
-                    break;
-                }
                 case DeviceInputType.Select:
-                {
-                    // Get the select pressed state, factoring in a workaround for Unity issue #1033526.
-                    // When that issue is fixed, it should be possible change the line below to:
-                    // interactionMapping.BoolData = interactionSourceState.selectPressed;
-                    interactionMapping.BoolData = GetSelectPressedWorkaround(interactionSourceState);
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        if (interactionMapping.BoolData)
+                        // Get the select pressed state, factoring in a workaround for Unity issue #1033526.
+                        // When that issue is fixed, it should be possible change the line below to:
+                        // interactionMapping.BoolData = interactionSourceState.selectPressed;
+                        interactionMapping.BoolData = GetSelectPressedWorkaround(interactionSourceState);
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // Raise input system event if it's enabled
+                            if (interactionMapping.BoolData)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
+                        break;
                     }
-                    break;
-                }
                 case DeviceInputType.Trigger:
-                {
-                    // Update the interaction data source
-                    interactionMapping.FloatData = interactionSourceState.selectPressedAmount;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
+                        // Update the interaction data source
+                        interactionMapping.FloatData = interactionSourceState.selectPressedAmount;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
+                        {
+                            // Raise input system event if it's enabled
+                            CoreServices.InputSystem?.RaiseFloatInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.selectPressedAmount);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case DeviceInputType.TriggerTouch:
-                {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.selectPressedAmount > 0;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.selectPressedAmount > 0)
+                        // Update the interaction data source
+                        interactionMapping.BoolData = interactionSourceState.selectPressedAmount > 0;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // Raise input system event if it's enabled
+                            if (interactionSourceState.selectPressedAmount > 0)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 

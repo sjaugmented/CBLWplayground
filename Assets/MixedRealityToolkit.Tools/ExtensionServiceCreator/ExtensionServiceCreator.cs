@@ -438,7 +438,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 errors.Add("Name must end with 'Service' suffix.");
             }
-            
+
             if (!CSharpCodeProvider.CreateProvider("C#").IsValidIdentifier(ServiceName))
             {
                 errors.Add("Name must not contain illegal characters.");

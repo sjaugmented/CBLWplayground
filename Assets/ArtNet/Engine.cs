@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 #if !UNITY_EDITOR
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Networking;

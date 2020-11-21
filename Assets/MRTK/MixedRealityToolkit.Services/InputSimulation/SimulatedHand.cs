@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void Copy(SimulatedHandData other)
         {
             isTracked = other.isTracked;
-            isPinching = other.isPinching; 
+            isPinching = other.isPinching;
             for (int i = 0; i < jointCount; ++i)
             {
                 joints[i] = other.joints[i];
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected SimulatedHand(TrackingState trackingState, Handedness controllerHandedness, IMixedRealityInputSource inputSource = null, MixedRealityInteractionMapping[] interactions = null)
                 : base(trackingState, controllerHandedness, inputSource, interactions)
-        {}
+        { }
 
         public override bool TryGetJoint(TrackedHandJoint joint, out MixedRealityPose pose)
         {

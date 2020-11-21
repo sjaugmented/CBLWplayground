@@ -43,11 +43,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
         public static readonly GUIStyle ControllerButtonStyle = new GUIStyle("LargeButton")
         {
             imagePosition = ImagePosition.ImageAbove,
-                    fontStyle = FontStyle.Bold,
-                    stretchHeight = true,
-                    stretchWidth = true,
-                    wordWrap = true,
-                    fontSize = 10,
+            fontStyle = FontStyle.Bold,
+            stretchHeight = true,
+            stretchWidth = true,
+            wordWrap = true,
+            fontSize = 10,
         };
 
         /// <summary>

@@ -6,7 +6,6 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using Microsoft.MixedReality.Toolkit.WindowsDevicePortal;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -56,9 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly string[] TARGET_DEVICE_OPTIONS = { "Any Device", "PC", "Mobile", "HoloLens" };
 
-        private static readonly string[] ARCHITECTURE_OPTIONS = { 
-            "x86", 
-            "x64", 
+        private static readonly string[] ARCHITECTURE_OPTIONS = {
+            "x86",
+            "x64",
             "ARM",
             #if UNITY_2019_1_OR_NEWER
             "ARM64"
@@ -69,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
 
         private static readonly string[] PLATFORM_TOOLSET_NAMES = { "Solution", "v141", "v142" };
 
-        private static readonly string[] LocalRemoteOptions = { "Local", "Remote"};
+        private static readonly string[] LocalRemoteOptions = { "Local", "Remote" };
 
         private static readonly List<string> Builds = new List<string>(0);
 
@@ -849,7 +848,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                     {
                                         EditorApplication.delayCall += () =>
                                         {
-                                            ExecuteAction((DeviceInfo connection) 
+                                            ExecuteAction((DeviceInfo connection)
                                                 => InstallAppOnDeviceAsync(fullBuildLocation, connection));
                                         };
                                     }
@@ -858,7 +857,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                                     {
                                         EditorApplication.delayCall += () =>
                                         {
-                                            ExecuteAction((DeviceInfo connection) 
+                                            ExecuteAction((DeviceInfo connection)
                                                 => UninstallAppOnDeviceAsync(connection));
                                         };
                                     }
@@ -1038,7 +1037,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                         foreach (var address in adapter.IpAddresses)
                         {
                             string ipAddress = address.IpAddress;
-                            if (IsValidIpAddress(ipAddress) 
+                            if (IsValidIpAddress(ipAddress)
                                 && !portalConnections.Connections.Any(connection => connection.IP == ipAddress))
                             {
                                 Debug.Log($"Adding new IP {ipAddress} for local hololens {machineName.ComputerName} to remote connection list");
@@ -1137,7 +1136,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 {
                     string fullBuildLocation = CalcMostRecentBuild();
 
-                    await ExecuteActionAsync((DeviceInfo connection) 
+                    await ExecuteActionAsync((DeviceInfo connection)
                         => InstallAppOnDeviceAsync(fullBuildLocation, connection));
                 }
             }
@@ -1265,7 +1264,7 @@ namespace Microsoft.MixedReality.Toolkit.Build.Editor
                 ipAddr = portSegments[0];
             }
 
-            return ipAddr.Split('.').Length == 4 && !ipAddr.Contains(EMPTY_IP_ADDRESS) && 
+            return ipAddr.Split('.').Length == 4 && !ipAddr.Contains(EMPTY_IP_ADDRESS) &&
                 (IPAddress.TryParse(ipAddr, out IPAddress address) || ipAddr.Contains(DeviceInfo.LocalMachine));
         }
 

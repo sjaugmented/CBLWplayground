@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
+using LW.Core;
 
 public class RGBController : MonoBehaviour
 {
@@ -68,9 +67,9 @@ public class RGBController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
 
-        
+
+
     }
 
     void OnEnable()

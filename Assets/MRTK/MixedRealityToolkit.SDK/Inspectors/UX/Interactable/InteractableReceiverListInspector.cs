@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
             SerializedProperty events = serializedObject.FindProperty("Events");
 
-            if(events.arraySize < 1)
+            if (events.arraySize < 1)
             {
                 AddEvent(0);
             }
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             SerializedProperty interactable = serializedObject.FindProperty("Interactable");
             SerializedProperty searchScope = serializedObject.FindProperty("InteractableSearchScope");
 
-            EditorGUILayout.PropertyField(interactable, new GUIContent("Interactable","The Interactable that will be monitored"));
+            EditorGUILayout.PropertyField(interactable, new GUIContent("Interactable", "The Interactable that will be monitored"));
 
             ReceiverBaseMonoBehavior.SearchScopes scope = (ReceiverBaseMonoBehavior.SearchScopes)searchScope.intValue;
             scope = (ReceiverBaseMonoBehavior.SearchScopes)EditorGUILayout.EnumPopup(new GUIContent("Search Scope", "Where to look for an Interactable if one is not assigned"), scope);

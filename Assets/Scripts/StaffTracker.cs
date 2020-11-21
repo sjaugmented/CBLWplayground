@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using LW.Core;
 
 public class StaffTracker : MonoBehaviour
 {
     HandTracking handTracker;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +14,6 @@ public class StaffTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

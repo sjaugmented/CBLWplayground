@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public Dictionary<Type, List<EventHandlerEntry>> EventHandlersByType { get; } = new Dictionary<Type, List<EventHandlerEntry>>();
 
-    #region IMixedRealityEventSystem Implementation
+        #region IMixedRealityEventSystem Implementation
 
         /// <inheritdoc />
         public List<GameObject> EventListeners { get; } = new List<GameObject>();
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit
                     var handlerEntry = handlers[i];
 
                     // If handler's parent is in object collection (traversed above), it has already received an event.
-                    if(handlerEntry.parentObjectIsInObjectCollection)
+                    if (handlerEntry.parentObjectIsInObjectCollection)
                     {
                         continue;
                     }
@@ -149,11 +149,11 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
-            #if WINDOWS_UWP && !ENABLE_IL2CPP
+#if WINDOWS_UWP && !ENABLE_IL2CPP
                 Debug.Assert(typeof(T).IsInterface(), "RegisterHandler must be called with an interface as a generic parameter.");
-            #else
-                Debug.Assert(typeof(T).IsInterface, "RegisterHandler must be called with an interface as a generic parameter.");
-            #endif
+#else
+            Debug.Assert(typeof(T).IsInterface, "RegisterHandler must be called with an interface as a generic parameter.");
+#endif
             Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to RegisterHandler doesn't implement a type given as generic parameter.");
 
             TraverseEventSystemHandlerHierarchy<T>(handler, RegisterHandler);
@@ -168,11 +168,11 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             // #if due to Microsoft.MixedReality.Toolkit.ReflectionExtensions overload of Type.IsInterface
-            #if WINDOWS_UWP && !ENABLE_IL2CPP
+#if WINDOWS_UWP && !ENABLE_IL2CPP
                 Debug.Assert(typeof(T).IsInterface(), "UnregisterHandler must be called with an interface as a generic parameter.");
-            #else
-                Debug.Assert(typeof(T).IsInterface, "UnregisterHandler must be called with an interface as a generic parameter.");
-            #endif
+#else
+            Debug.Assert(typeof(T).IsInterface, "UnregisterHandler must be called with an interface as a generic parameter.");
+#endif
             Debug.Assert(typeof(T).IsAssignableFrom(handler.GetType()), "Handler passed to UnregisterHandler doesn't implement a type given as generic parameter.");
 
             TraverseEventSystemHandlerHierarchy<T>(handler, UnregisterHandler);
@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <inheritdoc />
         public override void Destroy()
         {
-            if(!enableDanglingHandlerDiagnostics)
+            if (!enableDanglingHandlerDiagnostics)
             {
                 return;
             }
@@ -288,9 +288,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-    #endregion IMixedRealityEventSystem Implementation
+        #endregion IMixedRealityEventSystem Implementation
 
-    #region Registration helpers
+        #region Registration helpers
 
         private void UnregisterHandler(Type handlerType, IEventSystemHandler handler)
         {
@@ -374,9 +374,9 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-    #endregion Registration helpers
+        #endregion Registration helpers
 
-    #region Utilities
+        #region Utilities
 
         /// <summary>
         /// Utility function for registering parent interfaces of a given handler.
@@ -414,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit
                 "cause performance issues. It is recommended to remove or replace usages of 'Register/Unregister' methods with 'RegisterHandler/UnregisterHandler'.");
         }
 
-    #endregion Utilities
+        #endregion Utilities
         // Example Event Pattern #############################################################
 
         //public void RaiseGenericEvent(IEventSource eventSource)

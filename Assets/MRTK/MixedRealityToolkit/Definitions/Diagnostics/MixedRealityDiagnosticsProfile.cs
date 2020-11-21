@@ -109,6 +109,6 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         public Material DefaultInstancedMaterial => defaultInstancedMaterial;
 
-        
+
     }
 }

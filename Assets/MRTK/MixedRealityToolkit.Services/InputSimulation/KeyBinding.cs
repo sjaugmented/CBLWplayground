@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 [assembly: InternalsVisibleTo("Microsoft.MixedReality.Toolkit.Services.InputSimulation.Editor")]
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 int index = 0;
                 Action<KeyType, int> AddEnumValue = (bindingType, code) =>
                 {
-                    var kb = new KeyBinding() { bindingType=bindingType, code=code };
+                    var kb = new KeyBinding() { bindingType = bindingType, code = code };
                     names.Add(kb.ToString());
                     EnumToKeyBindingMap[index] = Tuple.Create(bindingType, code);
                     KeyBindingToEnumMap[Tuple.Create(bindingType, code)] = index;

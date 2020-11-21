@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         void IMixedRealityInputHandler<float>.OnInputChanged(InputEventData<float> eventData)
         {
-            if (eventData.InputData > .95f) 
+            if (eventData.InputData > .95f)
             {
                 HandleTap();
             }
@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
                         pivotMode = connector.PivotMode;
                         manualPivotDirection = connector.ManualPivotDirection;
                         manualPivotLocalPosition = connector.ManualPivotLocalPosition;
-                        pivotDistance = connector.PivotDistance; 
+                        pivotDistance = connector.PivotDistance;
                         break;
                 }
 

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using static UnityEngine.ParticleSystem;
 
 public class StreamController : MonoBehaviour
@@ -15,7 +13,7 @@ public class StreamController : MonoBehaviour
     OSC osc;
 
     EmissionModule emitting;
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +27,7 @@ public class StreamController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (emitting.enabled == false) return ;
+        if (emitting.enabled == false) return;
         else
         {
             dmx.SetAddress(channelDMX, valueDMX);

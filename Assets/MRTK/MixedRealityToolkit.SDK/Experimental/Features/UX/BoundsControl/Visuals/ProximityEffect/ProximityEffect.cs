@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
-using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private class ObjectProximityInfo
         {
             public Transform ScaledObject;
-            public Renderer ObjectVisualRenderer; 
+            public Renderer ObjectVisualRenderer;
             public ProximityState ProximityState = ProximityState.FullsizeNoProximity;
         }
 
@@ -105,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                     if (item.ProximityState != ProximityState.FullsizeNoProximity)
                     {
                         item.ProximityState = ProximityState.FullsizeNoProximity;
-                       
+
                         if (item.ObjectVisualRenderer)
                         {
                             item.ObjectVisualRenderer.material = registeredObject.objectProvider.GetBaseMaterial();
@@ -159,9 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 {
                     proximityPoints.Add(pointer.Position);
                 }
-                
+
                 if (pointer.Result?.CurrentPointerTarget != null)
-                { 
+                {
                     Vector3? point = pointer.Result?.Details.Point;
                     if (point.HasValue && IsPointWithinBounds(boundsCenter, pointer.Result.Details.Point, squareMaxLength))
                     {

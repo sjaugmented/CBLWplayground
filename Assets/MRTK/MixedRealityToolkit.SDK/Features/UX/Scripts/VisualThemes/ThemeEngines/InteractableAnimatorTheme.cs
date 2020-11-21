@@ -60,9 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.UI
         /// <inheritdoc />
         public override void SetValue(ThemeStateProperty property, int index, float percentage)
         {
-            if(lastIndex != index)
+            if (lastIndex != index)
             {
-                if(controller != null)
+                if (controller != null)
                 {
                     controller.SetTrigger(property.Values[index].String);
                 }

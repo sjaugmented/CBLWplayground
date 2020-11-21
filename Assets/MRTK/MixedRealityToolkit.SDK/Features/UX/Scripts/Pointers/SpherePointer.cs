@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Physics;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
@@ -14,9 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private SceneQueryType raycastMode = SceneQueryType.SphereOverlap;
 
         /// <inheritdoc />
-        public override SceneQueryType SceneQueryType 
-        { 
-            get => raycastMode; 
+        public override SceneQueryType SceneQueryType
+        {
+            get => raycastMode;
             set => raycastMode = value;
         }
 

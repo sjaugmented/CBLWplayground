@@ -262,7 +262,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         [Tooltip("Whether items that are partially clipped are disabled for input hit testing")]
         [SerializeField]
         private bool disableClippedItems = true;
-        public bool DisableClippedItems {
+        public bool DisableClippedItems
+        {
             get => disableClippedItems;
             set => disableClippedItems = value;
         }
@@ -631,7 +632,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             for (int i = 0; i < scrollContainer.transform.childCount; i++)
             {
                 Transform child = scrollContainer.transform.GetChild(i);
-                
+
                 if (ContainsNode(child, out int nodeIndex) && NodeList[nodeIndex].GetType() != typeof(ScrollingObjectCollectionNode))
                 {
                     //This node is in the list, but of the wrong type
@@ -640,7 +641,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 if (!ContainsNode(child) && (child.gameObject.activeSelf || !IgnoreInactiveTransforms))
                 {
-                    NodeList.Add( new ScrollingObjectCollectionNode { Name = child.name, Transform = child, Colliders = child.GetComponentsInChildren<Collider>() });
+                    NodeList.Add(new ScrollingObjectCollectionNode { Name = child.name, Transform = child, Colliders = child.GetComponentsInChildren<Collider>() });
                 }
             }
 
@@ -949,7 +950,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                         Interactable ixable = initialFocusedObject.GetComponent<Interactable>();
                         if (ixable != null)
                         {
-                           ixable.ResetInputTrackingStates();
+                            ixable.ResetInputTrackingStates();
                         }
 
                         //TODO: Reset the state of PressableButton, when possible. 
@@ -1411,9 +1412,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             //update simple velocity
             TryGetPointerPositionOnPlane(out Vector3 newPos);
 
-                scrollVelocity = (scrollDirection == ScrollDirectionType.UpAndDown)
-                                 ? (newPos.y - lastPointerPos.y) / Time.deltaTime * (velocityMultiplier * 0.01f)
-                                 : (newPos.x - lastPointerPos.x) / Time.deltaTime * (velocityMultiplier * 0.01f);
+            scrollVelocity = (scrollDirection == ScrollDirectionType.UpAndDown)
+                             ? (newPos.y - lastPointerPos.y) / Time.deltaTime * (velocityMultiplier * 0.01f)
+                             : (newPos.x - lastPointerPos.x) / Time.deltaTime * (velocityMultiplier * 0.01f);
 
             //And filter it...
             avgVelocity = (avgVelocity * (1.0f - velocityFilterWeight)) + (scrollVelocity * velocityFilterWeight);
@@ -2068,7 +2069,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             }
 
             if (!isTouched && isEngaged && animateScroller == null)
-            {   
+            {
                 if (isDragging)
                 {
                     eventData.Use();
@@ -2080,8 +2081,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
 
                 //Release the pointer
                 currentPointer.IsTargetPositionLockedOnFocusLock = true;
- 
-                 ResetState();
+
+                ResetState();
             }
         }
 
@@ -2091,7 +2092,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (eventData.Pointer.Controller.IsPositionAvailable)
             {
                 //Quick check for the global listener to bail if the object is not in the list
-                if (eventData.Pointer?.Result?.CurrentPointerTarget == null 
+                if (eventData.Pointer?.Result?.CurrentPointerTarget == null
                     || !ContainsNode(eventData.Pointer.Result.CurrentPointerTarget.transform) || initialFocusedObject != null)
                 {
                     return;
@@ -2184,7 +2185,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
         void IMixedRealityTouchHandler.OnTouchCompleted(HandTrackingInputEventData eventData)
         {
             //Quick check for the global listener to bail if the object is not in the list
-            if (currentPointer != null && currentPointer.Result?.CurrentPointerTarget != null 
+            if (currentPointer != null && currentPointer.Result?.CurrentPointerTarget != null
                 && ContainsNode(currentPointer.Result.CurrentPointerTarget.transform))
             {
                 if (isDragging)
@@ -2203,7 +2204,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (p != null)
             {
                 //Quick check for the global listener to bail if the object is not in the list
-                if (currentPointer == null || 
+                if (currentPointer == null ||
                     currentPointer.Result?.CurrentPointerTarget == null ||
                     !ContainsNode(p.Result.CurrentPointerTarget.transform) || initialFocusedObject != p.Result.CurrentPointerTarget)
                 {

@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             base.Reset();
 
-            foreach(var provider in dataProviders)
+            foreach (var provider in dataProviders)
             {
                 provider.Reset();
             }

@@ -1,11 +1,8 @@
-﻿using Microsoft.MixedReality.Toolkit.UI;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.XR;
+using LW.Core;
 
 [RequireComponent(typeof(SpellBook))]
 [RequireComponent(typeof(CloudController))]
@@ -15,7 +12,7 @@ public class MagicController : MonoBehaviour
     #region Inspector Fields
     [SerializeField] bool floatPassthru = true;
     [SerializeField] Material transparency;
-    
+
     [SerializeField] GameObject lightMasterOrb;
     [SerializeField] GameObject fireMasterOrb;
     [SerializeField] GameObject waterMasterOrb;
@@ -29,7 +26,7 @@ public class MagicController : MonoBehaviour
     [Header("Rates of Fire")]
     [SerializeField] [Range(1, 20)] float orbsPerSecond = 1f;
 
-    
+
 
     [Header("OSC controller")]
     public List<String> elementOSC;
@@ -51,7 +48,7 @@ public class MagicController : MonoBehaviour
     #region public vars
     float conjureValueOSC = 0;
 
-    public enum State { selector, scaler, caster, neutral};
+    public enum State { selector, scaler, caster, neutral };
     public State currState = State.neutral;
 
     public enum Element { light, fire, water };
@@ -86,9 +83,9 @@ public class MagicController : MonoBehaviour
     // hover orbs
     public bool hoverOrb = false;
     bool hoverSelectFromMenu = false;
-    bool activeLightHover = false;   
-    bool activeFireHover = false;    
-    bool activeWaterHover = false;   
+    bool activeLightHover = false;
+    bool activeFireHover = false;
+    bool activeWaterHover = false;
     bool activeIceHover = false;
 
     bool switch00Sent = false;
@@ -485,7 +482,7 @@ public class MagicController : MonoBehaviour
 
             List<Transform> variants = new List<Transform>();
 
-            foreach(Transform child in masterOrbs[i].transform)
+            foreach (Transform child in masterOrbs[i].transform)
             {
                 variants.Add(child);
             }
@@ -505,7 +502,7 @@ public class MagicController : MonoBehaviour
     private void VariantScaler()
     {
         currState = State.scaler;
-        
+
         fromOrbScaler = true;
 
         // determine scale
@@ -555,7 +552,7 @@ public class MagicController : MonoBehaviour
                 switch90Sent = false;
                 switch135Sent = false;
                 switch180Sent = false;
-                
+
                 if (!switch00Sent)
                 {
                     SendOSCMessage("/switch00/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
@@ -568,8 +565,8 @@ public class MagicController : MonoBehaviour
                 switch00Sent = false;
                 switch90Sent = false;
                 switch135Sent = false;
-                switch180Sent = false; 
-                
+                switch180Sent = false;
+
                 if (!switch45Sent)
                 {
                     SendOSCMessage("/switch45/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
@@ -582,8 +579,8 @@ public class MagicController : MonoBehaviour
                 switch45Sent = false;
                 switch45Sent = false;
                 switch135Sent = false;
-                switch180Sent = false; 
-                
+                switch180Sent = false;
+
                 if (!switch90Sent)
                 {
                     SendOSCMessage("/switch90/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
@@ -596,8 +593,8 @@ public class MagicController : MonoBehaviour
                 switch00Sent = false;
                 switch45Sent = false;
                 switch90Sent = false;
-                switch180Sent = false; 
-                
+                switch180Sent = false;
+
                 if (!switch135Sent)
                 {
                     SendOSCMessage("/switch135/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
@@ -611,7 +608,7 @@ public class MagicController : MonoBehaviour
                 switch45Sent = false;
                 switch90Sent = false;
                 switch135Sent = false;
-                
+
                 if (!switch180Sent)
                 {
                     SendOSCMessage("/switch180/" + elementOSC[elIndex] + variantOSC[varIndex], 1);
@@ -647,7 +644,7 @@ public class MagicController : MonoBehaviour
             {
                 spellController.valueOSC = 1;
             }
-            
+
             float spellForceRange = 1 - (palmDist / maxXAxisDist);
 
             float spellForce = spellForceRange * 50;
@@ -773,7 +770,7 @@ public class MagicController : MonoBehaviour
                     activeWaterHover = false;
                 }
             }
-        }        
+        }
     }
 
     #region Rock On Streams
@@ -793,14 +790,14 @@ public class MagicController : MonoBehaviour
 
     private void EnableRightStreams()
     {
-        for(int i = 0; i < spellBook.rightStreams.Count; i++)
+        for (int i = 0; i < spellBook.rightStreams.Count; i++)
         {
             if (i == elIndex)
             {
                 var emission = spellBook.rightStreams[i].emission;
                 emission.enabled = true;
                 Transform streamParent = spellBook.rightStreams[elIndex].transform.parent;
-                
+
                 rightHandCaster.position = rightStreamPos;
                 streamParent.position = rightStreamPos;
                 streamParent.rotation = rightHandCaster.rotation;
@@ -862,7 +859,7 @@ public class MagicController : MonoBehaviour
                 var emission = spellBook.leftStreams[i].emission;
                 emission.enabled = true;
                 Transform streamParent = spellBook.leftStreams[elIndex].transform.parent;
-                
+
                 leftHandCaster.position = leftStreamPos;
                 streamParent.position = leftStreamPos;
                 streamParent.rotation = leftHandCaster.rotation;

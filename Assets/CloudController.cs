@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using LW.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ public class CloudController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -72,55 +72,56 @@ public class CloudController : MonoBehaviour
                 }
                 else leftCloudParent.SetActive(false);
             }
-        } else
+        }
+        else
         {
             rightCloudParent.SetActive(false);
             leftCloudParent.SetActive(false);
         }
     }
-        
+
 }
 
-    /*public void ProcessHandClouds()
+/*public void ProcessHandClouds()
+{
+    if (!director.readGestures || magic.orbActive == true)
     {
-        if (!director.readGestures || magic.orbActive == true)
+        rightCloudParent.SetActive(false);
+        leftCloudParent.SetActive(false);
+    }
+    else
+    {
+        // right cloud
+        if (hands.rightHand)
         {
-            rightCloudParent.SetActive(false);
-            leftCloudParent.SetActive(false);
+            rightCloudParent.SetActive(true);
+            for (int i = 0; i < rightClouds.Count; i++)
+            {
+                if (i == magic.elementID)
+                {
+                    rightClouds[i].SetActive(true);
+                }
+                else rightClouds[i].SetActive(false);
+            }
         }
-        else
+        else rightCloudParent.SetActive(false);
+
+
+        // left cloud
+        if (hands.leftHand)
         {
-            // right cloud
-            if (hands.rightHand)
+            leftCloudParent.SetActive(true);
+
+            for (int i = 0; i < leftClouds.Count; i++)
             {
-                rightCloudParent.SetActive(true);
-                for (int i = 0; i < rightClouds.Count; i++)
+                if (i == magic.elementID)
                 {
-                    if (i == magic.elementID)
-                    {
-                        rightClouds[i].SetActive(true);
-                    }
-                    else rightClouds[i].SetActive(false);
+                    leftClouds[i].SetActive(true);
                 }
+                else leftClouds[i].SetActive(false);
             }
-            else rightCloudParent.SetActive(false);
-
-
-            // left cloud
-            if (hands.leftHand)
-            {
-                leftCloudParent.SetActive(true);
-
-                for (int i = 0; i < leftClouds.Count; i++)
-                {
-                    if (i == magic.elementID)
-                    {
-                        leftClouds[i].SetActive(true);
-                    }
-                    else leftClouds[i].SetActive(false);
-                }
-            }
-            else leftCloudParent.SetActive(false);
         }
-    }*/
+        else leftCloudParent.SetActive(false);
+    }
+}*/
 //}

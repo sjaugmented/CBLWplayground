@@ -1,7 +1,5 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PrecisionPoseTracker : MonoBehaviour
@@ -88,7 +86,7 @@ public class PrecisionPoseTracker : MonoBehaviour
             // look for right fist
             else if (IsWithinRange(rtIndMidForPalmFor, 140) && IsWithinRange(rtMidForPalmFor, 140) && IsWithinRange(rtPinkForPalmFor, 130))
             {
-                
+
                 rightFist = true;
                 rightFlatHand = false;
                 rightKnifeHand = false;

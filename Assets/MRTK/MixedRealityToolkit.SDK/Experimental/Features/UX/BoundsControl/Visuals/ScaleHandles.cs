@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
+using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
@@ -98,9 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 
                 VisualUtils.ApplyMaterialToAllRenderers(cornerVisual, config.HandleMaterial);
 
-                VisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale), 
+                VisualUtils.AddComponentsToAffordance(corner, new Bounds(cornerbounds.center * invScale, cornerbounds.size * invScale),
                     RotationHandlePrefabCollider.Box, CursorContextInfo.CursorAction.Scale, config.ColliderPadding, parent, drawManipulationTether);
-                handles.Add(corner.transform);       
+                handles.Add(corner.transform);
             }
         }
 

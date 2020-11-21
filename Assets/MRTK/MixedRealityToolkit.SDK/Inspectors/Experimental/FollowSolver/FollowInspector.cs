@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
         private SerializedProperty pivotAxis;
         private SerializedProperty reorientWhenOutsideParameters;
         private SerializedProperty orientToControllerDeadzoneDegrees;
-        
+
         // Distance
         private SerializedProperty ignoreDistanceClamp;
         private SerializedProperty minDistance;
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
             base.OnInspectorGUI();
 
             serializedObject.Update();
-            
+
             GUIStyle style = EditorStyles.foldout;
             FontStyle previousStyle = style.fontStyle;
             style.fontStyle = FontStyle.Bold;
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
                     }
                 }
                 else
-                {                    
+                {
                     EditorGUILayout.HelpBox("Disable \"Ignore Angle Clamp\" to show options", MessageType.Info);
                 }
             }

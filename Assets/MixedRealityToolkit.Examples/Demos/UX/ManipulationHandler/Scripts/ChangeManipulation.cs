@@ -1,7 +1,7 @@
 ﻿
-using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Experimental.UI;
+using Microsoft.MixedReality.Toolkit.UI;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {

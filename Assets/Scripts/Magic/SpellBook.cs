@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class SpellBook : MonoBehaviour
@@ -49,10 +48,10 @@ public class SpellBook : MonoBehaviour
     public List<int> ice3;
     public List<int> ice3vals;
     public List<int> ice4;
-    public List<int> ice4vals;    
-    
-    
-    
+    public List<int> ice4vals;
+
+
+
 
 
 

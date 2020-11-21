@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using Microsoft.MixedReality.Toolkit.Utilities;
-using System;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Physics
@@ -34,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Physics
             pointerRefDistance = GetDistanceToBody(pointerCentroidPose);
 
             pointerPosIndependentOfHead = pointerRefDistance != 0;
-            
+
             Quaternion worldToPointerRotation = Quaternion.Inverse(pointerCentroidPose.Rotation);
             pointerLocalGrabPoint = worldToPointerRotation * (grabCentroid - pointerCentroidPose.Position);
 

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class OSCtest : MonoBehaviour
 {
@@ -18,7 +16,7 @@ public class OSCtest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void SendOSCMessage()

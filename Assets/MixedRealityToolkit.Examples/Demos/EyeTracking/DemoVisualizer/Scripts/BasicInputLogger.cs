@@ -2,9 +2,9 @@
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
 using System;
-using UnityEngine;
 using System.IO;
 using System.Text;
+using UnityEngine;
 
 #if WINDOWS_UWP
 using Windows.Storage;
@@ -122,11 +122,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 string sec = AddLeadingZeroToSingleDigitIntegers(DateTime.Now.Second);
 
                 return string.Format("{0}{1}{2}-{3}{4}{5}",
-                    year, 
-                    month, 
-                    day, 
-                    hour, 
-                    minute, 
+                    year,
+                    month,
+                    day,
+                    hour,
+                    minute,
                     sec);
             }
         }
@@ -137,11 +137,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         }
 
 
-#region Append log
+        #region Append log
         public bool Append(string msg)
         {
             CheckIfInitialized();
-            
+
             if (isLogging)
             {
                 // post IO to a separate thread.
@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 // Create new Stream writer
                 using (var writer = new StreamWriter(Filename))
                 {
-                    Debug.Log("SAVE LOGS to "+ Filename);
+                    Debug.Log("SAVE LOGS to " + Filename);
                     writer.Write(this.buffer.ToString());
                 }
             }

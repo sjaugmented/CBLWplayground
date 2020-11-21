@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TopLevelTest : MonoBehaviour
 {
@@ -13,11 +11,11 @@ public class TopLevelTest : MonoBehaviour
 
     Renderer magicRender;
     Renderer precisionRender;
- 
+
     private void Start()
     {
-        
-        
+
+
         magicRender = magicSel.gameObject.GetComponent<Renderer>();
         precisionRender = precisionSel.gameObject.GetComponent<Renderer>();
 

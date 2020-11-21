@@ -9,66 +9,66 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Experimental.Demos
     {
         [SerializeField]
         private Transform frontBounds = null;
-    
+
         public Transform FrontBounds
         {
             get => frontBounds;
             set => frontBounds = value;
         }
-    
+
         [SerializeField]
         private Transform backBounds = null;
-    
+
         public Transform BackBounds
         {
             get => backBounds;
             set => backBounds = value;
         }
-    
+
         [SerializeField]
         private Transform leftBounds = null;
-    
+
         public Transform LeftBounds
         {
             get => leftBounds;
             set => leftBounds = value;
         }
-    
+
         [SerializeField]
         private Transform rightBounds = null;
-    
+
         public Transform RightBounds
         {
             get => rightBounds;
             set => rightBounds = value;
         }
-    
+
         [SerializeField]
         private Transform bottomBounds = null;
-    
+
         public Transform BottomBounds
         {
             get => bottomBounds;
             set => bottomBounds = value;
         }
-    
+
         [SerializeField]
         private Transform topBounds = null;
-    
+
         public Transform TopBounds
         {
             get => topBounds;
             set => topBounds = value;
         }
-    
+
         private Vector3 positionAtStart;
-    
+
         // Start is called before the first frame update
         void Start()
         {
             positionAtStart = transform.position;
         }
-    
+
         // Update is called once per frame
         void Update()
         {

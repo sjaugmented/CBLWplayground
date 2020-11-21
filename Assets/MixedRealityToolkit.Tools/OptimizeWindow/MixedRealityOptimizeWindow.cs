@@ -6,10 +6,10 @@ using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -624,7 +624,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             {
                 return (int)Math.Abs(delta.TotalMinutes) + " minutes ago";
             }
-            else 
+            else
             {
                 return (int)Math.Abs(delta.TotalSeconds) + " seconds ago";
             }

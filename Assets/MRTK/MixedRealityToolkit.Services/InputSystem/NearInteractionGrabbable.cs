@@ -33,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             var collider = gameObject.GetComponent<Collider>();
 
-            if((collider as BoxCollider) == null && 
+            if ((collider as BoxCollider) == null &&
                 (collider as CapsuleCollider) == null &&
                 (collider as SphereCollider) == null &&
                 ((collider as MeshCollider) == null || (collider as MeshCollider).convex == false))

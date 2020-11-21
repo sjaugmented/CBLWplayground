@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             get => moveToDefaultDistanceLerpTime;
             set => moveToDefaultDistanceLerpTime = value;
         }
-        
+
         [SerializeField]
         [Tooltip("The desired orientation of this object")]
         private SolverOrientationType orientationType = SolverOrientationType.FaceTrackedObject;
@@ -510,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                     Vector3 defaultDistanceXZVector = direction * DefaultDistance;
                     defaultDistanceXZVector.y = 0;
                     float defaulltDistanceXZ = defaultDistanceXZVector.magnitude;
-                
+
                     float interpolationRate = Mathf.Min(moveToDefaultDistanceLerpTime * 60.0f * SolverHandler.DeltaTime, 1.0f);
                     desiredDistanceXZ = desiredDistanceXZ + (interpolationRate * (defaulltDistanceXZ - desiredDistanceXZ));
                 }
@@ -594,7 +594,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
             {
                 defaultOrientationType = SolverOrientationType.FaceTrackedObject;
             }
-            
+
             switch (defaultOrientationType)
             {
                 case SolverOrientationType.YawOnly:

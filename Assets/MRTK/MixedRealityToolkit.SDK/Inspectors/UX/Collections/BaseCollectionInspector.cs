@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 {
-    [CustomEditor( typeof(BaseObjectCollection), true )]
+    [CustomEditor(typeof(BaseObjectCollection), true)]
     public class BaseCollectionInspector : UnityEditor.Editor
     {
         private SerializedProperty ignoreInactiveTransforms;

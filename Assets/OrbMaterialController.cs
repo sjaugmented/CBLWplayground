@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MagicController))]
@@ -67,7 +66,7 @@ public class OrbMaterialController : MonoBehaviour
     }
 
     private void ShowStaffAngle(Material colorMat)
-    {       
+    {
         Renderer orbRender = magic.masterOrbs[magic.elIndex].GetComponent<Renderer>();
         orbRender.material = colorMat;
     }

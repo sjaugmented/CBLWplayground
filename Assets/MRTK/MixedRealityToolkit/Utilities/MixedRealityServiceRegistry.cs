@@ -351,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static bool FindEntry(List<KeyValuePair<IMixedRealityService, IMixedRealityServiceRegistrar>> serviceList,
             Type interfaceType,
             string name,
-            out IMixedRealityService serviceInstance, 
+            out IMixedRealityService serviceInstance,
             out IMixedRealityServiceRegistrar registrar)
         {
             serviceInstance = null;

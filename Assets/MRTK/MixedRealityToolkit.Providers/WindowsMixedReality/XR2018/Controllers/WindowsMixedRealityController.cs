@@ -107,58 +107,58 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.TouchpadTouch:
-                {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.touchpadTouched;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.touchpadTouched)
+                        // Update the interaction data source
+                        interactionMapping.BoolData = interactionSourceState.touchpadTouched;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // Raise input system event if it's enabled
+                            if (interactionSourceState.touchpadTouched)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
+                        break;
                     }
-                    break;
-                }
                 case DeviceInputType.TouchpadPress:
-                {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.touchpadPressed;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.touchpadPressed)
+                        // Update the interaction data source
+                        interactionMapping.BoolData = interactionSourceState.touchpadPressed;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // Raise input system event if it's enabled
+                            if (interactionSourceState.touchpadPressed)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
+                        break;
                     }
-                    break;
-                }
                 case DeviceInputType.Touchpad:
-                {
-                    // Update the interaction data source
-                    interactionMapping.Vector2Data = interactionSourceState.touchpadPosition;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
+                        // Update the interaction data source
+                        interactionMapping.Vector2Data = interactionSourceState.touchpadPosition;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
+                        {
+                            // Raise input system event if it's enabled
+                            CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.touchpadPosition);
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -171,38 +171,38 @@ namespace Microsoft.MixedReality.Toolkit.WindowsMixedReality.Input
             switch (interactionMapping.InputType)
             {
                 case DeviceInputType.ThumbStickPress:
-                {
-                    // Update the interaction data source
-                    interactionMapping.BoolData = interactionSourceState.thumbstickPressed;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        if (interactionSourceState.thumbstickPressed)
+                        // Update the interaction data source
+                        interactionMapping.BoolData = interactionSourceState.thumbstickPressed;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
                         {
-                            CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            // Raise input system event if it's enabled
+                            if (interactionSourceState.thumbstickPressed)
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputDown(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
+                            else
+                            {
+                                CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
+                            }
                         }
-                        else
-                        {
-                            CoreServices.InputSystem?.RaiseOnInputUp(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction);
-                        }
+                        break;
                     }
-                    break;
-                }
                 case DeviceInputType.ThumbStick:
-                {
-                    // Update the interaction data source
-                    interactionMapping.Vector2Data = interactionSourceState.thumbstickPosition;
-
-                    // If our value changed raise it.
-                    if (interactionMapping.Changed)
                     {
-                        // Raise input system event if it's enabled
-                        CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
+                        // Update the interaction data source
+                        interactionMapping.Vector2Data = interactionSourceState.thumbstickPosition;
+
+                        // If our value changed raise it.
+                        if (interactionMapping.Changed)
+                        {
+                            // Raise input system event if it's enabled
+                            CoreServices.InputSystem?.RaisePositionInputChanged(InputSource, ControllerHandedness, interactionMapping.MixedRealityInputAction, interactionSourceState.thumbstickPosition);
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 

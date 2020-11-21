@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             get => preferredTrackedHandedness;
             set
             {
-                if ((value.IsLeft() || value.IsRight()) 
+                if ((value.IsLeft() || value.IsRight())
                     && preferredTrackedHandedness != value)
                 {
                     preferredTrackedHandedness = value;
@@ -468,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 return true;
             }
-            
+
             // If we are attached to a pointer (i.e controller ray), 
             // check if pointer's controller is still be tracked
             if (TrackedTargetType == TrackedObjectType.ControllerRay &&
@@ -476,7 +476,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Solvers
             {
                 return true;
             }
-            
+
             // If we were tracking a particular hand, check that our transform is still valid
             // The HandJointService does not destroy it's own hand joint tracked GameObjects even when a hand is no longer tracked
             // Those HandJointService's GameObjects though are the parents of our tracked transform and thus will not be null/destroyed

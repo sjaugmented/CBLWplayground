@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 public class DMXChannels : MonoBehaviour
 {
@@ -24,7 +22,7 @@ public class DMXChannels : MonoBehaviour
     public int spotBlue;
     public int spotWhite;
 
-    
 
-    
+
+
 }

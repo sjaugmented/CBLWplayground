@@ -49,8 +49,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 var info = keyValue.Value;
                 info.Update(pointer);
 
-                if (info.IsInteractionEnabled && 
-                    (primaryInfo == null || 
+                if (info.IsInteractionEnabled &&
+                    (primaryInfo == null ||
                     (info.IsPressed && (!primaryInfo.IsPressed || info.PressedTimestamp < primaryInfo.PressedTimestamp)) ||
                     (!primaryInfo.IsPressed && info.ReleasedTimestamp > primaryInfo.ReleasedTimestamp)))
                 {
@@ -86,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         void IMixedRealityPointerHandler.OnPointerDragged(MixedRealityPointerEventData eventData) { }
 
-        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) {}
+        void IMixedRealityPointerHandler.OnPointerClicked(MixedRealityPointerEventData eventData) { }
 
         #endregion IMixedRealityPointerHandler
 

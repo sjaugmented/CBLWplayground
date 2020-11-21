@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ElementMenu : MonoBehaviour
@@ -15,7 +14,7 @@ public class ElementMenu : MonoBehaviour
     void Start()
     {
         spellManager = FindObjectOfType<MagicController>();
-        
+
         foreach (Transform child in transform)
         {
             if (child.CompareTag("Element Selector")) elements.Add(child);

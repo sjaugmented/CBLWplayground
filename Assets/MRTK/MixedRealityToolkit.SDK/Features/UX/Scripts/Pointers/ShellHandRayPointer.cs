@@ -90,7 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnPostSceneQuery();
 
-            if (!LineBase.enabled) 
+            if (!LineBase.enabled)
             {
                 return;
             }

@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class SendPositionOnOnMouseDown : MonoBehaviour {
+public class SendPositionOnOnMouseDown : MonoBehaviour
+{
 
-		public OSC osc;
+    public OSC osc;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	  
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
 
 
-	void OnMouseDown() {
+    void OnMouseDown()
+    {
         OscMessage message;
 
         message = new OscMessage();
@@ -41,5 +44,5 @@ public class SendPositionOnOnMouseDown : MonoBehaviour {
         message.values.Add(transform.position.z);
         osc.Send(message);
     }
-	
+
 }

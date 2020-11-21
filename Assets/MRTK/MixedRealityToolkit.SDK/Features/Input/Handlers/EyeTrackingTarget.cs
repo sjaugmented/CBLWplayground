@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using System;
 using UnityEngine;
 using UnityEngine.Events;
-using System;
 using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.Input
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             get { return onSelected; }
             set { onSelected = value; }
         }
-        
+
         [SerializeField]
         [Tooltip("If true, the eye cursor (if enabled) will snap to the center of this object.")]
         private bool eyeCursorSnapToTargetCenter = false;
@@ -121,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Returns true if the user has been looking at the target for a certain amount of time specified by dwellTimeInSec.
         /// </summary>
         public bool IsDwelledOn { get; private set; } = false;
-        
+
         private DateTime lookAtStartTime;
 
         /// <summary>
@@ -137,9 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// The time stamp from the eye tracker has its own time frame, which makes it difficult to compare to local times. 
         /// </summary>
-        private static DateTime lastEyeSignalUpdateTimeLocal = DateTime.MinValue; 
+        private static DateTime lastEyeSignalUpdateTimeLocal = DateTime.MinValue;
 
-        public static GameObject LookedAtTarget { get;  private set; }
+        public static GameObject LookedAtTarget { get; private set; }
         public static EyeTrackingTarget LookedAtEyeTarget { get; private set; }
         public static Vector3 LookedAtPoint { get; private set; }
 
@@ -156,14 +156,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             var eyeGazeProvider = CoreServices.InputSystem?.EyeGazeProvider;
             // Try to manually poll the eye tracking data
-            if (eyeGazeProvider != null 
-                && eyeGazeProvider.UseEyeTracking 
+            if (eyeGazeProvider != null
+                && eyeGazeProvider.UseEyeTracking
                 && eyeGazeProvider.IsEyeGazeValid)
             {
                 UpdateHitTarget();
 
                 bool isLookedAtNow = (LookedAtTarget == this.gameObject);
-                                
+
                 if (IsLookedAt && (!isLookedAtNow))
                 {
                     // Stopped looking at the target
@@ -236,12 +236,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
         }
-        
+
         protected void OnEyeFocusStart()
         {
             lookAtStartTime = DateTime.UtcNow;
             IsLookedAt = true;
-            OnLookAtStart.Invoke();            
+            OnLookAtStart.Invoke();
         }
 
         protected void OnEyeFocusStay()
@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             IsDwelledOn = false;
             IsLookedAt = false;
-            OnLookAway.Invoke();            
+            OnLookAway.Invoke();
         }
 
         #endregion 
@@ -283,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 OnSelected.Invoke();
             }
         }
-        
+
         void IMixedRealitySpeechHandler.OnSpeechKeywordRecognized(SpeechEventData eventData)
         {
             if ((IsLookedAt) && (this.gameObject == LookedAtTarget))

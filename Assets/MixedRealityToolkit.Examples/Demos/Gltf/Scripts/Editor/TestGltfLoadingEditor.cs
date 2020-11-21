@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.Gltf.Editor
             path = path.Replace("/", "\\");
 
             bool needsCopy = !File.Exists(path) && Application.isEditor;
-            
+
             if (needsCopy)
             {
                 EditorGUILayout.HelpBox("glTF path was not discovered in the streaming assets folder. Please copy over files to test example scene", MessageType.Warning);

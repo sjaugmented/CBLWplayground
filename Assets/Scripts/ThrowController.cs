@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using LW.Core;
 
 public class ThrowController : MonoBehaviour
 {
@@ -46,7 +46,7 @@ public class ThrowController : MonoBehaviour
                 ThrowOrbController spellController = spellOrb.GetComponent<ThrowOrbController>();
                 spellController.force = velocity;
             }
-            
+
         }
 
     }

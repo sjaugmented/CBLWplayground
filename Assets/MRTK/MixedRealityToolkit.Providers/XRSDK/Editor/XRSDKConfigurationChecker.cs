@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK
             {
                 // Add a reference to the ARFoundation assembly
                 references.Add(XRManagementReference);
-                changed = true; 
+                changed = true;
             }
             if (!references.Contains(ARSubsystemsReference))
             {

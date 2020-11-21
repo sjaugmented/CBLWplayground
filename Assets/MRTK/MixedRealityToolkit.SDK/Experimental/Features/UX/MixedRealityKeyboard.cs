@@ -230,7 +230,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
             if (keyboard != null)
             {
                 // Handle character deletion.
-                if (UnityEngine.Input.GetKeyDown(KeyCode.Delete) || 
+                if (UnityEngine.Input.GetKeyDown(KeyCode.Delete) ||
                     UnityEngine.Input.GetKeyDown(KeyCode.Backspace))
                 {
                     if (CaretIndex > 0)
@@ -268,13 +268,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI
                 }
 
                 // Handle the arrow keys.
-                if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow) || 
+                if (UnityEngine.Input.GetKeyDown(KeyCode.LeftArrow) ||
                     UnityEngine.Input.GetKey(KeyCode.LeftArrow))
                 {
                     CaretIndex = Mathf.Clamp(CaretIndex - 1, 0, Text.Length);
                 }
 
-                if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow) || 
+                if (UnityEngine.Input.GetKeyDown(KeyCode.RightArrow) ||
                     UnityEngine.Input.GetKey(KeyCode.RightArrow))
                 {
                     CaretIndex = Mathf.Clamp(CaretIndex + 1, 0, Text.Length);

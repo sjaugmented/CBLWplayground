@@ -10,7 +10,6 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.Editor
 {

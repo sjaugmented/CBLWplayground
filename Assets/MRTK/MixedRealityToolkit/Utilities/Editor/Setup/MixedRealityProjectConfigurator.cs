@@ -4,7 +4,6 @@
 using Microsoft.MixedReality.Toolkit.Editor;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -113,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #endif // UNITY_2019_3_OR_NEWER
 
             // Android Settings
-            { Configurations.AndroidMultiThreadedRendering, 
+            { Configurations.AndroidMultiThreadedRendering,
                 new ConfigGetter(() => { return PlayerSettings.GetMobileMTRendering(BuildTargetGroup.Android) == false; }, BuildTarget.Android) },
             { Configurations.AndroidMinSdkVersion,
                 new ConfigGetter(() => { return PlayerSettings.Android.minSdkVersion >= MinAndroidSdk; }, BuildTarget.Android) },
@@ -123,9 +122,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                     float version;
                     if (!float.TryParse(PlayerSettings.iOS.targetOSVersionString, out version)) { return false; }
                     return version >= iOSMinOsVersion; }, BuildTarget.iOS) },
-            { Configurations.IOSArchitecture, 
+            { Configurations.IOSArchitecture,
                 new ConfigGetter(() => { return PlayerSettings.GetArchitecture(BuildTargetGroup.iOS) == RequirediOSArchitecture; }, BuildTarget.iOS) },
-            { Configurations.IOSCameraUsageDescription, 
+            { Configurations.IOSCameraUsageDescription,
                 new ConfigGetter(() => { return !string.IsNullOrWhiteSpace(PlayerSettings.iOS.cameraUsageDescription); }, BuildTarget.iOS) },
         };
 
@@ -244,7 +243,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 #if !UNITY_2019_3_OR_NEWER
             return PlayerSettings.scriptingRuntimeVersion == ScriptingRuntimeVersion.Latest;
 #else
-        return true;
+            return true;
 #endif // UNITY_2019_3_OR_NEWER
         }
 

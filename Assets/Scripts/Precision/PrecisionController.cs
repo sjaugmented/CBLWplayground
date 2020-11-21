@@ -1,15 +1,14 @@
-﻿using Microsoft.MixedReality.Toolkit.Input;
-using System;
+﻿using LW.Core;
+using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using TMPro;
 using UnityEngine;
 
 public class PrecisionController : MonoBehaviour
 {
-    [Header("Kelvin", order =0)]
-    [Header("Hand HUDs", order =1)]
+    [Header("Kelvin", order = 0)]
+    [Header("Hand HUDs", order = 1)]
     [SerializeField] GameObject rightHandHUD;
     [SerializeField] GameObject leftHandHUD;
     [SerializeField] TextMeshPro rightHandText;
@@ -88,7 +87,7 @@ public class PrecisionController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-   
+
     }
 
     void OnEnable()
@@ -105,7 +104,7 @@ public class PrecisionController : MonoBehaviour
         leftKelvinObj.SetActive(false);
     }
 
-    
+
 
     // Update is called once per frame
     void Update()
@@ -122,7 +121,7 @@ public class PrecisionController : MonoBehaviour
             {
                 TargetRecall();
             }
-            
+
             #region Dimmer/Kelvin controls
             if (handTracking.rightPoint || handTracking.leftPoint)
             {
@@ -139,7 +138,7 @@ public class PrecisionController : MonoBehaviour
             #region RGB controls
             if (!handTracking.rightPoint && !handTracking.leftPoint && handTracking.twoHands /*&& handTracking.palmsOpposed*/)
             {
-                
+
 
             }
             else
@@ -154,7 +153,7 @@ public class PrecisionController : MonoBehaviour
             }
             #endregion
 
-            
+
         }
         else
         {
@@ -356,178 +355,178 @@ public class PrecisionController : MonoBehaviour
     private void ProcessHandHUDs()
     {
         // right hand
-            if (handTracking.rightHand)
+        if (handTracking.rightHand)
+        {
+            if (rightTether)
             {
-                if (rightTether)
+                if (rightControl == Lights.SkyPanel1)
                 {
-                    if (rightControl == Lights.SkyPanel1)
-                    {
-                        rightHandHUD.SetActive(true);
-                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
-                    }
-                    else if (rightControl == Lights.SkyPanel2)
-                    {
-                        rightHandHUD.SetActive(true);
-                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
-                    }
-                    else if (rightControl == Lights.none)
-                    {
-                        rightHandHUD.SetActive(false);
-                    }
+                    rightHandHUD.SetActive(true);
+                    rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
                 }
-                else
+                else if (rightControl == Lights.SkyPanel2)
+                {
+                    rightHandHUD.SetActive(true);
+                    rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                }
+                else if (rightControl == Lights.none)
                 {
                     rightHandHUD.SetActive(false);
                 }
-
-                if (rightTether && rightDimmer)
-                {
-                    rightHandText.gameObject.SetActive(true);
-                }
-
-                else if (rightTether && rightKelvin)
-                {
-                    rightHandText.gameObject.SetActive(true);
-
-                }
-                else rightHandText.gameObject.SetActive(false);
             }
-            else rightHandHUD.SetActive(false);
-
-
-
-            // left hand
-            if (handTracking.leftHand)
+            else
             {
-                if (leftTether)
-                {
-                    if (leftControl == Lights.SkyPanel1)
-                    {
-                        leftHandHUD.SetActive(true);
-                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
-                    }
-                    else if (leftControl == Lights.SkyPanel2)
-                    {
-                        leftHandHUD.SetActive(true);
-                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
-                    }
+                rightHandHUD.SetActive(false);
+            }
 
-                    else if (leftControl == Lights.none)
-                    {
-                        leftHandHUD.SetActive(false);
-                    }
+            if (rightTether && rightDimmer)
+            {
+                rightHandText.gameObject.SetActive(true);
+            }
+
+            else if (rightTether && rightKelvin)
+            {
+                rightHandText.gameObject.SetActive(true);
+
+            }
+            else rightHandText.gameObject.SetActive(false);
+        }
+        else rightHandHUD.SetActive(false);
+
+
+
+        // left hand
+        if (handTracking.leftHand)
+        {
+            if (leftTether)
+            {
+                if (leftControl == Lights.SkyPanel1)
+                {
+                    leftHandHUD.SetActive(true);
+                    leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
                 }
-                else
+                else if (leftControl == Lights.SkyPanel2)
+                {
+                    leftHandHUD.SetActive(true);
+                    leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                }
+
+                else if (leftControl == Lights.none)
                 {
                     leftHandHUD.SetActive(false);
                 }
-
-                if (leftTether && leftDimmer)
-                {
-                    leftHandText.gameObject.SetActive(true);
-                }
-
-                else if (leftTether && leftKelvin)
-                {
-                    leftHandText.gameObject.SetActive(true);
-
-                }
-                else leftHandText.gameObject.SetActive(false);
             }
-            else leftHandHUD.SetActive(false);
+            else
+            {
+                leftHandHUD.SetActive(false);
+            }
+
+            if (leftTether && leftDimmer)
+            {
+                leftHandText.gameObject.SetActive(true);
+            }
+
+            else if (leftTether && leftKelvin)
+            {
+                leftHandText.gameObject.SetActive(true);
+
+            }
+            else leftHandText.gameObject.SetActive(false);
+        }
+        else leftHandHUD.SetActive(false);
     }
-        
-        /*if (currMode == Mode.kelvin)
+
+    /*if (currMode == Mode.kelvin)
+    {
+        // right hand
+        if (handTracking.rightHand)
         {
-            // right hand
-            if (handTracking.rightHand)
+            if (rightTether)
             {
-                if (rightTether)
+                if (rightControl == Lights.SkyPanel1)
                 {
-                    if (rightControl == Lights.SkyPanel1)
-                    {
-                        rightHandHUD.SetActive(true);
-                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
-                    }
-                    else if (rightControl == Lights.SkyPanel2)
-                    {
-                        rightHandHUD.SetActive(true);
-                        rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
-                    }
-                    else if (rightControl == Lights.none)
-                    {
-                        rightHandHUD.SetActive(false);
-                    }
+                    rightHandHUD.SetActive(true);
+                    rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
                 }
-                else
+                else if (rightControl == Lights.SkyPanel2)
+                {
+                    rightHandHUD.SetActive(true);
+                    rightHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                }
+                else if (rightControl == Lights.none)
                 {
                     rightHandHUD.SetActive(false);
                 }
-
-                if (rightTether && rightDimmer)
-                {
-                    rightHandText.gameObject.SetActive(true);
-                }
-
-                else if (rightTether && rightKelvin)
-                {
-                    rightHandText.gameObject.SetActive(true);
-
-                }
-                else rightHandText.gameObject.SetActive(false);
             }
-            else rightHandHUD.SetActive(false);
-
-
-
-            // left hand
-            if (handTracking.leftHand)
+            else
             {
-                if (leftTether)
-                {
-                    if (leftControl == Lights.SkyPanel1)
-                    {
-                        leftHandHUD.SetActive(true);
-                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
-                    }
-                    else if (leftControl == Lights.SkyPanel2)
-                    {
-                        leftHandHUD.SetActive(true);
-                        leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
-                    }
+                rightHandHUD.SetActive(false);
+            }
 
-                    else if (leftControl == Lights.none)
-                    {
-                        leftHandHUD.SetActive(false);
-                    }
+            if (rightTether && rightDimmer)
+            {
+                rightHandText.gameObject.SetActive(true);
+            }
+
+            else if (rightTether && rightKelvin)
+            {
+                rightHandText.gameObject.SetActive(true);
+
+            }
+            else rightHandText.gameObject.SetActive(false);
+        }
+        else rightHandHUD.SetActive(false);
+
+
+
+        // left hand
+        if (handTracking.leftHand)
+        {
+            if (leftTether)
+            {
+                if (leftControl == Lights.SkyPanel1)
+                {
+                    leftHandHUD.SetActive(true);
+                    leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel1Mat;
                 }
-                else
+                else if (leftControl == Lights.SkyPanel2)
+                {
+                    leftHandHUD.SetActive(true);
+                    leftHandHUD.GetComponentInChildren<Renderer>().material = skyPanel2Mat;
+                }
+
+                else if (leftControl == Lights.none)
                 {
                     leftHandHUD.SetActive(false);
                 }
-
-                if (leftTether && leftDimmer)
-                {
-                    leftHandText.gameObject.SetActive(true);
-                }
-
-                else if (leftTether && leftKelvin)
-                {
-                    leftHandText.gameObject.SetActive(true);
-
-                }
-                else leftHandText.gameObject.SetActive(false);
             }
-            else leftHandHUD.SetActive(false);
-        }
-        else
-        {
-            rightHandHUD.SetActive(false);
-            leftHandHUD.SetActive(false);
-        }
-        
+            else
+            {
+                leftHandHUD.SetActive(false);
+            }
 
-    }*/
+            if (leftTether && leftDimmer)
+            {
+                leftHandText.gameObject.SetActive(true);
+            }
+
+            else if (leftTether && leftKelvin)
+            {
+                leftHandText.gameObject.SetActive(true);
+
+            }
+            else leftHandText.gameObject.SetActive(false);
+        }
+        else leftHandHUD.SetActive(false);
+    }
+    else
+    {
+        rightHandHUD.SetActive(false);
+        leftHandHUD.SetActive(false);
+    }
+
+
+}*/
 
     private void ToggleRightTether()
     {
@@ -645,7 +644,7 @@ public class PrecisionController : MonoBehaviour
         if (rightDimmer)
         {
             rightKelvinLocked = false;
-            
+
             // activate right hand float
             rightDimmerObj.SetActive(true);
             rightKelvinObj.SetActive(false);
@@ -658,7 +657,7 @@ public class PrecisionController : MonoBehaviour
             }
 
             // determine previous dimmer val
-            
+
 
             rightDimmerObj.transform.position = new Vector3(handTracking.rightPalm.Position.x, rightDimmerYPos, handTracking.rightPalm.Position.z);
 
@@ -670,7 +669,7 @@ public class PrecisionController : MonoBehaviour
             rightDimmerFloat = handDistToMin / maxDistance;
             if (rightDimmerFloat > 1) rightDimmerFloat = 1;
             if (handTracking.rightPalm.Position.y < rightDimmerObj.transform.position.y - 0.125) rightDimmerFloat = 0;
-            
+
 
             // display in HUD
             rightHandText.text = Mathf.RoundToInt(rightDimmerFloat * 100) + "%".ToString();
@@ -800,7 +799,7 @@ public class PrecisionController : MonoBehaviour
                 dmx.SetAddress(dmxChan.SkyPanel2[dimmerChan], dimmerVal);
                 SendOSC("/SkyPanel2Dimmer/", rightDimmerFloat);
             }
-            
+
         }
 
         else if (leftKelvin)
@@ -847,7 +846,7 @@ public class PrecisionController : MonoBehaviour
                 dmx.SetAddress(dmxChan.SkyPanel2[kelvinChan], kelvinVal);
                 SendOSC("/SkyPanel2Kelvin/", rightKelvinFloat);
             }*/
-            
+
         }
         else
         {
@@ -876,7 +875,7 @@ public class PrecisionController : MonoBehaviour
 
         foreach (TargetID target in targets)
         {
-            foreach(Transform child in target.transform)
+            foreach (Transform child in target.transform)
             {
                 if (GetComponent<EyeTrackingTarget>())
                 {
@@ -926,8 +925,8 @@ public class PrecisionController : MonoBehaviour
     /// </summary>
     #region RGB
     #region Inspector Fields
-    [Header("RGB", order =0)]
-    [Header("Hand Rings", order =1)]
+    [Header("RGB", order = 0)]
+    [Header("Hand Rings", order = 1)]
     [SerializeField] GameObject rightRingParent;
     [SerializeField] GameObject leftRingParent;
     [SerializeField] Renderer rightRing;
@@ -1274,7 +1273,7 @@ public class PrecisionController : MonoBehaviour
                     {
                         amberChanObj.SetActive(false);
                     }
-                }                   
+                }
                 else
                 {
                     return;

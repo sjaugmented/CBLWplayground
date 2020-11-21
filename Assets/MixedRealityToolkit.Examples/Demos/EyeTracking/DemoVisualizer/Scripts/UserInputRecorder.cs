@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 name = FilenameToUse;
                 return name;
             }
-            
+
             name = String.Format("{0}-{1}", sessionDescr, UserName);
             return name;
         }
@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 return str.Substring(0, maxLength);
             }
         }
-        
+
         public static string GetStringFormat(object[] data)
         {
             string strFormat = "";
@@ -104,9 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             strFormat += ("{" + (data.Length - 1) + "}");
             return strFormat;
         }
-        
+
         public void UpdateLog(string inputType, string inputStatus, EyeTrackingTarget intendedTarget)
-        {            
+        {
             if ((Instance != null) && (isLogging))
             {
                 if (logStructure != null)

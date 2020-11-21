@@ -2,11 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Microsoft.MixedReality.Toolkit.UI
 {
@@ -51,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
 
         #region Private members
         private PinchSlider slider;
-        
+
         // Play sound when passing through slider notches
         private float accumulatedDeltaSliderValue = 0;
         private float lastSoundPlayTime;

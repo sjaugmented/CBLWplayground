@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             internal static PointerEqualityComparer Default
             {
-                get =>  defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
+                get => defaultComparer ?? (defaultComparer = new PointerEqualityComparer());
             }
 
             /// <summary>
@@ -123,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static ProfilerMarker RequestPointersPerfMarker = new ProfilerMarker("Microsoft.MixedReality.Toolkit.Input.BaseInputDeviceManager.RequestPointers");
 
         // Active pointers associated with the config index they were spawned from
-        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig 
+        private Dictionary<IMixedRealityPointer, uint> activePointersToConfig
             = new Dictionary<IMixedRealityPointer, uint>(PointerEqualityComparer.Default);
 
         #endregion

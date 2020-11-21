@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         public override string[] GetHeaderColumns()
         {
-            return new string[] 
+            return new string[]
             {
                 // UserId
                 "UserId",

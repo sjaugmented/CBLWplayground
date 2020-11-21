@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             {
                 return;
             }
-            
+
             Vector3 maxGrabScale = Properties[0].Value.Vector3;
             float grabTime = Properties[1].Value.Float;
             Vector3 grabScale = Vector3.Scale(startScaleValue.Vector3, maxGrabScale);

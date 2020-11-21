@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
         protected override void OnHeaderGUI()
         {
             ServiceFacade facade = (ServiceFacade)target;
-            
+
             // Draw a rect over the top of the existing header label
             var labelRect = EditorGUILayout.GetControlRect(false, 0f);
             labelRect.height = EditorGUIUtility.singleLineHeight;
@@ -96,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
             }
 
             if (!MixedRealityToolkit.IsInitialized || !MixedRealityToolkit.Instance.HasActiveProfile)
-            {   
+            {
                 return;
             }
 

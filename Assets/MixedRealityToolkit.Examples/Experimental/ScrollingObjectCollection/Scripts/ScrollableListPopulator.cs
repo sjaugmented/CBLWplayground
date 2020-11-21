@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Examples
             }
             else
             {
-                if(loader != null)
+                if (loader != null)
                 {
                     loader.SetActive(true);
                 }

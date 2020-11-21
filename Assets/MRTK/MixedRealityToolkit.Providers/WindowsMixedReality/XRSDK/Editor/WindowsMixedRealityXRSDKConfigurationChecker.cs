@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.XRSDK.WindowsMixedReality
             {
                 // Add a reference to the XR SDK WMR assembly
                 references.Add(WindowsMixedRealityReference);
-                changed = true; 
+                changed = true;
             }
 
             if (!versionDefines.Contains(WindowsMixedRealityDefine))

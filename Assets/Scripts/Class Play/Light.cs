@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Light
@@ -12,7 +11,7 @@ public class Light
         Debug.Log("dimmer control");
 
         // activate dimmer channel
-        
+
         // find float from hand position
 
         // convert to corresponding DMX value

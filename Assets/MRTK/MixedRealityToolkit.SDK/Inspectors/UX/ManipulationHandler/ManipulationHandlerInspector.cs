@@ -4,10 +4,8 @@
 //
 
 using Microsoft.MixedReality.Toolkit.UI;
-using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using UnityEditor;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {

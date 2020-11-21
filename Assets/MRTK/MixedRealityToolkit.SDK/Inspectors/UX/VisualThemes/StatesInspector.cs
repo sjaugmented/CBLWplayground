@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UI
             InspectorUIUtility.DrawNotice("Manage state configurations to drive Interactables or Transitions");
 
             SerializedProperty stateModelClassName = serializedObject.FindProperty("StateModelClassName");
-            SerializedProperty assemblyQualifiedName  = serializedObject.FindProperty("AssemblyQualifiedName");
+            SerializedProperty assemblyQualifiedName = serializedObject.FindProperty("AssemblyQualifiedName");
 
             var stateModelTypes = TypeCacheUtility.GetSubClasses<BaseStateModel>();
             var stateModelClassNames = stateModelTypes.Select(t => t?.Name).ToArray();

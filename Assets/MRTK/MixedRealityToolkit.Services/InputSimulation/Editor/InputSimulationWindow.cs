@@ -3,10 +3,10 @@
 
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
-using UnityEngine;
-using UnityEditor;
 using System;
 using System.IO;
+using UnityEditor;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -133,9 +133,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             EditorGUILayout.Space();
 
-// XXX Reloading the scene is currently not supported,
-// due to the life cycle of the MRTK "instance" object (see see #4530).
-// Enable the button below once scene reloading is supported!
+            // XXX Reloading the scene is currently not supported,
+            // due to the life cycle of the MRTK "instance" object (see see #4530).
+            // Enable the button below once scene reloading is supported!
 #if false
             using (new GUIEnabledWrapper(Application.isPlaying))
             {

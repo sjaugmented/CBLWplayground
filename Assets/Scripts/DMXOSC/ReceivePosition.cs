@@ -1,33 +1,37 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class ReceivePosition : MonoBehaviour {
-    
-   	public OSC osc;
+public class ReceivePosition : MonoBehaviour
+{
+
+    public OSC osc;
 
 
-	// Use this for initialization
-	void Start () {
-	   osc.SetAddressHandler( "/CubeXYZ" , OnReceiveXYZ );
-       osc.SetAddressHandler("/CubeX", OnReceiveX);
-       osc.SetAddressHandler("/CubeY", OnReceiveY);
-       osc.SetAddressHandler("/CubeZ", OnReceiveZ);
+    // Use this for initialization
+    void Start()
+    {
+        osc.SetAddressHandler("/CubeXYZ", OnReceiveXYZ);
+        osc.SetAddressHandler("/CubeX", OnReceiveX);
+        osc.SetAddressHandler("/CubeY", OnReceiveY);
+        osc.SetAddressHandler("/CubeZ", OnReceiveZ);
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-	void OnReceiveXYZ(OscMessage message){
-		float x = message.GetInt(0);
-         float y = message.GetInt(1);
-		float z = message.GetInt(2);
+    // Update is called once per frame
+    void Update()
+    {
 
-		transform.position = new Vector3(x,y,z);
-	}
+    }
 
-    void OnReceiveX(OscMessage message) {
+    void OnReceiveXYZ(OscMessage message)
+    {
+        float x = message.GetInt(0);
+        float y = message.GetInt(1);
+        float z = message.GetInt(2);
+
+        transform.position = new Vector3(x, y, z);
+    }
+
+    void OnReceiveX(OscMessage message)
+    {
         float x = message.GetFloat(0);
 
         Vector3 position = transform.position;
@@ -37,7 +41,8 @@ public class ReceivePosition : MonoBehaviour {
         transform.position = position;
     }
 
-    void OnReceiveY(OscMessage message) {
+    void OnReceiveY(OscMessage message)
+    {
         float y = message.GetFloat(0);
 
         Vector3 position = transform.position;
@@ -47,7 +52,8 @@ public class ReceivePosition : MonoBehaviour {
         transform.position = position;
     }
 
-    void OnReceiveZ(OscMessage message) {
+    void OnReceiveZ(OscMessage message)
+    {
         float z = message.GetFloat(0);
 
         Vector3 position = transform.position;

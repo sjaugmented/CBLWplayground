@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OrbHoverController : MonoBehaviour
@@ -18,7 +17,7 @@ public class OrbHoverController : MonoBehaviour
     [SerializeField] string OSCtoReceive = "/metronome/";
 
     public bool babySpawned = false;
-    
+
     Material defaultMat;
 
     Rigidbody rigidBody;
@@ -32,7 +31,7 @@ public class OrbHoverController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         render = GetComponent<Renderer>();
         osc = FindObjectOfType<OSC>();
-        
+
         collider = GetComponent<SphereCollider>();
         collider.enabled = true;
 

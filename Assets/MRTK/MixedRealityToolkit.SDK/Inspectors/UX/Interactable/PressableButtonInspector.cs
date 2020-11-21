@@ -127,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             info.PushRotationLocal = Quaternion.LookRotation(pressDirLocal, upDirLocal);
-            
+
             info.StartPushDistance = startPushDistance.floatValue;
             info.MaxPushDistance = maxPushDistance.floatValue;
             info.PressDistance = pressDistance.floatValue;
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 Undo.RecordObject(target, string.Concat("Modify Button Planes of ", button.name));
 
                 startPushDistance.floatValue = info.StartPushDistance;
-                maxPushDistance.floatValue = info.MaxPushDistance; 
+                maxPushDistance.floatValue = info.MaxPushDistance;
                 pressDistance.floatValue = info.PressDistance;
                 releaseDistanceDelta.floatValue = info.PressDistance - info.ReleaseDistance;
 

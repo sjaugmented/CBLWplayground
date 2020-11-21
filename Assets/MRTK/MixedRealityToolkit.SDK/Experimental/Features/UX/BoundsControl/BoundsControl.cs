@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
 
+using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityPhysics = UnityEngine.Physics;
-using Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControlTypes;
-using Microsoft.MixedReality.Toolkit.Utilities;
-using Microsoft.MixedReality.Toolkit.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
 {
@@ -378,9 +377,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
         private Vector3 currentBoundsExtents;
 
         private readonly List<IMixedRealityInputSource> touchingSources = new List<IMixedRealityInputSource>();
-      
+
         private List<IMixedRealityController> sourcesDetected;
-      
+
         // Current axis of rotation about the center of the rig root
         private Vector3 currentRotationAxis;
 
@@ -552,7 +551,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
             scaleHandlesConfiguration.visibilityChanged.AddListener(ResetVisuals);
             rotationHandlesConfiguration.configurationChanged.AddListener(CreateRig);
             boxDisplayConfiguration.configurationChanged.AddListener(CreateRig);
-            linksConfiguration.configurationChanged.AddListener(CreateRig);          
+            linksConfiguration.configurationChanged.AddListener(CreateRig);
         }
 
         private void OnDestroy()
@@ -825,7 +824,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.UI.BoundsControl
                 RegisterTransformScaleHandler(GetComponent<MinMaxScaleConstraint>());
             }
         }
-       
+
 
         private Vector3 CalculateBoundsExtents()
         {

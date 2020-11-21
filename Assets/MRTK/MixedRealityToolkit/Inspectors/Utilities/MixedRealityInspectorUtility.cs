@@ -552,7 +552,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
 
                 int newIndex = EditorGUILayout.Popup(
                     new GUIContent(oldProfileObject != null ? "" : property.displayName),
-                    selectedIndex, 
+                    selectedIndex,
                     profileContent,
                     GUILayout.ExpandWidth(true));
 
@@ -564,7 +564,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Editor
                 {
                     // The view asset button should always be enabled.
                     using (new GUIEnabledWrapper())
-                    { 
+                    {
                         if (GUILayout.Button("View Asset", EditorStyles.miniButton, GUILayout.Width(80)))
                         {
                             EditorGUIUtility.PingObject(property.objectReferenceValue);
