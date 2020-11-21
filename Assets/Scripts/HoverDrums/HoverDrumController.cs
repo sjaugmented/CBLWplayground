@@ -14,6 +14,7 @@ namespace LW.HoverDrums
         void Start()
         {
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
+            oscMessage = transform.GetChild(0).name;
         }
 
         void Update()
