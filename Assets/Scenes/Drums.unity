@@ -513,6 +513,7 @@ GameObject:
   m_Component:
   - component: {fileID: 435999548}
   - component: {fileID: 435999547}
+  - component: {fileID: 435999549}
   m_Layer: 0
   m_Name: Hand Trackers
   m_TagString: Handtracking
@@ -646,6 +647,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &435999549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435999546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53999eeae34e05f429f4a16149d4eb93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  palmDist: 0
+  midpoointhandtracking: {x: 0, y: 0, z: 0}
+  rightStreamPos: {x: 0, y: 0, z: 0}
+  leftStreamPos: {x: 0, y: 0, z: 0}
 --- !u!1 &689133175
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,22 +733,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1153755259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20bfebe64e5f165409cbd24a62a9b5fb, type: 3}
+  m_Script: {fileID: 11500000, guid: ce061bc7d978085418992ae2b8e94bed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castDelay: 1
+  maxXAxisDist: 0.5
   drumVariants:
-  - {fileID: 4408182790579037807, guid: c0ceb2eeb4b042c469b7a60d65e85f3c, type: 3}
-  - {fileID: 2274781863834570696, guid: 2e1715d2127bc924dbb1e1738aeb3e39, type: 3}
-  - {fileID: 165984068845179916, guid: 4d23ca01ee7ffd54b9abb4b4b8678aee, type: 3}
-  - {fileID: 980822739150027997, guid: 24452a609ef70fc4ba5e79544c59e7a4, type: 3}
   - {fileID: 2274781863834570696, guid: 469225604721d5d49b03c35ebed5f2fa, type: 3}
+  - {fileID: 2274781863834570696, guid: 2e1715d2127bc924dbb1e1738aeb3e39, type: 3}
+  - {fileID: 980822739150027997, guid: 24452a609ef70fc4ba5e79544c59e7a4, type: 3}
+  - {fileID: 165984068845179916, guid: 4d23ca01ee7ffd54b9abb4b4b8678aee, type: 3}
+  - {fileID: 4408182790579037807, guid: c0ceb2eeb4b042c469b7a60d65e85f3c, type: 3}
   colorVariants:
   - 0
   - 0.15
   - 0.3
   - 0.45
   - 0.6
-  - 0.85
+  - 0.8
+  orbCastRotOffset: {x: 0, y: 0, z: 0}
+  drumsLeftToCast: 0
+  drumShape: 0
+  drumColor: 0
 --- !u!4 &1153755261
 Transform:
   m_ObjectHideFlags: 0

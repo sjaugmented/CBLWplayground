@@ -6,26 +6,40 @@ namespace LW.HoverDrums
 {
     public class HoverDrumController : MonoBehaviour
     {
-        [SerializeField] [Range(0, 1)] float hFloat = 0f;
-        [SerializeField] string oscMessage = "shape";
+        public float force = 1;
+        public string drumShape;
+        public float colorFloat;
 
         OSC osc;
+        Rigidbody rigidBody;
+        
 
         void Start()
         {
+            rigidBody = GetComponent<Rigidbody>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
-            oscMessage = transform.GetChild(0).name;
+            drumShape = transform.GetChild(0).name;
         }
 
         void Update()
         {
-            // for testing color prop - TODO remove
-            GetComponentInChildren<Renderer>().material.color = Color.HSVToRGB(hFloat, 1, 1);
+            
+        }
+
+        public void SetDrumColor(float color)
+        {
+            colorFloat = color;
+            GetComponentInChildren<Renderer>().material.color = Color.HSVToRGB(colorFloat, 1, 1);
+        }
+
+        void FixedUpdate()
+        {
+            rigidBody.AddForce(transform.forward * force);
         }
 
         public void Touched()
         {
-            SendOSCMessage(oscMessage, hFloat);
+            SendOSCMessage(drumShape, colorFloat);
         }
 
         private void SendOSCMessage(string address, float value)
