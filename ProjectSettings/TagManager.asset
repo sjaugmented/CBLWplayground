@@ -18,6 +18,7 @@ TagManager:
   - Left Pointer
   - Right Pointer
   - OSC
+  - Handtracking
   layers:
   - Default
   - TransparentFX
