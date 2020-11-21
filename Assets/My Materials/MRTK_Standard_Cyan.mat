@@ -7,16 +7,16 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MRTK_Standard_TransparentGreen
+  m_Name: MRTK_Standard_Cyan
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
-  m_ShaderKeywords: _ALPHABLEND_ON _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT
-    _DISABLE_ALBEDO_MAP _LIGHTMAPPING_REALTIME _SPECULAR_HIGHLIGHTS
+  m_ShaderKeywords: _BORDER_LIGHT_USES_HOVER_COLOR _DIRECTIONAL_LIGHT _DISABLE_ALBEDO_MAP
+    _HOVER_LIGHT _LIGHTMAPPING_REALTIME _PROXIMITY_LIGHT _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: 2000
   stringTagMap:
-    RenderType: Fade
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -84,16 +84,18 @@ Material:
     - _BumpScale: 1
     - _ClippingBorder: 0
     - _ClippingBorderWidth: 0.025
+    - _ClippingBox: 0
     - _ClippingPlane: 0
     - _ClippingPlaneBorder: 0
     - _ClippingPlaneBorderWidth: 0.025
+    - _ClippingSphere: 0
     - _ColorWriteMask: 15
     - _CullMode: 2
-    - _CustomMode: 2
+    - _CustomMode: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DirectionalLight: 1
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _EdgeSmoothingValue: 0.002
     - _EmissionScaleUI: 0
     - _EnableChannelMap: 0
@@ -114,10 +116,9 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
-    - _HoverLight: 0
+    - _HoverLight: 1
     - _HoverLightOpaque: 0
     - _IgnoreZScale: 0
-    - _IndependentCorners: 0
     - _InnerGlow: 0
     - _InnerGlowPower: 4
     - _InstancedColor: 0
@@ -127,13 +128,13 @@ Material:
     - _IridescenceThreshold: 0.05
     - _Lightmapping: 1
     - _Metallic: 0
-    - _Mode: 2
+    - _Mode: 0
     - _NearLightFade: 0
     - _NearPlaneFade: 0
     - _NormalMapScale: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ProximityLight: 0
+    - _ProximityLight: 1
     - _ProximityLightSubtractive: 0
     - _ProximityLightTwoSided: 0
     - _Reflections: 0
@@ -149,7 +150,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SphericalHarmonics: 0
-    - _SrcBlend: 5
+    - _SrcBlend: 1
     - _Stencil: 0
     - _StencilComparison: 0
     - _StencilOperation: 0
@@ -163,12 +164,12 @@ Material:
     - _ZOffsetFactor: 0
     - _ZOffsetUnits: 0
     - _ZTest: 4
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _ClipPlane: {r: 0, g: 1, b: 0, a: 0}
     - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
     - _ClippingPlaneBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
-    - _Color: {r: 0, g: 0.6911765, b: 0.17636906, a: 0.5019608}
+    - _Color: {r: 0, g: 0.751724, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColorUI: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
@@ -182,4 +183,3 @@ Material:
     - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
     - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
     - _RimColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
