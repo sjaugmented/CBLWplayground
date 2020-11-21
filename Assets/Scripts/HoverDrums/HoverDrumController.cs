@@ -19,6 +19,7 @@ namespace LW.HoverDrums
 
         void Update()
         {
+            // for testing color prop - TODO remove
             GetComponentInChildren<Renderer>().material.color = Color.HSVToRGB(hFloat, 1, 1);
         }
 
