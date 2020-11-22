@@ -12,8 +12,10 @@ namespace LW.HoverDrums
         [SerializeField] float maxXAxisDist = 0.5f;
         [SerializeField] List<GameObject> drumVariants;
         [SerializeField] List<float> colorVariants;
+        [SerializeField] float force = 10f;
 
-        public int drumsLeftToCast;
+        public List<HoverDrumController> liveDrums = new List<HoverDrumController>();
+        int drumsLeftToCast;
         Vector3 orbCastRotOffset = new Vector3(60, 0, 0);
 
         HandTracking handtracking;
@@ -21,8 +23,8 @@ namespace LW.HoverDrums
         HoverDrumController drumController;
         float timeSinceLastCast = Mathf.Infinity;
 
-        public int drumShape = 0;
-        public int drumColor = 0;
+        int drumShape = 0;
+        int drumColor = 0;
 
         private void Start()
         {
@@ -37,9 +39,20 @@ namespace LW.HoverDrums
 
             if (drumsLeftToCast == 0) return;
 
-            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
+            //if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
+            //{
+            //    CastOrb();
+            //}
+
+            if (Input.GetMouseButtonDown(0))
             {
                 CastOrb();
+
+            }
+
+            if (Input.mouseScrollDelta.y != 0)
+            {
+                force += Input.mouseScrollDelta.y;
             }
         }
 
@@ -54,20 +67,22 @@ namespace LW.HoverDrums
             {
                 timeSinceLastCast = 0;
 
-                GameObject drum = Instantiate(drumVariants[drumShape], castOrigin, castRotation);
-                drum.GetComponent<HoverDrumController>().SetDrumColor(colorVariants[drumColor]);
-
-                NextVariant();
+                GameObject drum = Instantiate(drumVariants[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
+                HoverDrumController currentDrum = drum.GetComponent<HoverDrumController>();
+                currentDrum.SetDrumColor(colorVariants[drumColor]);
+                liveDrums.Add(currentDrum);
+                
+                SetNextColorOrShape();
 
                 float spellForceRange = 1 - (castOrigins.palmDist / maxXAxisDist);
                 float spellForce = spellForceRange * 10;
                 if (spellForce < 1) spellForce = 2;
-                drum.GetComponent<HoverDrumController>().force = spellForce;
+                currentDrum.force = force;
 
             }
         }
 
-        private void NextVariant()
+        private void SetNextColorOrShape()
         {
             if (drumColor < colorVariants.Count - 1)
             {
@@ -88,6 +103,10 @@ namespace LW.HoverDrums
         private void Reset()
         {
             // clear all drums
+            for (int i = 0; i < liveDrums.Count; i++)
+            {
+                Destroy(liveDrums[i]);
+            }
             
             // reset shape and color ints
             drumShape = 0;

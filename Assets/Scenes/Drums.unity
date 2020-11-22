@@ -751,7 +751,7 @@ MonoBehaviour:
   - 0.45
   - 0.6
   - 0.8
-  orbCastRotOffset: {x: 0, y: 0, z: 0}
+  force: 50
   drumsLeftToCast: 0
   drumShape: 0
   drumColor: 0

@@ -54,8 +54,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66bf332d7ecdec4f8b6b15ab5831710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hFloat: 0
-  oscMessage: sanity check
+  lifespan: 3
+  force: 1
+  drumShape: 
+  colorFloat: 0
 --- !u!65 &1387976063341040063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -223,8 +225,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387976063341040034}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
+  m_Mass: 0.1
+  m_Drag: 5
   m_AngularDrag: 1
   m_UseGravity: 0
   m_IsKinematic: 0
