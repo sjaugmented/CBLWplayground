@@ -16,6 +16,11 @@ namespace LW.Core
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
         }
 
+        private void Update()
+        {
+            CalcHandPositions();
+        }
+
         private  void CalcHandPositions()
         {
             palmDist = Vector3.Distance(handtracking.rightPalm.Position, handtracking.leftPalm.Position);

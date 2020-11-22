@@ -14,7 +14,7 @@ namespace LW.HoverDrums
 
         [Header("Controller Settings")]
         [SerializeField] float castDelay = 3f;
-        [SerializeField] float maxXAxisDist = 0.5f;
+        [SerializeField] float maxXAxisDist = 0.5f; //TODO hardcode
 
         [Header("Prefabs")]
         [SerializeField] List<GameObject> drumVariants;
@@ -103,6 +103,7 @@ namespace LW.HoverDrums
                 HoverDrumController currentDrum = drum.GetComponent<HoverDrumController>();
 
                 float spellForce = (1 - (castOrigins.palmDist / maxXAxisDist)) * 75;
+                Debug.Log("spellForce: " + spellForce); //REMOVE
                 if (spellForce < 10) spellForce = 10;
                 // set drum casting force and color
                 if (devMode) currentDrum.force = force;
