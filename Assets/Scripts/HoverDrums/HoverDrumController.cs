@@ -1,18 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LW.HoverDrums
 {
     public class HoverDrumController : MonoBehaviour
-    {        
+    {
         public float force = 1;
         public string drumShape;
         public float colorFloat;
 
         OSC osc;
         Rigidbody rigidBody;
-        
+
         void Start()
         {
             rigidBody = GetComponent<Rigidbody>();

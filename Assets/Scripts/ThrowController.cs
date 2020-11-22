@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using LW.Core;
+using System.Collections;
 using UnityEngine;
-using LW.Core;
 
 public class ThrowController : MonoBehaviour
 {

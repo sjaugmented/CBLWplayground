@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LW.Core
 {
@@ -21,7 +19,7 @@ namespace LW.Core
             CalcHandPositions();
         }
 
-        private  void CalcHandPositions()
+        private void CalcHandPositions()
         {
             palmDist = Vector3.Distance(handtracking.rightPalm.Position, handtracking.leftPalm.Position);
 

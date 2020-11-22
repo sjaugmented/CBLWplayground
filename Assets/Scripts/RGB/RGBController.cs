@@ -1,6 +1,6 @@
-﻿using TMPro;
+﻿using LW.Core;
+using TMPro;
 using UnityEngine;
-using LW.Core;
 
 public class RGBController : MonoBehaviour
 {

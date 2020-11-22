@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using LW.Core;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LW.Core;
-using System;
 
 namespace LW.HoverDrums
 {
@@ -18,14 +17,14 @@ namespace LW.HoverDrums
 
         [Header("Prefabs")]
         [SerializeField] List<GameObject> drumVariants;
-        
+
         List<float> colorVariants = new List<float>()
         {
-            0, 
-            0.15f, 
-            0.3f, 
-            0.45f, 
-            0.6f, 
+            0,
+            0.15f,
+            0.3f,
+            0.45f,
+            0.6f,
             0.8f
         };
 
@@ -99,7 +98,7 @@ namespace LW.HoverDrums
                 {
                     drum = Instantiate(drumVariants[drumShape], castOrigin, castRotation);
                 }
-                
+
                 HoverDrumController currentDrum = drum.GetComponent<HoverDrumController>();
 
                 float spellForce = (1 - (castOrigins.palmDist / maxXAxisDist)) * 75;
@@ -111,7 +110,7 @@ namespace LW.HoverDrums
                 currentDrum.SetDrumColor(colorVariants[drumColor]);
                 // add drum to list of live drums
                 liveDrums.Add(currentDrum);
-                
+
                 SetNextColorOrShape();
             }
         }
@@ -142,7 +141,7 @@ namespace LW.HoverDrums
                 StartCoroutine("DropAndDestroy", liveDrums[i]);
                 liveDrums.Remove(liveDrums[i]);
             }
-            
+
             // reset shape and color ints
             drumShape = 0;
             drumColor = 0;

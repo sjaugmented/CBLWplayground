@@ -1,8 +1,8 @@
-﻿using System;
+﻿using LW.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LW.Core;
 
 [RequireComponent(typeof(SpellBook))]
 [RequireComponent(typeof(CloudController))]
