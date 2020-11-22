@@ -15,7 +15,8 @@ namespace LW.HoverDrums
         [SerializeField] float castDelay = 3f;
         [SerializeField] float maxXAxisDist = 0.5f; //TODO hardcode
 
-        [Header("Prefabs")]
+        [Header("Hook Ups")]
+        [SerializeField] AudioClip resetFX;
         [SerializeField] List<GameObject> drumVariants;
 
         List<float> colorVariants = new List<float>()
@@ -28,18 +29,17 @@ namespace LW.HoverDrums
             0.8f
         };
 
-        public int totalDrums;
-        public int drumId = 0;
-        public int drumShape = 0;
-        public int drumColor = 0;
+        float timeSinceLastCast = Mathf.Infinity;
+        int totalDrums;
+        int drumId = 0;
+        int drumShape = 0;
+        int drumColor = 0;
         
         // stores live drums, for dev purposes only TODO make private
         public List<HoverDrumController> liveDrums = new List<HoverDrumController>();
 
         HandTracking handtracking;
         CastOrigins castOrigins;
-        float timeSinceLastCast = Mathf.Infinity;
-
 
         private void Start()
         {
@@ -66,7 +66,6 @@ namespace LW.HoverDrums
                 {
                     CastOrb();
                 }
-
             }
 
             if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
@@ -80,8 +79,6 @@ namespace LW.HoverDrums
             {
                 CastOrb();
             }
-
-            
         }
 
         private void CastOrb()
@@ -140,6 +137,8 @@ namespace LW.HoverDrums
 
         private void Reset()
         {
+            GetComponent<AudioSource>().PlayOneShot(resetFX);
+
             // clear all drums
             for (int i = 0; i < liveDrums.Count; i++)
             {

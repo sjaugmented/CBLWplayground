@@ -4,21 +4,23 @@ namespace LW.HoverDrums
 {
     public class HoverDrumController : MonoBehaviour
     {
+        [SerializeField] AudioClip castFX;
+        [SerializeField] AudioClip touchFX;
+
         public float force = 1;
         public string address;
         
         float colorVal;
         bool isTouched = false;
 
-        //OSC osc;
-        //Rigidbody rigidBody;
         Renderer renderer;
 
         void Start()
         {
             renderer = GetComponentInChildren<Renderer>();
             GetComponent<Rigidbody>().AddForce(transform.forward * force);
-            //osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
+
+            GetComponent<AudioSource>().PlayOneShot(castFX);
         }
 
         void Update()
@@ -43,6 +45,7 @@ namespace LW.HoverDrums
         public void Touched()
         {
             isTouched = true;
+            GetComponent<AudioSource>().PlayOneShot(touchFX);
             SendOSCMessage(address);
         }
 
