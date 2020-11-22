@@ -50,9 +50,11 @@ namespace LW.HoverDrums
 
             }
 
-            if (Input.mouseScrollDelta.y != 0)
+            force += Input.mouseScrollDelta.y;
+
+            if (Input.GetMouseButtonDown(2))
             {
-                force += Input.mouseScrollDelta.y;
+                Reset();
             }
         }
 
@@ -105,12 +107,20 @@ namespace LW.HoverDrums
             // clear all drums
             for (int i = 0; i < liveDrums.Count; i++)
             {
-                Destroy(liveDrums[i]);
+                StartCoroutine("DropAndDestroy", liveDrums[i]);
+                liveDrums.Remove(liveDrums[i]);
             }
             
             // reset shape and color ints
             drumShape = 0;
             drumColor = 0;
+        }
+
+        private IEnumerator DropAndDestroy(HoverDrumController drum)
+        {
+            drum.GetComponent<Rigidbody>().useGravity = true;
+            yield return new WaitForSeconds(2);
+            Destroy(drum.gameObject);
         }
     }
 }

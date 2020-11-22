@@ -5,19 +5,14 @@ using UnityEngine;
 namespace LW.HoverDrums
 {
     public class HoverDrumController : MonoBehaviour
-    {
-        [SerializeField] float lifespan = 3f;
-        
+    {        
         public float force = 1;
         public string drumShape;
         public float colorFloat;
 
-        float timeAlive = 0;
-
         OSC osc;
         Rigidbody rigidBody;
         
-
         void Start()
         {
             rigidBody = GetComponent<Rigidbody>();
@@ -27,26 +22,11 @@ namespace LW.HoverDrums
             rigidBody.AddForce(transform.forward * force);
         }
 
-        void Update()
-        {
-            timeAlive += Time.deltaTime;
-
-            if (timeAlive > lifespan)
-            {
-                Destroy(this);
-            }
-        }
-
         public void SetDrumColor(float color)
         {
             colorFloat = color;
             GetComponentInChildren<Renderer>().material.color = Color.HSVToRGB(colorFloat, 1, 1);
         }
-
-        //void FixedUpdate()
-        //{
-        //    rigidBody.AddForce(transform.forward * force);
-        //}
 
         public void Touched()
         {
@@ -62,5 +42,4 @@ namespace LW.HoverDrums
             Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove
         }
     }
-
 }
