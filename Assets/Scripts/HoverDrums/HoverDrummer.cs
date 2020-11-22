@@ -8,23 +8,38 @@ namespace LW.HoverDrums
 {
     public class HoverDrummer : MonoBehaviour
     {
+        [Header("DevMode controls")]
+        [SerializeField] bool devMode = false;
+        [SerializeField] [Range(10, 75)] float force = 10f;
+
+        [Header("Controller Settings")]
         [SerializeField] float castDelay = 3f;
         [SerializeField] float maxXAxisDist = 0.5f;
-        [SerializeField] List<GameObject> drumVariants;
-        [SerializeField] List<float> colorVariants;
-        [SerializeField] float force = 10f;
 
+        [Header("Prefabs")]
+        [SerializeField] List<GameObject> drumVariants;
+        
+        List<float> colorVariants = new List<float>()
+        {
+            0, 
+            0.15f, 
+            0.3f, 
+            0.45f, 
+            0.6f, 
+            0.8f
+        };
+
+        // stores live drums, for dev purposes only TODO make private
         public List<HoverDrumController> liveDrums = new List<HoverDrumController>();
+
         int drumsLeftToCast;
-        Vector3 orbCastRotOffset = new Vector3(60, 0, 0);
+        int drumShape = 0;
+        int drumColor = 0;
 
         HandTracking handtracking;
         CastOrigins castOrigins;
-        HoverDrumController drumController;
         float timeSinceLastCast = Mathf.Infinity;
 
-        int drumShape = 0;
-        int drumColor = 0;
 
         private void Start()
         {
@@ -39,48 +54,64 @@ namespace LW.HoverDrums
 
             if (drumsLeftToCast == 0) return;
 
-            //if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
-            //{
-            //    CastOrb();
-            //}
-
-            if (Input.GetMouseButtonDown(0))
+            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
             {
                 CastOrb();
-
             }
 
-            force += Input.mouseScrollDelta.y;
-
-            if (Input.GetMouseButtonDown(2))
+            if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
             {
                 Reset();
+            }
+
+            if (devMode)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    CastOrb();
+                }
+
+                force += Input.mouseScrollDelta.y;
+
+                if (Input.GetMouseButtonDown(2))
+                {
+                    Reset();
+                }
             }
         }
 
         private void CastOrb()
         {
             Vector3 castOrigin = Vector3.Lerp(handtracking.rtMiddleKnuckle.Position, handtracking.ltMiddleKnuckle.Position, 0.5f);
-
-            Quaternion palmsRotationMid = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
-            Quaternion castRotation = palmsRotationMid * Quaternion.Euler(orbCastRotOffset);
+            Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
+            Quaternion castRotation = handRotation * Quaternion.Euler(60, 0, 0); // rotational offset - so casts go OUT instead of UP along the hand.Z axis
 
             if (timeSinceLastCast >= castDelay)
             {
                 timeSinceLastCast = 0;
+                GameObject drum;
 
-                GameObject drum = Instantiate(drumVariants[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
+                if (devMode)
+                {
+                    drum = Instantiate(drumVariants[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
+                }
+                else
+                {
+                    drum = Instantiate(drumVariants[drumShape], castOrigin, castRotation);
+                }
+                
                 HoverDrumController currentDrum = drum.GetComponent<HoverDrumController>();
+
+                float spellForce = (1 - (castOrigins.palmDist / maxXAxisDist)) * 75;
+                if (spellForce < 10) spellForce = 10;
+                // set drum casting force and color
+                if (devMode) currentDrum.force = force;
+                else currentDrum.force = spellForce;
                 currentDrum.SetDrumColor(colorVariants[drumColor]);
+                // add drum to list of live drums
                 liveDrums.Add(currentDrum);
                 
                 SetNextColorOrShape();
-
-                float spellForceRange = 1 - (castOrigins.palmDist / maxXAxisDist);
-                float spellForce = spellForceRange * 10;
-                if (spellForce < 1) spellForce = 2;
-                currentDrum.force = force;
-
             }
         }
 
