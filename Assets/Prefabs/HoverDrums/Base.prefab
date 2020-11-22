@@ -54,10 +54,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66bf332d7ecdec4f8b6b15ab5831710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifespan: 3
   force: 1
-  drumShape: 
-  colorFloat: 0
+  address: 
 --- !u!65 &1387976063341040063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -117,10 +115,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hostTransform: {fileID: 0}
   manipulationType: 2
-  twoHandedManipulationType: 2
+  twoHandedManipulationType: 5
   allowFarManipulation: 1
-  oneHandRotationModeNear: 4
-  oneHandRotationModeFar: 4
+  oneHandRotationModeNear: 6
+  oneHandRotationModeFar: 5
   releaseBehavior: 3
   constraintOnRotation: 0
   useLocalSpaceForConstraint: 0
@@ -214,7 +212,18 @@ MonoBehaviour:
       QuaternionValue: {x: 0, y: 0, z: 0, w: 0}
       EventValue:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 1387976063341040033}
+            m_MethodName: NotTouched
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       Options: []
   enabledOnStart: 1
 --- !u!54 &-7857255430179335632
