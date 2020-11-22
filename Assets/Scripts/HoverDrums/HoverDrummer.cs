@@ -31,7 +31,8 @@ namespace LW.HoverDrums
         // stores live drums, for dev purposes only TODO make private
         public List<HoverDrumController> liveDrums = new List<HoverDrumController>();
 
-        int drumsLeftToCast;
+        int totalDrums;
+        int drumId = 1;
         int drumShape = 0;
         int drumColor = 0;
 
@@ -44,14 +45,14 @@ namespace LW.HoverDrums
         {
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             castOrigins = FindObjectOfType<CastOrigins>();
-            drumsLeftToCast = drumVariants.Count * colorVariants.Count;
+            totalDrums = drumVariants.Count * colorVariants.Count;
         }
 
         private void Update()
         {
             timeSinceLastCast += Time.deltaTime;
 
-            if (drumsLeftToCast == 0) return;
+            if (drumId == totalDrums) return;
 
             if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
             {
@@ -100,6 +101,8 @@ namespace LW.HoverDrums
                 }
 
                 HoverDrumController currentDrum = drum.GetComponent<HoverDrumController>();
+                currentDrum.SetDrumAddress(drumId);
+                currentDrum.SetDrumColor(colorVariants[drumColor]);
 
                 float spellForce = (1 - (castOrigins.palmDist / maxXAxisDist)) * 75;
                 Debug.Log("spellForce: " + spellForce); //REMOVE
@@ -107,20 +110,19 @@ namespace LW.HoverDrums
                 // set drum casting force and color
                 if (devMode) currentDrum.force = force;
                 else currentDrum.force = spellForce;
-                currentDrum.SetDrumColor(colorVariants[drumColor]);
                 // add drum to list of live drums
                 liveDrums.Add(currentDrum);
 
-                SetNextColorOrShape();
+                SetNextDrum();
             }
         }
 
-        private void SetNextColorOrShape()
+        private void SetNextDrum()
         {
             if (drumColor < colorVariants.Count - 1)
             {
                 drumColor++;
-                drumsLeftToCast--;
+                drumId++;
             }
             else
             {
@@ -142,7 +144,8 @@ namespace LW.HoverDrums
                 liveDrums.Remove(liveDrums[i]);
             }
 
-            // reset shape and color ints
+            // reset id, shape, color
+            drumId = 1;
             drumShape = 0;
             drumColor = 0;
         }
