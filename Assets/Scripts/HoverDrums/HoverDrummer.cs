@@ -28,13 +28,13 @@ namespace LW.HoverDrums
             0.8f
         };
 
+        public int totalDrums;
+        public int drumId = 0;
+        public int drumShape = 0;
+        public int drumColor = 0;
+        
         // stores live drums, for dev purposes only TODO make private
         public List<HoverDrumController> liveDrums = new List<HoverDrumController>();
-
-        int totalDrums;
-        int drumId = 1;
-        int drumShape = 0;
-        int drumColor = 0;
 
         HandTracking handtracking;
         CastOrigins castOrigins;
@@ -52,11 +52,21 @@ namespace LW.HoverDrums
         {
             timeSinceLastCast += Time.deltaTime;
 
-            if (drumId == totalDrums) return;
-
-            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
+            if (devMode)
             {
-                CastOrb();
+                if (Input.GetMouseButtonDown(2))
+                {
+                    Reset();
+                }
+
+                force += Input.mouseScrollDelta.y;
+                if (drumId >= totalDrums) return;
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    CastOrb();
+                }
+
             }
 
             if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
@@ -64,20 +74,14 @@ namespace LW.HoverDrums
                 Reset();
             }
 
-            if (devMode)
+            if (drumId >= totalDrums) return;
+
+            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
             {
-                if (Input.GetMouseButtonDown(0))
-                {
-                    CastOrb();
-                }
-
-                force += Input.mouseScrollDelta.y;
-
-                if (Input.GetMouseButtonDown(2))
-                {
-                    Reset();
-                }
+                CastOrb();
             }
+
+            
         }
 
         private void CastOrb()
@@ -89,6 +93,7 @@ namespace LW.HoverDrums
             if (timeSinceLastCast >= castDelay)
             {
                 timeSinceLastCast = 0;
+                drumId++;
                 GameObject drum;
 
                 if (devMode)
@@ -105,7 +110,6 @@ namespace LW.HoverDrums
                 currentDrum.SetDrumColor(colorVariants[drumColor]);
 
                 float spellForce = (1 - (castOrigins.palmDist / maxXAxisDist)) * 75;
-                Debug.Log("spellForce: " + spellForce); //REMOVE
                 if (spellForce < 10) spellForce = 10;
                 // set drum casting force and color
                 if (devMode) currentDrum.force = force;
@@ -122,7 +126,6 @@ namespace LW.HoverDrums
             if (drumColor < colorVariants.Count - 1)
             {
                 drumColor++;
-                drumId++;
             }
             else
             {
@@ -145,7 +148,7 @@ namespace LW.HoverDrums
             }
 
             // reset id, shape, color
-            drumId = 1;
+            drumId = 0;
             drumShape = 0;
             drumColor = 0;
         }

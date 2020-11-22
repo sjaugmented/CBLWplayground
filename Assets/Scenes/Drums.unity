@@ -738,7 +738,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   devMode: 0
   force: 50
-  castDelay: 1
+  castDelay: 0.2
   maxXAxisDist: 0.5
   drumVariants:
   - {fileID: 2274781863834570696, guid: 469225604721d5d49b03c35ebed5f2fa, type: 3}
@@ -746,6 +746,10 @@ MonoBehaviour:
   - {fileID: 980822739150027997, guid: 24452a609ef70fc4ba5e79544c59e7a4, type: 3}
   - {fileID: 165984068845179916, guid: 4d23ca01ee7ffd54b9abb4b4b8678aee, type: 3}
   - {fileID: 4408182790579037807, guid: c0ceb2eeb4b042c469b7a60d65e85f3c, type: 3}
+  totalDrums: 0
+  drumId: 0
+  drumShape: 0
+  drumColor: 0
   liveDrums: []
 --- !u!4 &1153755261
 Transform:
