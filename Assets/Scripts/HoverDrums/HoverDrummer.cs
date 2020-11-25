@@ -40,11 +40,13 @@ namespace LW.HoverDrums
 
         HandTracking handtracking;
         CastOrigins castOrigins;
+        AudioSource audio;
 
         private void Start()
         {
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             castOrigins = FindObjectOfType<CastOrigins>();
+            audio = GetComponent<AudioSource>();
             totalDrums = drumVariants.Count * colorVariants.Count;
         }
 
@@ -137,7 +139,12 @@ namespace LW.HoverDrums
 
         private void Reset()
         {
-            GetComponent<AudioSource>().PlayOneShot(resetFX);
+            if (liveDrums.Count == 0) return;
+            
+            if (!audio.isPlaying)
+            {
+                audio.PlayOneShot(resetFX);
+            }
 
             // clear all drums
             for (int i = 0; i < liveDrums.Count; i++)
