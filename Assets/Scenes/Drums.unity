@@ -737,9 +737,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce061bc7d978085418992ae2b8e94bed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  devMode: 0
+  devMode: 1
   force: 50
-  castDelay: 2
+  castDelay: 0.5
   maxXAxisDist: 0.5
   resetFX: {fileID: 8300000, guid: 89b18d3804e35ba40a224b6f9929ccea, type: 3}
   drumVariants:
@@ -849,7 +849,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
