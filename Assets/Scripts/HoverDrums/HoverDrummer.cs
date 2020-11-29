@@ -108,7 +108,7 @@ namespace LW.HoverDrums
                 currentDrum.SetDrumAddress(drumId);
                 currentDrum.SetDrumColor(colorVariants[drumColor]);
 
-                float spellForce = (1 - (castOrigins.palmDist / maxXAxisDist)) * 75;
+                float spellForce = (castOrigins.palmDist / maxXAxisDist) * 75;
                 if (spellForce < 10) spellForce = 10;
                 // set drum casting force and color
                 if (devMode) currentDrum.force = force;
