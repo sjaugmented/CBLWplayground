@@ -7,7 +7,7 @@ namespace LW.LightBow
 {
     public class LightBowController : MonoBehaviour
     {
-        
+        [SerializeField] GameObject peaceIndicator;
         
         HandTracking handtracking;
 
@@ -20,7 +20,11 @@ namespace LW.LightBow
         // Update is called once per frame
         void Update()
         {
-
+            if (handtracking.rightPeace || handtracking.leftPeace || Input.GetMouseButton(0))
+            {
+                peaceIndicator.SetActive(true);
+            }
+            else peaceIndicator.SetActive(false);
         }
     }
 }
