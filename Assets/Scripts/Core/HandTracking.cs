@@ -42,6 +42,7 @@ namespace LW.Core
         public bool rightPoint = false;
         public bool rightThumbsUp = false;
         public bool rightL = false;
+        public bool rightPeace = false;
 
         // left fingers
         public bool leftHand = false;
@@ -52,6 +53,7 @@ namespace LW.Core
         public bool leftPoint = false;
         public bool leftThumbsUp = false;
         public bool leftL = false;
+        public bool leftPeace = false;
         #endregion
 
         public float rtPalmUpFloorUp;
@@ -423,8 +425,12 @@ namespace LW.Core
                     rightL = true;
                 }
                 else rightL = false;
-
-
+                
+                if (!IsWithinRange(rtThumbVecPalmRight, 180, 80) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
+                {
+                    rightPeace = true;
+                }
+                else rightPeace = false;
             }
             else
             {
@@ -436,6 +442,7 @@ namespace LW.Core
                 rightPoint = false;
                 rightThumbsUp = false;
                 rightL = false;
+                rightPeace = false;
             }
 
             // left hand
@@ -502,8 +509,11 @@ namespace LW.Core
                 }
                 else leftL = false;
 
-
-
+                if (!IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
+                {
+                    leftPeace = true;
+                }
+                else leftPeace = false;
             }
             else
             {
@@ -515,6 +525,7 @@ namespace LW.Core
                 leftPoint = false;
                 leftThumbsUp = false;
                 leftL = false;
+                leftPeace = false;
             }
         }
 
