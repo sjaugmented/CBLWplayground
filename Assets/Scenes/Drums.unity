@@ -615,6 +615,7 @@ MonoBehaviour:
   rightPoint: 0
   rightThumbsUp: 0
   rightL: 0
+  rightPeace: 0
   leftHand: 0
   leftRockOn: 0
   leftFist: 0
@@ -623,6 +624,7 @@ MonoBehaviour:
   leftPoint: 0
   leftThumbsUp: 0
   leftL: 0
+  leftPeace: 0
   rtPalmUpFloorUp: 0
   rtPalmUpCamFor: 0
   rtPalmRtCamRt: 0
@@ -737,7 +739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce061bc7d978085418992ae2b8e94bed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  devMode: 0
+  devMode: 1
   force: 50
   castDelay: 0.5
   maxXAxisDist: 0.5

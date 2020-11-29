@@ -5,6 +5,35 @@ using UnityEngine;
 
 namespace LW.HoverDrums
 {
+    public class HSV
+    {
+        float hue;
+        float sat;
+        float val;
+
+        public HSV(float hue, float sat, float val)
+        {
+            this.hue = hue;
+            this.sat = sat;
+            this.val = val;
+        }
+
+        public float Hue
+        {
+            get { return hue; }
+            set { hue = value; }
+        }
+        public float Sat
+        {
+            get { return sat; }
+            set { sat = value; }
+        }
+        public float Val
+        {
+            get { return val; }
+            set { val = value; }
+        }
+    }
     public class HoverDrummer : MonoBehaviour
     {
         [Header("DevMode controls")]
@@ -19,15 +48,7 @@ namespace LW.HoverDrums
         [SerializeField] AudioClip resetFX;
         [SerializeField] List<GameObject> drumVariants;
 
-        List<float> colorVariants = new List<float>()
-        {
-            0,
-            0.15f,
-            0.3f,
-            0.45f,
-            0.6f,
-            0.8f
-        };
+        List<HSV> colorVariants = new List<HSV>();
 
         float timeSinceLastCast = Mathf.Infinity;
         int totalDrums;
@@ -47,6 +68,16 @@ namespace LW.HoverDrums
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             castOrigins = FindObjectOfType<CastOrigins>();
             audio = GetComponent<AudioSource>();
+
+            colorVariants.Add(new HSV(0, 0, 1));
+            colorVariants.Add(new HSV(0, 1, 1));
+            colorVariants.Add(new HSV(0.15f, 1, 1));
+            colorVariants.Add(new HSV(0.37f, 1, 1));
+            colorVariants.Add(new HSV(0.5f, 1, 1));
+            colorVariants.Add(new HSV(0.6f, 1, 1));
+            colorVariants.Add(new HSV(0.8f, 1, 1));
+            colorVariants.Add(new HSV(0, 0, 0));
+
             totalDrums = drumVariants.Count * colorVariants.Count;
         }
 

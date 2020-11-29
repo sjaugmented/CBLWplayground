@@ -10,7 +10,7 @@ namespace LW.HoverDrums
         public float force = 1;
         public string address;
         
-        float colorVal;
+        [Range(0, 1)] public HSV color;
         bool isTouched = false;
 
         Renderer renderer;
@@ -29,12 +29,12 @@ namespace LW.HoverDrums
             {
                 renderer.material.color = Color.white;
             }
-            else renderer.material.color = Color.HSVToRGB(colorVal, 1, 1);
+            else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
-        public void SetDrumColor(float color)
+        public void SetDrumColor(HSV colorValue)
         {
-            colorVal = color;
+            color = colorValue;
         }
 
         public void SetDrumAddress(int drumNum)
