@@ -9,31 +9,27 @@ namespace LW.LightBow
     {
         HandTracking handtracking;
 
-        public Vector3 rightIndex, rightMiddle, leftIndex, leftMiddle;
+        public Vector3 rightSight, leftSight;
 
         void Start()
         {
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
-
-            rightIndex = handtracking.rtIndexTip.Position;
-            rightMiddle = handtracking.rtMiddleTip.Position;
-            leftIndex = handtracking.ltIndexTip.Position;
-            leftMiddle = handtracking.ltMiddleTip.Position;
         }
 
         void Update()
         {
-
+            rightSight = Vector3.Lerp(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position, 0.5f);
+            leftSight = Vector3.Lerp(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position, 0.5f);
         }
 
         public Vector3 GetRightSight()
         {
-            return Vector3.Lerp(rightIndex, rightMiddle, 0.5f);
+            return rightSight;
         }
 
         public Vector3 GetLeftSight()
         {
-            return Vector3.Lerp(leftIndex, leftMiddle, 0.5f);
+            return leftSight;
         }
     }
 }

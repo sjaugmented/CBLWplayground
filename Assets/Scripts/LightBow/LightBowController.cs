@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using LW.Core;
+using System;
 
 namespace LW.LightBow
 {
     public class LightBowController : MonoBehaviour
     {
-        [SerializeField] GameObject peaceIndicator;
-        
+        [SerializeField] GameObject sightHud;
+        [SerializeField] GameObject arrow;
+
+        bool readyToFire = false;
+
         HandTracking handtracking;
         BowSights bowSights;
 
@@ -22,52 +26,55 @@ namespace LW.LightBow
         // Update is called once per frame
         void Update()
         {
-            if (handtracking.rightPeace)
+            if (handtracking.leftPeace)
             {
-                ActivateBow(bowSights.rightIndex, bowSights.rightMiddle, bowSights.GetRightSight(), handtracking.leftPalm.Position);
+                float fingerDistance = Vector3.Distance(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position);
+                // activate rangeFinder object
+                sightHud.SetActive(true);
+                // position between finger tips
+                sightHud.transform.position = bowSights.GetLeftSight();
+                // size to distance
+                sightHud.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
+                // rotate to face middle finger
+                sightHud.transform.LookAt(handtracking.ltMiddleTip.Position);
+
+                if (handtracking.rightFist)
+                {
+                    arrow.SetActive(true);
+                    arrow.transform.LookAt(bowSights.GetLeftSight());
+                    readyToFire = true;
+                    WatchForRelease();
+                }
+                else
+                {
+                    arrow.SetActive(false);
+                }
             }
-            else if (handtracking.leftPeace)
+            else if (handtracking.rightPeace)
             {
-                ActivateBow(bowSights.leftIndex, bowSights.leftMiddle, bowSights.GetLeftSight(), handtracking.rightPalm.Position);
+                float fingerDistance = Vector3.Distance(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position);
+                // activate rangeFinder object
+                sightHud.SetActive(true);
+                // position between finger tips
+                sightHud.transform.position = bowSights.GetRightSight();
+                // size to distance
+                sightHud.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
+                // rotate to face middle finger
+                sightHud.transform.LookAt(handtracking.rtMiddleTip.Position);
             }
             else
             {
-                ClearExistingLines();
-                peaceIndicator.SetActive(false);
+                //deactivate sight
+                sightHud.SetActive(false);
+                arrow.SetActive(false);
             }
         }
 
-        private void ActivateBow(Vector3 sightStart, Vector3 sightEnd, Vector3 arrowStart, Vector3 arrowEnd)
+        private void WatchForRelease()
         {
-            ClearExistingLines();
-            peaceIndicator.SetActive(true);
-            DrawLine(sightStart, sightEnd, Color.red);
-            DrawLine(arrowStart, arrowEnd, Color.white);
-        }
-
-        private void DrawLine(Vector3 start, Vector3 end, Color color)
-        {
-            GameObject myLine = new GameObject();
-            myLine.tag = "line";
-            myLine.transform.position = start;
-            myLine.AddComponent<LineRenderer>();
-            LineRenderer lr = myLine.GetComponent<LineRenderer>();
-            lr.material = new Material(Shader.Find("Particles/Alpha Blended Premultiply"));
-            lr.startColor = color;
-            lr.endColor = color;
-            lr.startWidth = 0.1f;
-            lr.endWidth = 0.1f;
-            lr.SetPosition(0, start);
-            lr.SetPosition(1, end);
-        }
-
-        private void ClearExistingLines()
-        {
-            GameObject[] lines = GameObject.FindGameObjectsWithTag("line");
-
-            foreach(GameObject line in lines)
+            if (readyToFire && !handtracking.rightFist)
             {
-                Destroy(line);
+
             }
         }
     }
