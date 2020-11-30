@@ -43,22 +43,20 @@ namespace LW.LightBow
                 if (handtracking.rightFist)
                 {
                     arrowHud.SetActive(true);
-                    arrowHud.transform.position = handtracking.rightPalm.Position;
+                    arrowHud.transform.position = handtracking.rtIndexMid.Position;
                     arrowHud.transform.LookAt(bowSights.GetLeftSight());
                     readyToFire = true;
-                    WatchForRelease();
-                }
-                else
-                {
-                    arrowHud.SetActive(false);
                 }
             }
             else
             {
-                //deactivate sight
+                //deactivate sight and arrow Huds
                 sightHud.SetActive(false);
                 arrowHud.SetActive(false);
+                readyToFire = false;
             }
+
+            WatchForRelease();
         }
 
         private void WatchForRelease()
@@ -71,7 +69,10 @@ namespace LW.LightBow
 
         private void FireArrow()
         {
+            arrowHud.SetActive(false);
             float bowForce = Vector3.Distance(handtracking.rightPalm.Position, sightHud.transform.position) * forceMultiplier;
+            Debug.Log("Distance: " + Vector3.Distance(handtracking.rightPalm.Position, sightHud.transform.position));
+            Debug.Log("force: " + bowForce); // TODO remove
 
             GameObject newArrow = Instantiate(arrowPrefab, handtracking.rightPalm.Position, arrowHud.transform.rotation);
 
