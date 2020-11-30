@@ -9,9 +9,11 @@ namespace LW.LightBow
     public class LightBowController : MonoBehaviour
     {
         [SerializeField] GameObject sightHud;
-        [SerializeField] GameObject arrow;
+        [SerializeField] GameObject arrowHud;
+        [SerializeField] GameObject arrowPrefab;
+        [SerializeField] float forceMultiplier = 100;
 
-        bool readyToFire = false;
+        public bool readyToFire = false;
 
         HandTracking handtracking;
         BowSights bowSights;
@@ -40,42 +42,42 @@ namespace LW.LightBow
 
                 if (handtracking.rightFist)
                 {
-                    arrow.SetActive(true);
-                    arrow.transform.LookAt(bowSights.GetLeftSight());
+                    arrowHud.SetActive(true);
+                    arrowHud.transform.position = handtracking.rightPalm.Position;
+                    arrowHud.transform.LookAt(bowSights.GetLeftSight());
                     readyToFire = true;
                     WatchForRelease();
                 }
                 else
                 {
-                    arrow.SetActive(false);
+                    arrowHud.SetActive(false);
                 }
-            }
-            else if (handtracking.rightPeace)
-            {
-                float fingerDistance = Vector3.Distance(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position);
-                // activate rangeFinder object
-                sightHud.SetActive(true);
-                // position between finger tips
-                sightHud.transform.position = bowSights.GetRightSight();
-                // size to distance
-                sightHud.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
-                // rotate to face middle finger
-                sightHud.transform.LookAt(handtracking.rtMiddleTip.Position);
             }
             else
             {
                 //deactivate sight
                 sightHud.SetActive(false);
-                arrow.SetActive(false);
+                arrowHud.SetActive(false);
             }
         }
 
         private void WatchForRelease()
         {
-            if (readyToFire && !handtracking.rightFist)
+            if (readyToFire)
             {
-
+                if (!handtracking.rightFist) FireArrow();
             }
+        }
+
+        private void FireArrow()
+        {
+            float bowForce = Vector3.Distance(handtracking.rightPalm.Position, sightHud.transform.position) * forceMultiplier;
+
+            GameObject newArrow = Instantiate(arrowPrefab, handtracking.rightPalm.Position, arrowHud.transform.rotation);
+
+            newArrow.GetComponent<ArrowController>().force = bowForce;
+
+            readyToFire = false;
         }
     }
 }

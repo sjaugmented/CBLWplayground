@@ -97,7 +97,7 @@ namespace LW.HoverDrums
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    CastOrb();
+                    CastDrum();
                 }
             }
 
@@ -110,11 +110,11 @@ namespace LW.HoverDrums
 
             if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
             {
-                CastOrb();
+                CastDrum();
             }
         }
 
-        private void CastOrb()
+        private void CastDrum()
         {
             Vector3 castOrigin = Vector3.Lerp(handtracking.rtMiddleKnuckle.Position, handtracking.ltMiddleKnuckle.Position, 0.5f);
             Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);

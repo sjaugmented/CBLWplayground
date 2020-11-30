@@ -5,18 +5,24 @@ namespace LW.LightBow
     [RequireComponent(typeof(Rigidbody))]
     public class ArrowController : MonoBehaviour
     {
-        float force;
+        public float force { get; set; }
 
-        // Start is called before the first frame update
+        float time = 0;
+        float lifeSpan = 5;
+
         void Start()
         {
             GetComponent<Rigidbody>().AddForce(transform.forward * force);
         }
 
-        // Update is called once per frame
         void Update()
         {
+            time += Time.deltaTime;
 
+            if (time > lifeSpan)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

@@ -907,7 +907,7 @@ Transform:
   m_GameObject: {fileID: 931208243}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children:
   - {fileID: 528219161}
   - {fileID: 665304558}
@@ -1104,7 +1104,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sightHud: {fileID: 1803244535}
-  arrow: {fileID: 931208243}
+  arrowHud: {fileID: 931208243}
+  arrowPrefab: {fileID: 5431807816001466754, guid: 667281dcc25736b4693a6f16069b8c52,
+    type: 3}
+  forceMultiplier: 100
+  readyToFire: 0
 --- !u!114 &1499304297
 MonoBehaviour:
   m_ObjectHideFlags: 0
