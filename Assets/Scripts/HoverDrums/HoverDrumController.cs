@@ -27,7 +27,7 @@ namespace LW.HoverDrums
         {
             if (isTouched)
             {
-                renderer.material.color = Color.white;
+                renderer.material.color = Color.clear;
             }
             else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }

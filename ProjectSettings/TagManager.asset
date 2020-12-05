@@ -20,6 +20,7 @@ TagManager:
   - OSC
   - Handtracking
   - line
+  - Drummer
   layers:
   - Default
   - TransparentFX

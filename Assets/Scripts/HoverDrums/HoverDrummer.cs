@@ -39,6 +39,7 @@ namespace LW.HoverDrums
         [Header("DevMode controls")]
         [SerializeField] bool devMode = false;
         [SerializeField] [Range(10, 75)] float force = 10f;
+        public bool ableToCast = true;
 
         [Header("Controller Settings")]
         [SerializeField] float castDelay = 3f;
@@ -95,7 +96,7 @@ namespace LW.HoverDrums
                 force += Input.mouseScrollDelta.y;
                 if (drumId >= totalDrums) return;
 
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && ableToCast)
                 {
                     CastDrum();
                 }
@@ -108,7 +109,7 @@ namespace LW.HoverDrums
 
             if (drumId >= totalDrums) return;
 
-            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
+            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
             {
                 CastDrum();
             }
@@ -195,6 +196,11 @@ namespace LW.HoverDrums
             drum.GetComponent<Rigidbody>().useGravity = true;
             yield return new WaitForSeconds(2);
             Destroy(drum.gameObject);
+        }
+
+        public void SetCast(bool canCast)
+        {
+            ableToCast = canCast;
         }
     }
 }

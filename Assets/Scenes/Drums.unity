@@ -722,7 +722,7 @@ GameObject:
   - component: {fileID: 1153755262}
   m_Layer: 0
   m_Name: Drummer
-  m_TagString: Untagged
+  m_TagString: Drummer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
