@@ -92,6 +92,11 @@ namespace LW.Core
         float staffForFloorUp;
         float staffForCamRight;
 
+        public float GetStaffForCamUp()
+        {
+            return staffForCamUp;
+        }
+
         private void ProcessStaffAngle()
         {
             // wizard staff angles

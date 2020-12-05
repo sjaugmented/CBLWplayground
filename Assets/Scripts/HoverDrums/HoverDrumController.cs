@@ -54,13 +54,18 @@ namespace LW.HoverDrums
             isTouched = false;
         }
 
-        private void SendOSCMessage(string address)
+        public void SendOSCMessage(string address, float value = 0.5f)
         {
             OscMessage message = new OscMessage();
             message.address = address;
-            message.values.Add(1);
+            message.values.Add(value);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().Send(message);
             Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove
+        }
+
+        public string GetDrumAddress()
+        {
+            return address;
         }
     }
 }

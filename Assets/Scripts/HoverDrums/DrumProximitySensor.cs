@@ -8,9 +8,12 @@ namespace LW.HoverDrums
     public class DrumProximitySensor : MonoBehaviour
     {
         [SerializeField] float userProximitySet = 0.5f;
-        [SerializeField] float handProximitySet = 0.2f;
+        [SerializeField] float minHandDistance = 0.15f;
+        [SerializeField] float maxHandDistance = 0.4f;
+        [SerializeField] float effectiveBubbleScale = 0.67f;
         [SerializeField] Transform proximityBubble;
-        
+
+        HoverDrumController drumController;
         Transform user;
         HoverDrummer drummer;
         HandTracking handtracking;
@@ -19,6 +22,7 @@ namespace LW.HoverDrums
 
         void Start()
         {
+            drumController = GetComponent<HoverDrumController>();
             user = Camera.main.transform;
             drummer = GameObject.FindGameObjectWithTag("Drummer").GetComponent<HoverDrummer>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
@@ -34,27 +38,23 @@ namespace LW.HoverDrums
                 drummer.SetCast(false);
                 
 
-                if (handtracking.twoHands)
+                if (handtracking.twoHands && handtracking.rightOpen && handtracking.leftOpen)
                 {
                     float distanceToHand = Vector3.Distance(transform.position, handtracking.rightPalm.Position);
-                    float handRecognitionRange = userProximitySet - handProximitySet;
 
-                    if (distanceToHand > handProximitySet && distanceToHand <= handRecognitionRange) bubbleScale = 1 - (distanceToHand - handProximitySet) / (handRecognitionRange);
-                    else if (distanceToHand > handRecognitionRange) bubbleScale = 0;
-                    else if (distanceToHand <= handProximitySet) bubbleScale = 1;
-
+                    bubbleScale = Mathf.Clamp(1 - ((distanceToHand - minHandDistance) / maxHandDistance), 0, 1);
                     proximityBubble.localScale = new Vector3(bubbleScale, bubbleScale, bubbleScale);
+
+                    if (bubbleScale > effectiveBubbleScale)
+                    {
+                        drumController.SendOSCMessage(drumController.address + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
+                    }
                 }
             }
             else
             {
                 drummer.SetCast(true);
             }
-        }
-
-        void CheckDistanceToUser()
-        {
-            
         }
     }
 }

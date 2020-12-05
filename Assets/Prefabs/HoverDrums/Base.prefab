@@ -382,8 +382,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userProximitySet: 0.5
-  handProximitySet: 0.2
+  minHandDistance: 0.15
+  maxHandDistance: 0.4
+  oscFloatRange: 0.32999998
   proximityBubble: {fileID: 2651056907970788708}
+  bubbleScale: 0
 --- !u!1 &6722177251189698785
 GameObject:
   m_ObjectHideFlags: 0
