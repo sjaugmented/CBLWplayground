@@ -193,6 +193,7 @@ namespace LW.HoverDrums
 
         private IEnumerator DropAndDestroy(HoverDrumController drum)
         {
+            if (!drum) yield break;
             drum.GetComponent<Rigidbody>().useGravity = true;
             yield return new WaitForSeconds(2);
             Destroy(drum.gameObject);

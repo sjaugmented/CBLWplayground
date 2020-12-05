@@ -741,6 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   devMode: 0
   force: 50
+  ableToCast: 1
   castDelay: 0.5
   maxXAxisDist: 0.5
   resetFX: {fileID: 8300000, guid: 89b18d3804e35ba40a224b6f9929ccea, type: 3}
