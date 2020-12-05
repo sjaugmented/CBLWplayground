@@ -38,7 +38,7 @@ namespace LW.HoverDrums
     {
         [Header("DevMode controls")]
         [SerializeField] bool devMode = false;
-        [SerializeField] [Range(10, 75)] float force = 10f;
+        [SerializeField] [Range(7.5f, 75)] float force = 10f;
         public bool ableToCast = true;
 
         [Header("Controller Settings")]
@@ -141,7 +141,7 @@ namespace LW.HoverDrums
                 currentDrum.SetDrumColor(colorVariants[drumColor]);
 
                 float spellForce = (castOrigins.palmDist / maxXAxisDist) * 75;
-                if (spellForce < 10) spellForce = 10;
+                if (spellForce < 7.5f) spellForce = 7.5f;
                 // set drum casting force and color
                 if (devMode) currentDrum.force = force;
                 else currentDrum.force = spellForce;
@@ -199,7 +199,7 @@ namespace LW.HoverDrums
             Destroy(drum.gameObject);
         }
 
-        public void SetCast(bool canCast)
+        public void SetAbleToCast(bool canCast)
         {
             ableToCast = canCast;
         }
