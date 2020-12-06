@@ -34,16 +34,19 @@ namespace LW.HoverDrums
             if (distanceToUser < userProximitySet)
             {
                 drummer.SetAbleToCast(false);
-                
-                if (handtracking.twoHands && handtracking.rightOpen && handtracking.leftOpen)
-                {
-                    GrowProximityBubble();
 
-                    if (bubbleScale > effectiveBubbleScale)
+                if (handtracking.twoHands)
+                {
+                    ActivateProximityBubble();
+
+                    if (bubbleScale > effectiveBubbleScale && handtracking.rightFist && handtracking.leftFist)
                     {
                         drumController.SendOSCMessage(drumController.address1 + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
                     }
                 }
+                else proximityBubble.localScale = new Vector3(0, 0, 0);
+
+
             }
             else
             {
@@ -51,7 +54,7 @@ namespace LW.HoverDrums
             }
         }
 
-        private void GrowProximityBubble()
+        private void ActivateProximityBubble()
         {
             float distanceToHand = Vector3.Distance(transform.position, handtracking.rightPalm.Position);
 

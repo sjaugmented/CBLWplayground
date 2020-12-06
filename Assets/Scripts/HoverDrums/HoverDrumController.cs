@@ -10,6 +10,7 @@ namespace LW.HoverDrums
         [SerializeField] AudioClip castFX;
         [SerializeField] AudioClip touchFX;
         [SerializeField] ParticleSystem particles;
+        public bool oscTest = false;
 
         public float force = 1;
         public string address1;
@@ -31,6 +32,7 @@ namespace LW.HoverDrums
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(address1 + "/receive", OnReceiveOSC);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(OnReceiveOSC);
 
             emission = particles.emission;
             emission.enabled = false;
@@ -44,6 +46,8 @@ namespace LW.HoverDrums
                 renderer.material.color = Color.clear;
             }
             else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
+
+            if (oscTest) StartCoroutine("PlayParticles");
         }
 
         public void SetDrumColor(HSV colorValue)
@@ -88,11 +92,13 @@ namespace LW.HoverDrums
 
         void OnReceiveOSC(OscMessage message)
         {
-            // pulse particles inside core
+            Debug.Log("OSC received: " + message);
+            StartCoroutine("PlayParticles");
         }
 
         private IEnumerator PlayParticles()
         {
+            Debug.Log("pulsing");
             emission.enabled = true;
             yield return new WaitForSeconds(0.3f);
             emission.enabled = false;

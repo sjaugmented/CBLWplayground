@@ -93,6 +93,11 @@ namespace LW.HoverDrums
                     Reset();
                 }*/
 
+                if (Input.GetKeyDown(KeyCode.R))
+				{
+                    GatherDrums();
+				}
+
                 force += Input.mouseScrollDelta.y;
                 if (drumId >= totalDrums) return;
 
@@ -148,6 +153,9 @@ namespace LW.HoverDrums
                 // add drum to list of live drums
                 liveDrums.Add(currentDrum);
 
+                //add to DrumContainer parent
+                currentDrum.transform.SetParent(FindObjectOfType<DrumParent>().transform);
+
                 SetNextDrum();
             }
         }
@@ -168,6 +176,13 @@ namespace LW.HoverDrums
                 else return;
             }
         }
+
+        private void GatherDrums()
+		{
+            DrumParent grid = FindObjectOfType<DrumParent>();
+            grid.UpdateCollection();
+            grid.PositionGrid();
+		}
 
         private void Reset()
         {
