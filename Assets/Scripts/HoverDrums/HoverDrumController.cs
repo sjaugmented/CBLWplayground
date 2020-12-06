@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace LW.HoverDrums
 {
@@ -6,6 +7,7 @@ namespace LW.HoverDrums
     {
         [SerializeField] AudioClip castFX;
         [SerializeField] AudioClip touchFX;
+        [SerializeField] ParticleSystem particles;
 
         public float force = 1;
         public string address;
@@ -14,6 +16,7 @@ namespace LW.HoverDrums
         bool isTouched = false;
 
         Renderer renderer;
+        bool emission;
 
         void Start()
         {
@@ -21,6 +24,12 @@ namespace LW.HoverDrums
             GetComponent<Rigidbody>().AddForce(transform.forward * force);
 
             GetComponent<AudioSource>().PlayOneShot(castFX);
+
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(address + "/receive", OnReceiveOSC);
+
+            emission = particles.emission.enabled;
+            emission = false;
+            //particles.main.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
         void Update()
@@ -61,6 +70,18 @@ namespace LW.HoverDrums
             message.values.Add(value);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().Send(message);
             Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove
+        }
+
+        void OnReceiveOSC(OscMessage message)
+        {
+            // pulse particles inside core
+        }
+
+        private IEnumerator PlayParticles()
+        {
+            emission = true;
+            yield return new WaitForSeconds(0.3f);
+            emission = false;
         }
 
         public string GetDrumAddress()
