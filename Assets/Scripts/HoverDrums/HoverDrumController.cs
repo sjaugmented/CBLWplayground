@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
+using LW.Core;
+using static UnityEngine.ParticleSystem;
 
 namespace LW.HoverDrums
 {
@@ -10,25 +12,28 @@ namespace LW.HoverDrums
         [SerializeField] ParticleSystem particles;
 
         public float force = 1;
-        public string address;
+        public string address1;
+        public string address2;
         
         [Range(0, 1)] public HSV color;
         bool isTouched = false;
 
         Renderer renderer;
-        bool emission;
+        HandTracking handtracking;
+        EmissionModule emission;
 
         void Start()
         {
             renderer = GetComponentInChildren<Renderer>();
+            handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             GetComponent<Rigidbody>().AddForce(transform.forward * force);
 
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(address + "/receive", OnReceiveOSC);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(address1 + "/receive", OnReceiveOSC);
 
-            emission = particles.emission.enabled;
-            emission = false;
+            emission = particles.emission;
+            emission.enabled = false;
             //particles.main.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
@@ -48,14 +53,23 @@ namespace LW.HoverDrums
 
         public void SetDrumAddress(int drumNum)
         {
-            address = transform.GetChild(0).name + drumNum.ToString();
+            address1 = transform.GetChild(0).name + drumNum + "a".ToString();
+            address2 = transform.GetChild(0).name + drumNum + "b".ToString();
         }
 
         public void Touched()
         {
             isTouched = true;
             GetComponent<AudioSource>().PlayOneShot(touchFX);
-            SendOSCMessage(address);
+            // if touched with one finger
+            if (!handtracking.rightPeace && !handtracking.leftPeace)
+            {
+                SendOSCMessage(address1);
+            }
+            else
+            {
+                SendOSCMessage(address2);
+            }
         }
 
         public void NotTouched()
@@ -79,14 +93,14 @@ namespace LW.HoverDrums
 
         private IEnumerator PlayParticles()
         {
-            emission = true;
+            emission.enabled = true;
             yield return new WaitForSeconds(0.3f);
-            emission = false;
+            emission.enabled = false;
         }
 
         public string GetDrumAddress()
         {
-            return address;
+            return address1;
         }
     }
 }

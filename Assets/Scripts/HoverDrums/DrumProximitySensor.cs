@@ -41,7 +41,7 @@ namespace LW.HoverDrums
 
                     if (bubbleScale > effectiveBubbleScale)
                     {
-                        drumController.SendOSCMessage(drumController.address + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
+                        drumController.SendOSCMessage(drumController.address1 + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
                     }
                 }
             }

@@ -88,10 +88,10 @@ namespace LW.HoverDrums
 
             if (devMode)
             {
-                if (Input.GetMouseButtonDown(2))
+                /*if (Input.GetMouseButtonDown(2))
                 {
                     Reset();
-                }
+                }*/
 
                 force += Input.mouseScrollDelta.y;
                 if (drumId >= totalDrums) return;
