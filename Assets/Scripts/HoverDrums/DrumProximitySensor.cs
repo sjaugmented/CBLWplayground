@@ -51,6 +51,7 @@ namespace LW.HoverDrums
             else
             {
                 drummer.SetAbleToCast(true);
+                proximityBubble.localScale = new Vector3(0, 0, 0);
             }
         }
 

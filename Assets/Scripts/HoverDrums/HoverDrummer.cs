@@ -91,7 +91,8 @@ namespace LW.HoverDrums
             timeSinceLastCast += Time.deltaTime;
             resetTimer += Time.deltaTime;
 
-            if (devMode)
+			#region DEV CONTROLS
+			if (devMode)
             {
 				if (Input.GetKeyDown(KeyCode.R))
 				{
@@ -111,14 +112,15 @@ namespace LW.HoverDrums
                     CastDrum();
                 }
             }
+			#endregion
 
-            if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
+			if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
             {
                 Reset();
             }
 
 
-            if (!handtracking.twoHands && handtracking.rightOpen)
+            if (!handtracking.twoHands && handtracking.rightRockOn)
 			{
                 if (!readyToGather)
 				{
