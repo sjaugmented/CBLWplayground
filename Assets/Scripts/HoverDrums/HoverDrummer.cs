@@ -39,11 +39,15 @@ namespace LW.HoverDrums
         [Header("DevMode controls")]
         [SerializeField] bool devMode = false;
         [SerializeField] [Range(7.5f, 75)] float force = 10f;
-        public bool ableToCast = true;
+        public bool ableToCast = true; // TODO make private
 
         [Header("Controller Settings")]
         [SerializeField] float castDelay = 3f;
         [SerializeField] float maxXAxisDist = 0.5f; //TODO hardcode
+        [SerializeField] float resetWindow = 2;
+
+        public float resetTimer = 5; // TODO make private
+        public bool readyToGather = false;
 
         [Header("Hook Ups")]
         [SerializeField] AudioClip resetFX;
@@ -85,6 +89,7 @@ namespace LW.HoverDrums
         private void Update()
         {
             timeSinceLastCast += Time.deltaTime;
+            resetTimer += Time.deltaTime;
 
             if (devMode)
             {
@@ -110,6 +115,23 @@ namespace LW.HoverDrums
             if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
             {
                 Reset();
+            }
+
+
+            if (!handtracking.twoHands && handtracking.rightOpen)
+			{
+                if (!readyToGather)
+				{
+                    resetTimer = 0;
+                    readyToGather = true;
+				}
+			}
+            else { readyToGather = false; }
+
+            if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
+            {
+                GatherDrums();
+                resetTimer = Mathf.Infinity;
             }
 
             if (drumId >= totalDrums) return;
@@ -179,6 +201,7 @@ namespace LW.HoverDrums
 
         private void GatherDrums()
 		{
+            Debug.Log("Gathering"); // REMOVE
             DrumParent grid = FindObjectOfType<DrumParent>();
             grid.UpdateCollection();
             grid.PositionGrid();

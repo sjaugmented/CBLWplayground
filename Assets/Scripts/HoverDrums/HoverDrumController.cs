@@ -36,7 +36,6 @@ namespace LW.HoverDrums
 
             emission = particles.emission;
             emission.enabled = false;
-            //particles.main.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
         void Update()
@@ -53,6 +52,9 @@ namespace LW.HoverDrums
         public void SetDrumColor(HSV colorValue)
         {
             color = colorValue;
+
+            MainModule particlesMain = particles.main;
+            particlesMain.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
         public void SetDrumAddress(int drumNum)
