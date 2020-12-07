@@ -88,12 +88,12 @@ namespace LW.HoverDrums
 
             if (devMode)
             {
-                /*if (Input.GetMouseButtonDown(2))
-                {
-                    Reset();
-                }*/
+				if (Input.GetKeyDown(KeyCode.R))
+				{
+					Reset();
+				}
 
-                if (Input.GetKeyDown(KeyCode.R))
+				if (Input.GetKeyDown(KeyCode.G))
 				{
                     GatherDrums();
 				}

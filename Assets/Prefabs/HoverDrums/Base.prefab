@@ -87,6 +87,7 @@ MonoBehaviour:
   castFX: {fileID: 8300000, guid: df3f12d5c92ff9847be08e7cb9da2fd6, type: 3}
   touchFX: {fileID: 8300000, guid: 4055c9b9e2bde714385a63799f03fa8e, type: 3}
   particles: {fileID: 7110931076764455358}
+  oscTest: 0
   force: 1
   address1: 
   address2: 
@@ -184,7 +185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
-  InputActionId: 0
+  InputActionId: 2
   isGlobal: 0
   Dimensions: 1
   dimensionIndex: 0
@@ -1249,7 +1250,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 1
+    enabled: 0
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
@@ -5232,7 +5233,7 @@ SphereCollider:
   m_GameObject: {fileID: 6722177251189698785}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.49999997
   m_Center: {x: 0, y: 0, z: 0.000000029802322}

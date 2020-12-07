@@ -11,8 +11,13 @@ namespace LW.HoverDrums
     [RequireComponent(typeof(SolverHandler))]
     public class DrumParent : MonoBehaviour
     {
+        void Start()
+		{
+            GetComponent<RadialView>().enabled = false ;
+		}
         public void UpdateCollection()
 		{
+            GetComponent<GridObjectCollection>().enabled = true;
             GetComponent<GridObjectCollection>().UpdateCollection();
         }
 
@@ -26,7 +31,9 @@ namespace LW.HoverDrums
             GetComponent<RadialView>().enabled = true;
             yield return new WaitForSeconds(1);
             GetComponent<RadialView>().enabled = false;
-		}
+            GetComponent<GridObjectCollection>().enabled = false;
+
+        }
 
     }
 }

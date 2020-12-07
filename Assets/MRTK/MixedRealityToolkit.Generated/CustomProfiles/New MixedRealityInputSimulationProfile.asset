@@ -57,8 +57,8 @@ MonoBehaviour:
     bindingType: 2
     code: 306
   defaultHandGesture: 2
-  leftMouseHandGesture: 6
-  middleMouseHandGesture: 8
+  leftMouseHandGesture: 3
+  middleMouseHandGesture: 6
   rightMouseHandGesture: 1
   handGestureAnimationSpeed: 8
   holdStartDuration: 0.5
