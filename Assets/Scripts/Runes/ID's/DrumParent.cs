@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LW.HoverDrums
+namespace LW.Runes
 {
     [RequireComponent(typeof(GridObjectCollection))]
     [RequireComponent(typeof(RadialView))]

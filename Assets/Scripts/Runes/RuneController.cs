@@ -3,9 +3,9 @@ using UnityEngine;
 using LW.Core;
 using static UnityEngine.ParticleSystem;
 
-namespace LW.HoverDrums
+namespace LW.Runes
 {
-    public class HoverDrumController : MonoBehaviour
+    public class RuneController : MonoBehaviour
     {
         [SerializeField] AudioClip castFX;
         [SerializeField] AudioClip touchFX;

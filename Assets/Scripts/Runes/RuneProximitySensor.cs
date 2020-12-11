@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using LW.Core;
 
-namespace LW.HoverDrums
+namespace LW.Runes
 {
-    public class DrumProximitySensor : MonoBehaviour
+    public class RuneProximitySensor : MonoBehaviour
     {
         [SerializeField] float userProximitySet = 0.35f;
         [SerializeField] float minHandDistance = 0.15f;
@@ -13,16 +13,16 @@ namespace LW.HoverDrums
         [SerializeField] float effectiveBubbleScale = 0.67f;
         [SerializeField] Transform proximityBubble;
 
-        HoverDrumController drumController;
-        HoverDrummer drummer;
+        RuneController drumController;
+        RuneMaster drummer;
         HandTracking handtracking;
 
         float bubbleScale = 0;
 
         void Start()
         {
-            drumController = GetComponent<HoverDrumController>();
-            drummer = GameObject.FindGameObjectWithTag("Drummer").GetComponent<HoverDrummer>();
+            drumController = GetComponent<RuneController>();
+            drummer = GameObject.FindGameObjectWithTag("Drummer").GetComponent<RuneMaster>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             proximityBubble.localScale = new Vector3(bubbleScale, bubbleScale, bubbleScale);
         }

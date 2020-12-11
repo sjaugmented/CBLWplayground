@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 406276656}
   - component: {fileID: 406276659}
   m_Layer: 0
-  m_Name: DrumGrid
+  m_Name: RuneGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1000,10 +1000,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1153755261}
-  - component: {fileID: 1153755260}
   - component: {fileID: 1153755262}
+  - component: {fileID: 1153755260}
+  - component: {fileID: 1153755263}
   m_Layer: 0
-  m_Name: Drummer
+  m_Name: RuneMaster
   m_TagString: Drummer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1145,6 +1146,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1153755263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153755259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9c3dcced5d4e4b419dbf70e892a1ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1215859058
 GameObject:
   m_ObjectHideFlags: 0

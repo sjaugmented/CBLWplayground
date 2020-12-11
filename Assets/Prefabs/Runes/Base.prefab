@@ -40,7 +40,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1387976063341040032}
-  - component: {fileID: 1387976063341040033}
   - component: {fileID: 1387976063341040063}
   - component: {fileID: 1387976063341040062}
   - component: {fileID: 1387976063341040060}
@@ -48,6 +47,7 @@ GameObject:
   - component: {fileID: 1387976063341040059}
   - component: {fileID: -7857255430179335632}
   - component: {fileID: 3959232844661619323}
+  - component: {fileID: 1387976063341040033}
   - component: {fileID: 6101505156175584508}
   m_Layer: 0
   m_Name: Base
@@ -72,25 +72,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1387976063341040033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1387976063341040034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f66bf332d7ecdec4f8b6b15ab5831710, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  castFX: {fileID: 8300000, guid: df3f12d5c92ff9847be08e7cb9da2fd6, type: 3}
-  touchFX: {fileID: 8300000, guid: 4055c9b9e2bde714385a63799f03fa8e, type: 3}
-  particles: {fileID: 7110931076764455358}
-  oscTest: 0
-  force: 1
-  address1: 
-  address2: 
 --- !u!65 &1387976063341040063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -373,6 +354,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1387976063341040033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387976063341040034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f66bf332d7ecdec4f8b6b15ab5831710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  castFX: {fileID: 8300000, guid: df3f12d5c92ff9847be08e7cb9da2fd6, type: 3}
+  touchFX: {fileID: 8300000, guid: 4055c9b9e2bde714385a63799f03fa8e, type: 3}
+  particles: {fileID: 7110931076764455358}
+  oscTest: 0
+  force: 1
+  address1: 
+  address2: 
 --- !u!114 &6101505156175584508
 MonoBehaviour:
   m_ObjectHideFlags: 0

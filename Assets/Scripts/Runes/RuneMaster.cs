@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LW.HoverDrums
+namespace LW.Runes
 {
     public class HSV
     {
@@ -34,7 +34,7 @@ namespace LW.HoverDrums
             set { val = value; }
         }
     }
-    public class HoverDrummer : MonoBehaviour
+    public class RuneMaster : MonoBehaviour
     {
         [Header("DevMode controls")]
         [SerializeField] bool devMode = false;
@@ -62,7 +62,7 @@ namespace LW.HoverDrums
         int drumColor = 0;
         
         // stores live drums, for dev purposes only TODO make private
-        public List<HoverDrumController> liveDrums = new List<HoverDrumController>();
+        public List<RuneController> liveDrums = new List<RuneController>();
 
         HandTracking handtracking;
         CastOrigins castOrigins;
@@ -165,7 +165,7 @@ namespace LW.HoverDrums
                     drum = Instantiate(drumVariants[drumShape], castOrigin, castRotation);
                 }
 
-                HoverDrumController currentDrum = drum.GetComponent<HoverDrumController>();
+                RuneController currentDrum = drum.GetComponent<RuneController>();
                 currentDrum.SetDrumAddress(drumId);
                 currentDrum.SetDrumColor(colorVariants[drumColor]);
 
@@ -231,7 +231,7 @@ namespace LW.HoverDrums
             drumColor = 0;
         }
 
-        private IEnumerator DropAndDestroy(HoverDrumController drum)
+        private IEnumerator DropAndDestroy(RuneController drum)
         {
             if (!drum) yield break;
             drum.GetComponent<Rigidbody>().useGravity = true;
