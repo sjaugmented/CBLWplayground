@@ -1,9 +1,10 @@
 ﻿using LW.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LW.Runes
+namespace LW.Runic
 {
     public class HSV
     {
@@ -43,7 +44,7 @@ namespace LW.Runes
 
         [Header("Controller Settings")]
         [SerializeField] float castDelay = 3f;
-        [SerializeField] float maxXAxisDist = 0.5f; //TODO hardcode
+        [SerializeField] float maxPalmDist = 0.5f; //TODO hardcode
         [SerializeField] float resetWindow = 2;
 
         public float resetTimer = 5; // TODO make private
@@ -51,8 +52,8 @@ namespace LW.Runes
 
         [Header("Hook Ups")]
         [SerializeField] AudioClip resetFX;
-        [SerializeField] List<GameObject> drumVariants;
 
+        public RuneType runeType;
         List<HSV> colorVariants = new List<HSV>();
 
         float timeSinceLastCast = Mathf.Infinity;
@@ -60,18 +61,22 @@ namespace LW.Runes
         int drumId = 0;
         int drumShape = 0;
         int drumColor = 0;
+
+        public int runeTypeIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
         public List<RuneController> liveDrums = new List<RuneController>();
 
         HandTracking handtracking;
         CastOrigins castOrigins;
+        RuneBelt runeBelt;
         AudioSource audio;
 
         private void Start()
         {
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             castOrigins = FindObjectOfType<CastOrigins>();
+            runeBelt = GetComponent<RuneBelt>();
             audio = GetComponent<AudioSource>();
 
             colorVariants.Add(new HSV(0, 0, 0.7f)); // white
@@ -83,7 +88,7 @@ namespace LW.Runes
             colorVariants.Add(new HSV(0.8f, 1, 1)); // magenta
             colorVariants.Add(new HSV(0, 0, 0)); // black
 
-            totalDrums = drumVariants.Count * colorVariants.Count;
+            //totalDrums = runeTypes.Count * colorVariants.Count;
         }
 
         private void Update()
@@ -101,7 +106,7 @@ namespace LW.Runes
 
 				if (Input.GetKeyDown(KeyCode.G))
 				{
-                    GatherDrums();
+                    GatherRunes();
 				}
 
                 force += Input.mouseScrollDelta.y;
@@ -119,8 +124,9 @@ namespace LW.Runes
                 Reset();
             }
 
-
-            if (!handtracking.twoHands && handtracking.rightRockOn)
+			#region Gather Runes
+            // prime the gather runes method
+			if (!handtracking.twoHands && handtracking.rightRockOn)
 			{
                 if (!readyToGather)
 				{
@@ -130,21 +136,45 @@ namespace LW.Runes
 			}
             else { readyToGather = false; }
 
+            // trigger the gather runes method
             if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
             {
-                GatherDrums();
+                GatherRunes();
                 resetTimer = Mathf.Infinity;
             }
+			#endregion
 
-            if (drumId >= totalDrums) return;
+			//if (drumId >= totalDrums) return;
 
+            // Set Rune Type
+            if (handtracking.palmsParallel && handtracking.rightFist && handtracking.leftFist)
+			{
+                SelectRuneType();
+			}
+
+            // Casting
             if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
             {
                 CastDrum();
             }
         }
 
-        private void CastDrum()
+		private void SelectRuneType()
+		{
+            float palmDist = castOrigins.palmDist;
+            float typeSlot = maxPalmDist / runeBelt.GetRuneSlots(); // size of selectable area based on number of Rune Types
+
+            for (int i = 1; i <= runeBelt.GetRuneSlots(); i++)
+			{
+                if (palmDist < maxPalmDist && palmDist > (maxPalmDist - typeSlot * i))
+				{
+                    runeTypeIndex = i;
+				}
+			}
+
+		}
+
+		private void CastDrum()
         {
             Vector3 castOrigin = Vector3.Lerp(handtracking.rtMiddleKnuckle.Position, handtracking.ltMiddleKnuckle.Position, 0.5f);
             Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
@@ -158,18 +188,18 @@ namespace LW.Runes
 
                 if (devMode)
                 {
-                    drum = Instantiate(drumVariants[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
+                    drum = Instantiate(runeTypes[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
                 }
                 else
                 {
-                    drum = Instantiate(drumVariants[drumShape], castOrigin, castRotation);
+                    drum = Instantiate(runeTypes[drumShape], castOrigin, castRotation);
                 }
 
                 RuneController currentDrum = drum.GetComponent<RuneController>();
                 currentDrum.SetDrumAddress(drumId);
                 currentDrum.SetDrumColor(colorVariants[drumColor]);
 
-                float spellForce = (castOrigins.palmDist / maxXAxisDist) * 75;
+                float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
                 if (spellForce < 7.5f) spellForce = 7.5f;
                 // set drum casting force and color
                 if (devMode) currentDrum.force = force;
@@ -180,11 +210,11 @@ namespace LW.Runes
                 //add to DrumContainer parent
                 currentDrum.transform.SetParent(FindObjectOfType<DrumParent>().transform);
 
-                SetNextDrum();
+                SetNextRune();
             }
         }
 
-        private void SetNextDrum()
+        private void SetNextRune()
         {
             if (drumColor < colorVariants.Count - 1)
             {
@@ -193,7 +223,7 @@ namespace LW.Runes
             else
             {
                 drumColor = 0;
-                if (drumShape < drumVariants.Count - 1)
+                if (drumShape < runeTypes.Count - 1)
                 {
                     drumShape++;
                 }
@@ -201,7 +231,7 @@ namespace LW.Runes
             }
         }
 
-        private void GatherDrums()
+        private void GatherRunes()
 		{
             Debug.Log("Gathering"); // REMOVE
             DrumParent grid = FindObjectOfType<DrumParent>();
@@ -218,7 +248,7 @@ namespace LW.Runes
                 audio.PlayOneShot(resetFX);
             }
 
-            // clear all drums
+            // clear all runes
             for (int i = 0; i < liveDrums.Count; i++)
             {
                 StartCoroutine("DropAndDestroy", liveDrums[i]);

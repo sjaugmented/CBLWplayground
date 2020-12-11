@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LW.Core;
 
-namespace LW.Runes
+namespace LW.Runic
 {
     public class RuneProximitySensor : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using LW.Core;
 using static UnityEngine.ParticleSystem;
 
-namespace LW.Runes
+namespace LW.Runic
 {
     public class RuneController : MonoBehaviour
     {

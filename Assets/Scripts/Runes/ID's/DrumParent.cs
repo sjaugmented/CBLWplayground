@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace LW.Runes
+namespace LW.Runic
 {
     [RequireComponent(typeof(GridObjectCollection))]
     [RequireComponent(typeof(RadialView))]
