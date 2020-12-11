@@ -1034,11 +1034,6 @@ MonoBehaviour:
   - {fileID: 2274781863834570696, guid: 469225604721d5d49b03c35ebed5f2fa, type: 3}
   - {fileID: 2274781863834570696, guid: 2e1715d2127bc924dbb1e1738aeb3e39, type: 3}
   - {fileID: 980822739150027997, guid: 24452a609ef70fc4ba5e79544c59e7a4, type: 3}
-  - {fileID: 165984068845179916, guid: 4d23ca01ee7ffd54b9abb4b4b8678aee, type: 3}
-  - {fileID: 4408182790579037807, guid: c0ceb2eeb4b042c469b7a60d65e85f3c, type: 3}
-  - {fileID: 2274781863834570696, guid: 434ad21748bcda041bc77310bf73a181, type: 3}
-  - {fileID: 2274781863834570696, guid: 02e7424d804c4a045a6b3cc0f4920865, type: 3}
-  - {fileID: 2274781863834570696, guid: 1e0a61c71f05cb44b972e73eb1e08e6a, type: 3}
   liveDrums: []
 --- !u!4 &1153755261
 Transform:

@@ -74,14 +74,14 @@ namespace LW.HoverDrums
             castOrigins = FindObjectOfType<CastOrigins>();
             audio = GetComponent<AudioSource>();
 
-            colorVariants.Add(new HSV(0, 0, 1));
-            colorVariants.Add(new HSV(0, 1, 1));
-            colorVariants.Add(new HSV(0.15f, 1, 1));
-            colorVariants.Add(new HSV(0.37f, 1, 1));
-            colorVariants.Add(new HSV(0.5f, 1, 1));
-            colorVariants.Add(new HSV(0.6f, 1, 1));
-            colorVariants.Add(new HSV(0.8f, 1, 1));
-            colorVariants.Add(new HSV(0, 0, 0));
+            colorVariants.Add(new HSV(0, 0, 0.7f)); // white
+            colorVariants.Add(new HSV(0, 1, 1)); // red
+            colorVariants.Add(new HSV(0.15f, 1, 1)); // yellow
+            colorVariants.Add(new HSV(0.37f, 1, 1)); // green
+            colorVariants.Add(new HSV(0.5f, 1, 1)); // cyan
+            colorVariants.Add(new HSV(0.6f, 1, 1)); // blue
+            colorVariants.Add(new HSV(0.8f, 1, 1)); // magenta
+            colorVariants.Add(new HSV(0, 0, 0)); // black
 
             totalDrums = drumVariants.Count * colorVariants.Count;
         }

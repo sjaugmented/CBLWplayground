@@ -42,7 +42,7 @@ namespace LW.HoverDrums
         {
             if (isTouched)
             {
-                renderer.material.color = Color.clear;
+                renderer.material.color = Color.white;
             }
             else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
 
@@ -102,7 +102,7 @@ namespace LW.HoverDrums
         private IEnumerator TwoFingerTouchFlicker()
 		{
             isTouched = true;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
             isTouched = false;
             yield return new WaitForSeconds(0.1f);
             isTouched = true;
