@@ -65,15 +65,16 @@ namespace LW.HoverDrums
 
         public void Touched()
         {
-            isTouched = true;
             GetComponent<AudioSource>().PlayOneShot(touchFX);
             // if touched with one finger
             if (!handtracking.rightPeace && !handtracking.leftPeace)
             {
+                isTouched = true;
                 SendOSCMessage(address1);
             }
             else
             {
+                StartCoroutine("TwoFingerTouchFlicker")
                 SendOSCMessage(address2);
             }
         }
@@ -97,6 +98,17 @@ namespace LW.HoverDrums
             Debug.Log("OSC received: " + message);
             StartCoroutine("PlayParticles");
         }
+
+        private IEnumerator TwoFingerTouchFlicker()
+		{
+            isTouched = true;
+            yield return new WaitForSeconds(0.2f);
+            isTouched = false;
+            yield return new WaitForSeconds(0.2f);
+            isTouched = true;
+            yield return new WaitForSeconds(0.2f);
+            isTouched = false;
+		}
 
         private IEnumerator PlayParticles()
         {
