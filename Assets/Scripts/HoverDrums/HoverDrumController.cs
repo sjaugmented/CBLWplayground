@@ -74,7 +74,7 @@ namespace LW.HoverDrums
             }
             else
             {
-                StartCoroutine("TwoFingerTouchFlicker")
+                StartCoroutine("TwoFingerTouchFlicker");
                 SendOSCMessage(address2);
             }
         }
@@ -102,11 +102,11 @@ namespace LW.HoverDrums
         private IEnumerator TwoFingerTouchFlicker()
 		{
             isTouched = true;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             isTouched = false;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             isTouched = true;
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
             isTouched = false;
 		}
 
