@@ -38,14 +38,15 @@ namespace LW.Runic
     public class RuneMaster : MonoBehaviour
     {
         [Header("DevMode controls")]
-        [SerializeField] bool devMode = false;
-        [SerializeField] [Range(7.5f, 75)] float force = 10f;
+        [SerializeField] bool devMode = false; // TODO remove
+        [SerializeField] [Range(7.5f, 75)] float force = 10f; // TODO make private
         public bool ableToCast = true; // TODO make private
 
         [Header("Controller Settings")]
-        [SerializeField] float castDelay = 3f;
+        [SerializeField] float castDelay = 3f; //TODO hardcode
         [SerializeField] float maxPalmDist = 0.5f; //TODO hardcode
-        [SerializeField] float resetWindow = 2;
+        [SerializeField] float minimumDist = 0.2f; //TODO hardcode
+        [SerializeField] float resetWindow = 2; //TODO hardcode
 
         public float resetTimer = 5; // TODO make private
         public bool readyToGather = false;
@@ -147,7 +148,7 @@ namespace LW.Runic
 			//if (drumId >= totalDrums) return;
 
             // Set Rune Type
-            if (handtracking.palmsParallel && handtracking.rightFist && handtracking.leftFist)
+            if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
 			{
                 SelectRuneType();
 			}
@@ -162,12 +163,27 @@ namespace LW.Runic
 		private void SelectRuneType()
 		{
             float palmDist = castOrigins.palmDist;
-            float typeSlot = maxPalmDist / runeBelt.GetRuneSlots(); // size of selectable area based on number of Rune Types
+            float totalUsableDist = maxPalmDist - minimumDist;
+            int totalRunes = runeBelt.GetRuneSlots();
+            float slotSize = totalUsableDist / totalRunes; // size of selectable area based on number of Rune Types
 
-            for (int i = 1; i <= runeBelt.GetRuneSlots(); i++)
+            for (int i = 0; i < runeBelt.GetRuneSlots(); i++)
 			{
-                if (palmDist < maxPalmDist && palmDist > (maxPalmDist - typeSlot * i))
+                if (palmDist < minimumDist)
 				{
+                    runeTypeIndex = totalRunes - 1;
+				}
+
+                else if (palmDist > maxPalmDist)
+				{
+                    runeTypeIndex = 0;
+				}
+
+                else if (palmDist > minimumDist && palmDist < (maxPalmDist - slotSize * i) && palmDist > (maxPalmDist - slotSize * (i+1)))
+				{
+                    Debug.Log("PalmDist ==== " + palmDist);
+                    Debug.Log("TypeSlot ==== " + slotSize);
+                    Debug.Log("Window ==== " + (maxPalmDist - slotSize * i));
                     runeTypeIndex = i;
 				}
 			}
@@ -180,38 +196,38 @@ namespace LW.Runic
             Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
             Quaternion castRotation = handRotation * Quaternion.Euler(60, 0, 0); // rotational offset - so casts go OUT instead of UP along the hand.Z axis
 
-            if (timeSinceLastCast >= castDelay)
-            {
-                timeSinceLastCast = 0;
-                drumId++;
-                GameObject drum;
+            //if (timeSinceLastCast >= castDelay)
+            //{
+            //    timeSinceLastCast = 0;
+            //    drumId++;
+            //    GameObject drum;
 
-                if (devMode)
-                {
-                    drum = Instantiate(runeTypes[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
-                }
-                else
-                {
-                    drum = Instantiate(runeTypes[drumShape], castOrigin, castRotation);
-                }
+            //    if (devMode)
+            //    {
+            //        drum = Instantiate(runeTypes[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
+            //    }
+            //    else
+            //    {
+            //        drum = Instantiate(runeTypes[drumShape], castOrigin, castRotation);
+            //    }
 
-                RuneController currentDrum = drum.GetComponent<RuneController>();
-                currentDrum.SetDrumAddress(drumId);
-                currentDrum.SetDrumColor(colorVariants[drumColor]);
+            //    RuneController currentDrum = drum.GetComponent<RuneController>();
+            //    currentDrum.SetDrumAddress(drumId);
+            //    currentDrum.SetDrumColor(colorVariants[drumColor]);
 
-                float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
-                if (spellForce < 7.5f) spellForce = 7.5f;
-                // set drum casting force and color
-                if (devMode) currentDrum.force = force;
-                else currentDrum.force = spellForce;
-                // add drum to list of live drums
-                liveDrums.Add(currentDrum);
+            //    float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
+            //    if (spellForce < 7.5f) spellForce = 7.5f;
+            //    // set drum casting force and color
+            //    if (devMode) currentDrum.force = force;
+            //    else currentDrum.force = spellForce;
+            //    // add drum to list of live drums
+            //    liveDrums.Add(currentDrum);
 
-                //add to DrumContainer parent
-                currentDrum.transform.SetParent(FindObjectOfType<DrumParent>().transform);
+            //    //add to DrumContainer parent
+            //    currentDrum.transform.SetParent(FindObjectOfType<DrumParent>().transform);
 
-                SetNextRune();
-            }
+            //    SetNextRune();
+            //}
         }
 
         private void SetNextRune()
@@ -223,11 +239,11 @@ namespace LW.Runic
             else
             {
                 drumColor = 0;
-                if (drumShape < runeTypes.Count - 1)
-                {
-                    drumShape++;
-                }
-                else return;
+                //if (drumShape < runeTypes.Count - 1)
+                //{
+                //    drumShape++;
+                //}
+                //else return;
             }
         }
 
