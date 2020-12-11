@@ -92,6 +92,11 @@ namespace LW.Runic
             //totalDrums = runeTypes.Count * colorVariants.Count;
         }
 
+        private void SetRuneType()
+		{
+            runeType = (RuneType)Enum.Parse(typeof(RuneType), runeTypeIndex.ToString());
+		}
+
         private void Update()
         {
             timeSinceLastCast += Time.deltaTime;
@@ -171,7 +176,7 @@ namespace LW.Runic
 			{
                 if (palmDist < minimumDist)
 				{
-                    runeTypeIndex = totalRunes - 1;
+					runeTypeIndex = totalRunes - 1;
 				}
 
                 else if (palmDist > maxPalmDist)
@@ -181,9 +186,6 @@ namespace LW.Runic
 
                 else if (palmDist > minimumDist && palmDist < (maxPalmDist - slotSize * i) && palmDist > (maxPalmDist - slotSize * (i+1)))
 				{
-                    Debug.Log("PalmDist ==== " + palmDist);
-                    Debug.Log("TypeSlot ==== " + slotSize);
-                    Debug.Log("Window ==== " + (maxPalmDist - slotSize * i));
                     runeTypeIndex = i;
 				}
 			}
@@ -196,41 +198,43 @@ namespace LW.Runic
             Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
             Quaternion castRotation = handRotation * Quaternion.Euler(60, 0, 0); // rotational offset - so casts go OUT instead of UP along the hand.Z axis
 
-            //if (timeSinceLastCast >= castDelay)
-            //{
-            //    timeSinceLastCast = 0;
-            //    drumId++;
-            //    GameObject drum;
+			if (timeSinceLastCast >= castDelay && runeBelt.GetCurrentRuneAmmo(runeType) > 0)
+			{
+				timeSinceLastCast = 0;
+				drumId++;
+				GameObject drum;
 
-            //    if (devMode)
-            //    {
-            //        drum = Instantiate(runeTypes[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
-            //    }
-            //    else
-            //    {
-            //        drum = Instantiate(runeTypes[drumShape], castOrigin, castRotation);
-            //    }
+				//if (devMode)
+				//{
+				//	drum = Instantiate(runeTypes[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
+				//}
+				//else
+				//{
+				//	drum = Instantiate(runeTypes[drumShape], castOrigin, castRotation);
+				//}
 
-            //    RuneController currentDrum = drum.GetComponent<RuneController>();
-            //    currentDrum.SetDrumAddress(drumId);
-            //    currentDrum.SetDrumColor(colorVariants[drumColor]);
+                
 
-            //    float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
-            //    if (spellForce < 7.5f) spellForce = 7.5f;
-            //    // set drum casting force and color
-            //    if (devMode) currentDrum.force = force;
-            //    else currentDrum.force = spellForce;
-            //    // add drum to list of live drums
-            //    liveDrums.Add(currentDrum);
+				//RuneController currentDrum = drum.GetComponent<RuneController>();
+				//currentDrum.SetDrumAddress(drumId);
+				//currentDrum.SetDrumColor(colorVariants[drumColor]);
 
-            //    //add to DrumContainer parent
-            //    currentDrum.transform.SetParent(FindObjectOfType<DrumParent>().transform);
+				//float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
+				//if (spellForce < 7.5f) spellForce = 7.5f;
+				//// set drum casting force and color
+				//if (devMode) currentDrum.force = force;
+				//else currentDrum.force = spellForce;
+				//// add drum to list of live drums
+				//liveDrums.Add(currentDrum);
 
-            //    SetNextRune();
-            //}
-        }
+				////add to DrumContainer parent
+				//currentDrum.transform.SetParent(FindObjectOfType<DrumParent>().transform);
 
-        private void SetNextRune()
+				//SetNextRune();
+			}
+		}
+
+		private void SetNextRune()
         {
             if (drumColor < colorVariants.Count - 1)
             {

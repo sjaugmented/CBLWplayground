@@ -1026,12 +1026,14 @@ MonoBehaviour:
   force: 19.9
   ableToCast: 1
   castDelay: 0.5
-  maxXAxisDist: 0.5
+  maxPalmDist: 0.5
+  minimumDist: 0.2
   resetWindow: 2
   resetTimer: 5
   readyToGather: 0
   resetFX: {fileID: 8300000, guid: 89b18d3804e35ba40a224b6f9929ccea, type: 3}
-  runeTypes: []
+  runeType: 0
+  runeTypeIndex: 0
   liveDrums: []
 --- !u!4 &1153755261
 Transform:
@@ -1155,18 +1157,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c3dcced5d4e4b419dbf70e892a1ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxRuneVariants: 8
   runeSlots:
   - prefab: {fileID: 2274781863834570696, guid: 469225604721d5d49b03c35ebed5f2fa,
       type: 3}
     runeType: 0
-    runeCount: 8
+    runeCount: 0
   - prefab: {fileID: 2274781863834570696, guid: 2e1715d2127bc924dbb1e1738aeb3e39,
       type: 3}
     runeType: 1
-    runeCount: 8
+    runeCount: 0
   - prefab: {fileID: 980822739150027997, guid: 24452a609ef70fc4ba5e79544c59e7a4, type: 3}
     runeType: 2
-    runeCount: 8
+    runeCount: 0
 --- !u!1 &1215859058
 GameObject:
   m_ObjectHideFlags: 0
