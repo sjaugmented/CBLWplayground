@@ -12,7 +12,7 @@ namespace LW.Runic
 		[System.Serializable]
         private class RuneSlot
 		{
-			[SerializeField] GameObject prefab;
+			public GameObject prefab;
 			
 			public RuneType runeType;
             public int runeCount;
@@ -21,6 +21,11 @@ namespace LW.Runic
 		void Start()
 		{
 			ResetAllRuneAmmo();
+		}
+
+		public GameObject GetRunePrefab(RuneType runeType)
+		{
+			return GetRuneSlot(runeType).prefab;
 		}
 
 		public int GetRuneSlots()

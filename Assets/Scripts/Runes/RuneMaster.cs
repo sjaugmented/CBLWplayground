@@ -59,14 +59,14 @@ namespace LW.Runic
 
         float timeSinceLastCast = Mathf.Infinity;
         int totalDrums;
-        int drumId = 0;
+        int runeID = 0;
         int drumShape = 0;
-        int drumColor = 0;
+        int runeColor = 0;
 
         public int runeTypeIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
-        public List<RuneController> liveDrums = new List<RuneController>();
+        public List<RuneController> liveRunes = new List<RuneController>();
 
         HandTracking handtracking;
         CastOrigins castOrigins;
@@ -92,18 +92,14 @@ namespace LW.Runic
             //totalDrums = runeTypes.Count * colorVariants.Count;
         }
 
-        private void SetRuneType()
-		{
-            runeType = (RuneType)Enum.Parse(typeof(RuneType), runeTypeIndex.ToString());
-		}
-
         private void Update()
         {
             timeSinceLastCast += Time.deltaTime;
             resetTimer += Time.deltaTime;
+            runeType = (RuneType)runeTypeIndex;
 
-			#region DEV CONTROLS
-			if (devMode)
+            #region DEV CONTROLS
+            if (devMode)
             {
 				if (Input.GetKeyDown(KeyCode.R))
 				{
@@ -116,12 +112,16 @@ namespace LW.Runic
 				}
 
                 force += Input.mouseScrollDelta.y;
-                if (drumId >= totalDrums) return;
+                if (runeID >= totalDrums) return;
 
                 if (Input.GetMouseButtonDown(0) && ableToCast)
                 {
                     CastDrum();
                 }
+
+                if (Input.GetKeyDown(KeyCode.Equals)) runeTypeIndex++;
+                if (Input.GetKeyDown(KeyCode.Minus)) runeTypeIndex--;
+
             }
 			#endregion
 
@@ -201,48 +201,51 @@ namespace LW.Runic
 			if (timeSinceLastCast >= castDelay && runeBelt.GetCurrentRuneAmmo(runeType) > 0)
 			{
 				timeSinceLastCast = 0;
-				drumId++;
-				GameObject drum;
+				runeID++;
+				GameObject rune;
 
-				//if (devMode)
-				//{
-				//	drum = Instantiate(runeTypes[drumShape], Camera.main.transform.position, Camera.main.transform.rotation);
-				//}
-				//else
-				//{
-				//	drum = Instantiate(runeTypes[drumShape], castOrigin, castRotation);
-				//}
+                GameObject runePrefab = runeBelt.GetRunePrefab(runeType);
 
-                
+				if (devMode)
+				{
+					rune = Instantiate(runePrefab, Camera.main.transform.position, Camera.main.transform.rotation);
+				}
+				else
+				{
+					rune = Instantiate(runePrefab, castOrigin, castRotation);
+				}
 
-				//RuneController currentDrum = drum.GetComponent<RuneController>();
-				//currentDrum.SetDrumAddress(drumId);
-				//currentDrum.SetDrumColor(colorVariants[drumColor]);
+                // reduce ammo
+                runeBelt.ReduceCurrentRuneAmmo(runeType);
 
-				//float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
-				//if (spellForce < 7.5f) spellForce = 7.5f;
-				//// set drum casting force and color
-				//if (devMode) currentDrum.force = force;
-				//else currentDrum.force = spellForce;
-				//// add drum to list of live drums
-				//liveDrums.Add(currentDrum);
+				RuneController currentRune = rune.GetComponent<RuneController>();
+				currentRune.SetRuneAddress(runeID);
+				currentRune.SetRuneColor(colorVariants[runeColor]);
 
-				////add to DrumContainer parent
-				//currentDrum.transform.SetParent(FindObjectOfType<DrumParent>().transform);
+				float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
+				if (spellForce < 7.5f) spellForce = 7.5f;
+				// set rune casting force and color
+				if (devMode) currentRune.force = force;
+				else currentRune.force = spellForce;
+				// add rune to list of live drums
+				liveRunes.Add(currentRune);
 
-				//SetNextRune();
+				//add to DrumContainer parent
+				currentRune.transform.SetParent(FindObjectOfType<DrumParent>().transform);
+
+				SetNextRune();
 			}
 		}
 
 		private void SetNextRune()
         {
-            if (drumColor < colorVariants.Count - 1)
+            if (runeColor < colorVariants.Count - 1)
             {
-                drumColor++;
+                runeColor++;
             }
             else
             {
-                drumColor = 0;
+                runeColor = 0;
                 //if (drumShape < runeTypes.Count - 1)
                 //{
                 //    drumShape++;
@@ -261,7 +264,7 @@ namespace LW.Runic
 
         private void Reset()
         {
-            if (liveDrums.Count == 0) return;
+            if (liveRunes.Count == 0) return;
             
             if (!audio.isPlaying)
             {
@@ -269,16 +272,16 @@ namespace LW.Runic
             }
 
             // clear all runes
-            for (int i = 0; i < liveDrums.Count; i++)
+            for (int i = 0; i < liveRunes.Count; i++)
             {
-                StartCoroutine("DropAndDestroy", liveDrums[i]);
-                liveDrums.Remove(liveDrums[i]);
+                StartCoroutine("DropAndDestroy", liveRunes[i]);
+                liveRunes.Remove(liveRunes[i]);
             }
 
             // reset id, shape, color
-            drumId = 0;
+            runeID = 0;
             drumShape = 0;
-            drumColor = 0;
+            runeColor = 0;
         }
 
         private IEnumerator DropAndDestroy(RuneController drum)

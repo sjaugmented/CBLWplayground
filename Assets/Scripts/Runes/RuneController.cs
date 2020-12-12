@@ -49,7 +49,7 @@ namespace LW.Runic
             if (oscTest) StartCoroutine("PlayParticles");
         }
 
-        public void SetDrumColor(HSV colorValue)
+        public void SetRuneColor(HSV colorValue)
         {
             color = colorValue;
 
@@ -57,7 +57,7 @@ namespace LW.Runic
             particlesMain.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
-        public void SetDrumAddress(int drumNum)
+        public void SetRuneAddress(int drumNum)
         {
             address1 = transform.GetChild(0).name + drumNum + "a".ToString();
             address2 = transform.GetChild(0).name + drumNum + "b".ToString();
