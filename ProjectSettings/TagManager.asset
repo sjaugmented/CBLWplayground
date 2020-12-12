@@ -22,6 +22,7 @@ TagManager:
   - line
   - Drummer
   - Master Rune
+  - Director
   layers:
   - Default
   - TransparentFX
