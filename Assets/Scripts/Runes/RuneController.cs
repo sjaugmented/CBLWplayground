@@ -51,16 +51,16 @@ namespace LW.Runic
 
         public void SetRuneColor(HSV colorValue)
         {
-            color = colorValue;
-
-            MainModule particlesMain = particles.main;
-            particlesMain.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
-        public void SetRuneAddress(int drumNum)
+        public void SetRuneAddressAndColor(int runeNum, HSV colorValue)
         {
-            address1 = transform.GetChild(0).name + drumNum + "a".ToString();
-            address2 = transform.GetChild(0).name + drumNum + "b".ToString();
+            address1 = transform.GetChild(0).name + runeNum + "a".ToString();
+            address2 = transform.GetChild(0).name + runeNum + "b".ToString();
+            
+            color = colorValue;
+            MainModule particlesMain = particles.main;
+            particlesMain.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
         }
 
         public void Touched()

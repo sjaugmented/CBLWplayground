@@ -61,7 +61,7 @@ namespace LW.Runic
 
         float timeSinceLastCast = Mathf.Infinity;
         int runeID = 0;
-        int runeColor = 0;
+        int runeColorIndex = 0;
 
         
         // stores live drums, for dev purposes only TODO make private
@@ -168,24 +168,13 @@ namespace LW.Runic
 
 		private void SelectRuneType()
 		{
-            float palmDist = castOrigins.palmDist;
-            float totalUsableDist = maxPalmDist - minimumDist;
             int totalRunes = runeBelt.GetRuneSlots();
-            float slotSize = totalUsableDist / totalRunes; // size of selectable area based on number of Rune Types
+            float staffAng = handtracking.GetStaffForCamUp();            
+            float slotSize = 180 / totalRunes; // size of selectable area based on number of Rune Types
 
-            for (int i = 0; i < runeBelt.GetRuneSlots(); i++)
+            for (int i = 0; i < totalRunes; i++)
 			{
-                if (palmDist < minimumDist)
-				{
-					runeTypeIndex = totalRunes - 1;
-				}
-
-                else if (palmDist > maxPalmDist)
-				{
-                    runeTypeIndex = 0;
-				}
-
-                else if (palmDist > minimumDist && palmDist < (maxPalmDist - slotSize * i) && palmDist > (maxPalmDist - slotSize * (i+1)))
+                if (staffAng < (180 - slotSize * i) && staffAng > (180 - slotSize * (i+1)))
 				{
                     runeTypeIndex = i;
 				}
@@ -199,6 +188,7 @@ namespace LW.Runic
             masterRune.transform.GetChild(runeTypeIndex).gameObject.SetActive(true);
 
             masterRune.transform.position = castOrigins.midpointhandtracking;
+            masterRune.transform.LookAt(Camera.main.transform);
 		}
 
 		private void CastRune()
@@ -228,8 +218,7 @@ namespace LW.Runic
                 runeBelt.ReduceCurrentRuneAmmo(runeType);
 
 				RuneController currentRune = rune.GetComponent<RuneController>();
-				currentRune.SetRuneAddress(runeID);
-				currentRune.SetRuneColor(runeColors[runeColor]);
+				currentRune.SetRuneAddressAndColor(runeID, runeColors[runeColorIndex]);
 
 				float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
 				if (spellForce < 7.5f) spellForce = 7.5f;
@@ -248,13 +237,13 @@ namespace LW.Runic
 
 		private void SetNextRuneColor()
         {
-            if (runeColor < runeColors.Count - 1)
+            if (runeColorIndex < runeColors.Count - 1)
             {
-                runeColor++;
+                runeColorIndex++;
             }
             else
             {
-                runeColor = 0;
+                runeColorIndex = 0;
             }
         }
 
@@ -285,7 +274,7 @@ namespace LW.Runic
             // reset ammo counts, id, shape, color
             runeBelt.ResetAllRuneAmmo(runeColors.Count);
             runeID = 0;
-            runeColor = 0;
+            runeColorIndex = 0;
         }
 
         private IEnumerator DropAndDestroy(RuneController drum)

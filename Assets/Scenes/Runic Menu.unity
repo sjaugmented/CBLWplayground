@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 1867950555}
   m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641252, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 8cd4ec956f8ffbd47894b39a3e49be03,
+  m_LightingDataAsset: {fileID: 112000000, guid: 0e42f59177ba54240a433c0efbcbbf06,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -1018,8 +1018,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3098638378842964353}
   - {fileID: 4481968287708064717}
+  - {fileID: 3098638378842964353}
   - {fileID: 5596714054838062235}
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -1192,13 +1192,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   runeSlots:
-  - prefab: {fileID: 2274781863834570696, guid: 469225604721d5d49b03c35ebed5f2fa,
-      type: 3}
-    runeType: 0
-    runeCount: 0
   - prefab: {fileID: 2274781863834570696, guid: 2e1715d2127bc924dbb1e1738aeb3e39,
       type: 3}
     runeType: 1
+    runeCount: 0
+  - prefab: {fileID: 2274781863834570696, guid: 469225604721d5d49b03c35ebed5f2fa,
+      type: 3}
+    runeType: 0
     runeCount: 0
   - prefab: {fileID: 980822739150027997, guid: 24452a609ef70fc4ba5e79544c59e7a4, type: 3}
     runeType: 2
@@ -1565,7 +1565,6 @@ GameObject:
   - component: {fileID: 2300347027485968850}
   - component: {fileID: 6151218008038611243}
   - component: {fileID: 4464967468677307000}
-  - component: {fileID: 5289349573175807267}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1614,7 +1613,7 @@ Transform:
   m_Children:
   - {fileID: 191541025872473521}
   m_Father: {fileID: 1145587788}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3098638378842964355
 GameObject:
@@ -1650,7 +1649,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1a617f95876c3ca429b42f0c5b206919, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1697,7 +1696,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1a617f95876c3ca429b42f0c5b206919, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1731,7 +1730,7 @@ Transform:
   m_Children:
   - {fileID: 2300347027485968850}
   m_Father: {fileID: 1145587788}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4481968287708064719
 GameObject:
@@ -1760,7 +1759,6 @@ GameObject:
   - component: {fileID: 191541025872473521}
   - component: {fileID: 3901925895855024778}
   - component: {fileID: 3407009843952033826}
-  - component: {fileID: 6798800587909579870}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -1786,19 +1784,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!65 &5289349573175807267
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2013945140517563970}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5596714054838062233
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,19 +1823,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2013945140517563970}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!135 &6798800587909579870
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675775602147815546}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &7114718155217519416
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1877,7 +1849,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c4a1b7475a654dd0acaa0cfdfba2e20c, type: 2}
+  - {fileID: 2100000, guid: 1a617f95876c3ca429b42f0c5b206919, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
