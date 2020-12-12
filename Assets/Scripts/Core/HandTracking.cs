@@ -240,7 +240,7 @@ namespace LW.Core
             #endregion
 
             // look for two palms
-            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Right, out rtMiddleKnuckle) && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm) && HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Left, out ltMiddleKnuckle))
+            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rightPalm) /*&& HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Right, out rtMiddleKnuckle)*/ && HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out leftPalm) /*&& HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Left, out ltMiddleKnuckle)*/)
             {
                 twoHands = true;
 
@@ -269,7 +269,7 @@ namespace LW.Core
                 // look for palmsParallel
                 if (IsWithinRange(p2pUp, 0, bigMargin))
                 {
-                    palmsParallel = true;
+                    palmsParallel = true; // TODO reconsider
                 }
                 else palmsParallel = false;
             }

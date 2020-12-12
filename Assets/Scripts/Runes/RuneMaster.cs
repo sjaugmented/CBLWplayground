@@ -45,7 +45,6 @@ namespace LW.Runic
         [Header("Controller Settings")]
         [SerializeField] float castDelay = 3f; //TODO hardcode
         [SerializeField] float maxPalmDist = 0.5f; //TODO hardcode
-        [SerializeField] float minimumDist = 0.2f; //TODO hardcode
         [SerializeField] float resetWindow = 2; //TODO hardcode
 
         public float resetTimer = 5; // TODO make private
@@ -102,6 +101,32 @@ namespace LW.Runic
 
             if (director.currentMode == RunicDirector.Mode.Build)
 			{
+                #region DEV MODE
+                if (devMode)
+                {
+                    if (Input.GetKeyDown(KeyCode.R))
+                    {
+                        Reset();
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.G))
+                    {
+                        GatherRunes();
+                    }
+
+                    force += Input.mouseScrollDelta.y;
+
+                    if (Input.GetMouseButtonDown(0) && ableToCast)
+                    {
+                        CastRune();
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Greater)) runeTypeIndex++;
+                    if (Input.GetKeyDown(KeyCode.Less)) runeTypeIndex--;
+
+                }
+                #endregion
+
                 ////// Set Rune Type
                 if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
                 {
@@ -115,66 +140,37 @@ namespace LW.Runic
                     masterRune.SetActive(false);
                     CastRune();
                 }
-
-                #region ////// Gather Runes
-                // prime the gather runes method
-                if (!handtracking.twoHands && handtracking.rightRockOn)
-                {
-                    if (!readyToGather)
-                    {
-                        resetTimer = 0;
-                        readyToGather = true;
-                    }
-                }
-                else { readyToGather = false; }
-
-                // trigger the gather runes method
-                if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
-                {
-                    GatherRunes();
-                    resetTimer = Mathf.Infinity;
-                }
-                #endregion
             }
 
-            if (director.currentMode == RunicDirector.Mode.Touch)
-			{
-
-			}
-
-            #region DEV CONTROLS
-            if (devMode)
+			#region Gather & Reset - activates Build Mode
+			////// Gather Runes
+			// prime the gather runes method
+			if (!handtracking.twoHands && handtracking.rightRockOn)
             {
-				if (Input.GetKeyDown(KeyCode.R))
-				{
-					Reset();
-				}
-
-				if (Input.GetKeyDown(KeyCode.G))
-				{
-                    GatherRunes();
-				}
-
-                force += Input.mouseScrollDelta.y;
-
-                if (Input.GetMouseButtonDown(0) && ableToCast)
+                if (!readyToGather)
                 {
-                    CastRune();
+                    resetTimer = 0;
+                    readyToGather = true;
                 }
-
-                if (Input.GetKeyDown(KeyCode.Greater)) runeTypeIndex++;
-                if (Input.GetKeyDown(KeyCode.Less)) runeTypeIndex--;
-
             }
-			#endregion
+            else { readyToGather = false; }
 
-			if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
+            // trigger the gather runes method
+            if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
+            {
+                GatherRunes();
+                director.currentMode = RunicDirector.Mode.Build;
+                resetTimer = Mathf.Infinity;
+            }
+
+            ////// Reset Interface
+            if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
             {
                 Reset();
+                director.currentMode = RunicDirector.Mode.Build;
             }
-
-			           
-        }
+			#endregion
+		}
 
 		private void SelectRuneType()
 		{
@@ -293,11 +289,6 @@ namespace LW.Runic
             drum.GetComponent<Rigidbody>().useGravity = true;
             yield return new WaitForSeconds(2);
             Destroy(drum.gameObject);
-        }
-
-        public void SetAbleToCast(bool canCast)
-        {
-            ableToCast = canCast;
         }
     }
 }

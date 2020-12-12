@@ -20,12 +20,14 @@ namespace LW.Runic
         bool isTouched = false;
 
         Renderer renderer;
+        RunicDirector director;
         HandTracking handtracking;
         EmissionModule emission;
 
         void Start()
         {
             renderer = GetComponentInChildren<Renderer>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             GetComponent<Rigidbody>().AddForce(transform.forward * force);
 
@@ -40,17 +42,16 @@ namespace LW.Runic
 
         void Update()
         {
-            if (isTouched)
-            {
-                renderer.material.color = Color.white;
+            if (director.currentMode == RunicDirector.Mode.Touch)
+			{
+                if (isTouched)
+                {
+                    renderer.material.color = Color.white;
+                }
+                else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
+
+                if (oscTest) StartCoroutine("PlayParticles");
             }
-            else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
-
-            if (oscTest) StartCoroutine("PlayParticles");
-        }
-
-        public void SetRuneColor(HSV colorValue)
-        {
         }
 
         public void SetRuneAddressAndColor(int runeNum, HSV colorValue)

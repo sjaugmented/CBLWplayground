@@ -13,45 +13,47 @@ namespace LW.Runic
         [SerializeField] float effectiveBubbleScale = 0.67f;
         [SerializeField] Transform proximityBubble;
 
-        RuneController drumController;
-        RuneMaster drummer;
+        RunicDirector director;
+        RuneController runeController;
+        RuneMaster player;
         HandTracking handtracking;
 
         float bubbleScale = 0;
 
         void Start()
         {
-            drumController = GetComponent<RuneController>();
-            drummer = GameObject.FindGameObjectWithTag("Drummer").GetComponent<RuneMaster>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
+            runeController = GetComponent<RuneController>();
+            player = GameObject.FindGameObjectWithTag("Drummer").GetComponent<RuneMaster>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             proximityBubble.localScale = new Vector3(bubbleScale, bubbleScale, bubbleScale);
         }
 
         void Update()
         {
-            float distanceToUser = Vector3.Distance(transform.position, Camera.main.transform.position);
+            if (director.currentMode == RunicDirector.Mode.Touch)
+			{
+                float distanceToUser = Vector3.Distance(transform.position, Camera.main.transform.position);
 
-            if (distanceToUser < userProximitySet)
-            {
-                drummer.SetAbleToCast(false);
-
-                if (handtracking.twoHands)
+                if (distanceToUser < userProximitySet)
                 {
-                    ActivateProximityBubble();
-
-                    if (bubbleScale > effectiveBubbleScale && handtracking.rightFist && handtracking.leftFist)
+                    if (handtracking.twoHands)
                     {
-                        drumController.SendOSCMessage(drumController.address1 + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
+                        ActivateProximityBubble();
+
+                        if (bubbleScale > effectiveBubbleScale && handtracking.rightFist && handtracking.leftFist)
+                        {
+                            runeController.SendOSCMessage(runeController.address1 + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
+                        }
                     }
+                    else proximityBubble.localScale = new Vector3(0, 0, 0);
+
+
                 }
-                else proximityBubble.localScale = new Vector3(0, 0, 0);
-
-
-            }
-            else
-            {
-                drummer.SetAbleToCast(true);
-                proximityBubble.localScale = new Vector3(0, 0, 0);
+                else
+                {
+                    proximityBubble.localScale = new Vector3(0, 0, 0);
+                }
             }
         }
 
