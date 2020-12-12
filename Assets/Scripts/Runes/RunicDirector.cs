@@ -12,6 +12,9 @@ namespace LW.Runic
         List<GameObject> rightHand = new List<GameObject>();
         List<GameObject> leftHand = new List<GameObject>();
 
+		public enum Mode { Build, Touch };
+		public Mode currentMode = Mode.Build;
+
 		HandTracking handtracking;
         
         void Start()
@@ -56,7 +59,8 @@ namespace LW.Runic
 
         public void ToggleMode()
 		{
-            Debug.Log("Director: toggled");
+			if (currentMode == Mode.Build) currentMode = Mode.Touch;
+			else currentMode = Mode.Build;
 		}
     }
 }

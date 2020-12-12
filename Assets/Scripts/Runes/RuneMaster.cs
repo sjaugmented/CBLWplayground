@@ -69,6 +69,7 @@ namespace LW.Runic
 
         HandTracking handtracking;
         CastOrigins castOrigins;
+        RunicDirector director;
         RuneBelt runeBelt;
         AudioSource audio;
 
@@ -76,6 +77,7 @@ namespace LW.Runic
         {
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             castOrigins = FindObjectOfType<CastOrigins>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeBelt = GetComponent<RuneBelt>();
             audio = GetComponent<AudioSource>();
 
@@ -97,6 +99,48 @@ namespace LW.Runic
             timeSinceLastCast += Time.deltaTime;
             resetTimer += Time.deltaTime;
             runeType = (RuneType)runeTypeIndex;
+
+            if (director.currentMode == RunicDirector.Mode.Build)
+			{
+                ////// Set Rune Type
+                if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
+                {
+                    masterRune.SetActive(true);
+                    SelectRuneType();
+                }
+
+                ////// Casting
+                if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
+                {
+                    masterRune.SetActive(false);
+                    CastRune();
+                }
+
+                #region ////// Gather Runes
+                // prime the gather runes method
+                if (!handtracking.twoHands && handtracking.rightRockOn)
+                {
+                    if (!readyToGather)
+                    {
+                        resetTimer = 0;
+                        readyToGather = true;
+                    }
+                }
+                else { readyToGather = false; }
+
+                // trigger the gather runes method
+                if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
+                {
+                    GatherRunes();
+                    resetTimer = Mathf.Infinity;
+                }
+                #endregion
+            }
+
+            if (director.currentMode == RunicDirector.Mode.Touch)
+			{
+
+			}
 
             #region DEV CONTROLS
             if (devMode)
@@ -129,41 +173,7 @@ namespace LW.Runic
                 Reset();
             }
 
-			#region Gather Runes
-            // prime the gather runes method
-			if (!handtracking.twoHands && handtracking.rightRockOn)
-			{
-                if (!readyToGather)
-				{
-                    resetTimer = 0;
-                    readyToGather = true;
-				}
-			}
-            else { readyToGather = false; }
-
-            // trigger the gather runes method
-            if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
-            {
-                GatherRunes();
-                resetTimer = Mathf.Infinity;
-            }
-			#endregion
-
-			//if (drumId >= totalDrums) return;
-
-            // Set Rune Type
-            if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
-			{
-                masterRune.SetActive(true);
-                SelectRuneType();
-			}
-
-            // Casting
-            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
-            {
-                masterRune.SetActive(false);
-                CastRune();
-            }
+			           
         }
 
 		private void SelectRuneType()
