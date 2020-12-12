@@ -52,18 +52,17 @@ namespace LW.Runic
         public bool readyToGather = false;
 
         [Header("Hook Ups")]
+        [SerializeField] GameObject masterRune;
         [SerializeField] AudioClip resetFX;
 
         public RuneType runeType;
-        List<HSV> colorVariants = new List<HSV>();
+        public int runeTypeIndex = 0; // TODO private; automates rune selection
+        List<HSV> runeColors = new List<HSV>();
 
         float timeSinceLastCast = Mathf.Infinity;
-        int totalDrums;
         int runeID = 0;
-        int drumShape = 0;
         int runeColor = 0;
 
-        public int runeTypeIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
         public List<RuneController> liveRunes = new List<RuneController>();
@@ -80,16 +79,17 @@ namespace LW.Runic
             runeBelt = GetComponent<RuneBelt>();
             audio = GetComponent<AudioSource>();
 
-            colorVariants.Add(new HSV(0, 0, 0.7f)); // white
-            colorVariants.Add(new HSV(0, 1, 1)); // red
-            colorVariants.Add(new HSV(0.15f, 1, 1)); // yellow
-            colorVariants.Add(new HSV(0.37f, 1, 1)); // green
-            colorVariants.Add(new HSV(0.5f, 1, 1)); // cyan
-            colorVariants.Add(new HSV(0.6f, 1, 1)); // blue
-            colorVariants.Add(new HSV(0.8f, 1, 1)); // magenta
-            colorVariants.Add(new HSV(0, 0, 0)); // black
+            runeColors.Add(new HSV(0, 0, 0.7f)); // white
+            runeColors.Add(new HSV(0, 1, 1)); // red
+            runeColors.Add(new HSV(0.15f, 1, 1)); // yellow
+            runeColors.Add(new HSV(0.37f, 1, 1)); // green
+            runeColors.Add(new HSV(0.5f, 1, 1)); // cyan
+            runeColors.Add(new HSV(0.6f, 1, 1)); // blue
+            runeColors.Add(new HSV(0.8f, 1, 1)); // magenta
+            runeColors.Add(new HSV(0, 0, 0)); // black
 
-            //totalDrums = runeTypes.Count * colorVariants.Count;
+            runeBelt.ResetAllRuneAmmo(runeColors.Count);
+            masterRune.SetActive(false);
         }
 
         private void Update()
@@ -112,15 +112,14 @@ namespace LW.Runic
 				}
 
                 force += Input.mouseScrollDelta.y;
-                if (runeID >= totalDrums) return;
 
                 if (Input.GetMouseButtonDown(0) && ableToCast)
                 {
-                    CastDrum();
+                    CastRune();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Equals)) runeTypeIndex++;
-                if (Input.GetKeyDown(KeyCode.Minus)) runeTypeIndex--;
+                if (Input.GetKeyDown(KeyCode.Greater)) runeTypeIndex++;
+                if (Input.GetKeyDown(KeyCode.Less)) runeTypeIndex--;
 
             }
 			#endregion
@@ -155,13 +154,15 @@ namespace LW.Runic
             // Set Rune Type
             if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
 			{
+                masterRune.SetActive(true);
                 SelectRuneType();
 			}
 
             // Casting
             if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
             {
-                CastDrum();
+                masterRune.SetActive(false);
+                CastRune();
             }
         }
 
@@ -190,9 +191,17 @@ namespace LW.Runic
 				}
 			}
 
+            // display masterRune with proper child
+            foreach (Transform child in masterRune.transform)
+			{
+                child.gameObject.SetActive(false);
+			}
+            masterRune.transform.GetChild(runeTypeIndex).gameObject.SetActive(true);
+
+            masterRune.transform.position = castOrigins.midpointhandtracking;
 		}
 
-		private void CastDrum()
+		private void CastRune()
         {
             Vector3 castOrigin = Vector3.Lerp(handtracking.rtMiddleKnuckle.Position, handtracking.ltMiddleKnuckle.Position, 0.5f);
             Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
@@ -220,7 +229,7 @@ namespace LW.Runic
 
 				RuneController currentRune = rune.GetComponent<RuneController>();
 				currentRune.SetRuneAddress(runeID);
-				currentRune.SetRuneColor(colorVariants[runeColor]);
+				currentRune.SetRuneColor(runeColors[runeColor]);
 
 				float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
 				if (spellForce < 7.5f) spellForce = 7.5f;
@@ -231,33 +240,28 @@ namespace LW.Runic
 				liveRunes.Add(currentRune);
 
 				//add to DrumContainer parent
-				currentRune.transform.SetParent(FindObjectOfType<DrumParent>().transform);
+				currentRune.transform.SetParent(FindObjectOfType<RuneGrid>().transform);
 
-				SetNextRune();
+				SetNextRuneColor();
 			}
 		}
 
-		private void SetNextRune()
+		private void SetNextRuneColor()
         {
-            if (runeColor < colorVariants.Count - 1)
+            if (runeColor < runeColors.Count - 1)
             {
                 runeColor++;
             }
             else
             {
                 runeColor = 0;
-                //if (drumShape < runeTypes.Count - 1)
-                //{
-                //    drumShape++;
-                //}
-                //else return;
             }
         }
 
         private void GatherRunes()
 		{
             Debug.Log("Gathering"); // REMOVE
-            DrumParent grid = FindObjectOfType<DrumParent>();
+            RuneGrid grid = FindObjectOfType<RuneGrid>();
             grid.UpdateCollection();
             grid.PositionGrid();
 		}
@@ -278,9 +282,9 @@ namespace LW.Runic
                 liveRunes.Remove(liveRunes[i]);
             }
 
-            // reset id, shape, color
+            // reset ammo counts, id, shape, color
+            runeBelt.ResetAllRuneAmmo(runeColors.Count);
             runeID = 0;
-            drumShape = 0;
             runeColor = 0;
         }
 

@@ -6,7 +6,6 @@ namespace LW.Runic
 {
     public class RuneBelt : MonoBehaviour
     {
-		[SerializeField] int maxRuneVariants = 8;
         [SerializeField] RuneSlot[] runeSlots;
 
 		[System.Serializable]
@@ -16,11 +15,6 @@ namespace LW.Runic
 			
 			public RuneType runeType;
             public int runeCount;
-		}
-
-		void Start()
-		{
-			ResetAllRuneAmmo();
 		}
 
 		public GameObject GetRunePrefab(RuneType runeType)
@@ -44,11 +38,11 @@ namespace LW.Runic
 			GetRuneSlot(runeType).runeCount--;
 		}
 
-		public void ResetAllRuneAmmo()
+		public void ResetAllRuneAmmo(int maxColorVariants)
 		{
 			foreach(RuneSlot rune in runeSlots)
 			{
-				rune.runeCount = maxRuneVariants;
+				rune.runeCount = maxColorVariants;
 			}
 		}
 

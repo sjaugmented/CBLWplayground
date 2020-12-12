@@ -9,7 +9,7 @@ namespace LW.Runic
     [RequireComponent(typeof(GridObjectCollection))]
     [RequireComponent(typeof(RadialView))]
     [RequireComponent(typeof(SolverHandler))]
-    public class DrumParent : MonoBehaviour
+    public class RuneGrid : MonoBehaviour
     {
         void Start()
 		{

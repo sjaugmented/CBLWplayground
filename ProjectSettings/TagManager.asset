@@ -21,6 +21,7 @@ TagManager:
   - Handtracking
   - line
   - Drummer
+  - Master Rune
   layers:
   - Default
   - TransparentFX
