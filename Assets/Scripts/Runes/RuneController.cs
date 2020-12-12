@@ -42,16 +42,13 @@ namespace LW.Runic
 
         void Update()
         {
-            if (director.currentMode == RunicDirector.Mode.Touch)
-			{
-                if (isTouched)
-                {
-                    renderer.material.color = Color.white;
-                }
-                else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
-
-                if (oscTest) StartCoroutine("PlayParticles");
+            if (isTouched)
+            {
+                renderer.material.color = Color.white;
             }
+            else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
+
+            if (oscTest) StartCoroutine("PlayParticles");
         }
 
         public void SetRuneAddressAndColor(int runeNum, HSV colorValue)
@@ -66,17 +63,20 @@ namespace LW.Runic
 
         public void Touched()
         {
-            GetComponent<AudioSource>().PlayOneShot(touchFX);
-            // if touched with one finger
-            if (!handtracking.rightPeace && !handtracking.leftPeace)
-            {
-                isTouched = true;
-                SendOSCMessage(address1);
-            }
-            else
-            {
-                StartCoroutine("TwoFingerTouchFlicker");
-                SendOSCMessage(address2);
+            if (director.currentMode == RunicDirector.Mode.Touch)
+			{
+                GetComponent<AudioSource>().PlayOneShot(touchFX);
+                // if touched with one finger
+                if (!handtracking.rightPeace && !handtracking.leftPeace)
+                {
+                    isTouched = true;
+                    SendOSCMessage(address1);
+                }
+                else
+                {
+                    StartCoroutine("TwoFingerTouchFlicker");
+                    SendOSCMessage(address2);
+                }
             }
         }
 

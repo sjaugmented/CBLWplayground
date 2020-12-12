@@ -1,7 +1,10 @@
 ﻿
-public enum RuneType
+namespace LW.Runic
 {
-	Spheres,
-	Cubes,
-	Diamonds
+	public enum RuneType
+	{
+		Spheres,
+		Cubes,
+		Diamonds
+	}
 }

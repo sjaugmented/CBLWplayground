@@ -59,8 +59,8 @@ namespace LW.Runic
         List<HSV> runeColors = new List<HSV>();
 
         float timeSinceLastCast = Mathf.Infinity;
-        int runeID = 0;
-        int runeColorIndex = 0;
+        public int runeID = 0;
+        public int runeColorIndex = 0;
 
         
         // stores live drums, for dev purposes only TODO make private
@@ -199,7 +199,7 @@ namespace LW.Runic
 
 		private void CastRune()
         {
-            Vector3 castOrigin = Vector3.Lerp(handtracking.rtMiddleKnuckle.Position, handtracking.ltMiddleKnuckle.Position, 0.5f);
+            Vector3 castOrigin = Vector3.Lerp(handtracking.rightPalm.Position, handtracking.leftPalm.Position, 0.5f);
             Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
             Quaternion castRotation = handRotation * Quaternion.Euler(60, 0, 0); // rotational offset - so casts go OUT instead of UP along the hand.Z axis
 
