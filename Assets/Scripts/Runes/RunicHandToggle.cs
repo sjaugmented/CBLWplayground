@@ -11,6 +11,8 @@ namespace LW.Runic
     [RequireComponent(typeof(RadialView))]
     public class RunicHandToggle : MonoBehaviour
     {
+        [SerializeField] AudioClip singleTap;
+        [SerializeField] AudioClip doubleTap;
         [SerializeField] bool leftHand = false;
         bool triggered = false;
 
@@ -35,10 +37,12 @@ namespace LW.Runic
                     if (!hands.rightPeace)
                     {
                         SendOSC("leftTap/");
+                        GetComponent<AudioSource>().PlayOneShot(singleTap);
                     }
                     else
                     {
                         SendOSC("leftTap/peace/");
+                        GetComponent<AudioSource>().PlayOneShot(doubleTap);
                     }
                 }
             }
@@ -50,10 +54,12 @@ namespace LW.Runic
                     if (!hands.leftPeace)
                     {
                         SendOSC("rightTap/");
+                        GetComponent<AudioSource>().PlayOneShot(singleTap);
                     }
                     else
                     {
                         SendOSC("rightTap/peace/");
+                        GetComponent<AudioSource>().PlayOneShot(doubleTap);
                     }
                 }
             }            

@@ -8,7 +8,8 @@ namespace LW.Runic
     public class RuneController : MonoBehaviour
     {
         [SerializeField] AudioClip castFX;
-        [SerializeField] AudioClip touchFX;
+        [SerializeField] AudioClip singleTouchFX;
+        [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
         public bool oscTest = false;
 
@@ -68,17 +69,17 @@ namespace LW.Runic
                 
             }
 
-            GetComponent<AudioSource>().PlayOneShot(touchFX);
-
             // if touched with one finger
             if (!handtracking.rightPeace && !handtracking.leftPeace)
             {
                 isTouched = true;
+                GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
                 SendOSCMessage(address1);
             }
             else
             {
                 StartCoroutine("TwoFingerTouchFlicker");
+                GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
                 SendOSCMessage(address2);
             }
         }

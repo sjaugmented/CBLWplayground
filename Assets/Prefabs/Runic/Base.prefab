@@ -366,8 +366,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66bf332d7ecdec4f8b6b15ab5831710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  castFX: {fileID: 8300000, guid: df3f12d5c92ff9847be08e7cb9da2fd6, type: 3}
-  touchFX: {fileID: 8300000, guid: 4055c9b9e2bde714385a63799f03fa8e, type: 3}
+  castFX: {fileID: 8300000, guid: 4af413a03b045f6458af1d358af991c9, type: 3}
+  singleTouchFX: {fileID: 8300000, guid: 696da0c8372f0704abdc9e779db43bab, type: 3}
+  doubleTouchFX: {fileID: 8300000, guid: e817530f0bc4e5c4bbe85ed23676a5c7, type: 3}
   particles: {fileID: 7110931076764455358}
   oscTest: 0
   force: 1

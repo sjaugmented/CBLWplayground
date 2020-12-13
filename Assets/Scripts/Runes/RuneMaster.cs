@@ -49,6 +49,7 @@ namespace LW.Runic
         [Header("Hook Ups")]
         [SerializeField] GameObject masterRune;
         [SerializeField] AudioClip resetFX;
+        [SerializeField] AudioClip gatherFX;
 
         public float proximitySensor = Mathf.Infinity;
         float timeSinceLastCast = Mathf.Infinity;
@@ -264,7 +265,7 @@ namespace LW.Runic
 
         private void GatherRunes()
 		{
-            Debug.Log("Gathering"); // REMOVE
+            if (!audio.isPlaying) audio.PlayOneShot(gatherFX);
             RuneGrid grid = FindObjectOfType<RuneGrid>();
             grid.UpdateCollection();
             grid.PositionGrid();
