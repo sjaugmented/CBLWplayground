@@ -75,19 +75,18 @@ namespace LW.Runic
         private void Start()
         {
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
-            castOrigins = FindObjectOfType<CastOrigins>();
+            castOrigins = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<CastOrigins>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeBelt = GetComponent<RuneBelt>();
             audio = GetComponent<AudioSource>();
 
-            runeColors.Add(new HSV(0, 0, 0.7f)); // white
-            runeColors.Add(new HSV(0, 1, 1)); // red
-            runeColors.Add(new HSV(0.15f, 1, 1)); // yellow
-            runeColors.Add(new HSV(0.37f, 1, 1)); // green
-            runeColors.Add(new HSV(0.5f, 1, 1)); // cyan
-            runeColors.Add(new HSV(0.6f, 1, 1)); // blue
-            runeColors.Add(new HSV(0.8f, 1, 1)); // magenta
-            runeColors.Add(new HSV(0, 0, 0)); // black
+            runeColors.Add(new HSV(0, 0, 1f));      // white
+            runeColors.Add(new HSV(0, 1, 1));       // red
+            runeColors.Add(new HSV(0.15f, 1, 1));   // yellow
+            runeColors.Add(new HSV(0.37f, 1, 1));   // green
+            runeColors.Add(new HSV(0.5f, 1, 1));    // cyan
+            runeColors.Add(new HSV(0.6f, 1, 1));    // blue
+            runeColors.Add(new HSV(0.8f, 1, 1));    // magenta
 
             runeBelt.ResetAllRuneAmmo(runeColors.Count);
             masterRune.SetActive(false);
@@ -226,7 +225,7 @@ namespace LW.Runic
 				RuneController currentRune = rune.GetComponent<RuneController>();
 				currentRune.SetRuneAddressAndColor(runeID, runeColors[runeColorIndex]);
 
-				float spellForce = (castOrigins.palmDist / maxPalmDist) * 75;
+				float spellForce = (castOrigins.palmDist / maxPalmDist) * 50;
 				if (spellForce < 7.5f) spellForce = 7.5f;
 				// set rune casting force and color
 				if (devMode) currentRune.force = force;

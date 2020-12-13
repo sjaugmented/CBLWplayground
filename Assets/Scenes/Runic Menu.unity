@@ -668,7 +668,7 @@ MonoBehaviour:
   radialRange: 5
   distance: 0
   rows: 4
-  columns: 8
+  columns: 7
   cellWidth: 0.3
   cellHeight: 0.1
   assetVersion: 1
