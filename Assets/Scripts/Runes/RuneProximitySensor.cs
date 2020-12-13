@@ -15,7 +15,6 @@ namespace LW.Runic
 
         RunicDirector director;
         RuneController runeController;
-        RuneMaster player;
         HandTracking handtracking;
 
         float bubbleScale = 0;
@@ -24,7 +23,6 @@ namespace LW.Runic
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeController = GetComponent<RuneController>();
-            player = GameObject.FindGameObjectWithTag("Drummer").GetComponent<RuneMaster>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             proximityBubble.localScale = new Vector3(bubbleScale, bubbleScale, bubbleScale);
         }
