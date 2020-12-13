@@ -100,51 +100,53 @@ namespace LW.Runic
 
             if (director.currentMode == RunicDirector.Mode.Build)
 			{
-                #region DEV MODE
-                if (devMode)
-                {
-                    if (Input.GetKeyDown(KeyCode.R))
-                    {
-                        Reset();
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.G))
-                    {
-                        GatherRunes();
-                    }
-
-                    force += Input.mouseScrollDelta.y;
-
-                    if (Input.GetMouseButtonDown(0) && ableToCast)
-                    {
-                        CastRune();
-                    }
-
-                    if (Input.GetKeyDown(KeyCode.Greater)) runeTypeIndex++;
-                    if (Input.GetKeyDown(KeyCode.Less)) runeTypeIndex--;
-
-                }
-                #endregion
-
-                ////// Set Rune Type
-                if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
-                {
-                    masterRune.SetActive(true);
-                    SelectRuneType();
-                }
-
-                ////// Casting
-                if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
-                {
-                    masterRune.SetActive(false);
-                    CastRune();
-                }
+                
             }
 
-			#region Gather & Reset - activates Build Mode
-			////// Gather Runes
-			// prime the gather runes method
-			if (!handtracking.twoHands && handtracking.rightRockOn)
+            #region DEV MODE
+            if (devMode)
+            {
+                if (Input.GetKeyDown(KeyCode.R))
+                {
+                    Reset();
+                }
+
+                if (Input.GetKeyDown(KeyCode.G))
+                {
+                    GatherRunes();
+                }
+
+                force += Input.mouseScrollDelta.y;
+
+                if (Input.GetMouseButtonDown(0) && ableToCast)
+                {
+                    CastRune();
+                }
+
+                if (Input.GetKeyDown(KeyCode.Greater)) runeTypeIndex++;
+                if (Input.GetKeyDown(KeyCode.Less)) runeTypeIndex--;
+
+            }
+            #endregion
+
+            ////// Set Rune Type
+            if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
+            {
+                masterRune.SetActive(true);
+                SelectRuneType();
+            }
+
+            ////// Casting
+            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
+            {
+                masterRune.SetActive(false);
+                CastRune();
+            }
+
+            #region Gather & Reset - activates Build Mode
+            ////// Gather Runes
+            // prime the gather runes method
+            if (!handtracking.twoHands && handtracking.rightRockOn)
             {
                 if (!readyToGather)
                 {

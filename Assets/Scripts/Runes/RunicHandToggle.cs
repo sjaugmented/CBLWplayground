@@ -32,38 +32,29 @@ namespace LW.Runic
 			{
                 if (collider.CompareTag("Right Pointer"))
                 {
-                    if (!triggered)
-					{
-                        if (!hands.rightPeace)
-						{
-                            SendOSC("leftTap/");
-						}
-                        else
-						{
-                            //ToggleMode();
-                            SendOSC("leftTap/peace/");
-						}
-					}
-				}
+                    if (!hands.rightPeace)
+                    {
+                        SendOSC("leftTap/");
+                    }
+                    else
+                    {
+                        SendOSC("leftTap/peace/");
+                    }
+                }
             }
 
             else
 			{
                 if (collider.CompareTag("Left Pointer"))
                 {
-                    if (!triggered)
+                    if (!hands.leftPeace)
                     {
-                        if (!hands.leftPeace)
-                        {
-                            SendOSC("rightTap/");
-                        }
-                        else
-                        {
-                            //ToggleMode();
-                            SendOSC("rightTap/peace/");
-                        }
+                        SendOSC("rightTap/");
                     }
-
+                    else
+                    {
+                        SendOSC("rightTap/peace/");
+                    }
                 }
             }            
             
@@ -78,7 +69,7 @@ namespace LW.Runic
             Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove		
         }
 
-            private void ToggleMode()
+        private void ToggleMode()
 		{
 			director.ToggleMode();
 			triggered = true;

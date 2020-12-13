@@ -65,18 +65,21 @@ namespace LW.Runic
         {
             if (director.currentMode == RunicDirector.Mode.Touch)
 			{
-                GetComponent<AudioSource>().PlayOneShot(touchFX);
-                // if touched with one finger
-                if (!handtracking.rightPeace && !handtracking.leftPeace)
-                {
-                    isTouched = true;
-                    SendOSCMessage(address1);
-                }
-                else
-                {
-                    StartCoroutine("TwoFingerTouchFlicker");
-                    SendOSCMessage(address2);
-                }
+                
+            }
+
+            GetComponent<AudioSource>().PlayOneShot(touchFX);
+
+            // if touched with one finger
+            if (!handtracking.rightPeace && !handtracking.leftPeace)
+            {
+                isTouched = true;
+                SendOSCMessage(address1);
+            }
+            else
+            {
+                StartCoroutine("TwoFingerTouchFlicker");
+                SendOSCMessage(address2);
             }
         }
 
