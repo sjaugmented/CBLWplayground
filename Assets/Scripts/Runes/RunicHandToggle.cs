@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LW.Core;
 
 namespace LW.Runic
 {
@@ -14,10 +15,14 @@ namespace LW.Runic
         bool triggered = false;
 
         RunicDirector director;
+        OSC osc;
+        HandTracking hands;
 
         void Start()
         {
 			director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
+            osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
+            hands = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
 		}
 
         private void OnTriggerEnter(Collider collider)
@@ -29,7 +34,15 @@ namespace LW.Runic
                 {
                     if (!triggered)
 					{
-						ToggleMode();
+                        if (!hands.rightPeace)
+						{
+                            SendOSC("leftTap/");
+						}
+                        else
+						{
+                            //ToggleMode();
+                            SendOSC("leftTap/peace/");
+						}
 					}
 				}
             }
@@ -40,7 +53,15 @@ namespace LW.Runic
                 {
                     if (!triggered)
                     {
-                        ToggleMode();
+                        if (!hands.leftPeace)
+                        {
+                            SendOSC("rightTap/");
+                        }
+                        else
+                        {
+                            //ToggleMode();
+                            SendOSC("rightTap/peace/");
+                        }
                     }
 
                 }
@@ -48,7 +69,16 @@ namespace LW.Runic
             
         }
 
-		private void ToggleMode()
+        private void SendOSC(string messageToSend)
+		{
+            OscMessage message = new OscMessage();
+            message.address = messageToSend;
+            message.values.Add(1);
+            osc.Send(message);
+            Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove		
+        }
+
+            private void ToggleMode()
 		{
 			director.ToggleMode();
 			triggered = true;
