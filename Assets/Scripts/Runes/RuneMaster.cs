@@ -39,29 +39,28 @@ namespace LW.Runic
     {
         [Header("DevMode controls")]
         [SerializeField] bool devMode = false; // TODO remove
-        [SerializeField] [Range(7.5f, 75)] float force = 10f; // TODO make private
-        public bool ableToCast = true; // TODO make private
+        [SerializeField] [Range(7.5f, 50)] float force = 10f; // TODO make private
 
         [Header("Controller Settings")]
         [SerializeField] float castDelay = 3f; //TODO hardcode
         [SerializeField] float maxPalmDist = 0.5f; //TODO hardcode
         [SerializeField] float resetWindow = 2; //TODO hardcode
 
-        public float resetTimer = 5; // TODO make private
-        public bool readyToGather = false;
-
         [Header("Hook Ups")]
         [SerializeField] GameObject masterRune;
         [SerializeField] AudioClip resetFX;
+
+        public float proximitySensor = Mathf.Infinity;
+        float timeSinceLastCast = Mathf.Infinity;
+        float resetTimer = 5;
+        bool readyToGather = false;
 
         public RuneType runeType;
         public int runeTypeIndex = 0; // TODO private; automates rune selection
         List<HSV> runeColors = new List<HSV>();
 
-        float timeSinceLastCast = Mathf.Infinity;
         public int runeID = 0;
         public int runeColorIndex = 0;
-
         
         // stores live drums, for dev purposes only TODO make private
         public List<RuneController> liveRunes = new List<RuneController>();
@@ -97,6 +96,7 @@ namespace LW.Runic
             timeSinceLastCast += Time.deltaTime;
             resetTimer += Time.deltaTime;
             runeType = (RuneType)runeTypeIndex;
+            proximitySensor += Time.deltaTime;
 
             if (director.currentMode == RunicDirector.Mode.Build)
 			{
@@ -118,30 +118,38 @@ namespace LW.Runic
 
                 force += Input.mouseScrollDelta.y;
 
-                if (Input.GetMouseButtonDown(0) && ableToCast)
+                if (Input.GetMouseButtonDown(0) && proximitySensor > 0)
                 {
                     CastRune();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Greater)) runeTypeIndex++;
-                if (Input.GetKeyDown(KeyCode.Less)) runeTypeIndex--;
+                if (Input.GetKeyDown(KeyCode.Period)) runeTypeIndex++;
+                if (Input.GetKeyDown(KeyCode.Comma)) runeTypeIndex--;
 
             }
             #endregion
 
-            ////// Set Rune Type
-            if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist && ableToCast)
-            {
-                masterRune.SetActive(true);
-                SelectRuneType();
-            }
-            else masterRune.SetActive(false);
+            if (proximitySensor > 0.1f)
+			{
+                ////// Set Rune Type
+                if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
+                {
+                    masterRune.SetActive(true);
+                    SelectRuneType();
+                }
+                else masterRune.SetActive(false);
 
-            ////// Casting
-            if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
-            {
-                CastRune();
+                ////// Casting
+                if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
+                {
+                    CastRune();
+                }
             }
+            else
+			{
+                masterRune.SetActive(false);
+			}
+            
 
             #region Gather & Reset - activates Build Mode
             ////// Gather Runes
@@ -292,9 +300,9 @@ namespace LW.Runic
             Destroy(drum.gameObject);
         }
 
-        public void SetAbleToCast(bool val)
+        public void TriggerProximitySensor()
 		{
-            ableToCast = val;
+            proximitySensor = 0;
 		}
     }
 }

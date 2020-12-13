@@ -38,7 +38,7 @@ namespace LW.Runic
 
             if (distanceToUser < userProximitySet)
             {
-                GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneMaster>().SetAbleToCast(false);
+                GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneMaster>().TriggerProximitySensor();
 
                 if (handtracking.twoHands)
                 {
@@ -69,7 +69,6 @@ namespace LW.Runic
             }
             else
             {
-                GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneMaster>().SetAbleToCast(true);
                 proximityBubble.localScale = new Vector3(0, 0, 0);
             }
         }
