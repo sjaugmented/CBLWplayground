@@ -130,16 +130,16 @@ namespace LW.Runic
             #endregion
 
             ////// Set Rune Type
-            if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
+            if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist && ableToCast)
             {
                 masterRune.SetActive(true);
                 SelectRuneType();
             }
+            else masterRune.SetActive(false);
 
             ////// Casting
             if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen && ableToCast)
             {
-                masterRune.SetActive(false);
                 CastRune();
             }
 
@@ -204,43 +204,43 @@ namespace LW.Runic
             Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
             Quaternion castRotation = handRotation * Quaternion.Euler(60, 0, 0); // rotational offset - so casts go OUT instead of UP along the hand.Z axis
 
-			if (timeSinceLastCast >= castDelay && runeBelt.GetCurrentRuneAmmo(runeType) > 0)
-			{
-				timeSinceLastCast = 0;
-				runeID++;
-				GameObject rune;
+            if (timeSinceLastCast >= castDelay && runeBelt.GetCurrentRuneAmmo(runeType) > 0)
+            {
+                timeSinceLastCast = 0;
+                runeID++;
+                GameObject rune;
 
                 GameObject runePrefab = runeBelt.GetRunePrefab(runeType);
 
-				if (devMode)
-				{
-					rune = Instantiate(runePrefab, Camera.main.transform.position, Camera.main.transform.rotation);
-				}
-				else
-				{
-					rune = Instantiate(runePrefab, castOrigin, castRotation);
-				}
+                if (devMode)
+                {
+                    rune = Instantiate(runePrefab, Camera.main.transform.position, Camera.main.transform.rotation);
+                }
+                else
+                {
+                    rune = Instantiate(runePrefab, castOrigin, castRotation);
+                }
 
                 // reduce ammo
                 runeBelt.ReduceCurrentRuneAmmo(runeType);
 
-				RuneController currentRune = rune.GetComponent<RuneController>();
-				currentRune.SetRuneAddressAndColor(runeID, runeColors[runeColorIndex]);
+                RuneController currentRune = rune.GetComponent<RuneController>();
+                currentRune.SetRuneAddressAndColor(runeID, runeColors[runeColorIndex]);
 
-				float spellForce = (castOrigins.palmDist / maxPalmDist) * 50;
-				if (spellForce < 7.5f) spellForce = 7.5f;
-				// set rune casting force and color
-				if (devMode) currentRune.force = force;
-				else currentRune.force = spellForce;
-				// add rune to list of live drums
-				liveRunes.Add(currentRune);
+                float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
+                if (spellForce < 7.5f) spellForce = 7.5f;
+                // set rune casting force and color
+                if (devMode) currentRune.force = force;
+                else currentRune.force = spellForce;
+                // add rune to list of live drums
+                liveRunes.Add(currentRune);
 
-				//add to DrumContainer parent
-				currentRune.transform.SetParent(FindObjectOfType<RuneGrid>().transform);
+                //add to DrumContainer parent
+                currentRune.transform.SetParent(FindObjectOfType<RuneGrid>().transform);
 
-				SetNextRuneColor();
-			}
-		}
+                SetNextRuneColor();
+            }
+        }
 
 		private void SetNextRuneColor()
         {
@@ -291,6 +291,11 @@ namespace LW.Runic
             yield return new WaitForSeconds(2);
             Destroy(drum.gameObject);
         }
+
+        public void SetAbleToCast(bool val)
+		{
+            ableToCast = val;
+		}
     }
 }
 

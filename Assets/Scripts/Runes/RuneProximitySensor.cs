@@ -31,27 +31,46 @@ namespace LW.Runic
         {
             if (director.currentMode == RunicDirector.Mode.Touch)
 			{
-                float distanceToUser = Vector3.Distance(transform.position, Camera.main.transform.position);
+                
+            }
 
-                if (distanceToUser < userProximitySet)
+            float distanceToUser = Vector3.Distance(transform.position, Camera.main.transform.position);
+
+            if (distanceToUser < userProximitySet)
+            {
+                GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneMaster>().SetAbleToCast(false);
+
+                if (handtracking.twoHands)
                 {
-                    if (handtracking.twoHands)
-                    {
-                        ActivateProximityBubble();
+                    ActivateProximityBubble();
 
-                        if (bubbleScale > effectiveBubbleScale && handtracking.rightFist && handtracking.leftFist)
+                    if (bubbleScale > effectiveBubbleScale) // if bubble is visible -ish
+                    {
+                        if (!handtracking.rightFist && handtracking.leftFist)
+                        {
+                            runeController.SendOSCMessage(runeController.address1 + "/proximityLeft", 1 - handtracking.GetStaffForCamUp() / 180);
+                        }
+
+                        if (handtracking.rightFist && !handtracking.leftFist)
+                        {
+                            runeController.SendOSCMessage(runeController.address1 + "/proximityRight", 1 - handtracking.GetStaffForCamUp() / 180);
+                        }
+
+                        if (handtracking.rightFist && handtracking.leftFist)
                         {
                             runeController.SendOSCMessage(runeController.address1 + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
                         }
                     }
-                    else proximityBubble.localScale = new Vector3(0, 0, 0);
-
-
                 }
                 else
                 {
                     proximityBubble.localScale = new Vector3(0, 0, 0);
                 }
+            }
+            else
+            {
+                GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneMaster>().SetAbleToCast(true);
+                proximityBubble.localScale = new Vector3(0, 0, 0);
             }
         }
 
