@@ -58,12 +58,12 @@ namespace LW.Runic
 
         public RuneType runeType; // TODO private; easy shape switching in inspector
         int runeTypeIndex = 0; // TODO private; automates rune selection
-        List<HSV> runeColors = new List<HSV>();
+        public List<HSV> runeColors = new List<HSV>();
 
         public int runeColorIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
-        public List<RuneController> liveRunes = new List<RuneController>();
+        List<RuneController> liveRunes = new List<RuneController>();
 
         HandTracking handtracking;
         CastOrigins castOrigins;
