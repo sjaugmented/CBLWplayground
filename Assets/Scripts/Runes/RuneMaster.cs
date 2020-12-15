@@ -228,11 +228,15 @@ namespace LW.Runic
                     rune = Instantiate(runePrefab, castOrigin, castRotation);
                 }
 
+                runeColorIndex = runeColors.Count - runeBelt.GetCurrentRuneAmmo(runeType);
+
                 // reduce ammo
                 runeBelt.ReduceCurrentRuneAmmo(runeType);
+                
+                int runeID = runeColors.Count - runeBelt.GetCurrentRuneAmmo(runeType);
 
                 RuneController currentRune = rune.GetComponent<RuneController>();
-                currentRune.SetRuneAddressAndColor(runeColors.Count - runeBelt.GetCurrentRuneAmmo(runeType), runeColors[runeColorIndex]);
+                currentRune.SetRuneAddressAndColor(runeID, runeColors[runeColorIndex]);
 
                 float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
                 if (spellForce < 7.5f) spellForce = 7.5f;
@@ -245,7 +249,7 @@ namespace LW.Runic
                 //add to DrumContainer parent
                 currentRune.transform.SetParent(FindObjectOfType<RuneGrid>().transform);
 
-                SetNextRuneColor();
+                //SetNextRuneColor();
             }
         }
 

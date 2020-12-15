@@ -21,7 +21,6 @@ namespace LW.Runic
         bool isTouched = false;
 
         Renderer renderer;
-        RuneMaster caster;
         RunicDirector director;
         HandTracking handtracking;
         EmissionModule emission;
@@ -29,7 +28,6 @@ namespace LW.Runic
         void Start()
         {
             renderer = GetComponentInChildren<Renderer>();
-            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneMaster>(); // TODO fix this naming/tag catastrophe - Caster/Master
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
             GetComponent<Rigidbody>().AddForce(transform.forward * force);
@@ -56,21 +54,8 @@ namespace LW.Runic
 
         public void SetRuneAddressAndColor(int runeNum, HSV colorValue)
         {
-            if (transform.GetChild(0).name == "Sphere")
-			{
-                address1 = transform.GetChild(0).name + runeNum + "a".ToString();
-                address2 = transform.GetChild(0).name + runeNum + "b".ToString();
-            }
-            else if (transform.GetChild(0).name == "Cube")
-			{
-                address1 = transform.GetChild(0).name + (runeNum + caster.runeColors.Count) + "a".ToString();
-                address2 = transform.GetChild(0).name + (runeNum + caster.runeColors.Count) + "b".ToString();
-            }
-            else
-			{
-                address1 = transform.GetChild(0).name + (runeNum + caster.runeColors.Count * 2) + "a".ToString();
-                address2 = transform.GetChild(0).name + (runeNum + caster.runeColors.Count * 2) + "b".ToString();
-            }
+            address1 = transform.GetChild(0).name + runeNum + "a".ToString();
+            address2 = transform.GetChild(0).name + runeNum + "b".ToString();
             
             color = colorValue;
             MainModule particlesMain = particles.main;
