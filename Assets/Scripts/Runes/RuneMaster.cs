@@ -51,16 +51,15 @@ namespace LW.Runic
         [SerializeField] AudioClip resetFX;
         [SerializeField] AudioClip gatherFX;
 
-        public float proximitySensor = Mathf.Infinity;
+        float proximitySensor = Mathf.Infinity;
         float timeSinceLastCast = Mathf.Infinity;
         float resetTimer = 5;
         bool readyToGather = false;
 
-        public RuneType runeType;
-        public int runeTypeIndex = 0; // TODO private; automates rune selection
+        public RuneType runeType; // TODO private; easy shape switching in inspector
+        int runeTypeIndex = 0; // TODO private; automates rune selection
         List<HSV> runeColors = new List<HSV>();
 
-        public int runeID = 0;
         public int runeColorIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
@@ -216,7 +215,6 @@ namespace LW.Runic
             if (timeSinceLastCast >= castDelay && runeBelt.GetCurrentRuneAmmo(runeType) > 0)
             {
                 timeSinceLastCast = 0;
-                runeID++;
                 GameObject rune;
 
                 GameObject runePrefab = runeBelt.GetRunePrefab(runeType);
@@ -234,7 +232,7 @@ namespace LW.Runic
                 runeBelt.ReduceCurrentRuneAmmo(runeType);
 
                 RuneController currentRune = rune.GetComponent<RuneController>();
-                currentRune.SetRuneAddressAndColor(runeID, runeColors[runeColorIndex]);
+                currentRune.SetRuneAddressAndColor(runeColors.Count - runeBelt.GetCurrentRuneAmmo(runeType), runeColors[runeColorIndex]);
 
                 float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
                 if (spellForce < 7.5f) spellForce = 7.5f;
@@ -289,7 +287,6 @@ namespace LW.Runic
 
             // reset ammo counts, id, shape, color
             runeBelt.ResetAllRuneAmmo(runeColors.Count);
-            runeID = 0;
             runeColorIndex = 0;
         }
 
