@@ -9,9 +9,9 @@ namespace LW.Runic
     {
         [SerializeField] float touchDistance = 0.03f;
 
-        public float distance = Mathf.Infinity;
+        public float distanceRight = Mathf.Infinity;
+        public float distanceLeft = Mathf.Infinity;
         
-        Transform rightPointer;
         bool touched = false;
 
         void Start()
@@ -21,11 +21,19 @@ namespace LW.Runic
 
         void Update()
 		{
-            if (!GameObject.FindGameObjectWithTag("Right Pointer")) return;
+            if (!GameObject.FindGameObjectWithTag("Right Pointer") && !GameObject.FindGameObjectWithTag("Left Pointer")) return;
 
-            distance = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Right Pointer").transform.position);
+            if (GameObject.FindGameObjectWithTag("Right Pointer"))
+			{
+                distanceRight = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Right Pointer").transform.position);
+            }
 
-            if (distance < touchDistance)
+			if (GameObject.FindGameObjectWithTag("Left Pointer"))
+			{
+                distanceLeft = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Left Pointer").transform.position);
+            }
+
+            if (distanceRight < touchDistance || distanceLeft < touchDistance)
 			{
                 if (!touched)
 				{
