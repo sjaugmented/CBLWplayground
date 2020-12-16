@@ -74,7 +74,7 @@ namespace LW.Runic
 
             gameObject.name = runeID + name;
 
-            siblingIndex = runeID - 1;
+            siblingIndex = runeID - 1; // for rune grid sort order
         }
 
         public void Touched()

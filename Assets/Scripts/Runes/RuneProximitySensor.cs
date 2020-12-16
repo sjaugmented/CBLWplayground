@@ -7,7 +7,7 @@ namespace LW.Runic
 {
     public class RuneProximitySensor : MonoBehaviour
     {
-        [SerializeField] float userProximitySet = 0.35f;
+        [SerializeField] float userProximitySet = 0.7f;
         [SerializeField] float minHandDistance = 0.15f;
         [SerializeField] float maxHandDistance = 0.3f;
         [SerializeField] float effectiveBubbleScale = 0.67f;
@@ -16,6 +16,10 @@ namespace LW.Runic
         RunicDirector director;
         RuneController runeController;
         HandTracking handtracking;
+
+        bool leftFisted = false;
+        bool rightFisted = false;
+        bool dualFisted = false;
 
         float bubbleScale = 0;
 
@@ -48,18 +52,57 @@ namespace LW.Runic
                     {
                         if (!handtracking.rightFist && handtracking.leftFist)
                         {
+                            if (!leftFisted)
+							{
+                                runeController.SendOSCMessage("leftFistOn");
+                                leftFisted = true;
+                            }
                             runeController.SendOSCMessage(runeController.address1 + "/proximityLeft", 1 - handtracking.GetStaffForCamUp() / 180);
                         }
+                        else
+						{
+                            if (leftFisted)
+							{
+                                runeController.SendOSCMessage("leftFistOff");
+                                leftFisted = false;
+                            }
+						}
 
                         if (handtracking.rightFist && !handtracking.leftFist)
                         {
+                            if (!rightFisted)
+                            {
+                                runeController.SendOSCMessage("rightFistOn");
+                                rightFisted = true;
+                            }
                             runeController.SendOSCMessage(runeController.address1 + "/proximityRight", 1 - handtracking.GetStaffForCamUp() / 180);
+                        }
+                        else
+                        {
+                            if (rightFisted)
+                            {
+                                runeController.SendOSCMessage("rightFistOff");
+                                rightFisted = false;
+                            }
                         }
 
                         if (handtracking.rightFist && handtracking.leftFist)
                         {
+                            if (!dualFisted)
+							{
+                                runeController.SendOSCMessage("dualFistOn");
+                                dualFisted = true;
+                            }
                             runeController.SendOSCMessage(runeController.address1 + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
                         }
+                        else
+						{
+                            if (dualFisted)
+							{
+                                runeController.SendOSCMessage("dualFistOff");
+                                dualFisted = false;
+                            }
+						}
                     }
                 }
                 else
