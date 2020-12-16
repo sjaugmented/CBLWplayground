@@ -112,9 +112,9 @@ namespace LW.Runic
 			{
                 masterRune.SetActive(false);
 			}
-            
 
-            #region Gather & Reset - activates Build Mode
+
+            #region Gather & Reset - activates Build Mode (!!Build mode deprecated for now!!)
             ////// Gather Runes
             // prime the gather runes method
             if (!handtracking.twoHands && handtracking.rightRockOn)
@@ -131,7 +131,7 @@ namespace LW.Runic
             if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
             {
                 GatherRunes();
-                director.currentMode = RunicDirector.Mode.Build;
+                //director.currentMode = RunicDirector.Mode.Build;
                 resetTimer = Mathf.Infinity;
             }
 
@@ -139,7 +139,7 @@ namespace LW.Runic
             if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
             {
                 Reset();
-                director.currentMode = RunicDirector.Mode.Build;
+                //director.currentMode = RunicDirector.Mode.Build;
             }
 			#endregion
 		}
@@ -190,6 +190,7 @@ namespace LW.Runic
                 {
                     rune = Instantiate(runePrefab, castOrigin, castRotation);
                 }
+
 
                 runeColorIndex = runeColors.Count - runeBelt.GetCurrentRuneAmmo(runeType);
 

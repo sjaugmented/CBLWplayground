@@ -423,8 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateLinkedTransform: 0
-  moveLerpTime: 0.1
-  rotateLerpTime: 0.1
+  moveLerpTime: 0.3
+  rotateLerpTime: 0.3
   scaleLerpTime: 0
   maintainScale: 1
   smoothing: 1
@@ -658,7 +658,7 @@ MonoBehaviour:
     Radius: 0
     Transform: {fileID: 0}
     Colliders: []
-  ignoreInactiveTransforms: 1
+  ignoreInactiveTransforms: 0
   sortType: 1
   surfaceType: 0
   orientType: 4

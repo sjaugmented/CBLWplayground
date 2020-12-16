@@ -2,6 +2,8 @@
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace LW.Runic
@@ -9,12 +11,15 @@ namespace LW.Runic
     [RequireComponent(typeof(GridObjectCollection))]
     [RequireComponent(typeof(RadialView))]
     [RequireComponent(typeof(SolverHandler))]
+
     public class RuneGrid : MonoBehaviour
     {
+        IList<Transform> childList = new List<Transform>();
         void Start()
 		{
             GetComponent<RadialView>().enabled = false ;
 		}
+
         public void UpdateCollection()
 		{
             GetComponent<GridObjectCollection>().enabled = true;
@@ -34,6 +39,5 @@ namespace LW.Runic
             GetComponent<GridObjectCollection>().enabled = false;
 
         }
-
     }
 }

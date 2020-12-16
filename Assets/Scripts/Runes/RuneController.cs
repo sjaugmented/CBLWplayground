@@ -26,6 +26,7 @@ namespace LW.Runic
         EmissionModule emission;
 
         int runeColors;
+        int siblingIndex;
 
         void Start()
         {
@@ -52,6 +53,8 @@ namespace LW.Runic
             else renderer.material.color = color;
 
             if (oscTest) StartCoroutine("PlayParticles");
+
+            transform.SetSiblingIndex(siblingIndex);
         }
 
         public void SetRuneAddressAndColor(int runeID, Color colorValue)
@@ -68,6 +71,10 @@ namespace LW.Runic
             color = colorValue;
             MainModule particlesMain = particles.main;
             particlesMain.startColor = color;
+
+            gameObject.name = runeID + name;
+
+            siblingIndex = runeID - 1;
         }
 
         public void Touched()
