@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 406276656}
   - component: {fileID: 406276659}
   m_Layer: 0
-  m_Name: RuneGrid
+  m_Name: Rune Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1037,7 +1037,7 @@ GameObject:
   - component: {fileID: 1153755260}
   - component: {fileID: 1153755263}
   m_Layer: 0
-  m_Name: RuneMaster
+  m_Name: Rune Caster
   m_TagString: Caster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

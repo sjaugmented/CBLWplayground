@@ -38,7 +38,7 @@ namespace LW.Runic
 
             if (distanceToUser < userProximitySet)
             {
-                GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneMaster>().TriggerProximitySensor();
+                GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().TriggerProximitySensor();
 
                 if (handtracking.twoHands)
                 {

@@ -57,7 +57,7 @@ namespace LW.Runic
         public void SetRuneAddressAndColor(int runeID, HSV colorValue)
         {
             string name = transform.GetChild(0).name;
-            runeColors = FindObjectOfType<RuneMaster>().GetRuneColorCount();
+            runeColors = FindObjectOfType<RuneCaster>().GetRuneColorCount();
 
             if (name == "Cube") runeID += runeColors;
 			if (name == "Diamond") runeID += runeColors * 2;

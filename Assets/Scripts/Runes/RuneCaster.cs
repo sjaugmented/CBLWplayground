@@ -35,7 +35,7 @@ namespace LW.Runic
             set { val = value; }
         }
     }
-    public class RuneMaster : MonoBehaviour
+    public class RuneCaster : MonoBehaviour
     {
         [Header("DevMode controls")]
         [SerializeField] bool devMode = false; // TODO remove
