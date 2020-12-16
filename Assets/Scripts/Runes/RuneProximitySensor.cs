@@ -57,7 +57,8 @@ namespace LW.Runic
                                 runeController.SendOSCMessage("leftFistOn");
                                 leftFisted = true;
                             }
-                            runeController.SendOSCMessage(runeController.address1 + "/proximityLeft", 1 - handtracking.GetStaffForCamUp() / 180);
+							runeController.SendOSCMessage(runeController.address1 + "/proximityLeftAngle", 1 - handtracking.GetStaffForCamUp() / 180);
+							runeController.SendOSCMessage(runeController.address1 + "/proximityLeftDistance", bubbleScale.Remap(1, 0.67f, 1, 0));
                         }
                         else
 						{
@@ -75,7 +76,8 @@ namespace LW.Runic
                                 runeController.SendOSCMessage("rightFistOn");
                                 rightFisted = true;
                             }
-                            runeController.SendOSCMessage(runeController.address1 + "/proximityRight", 1 - handtracking.GetStaffForCamUp() / 180);
+							runeController.SendOSCMessage(runeController.address1 + "/proximityRightAngle", 1 - handtracking.GetStaffForCamUp() / 180);
+							runeController.SendOSCMessage(runeController.address1 + "/proximityRightDistance", bubbleScale.Remap(1, 0.67f, 1, 0));
                         }
                         else
                         {
@@ -93,7 +95,8 @@ namespace LW.Runic
                                 runeController.SendOSCMessage("dualFistOn");
                                 dualFisted = true;
                             }
-                            runeController.SendOSCMessage(runeController.address1 + "/proximity", 1 - handtracking.GetStaffForCamUp() / 180);
+							runeController.SendOSCMessage(runeController.address1 + "/proximityAngle", 1 - handtracking.GetStaffForCamUp() / 180);
+							runeController.SendOSCMessage(runeController.address1 + "/proximityDistance", bubbleScale.Remap(1, 0.67f, 1, 0));
                         }
                         else
 						{
