@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 3959232844661619323}
   - component: {fileID: 1387976063341040033}
   - component: {fileID: 6101505156175584508}
+  - component: {fileID: 1097008933518160294}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -83,7 +84,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1387976063341040062
 MonoBehaviour:
@@ -92,7 +93,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387976063341040034}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
@@ -111,7 +112,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1387976063341040034}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
@@ -391,6 +392,20 @@ MonoBehaviour:
   maxHandDistance: 0.4
   effectiveBubbleScale: 0.67
   proximityBubble: {fileID: 2651056907970788708}
+--- !u!114 &1097008933518160294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1387976063341040034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01b29214eeed54d45a795be9e205b904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchDistance: 0.03
+  distance: 0
 --- !u!1 &1459825198594083346
 GameObject:
   m_ObjectHideFlags: 0
