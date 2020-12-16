@@ -386,7 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45e9f84d81dea54abd5c797be5e50f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userProximitySet: 0.5
+  userProximitySet: 0.7
   minHandDistance: 0.15
   maxHandDistance: 0.4
   effectiveBubbleScale: 0.67
