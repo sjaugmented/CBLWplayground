@@ -28,8 +28,8 @@ namespace LW.Runic
         bool readyToGather = false;
 
         public RuneType runeType; // TODO private; easy shape switching in inspector
-        int runeTypeIndex = 0; // TODO private; automates rune selection
-        List<HSV> runeColors = new List<HSV>();
+        int runeTypeIndex = 0; // automates rune selection
+        [SerializeField] List<Color> runeColors = new List<Color>();
 
         int runeColorIndex = 0;
         
@@ -49,14 +49,6 @@ namespace LW.Runic
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeBelt = GetComponent<RuneBelt>();
             audio = GetComponent<AudioSource>();
-
-            runeColors.Add(new HSV(0, 0, 1f));      // white
-            runeColors.Add(new HSV(0, 1, 1));       // red
-            runeColors.Add(new HSV(0.15f, 1, 1));   // yellow
-            runeColors.Add(new HSV(0.37f, 1, 1));   // green
-            runeColors.Add(new HSV(0.5f, 1, 1));    // cyan
-            runeColors.Add(new HSV(0.6f, 1, 1));    // blue
-            runeColors.Add(new HSV(0.8f, 1, 1));    // magenta
 
             runeBelt.ResetAllRuneAmmo(runeColors.Count);
             masterRune.SetActive(false);

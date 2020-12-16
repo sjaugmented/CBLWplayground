@@ -1064,6 +1064,14 @@ MonoBehaviour:
   resetFX: {fileID: 8300000, guid: 81258ead3322992419777a1cf658d897, type: 3}
   gatherFX: {fileID: 8300000, guid: ffc69f3863596a448a66d9775595277f, type: 3}
   runeType: 0
+  runeColors:
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 0.9676375, b: 0, a: 1}
+  - {r: 0, g: 1, b: 0.052033424, a: 1}
+  - {r: 0, g: 0.9806142, b: 1, a: 1}
+  - {r: 0, g: 0.28511548, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0.8970642, a: 1}
 --- !u!4 &1153755261
 Transform:
   m_ObjectHideFlags: 0

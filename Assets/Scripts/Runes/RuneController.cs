@@ -17,7 +17,7 @@ namespace LW.Runic
         public string address1;
         public string address2;
         
-        [Range(0, 1)] public HSV color;
+        [Range(0, 1)] public Color color;
         bool isTouched = false;
 
         Renderer renderer;
@@ -49,12 +49,12 @@ namespace LW.Runic
             {
                 renderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
             }
-            else renderer.material.color = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
+            else renderer.material.color = color;
 
             if (oscTest) StartCoroutine("PlayParticles");
         }
 
-        public void SetRuneAddressAndColor(int runeID, HSV colorValue)
+        public void SetRuneAddressAndColor(int runeID, Color colorValue)
         {
             string name = transform.GetChild(0).name;
             runeColors = FindObjectOfType<RuneCaster>().GetRuneColorCount();
@@ -67,7 +67,7 @@ namespace LW.Runic
             
             color = colorValue;
             MainModule particlesMain = particles.main;
-            particlesMain.startColor = Color.HSVToRGB(color.Hue, color.Sat, color.Val);
+            particlesMain.startColor = color;
         }
 
         public void Touched()
