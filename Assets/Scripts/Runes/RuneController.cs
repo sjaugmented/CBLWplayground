@@ -25,6 +25,8 @@ namespace LW.Runic
         HandTracking handtracking;
         EmissionModule emission;
 
+        int runeColors;
+
         void Start()
         {
             renderer = GetComponentInChildren<Renderer>();
@@ -52,10 +54,16 @@ namespace LW.Runic
             if (oscTest) StartCoroutine("PlayParticles");
         }
 
-        public void SetRuneAddressAndColor(int runeNum, HSV colorValue)
+        public void SetRuneAddressAndColor(int runeID, HSV colorValue)
         {
-            address1 = transform.GetChild(0).name + runeNum + "a".ToString();
-            address2 = transform.GetChild(0).name + runeNum + "b".ToString();
+            string name = transform.GetChild(0).name;
+            runeColors = FindObjectOfType<RuneMaster>().GetRuneColorCount();
+
+            if (name == "Cube") runeID += runeColors;
+			if (name == "Diamond") runeID += runeColors * 2;
+
+			address1 = name + runeID + "a".ToString();
+            address2 = name + runeID + "b".ToString();
             
             color = colorValue;
             MainModule particlesMain = particles.main;
@@ -121,11 +129,6 @@ namespace LW.Runic
             emission.enabled = true;
             yield return new WaitForSeconds(0.3f);
             emission.enabled = false;
-        }
-
-        public string GetDrumAddress()
-        {
-            return address1;
         }
     }
 }

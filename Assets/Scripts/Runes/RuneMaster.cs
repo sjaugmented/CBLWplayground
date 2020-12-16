@@ -58,9 +58,9 @@ namespace LW.Runic
 
         public RuneType runeType; // TODO private; easy shape switching in inspector
         int runeTypeIndex = 0; // TODO private; automates rune selection
-        public List<HSV> runeColors = new List<HSV>();
+        List<HSV> runeColors = new List<HSV>();
 
-        public int runeColorIndex = 0;
+        int runeColorIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
         List<RuneController> liveRunes = new List<RuneController>();
@@ -305,6 +305,11 @@ namespace LW.Runic
         public void TriggerProximitySensor()
 		{
             proximitySensor = 0;
+		}
+
+        public int GetRuneColorCount()
+		{
+            return runeColors.Count;
 		}
     }
 }
