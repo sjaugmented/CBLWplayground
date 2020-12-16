@@ -36,7 +36,7 @@ namespace LW.Runic
                 {
                     if (!hands.rightPeace)
                     {
-                        SendOSC("leftTap/");
+                        SendOSC("leftTap1/");
                         GetComponent<AudioSource>().PlayOneShot(singleTap);
                     }
                     else
@@ -44,6 +44,12 @@ namespace LW.Runic
                         SendOSC("leftTap/peace/");
                         GetComponent<AudioSource>().PlayOneShot(doubleTap);
                     }
+                }
+
+                if (collider.CompareTag("Right Middle"))
+				{
+                    SendOSC("leftTap2/");
+                    GetComponent<AudioSource>().PlayOneShot(singleTap);
                 }
             }
 
@@ -53,7 +59,7 @@ namespace LW.Runic
                 {
                     if (!hands.leftPeace)
                     {
-                        SendOSC("rightTap/");
+                        SendOSC("rightTap1/");
                         GetComponent<AudioSource>().PlayOneShot(singleTap);
                     }
                     else
@@ -61,6 +67,12 @@ namespace LW.Runic
                         SendOSC("rightTap/peace/");
                         GetComponent<AudioSource>().PlayOneShot(doubleTap);
                     }
+                }
+
+                if (collider.CompareTag("Left Middle"))
+				{
+                    SendOSC("rightTap2/");
+                    GetComponent<AudioSource>().PlayOneShot(singleTap);
                 }
             }            
             

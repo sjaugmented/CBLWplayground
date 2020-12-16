@@ -1063,12 +1063,7 @@ MonoBehaviour:
   masterRune: {fileID: 1145587787}
   resetFX: {fileID: 8300000, guid: 81258ead3322992419777a1cf658d897, type: 3}
   gatherFX: {fileID: 8300000, guid: ffc69f3863596a448a66d9775595277f, type: 3}
-  proximitySensor: Infinity
   runeType: 0
-  runeTypeIndex: 0
-  runeID: 0
-  runeColorIndex: 0
-  liveRunes: []
 --- !u!4 &1153755261
 Transform:
   m_ObjectHideFlags: 0
@@ -1414,6 +1409,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043347953831590523, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Left Middle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7373005369024850207, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: m_TagString
+      value: Right Middle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23c4ab46840cc35408ca844e9f76ab1c, type: 3}

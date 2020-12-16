@@ -24,6 +24,8 @@ TagManager:
   - Master Rune
   - Director
   - Caster
+  - Right Middle
+  - Left Middle
   layers:
   - Default
   - TransparentFX
