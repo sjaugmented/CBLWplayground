@@ -17,7 +17,7 @@ namespace LW.Runic
         public string address1;
         public string address2;
         
-        [Range(0, 1)] public Color color;
+        Color color;
         bool isTouched = false;
 
         Renderer renderer;
@@ -88,13 +88,13 @@ namespace LW.Runic
             if (!handtracking.rightPeace && !handtracking.leftPeace)
             {
                 isTouched = true;
-                GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
+                //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
                 SendOSCMessage(address1);
             }
             else
             {
                 StartCoroutine("TwoFingerTouchFlicker");
-                GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
+                //GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
                 SendOSCMessage(address2);
             }
         }
