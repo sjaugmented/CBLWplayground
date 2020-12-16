@@ -29,22 +29,21 @@ namespace LW.Runic
 
         private void OnTriggerEnter(Collider collider)
         {
-            
             if (leftHand)
 			{
                 if (collider.CompareTag("Right Pointer"))
                 {
-                    if (!hands.rightPeace)
-                    {
-                        SendOSC("leftTap1/");
-                        GetComponent<AudioSource>().PlayOneShot(singleTap);
-                    }
-                    else
-                    {
-                        SendOSC("leftTap/peace/");
-                        GetComponent<AudioSource>().PlayOneShot(doubleTap);
-                    }
-                }
+					if (!hands.rightPeace)
+					{
+						SendOSC("leftTap1/");
+						GetComponent<AudioSource>().PlayOneShot(singleTap);
+					}
+					else
+					{
+						SendOSC("leftTap/peace/");
+						GetComponent<AudioSource>().PlayOneShot(doubleTap);
+					}
+				}
 
                 if (collider.CompareTag("Right Middle"))
 				{
