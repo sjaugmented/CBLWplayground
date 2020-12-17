@@ -84,7 +84,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1387976063341040062
 MonoBehaviour:
@@ -405,7 +405,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchDistance: 0.03
-  distance: 0
+  distanceRight: Infinity
+  distanceLeft: Infinity
 --- !u!1 &1459825198594083346
 GameObject:
   m_ObjectHideFlags: 0

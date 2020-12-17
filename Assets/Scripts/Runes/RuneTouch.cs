@@ -16,7 +16,7 @@ namespace LW.Runic
 
         void Start()
 		{
-            //rightPointer = GameObject.FindGameObjectWithTag("Right Pointer").transform;
+            
 		}
 
         void Update()
@@ -26,11 +26,13 @@ namespace LW.Runic
             if (GameObject.FindGameObjectWithTag("Right Pointer"))
 			{
                 distanceRight = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Right Pointer").transform.position);
+                Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Right Pointer").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
 			if (GameObject.FindGameObjectWithTag("Left Pointer"))
 			{
                 distanceLeft = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Left Pointer").transform.position);
+                Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Left Pointer").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
             if (distanceRight < touchDistance || distanceLeft < touchDistance)
