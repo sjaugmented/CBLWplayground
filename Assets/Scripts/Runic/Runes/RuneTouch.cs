@@ -7,7 +7,7 @@ namespace LW.Runic
 {
     public class RuneTouch : MonoBehaviour
     {
-        [SerializeField] float touchDistance = 0.03f; // TODO refactor to be relative to object size
+        [SerializeField] float touchDistanceScale = 0.03f; // TODO refactor to be relative to object size
 
         float distanceRight = Mathf.Infinity;
         float distanceLeft = Mathf.Infinity;
@@ -16,6 +16,8 @@ namespace LW.Runic
 
         void Update()
 		{
+            float touchThreshold = touchDistanceScale * transform.localScale.x;
+            
             if (!GameObject.FindGameObjectWithTag("Right Pointer") && !GameObject.FindGameObjectWithTag("Left Pointer")) return;
 
             if (GameObject.FindGameObjectWithTag("Right Pointer"))
@@ -30,7 +32,7 @@ namespace LW.Runic
                 Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Left Pointer").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
-            if (distanceRight < touchDistance || distanceLeft < touchDistance)
+            if (distanceRight < touchThreshold || distanceLeft < touchThreshold)
 			{
                 if (!touched)
 				{
