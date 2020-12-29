@@ -9,8 +9,8 @@ namespace LW.Runic
     {
         [SerializeField] float touchDistance = 0.03f; // TODO refactor to be relative to object size
 
-        public float distanceRight = Mathf.Infinity;
-        public float distanceLeft = Mathf.Infinity;
+        float distanceRight = Mathf.Infinity;
+        float distanceLeft = Mathf.Infinity;
         
         bool touched = false;
 

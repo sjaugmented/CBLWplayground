@@ -10,12 +10,12 @@ namespace LW.Runic
     {
         [Header("DevMode controls")]
         [SerializeField] bool devMode = false; // TODO remove
-        [SerializeField] [Range(7.5f, 50)] float force = 10f; // TODO make private
+        [Range(7.5f, 50)] float force = 10f; // TODO make private
 
         [Header("Controller Settings")]
-        [SerializeField] float castDelay = 3f; //TODO hardcode
+        [SerializeField] float castDelay = 0.5f; //TODO hardcode
         [SerializeField] float maxPalmDist = 0.5f; //TODO hardcode
-        [SerializeField] float resetWindow = 2; //TODO hardcode
+        //[SerializeField] float resetWindow = 2; //TODO hardcode
 
         [Header("Hook Ups")]
         [SerializeField] GameObject masterRune;
@@ -29,8 +29,8 @@ namespace LW.Runic
 
         public RuneType runeType; // TODO private; easy shape switching in inspector
         int runeTypeIndex = 0; // automates rune selection
+        
         [SerializeField] List<Color> runeColors = new List<Color>();
-
         int runeColorIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
@@ -128,7 +128,7 @@ namespace LW.Runic
             else { readyToGather = false; }
 
             // trigger the gather runes method
-            if (resetTimer < resetWindow && !handtracking.twoHands && handtracking.rightFist)
+            if (resetTimer < 2 && !handtracking.twoHands && handtracking.rightFist)
             {
                 GatherRunes();
                 //director.currentMode = RunicDirector.Mode.Build;

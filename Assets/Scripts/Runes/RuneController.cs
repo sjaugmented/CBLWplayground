@@ -11,7 +11,7 @@ namespace LW.Runic
         [SerializeField] AudioClip singleTouchFX;
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
-        public bool oscTest = false;
+        bool oscTest = false;
 
         public float force = 1;
         public string address1;
@@ -19,14 +19,14 @@ namespace LW.Runic
         
         Color color;
         bool isTouched = false;
+        
+        int runeColors;
+        int siblingIndex;
 
         Renderer renderer;
         RunicDirector director;
         HandTracking handtracking;
         EmissionModule emission;
-
-        int runeColors;
-        int siblingIndex;
 
         void Start()
         {
