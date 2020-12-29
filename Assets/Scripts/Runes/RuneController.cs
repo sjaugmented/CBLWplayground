@@ -119,6 +119,15 @@ namespace LW.Runic
             StartCoroutine("PlayParticles");
         }
 
+        void OnCollisionEnter(Collision collision)
+		{
+            if (collision.collider.CompareTag("Rune"))
+			{
+                Collider runeCollider = collision.gameObject.GetComponent<Collider>();
+                Physics.IgnoreCollision(runeCollider, GetComponent<Collider>());
+			}
+		}
+
         private IEnumerator TwoFingerTouchFlicker()
 		{
             isTouched = true;

@@ -26,6 +26,7 @@ TagManager:
   - Caster
   - Right Middle
   - Left Middle
+  - Rune
   layers:
   - Default
   - TransparentFX

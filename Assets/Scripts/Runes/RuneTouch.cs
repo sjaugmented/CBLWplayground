@@ -7,7 +7,7 @@ namespace LW.Runic
 {
     public class RuneTouch : MonoBehaviour
     {
-        [SerializeField] float touchDistance = 0.03f;
+        [SerializeField] float touchDistance = 0.03f; // TODO refactor to be relative to object size
 
         public float distanceRight = Mathf.Infinity;
         public float distanceLeft = Mathf.Infinity;
