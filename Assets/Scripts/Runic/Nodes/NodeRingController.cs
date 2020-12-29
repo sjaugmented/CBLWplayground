@@ -8,14 +8,9 @@ namespace LW.Runic
     {
         [SerializeField] float duration = 1;
 
-        void Start()
-        {
-
-        }
-
         void Update()
         {
-            transform.LookAt(Camera.main.transform.position);
+            transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
         }
     }
 }

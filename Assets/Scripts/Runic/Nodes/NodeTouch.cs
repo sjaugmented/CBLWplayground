@@ -6,15 +6,18 @@ namespace LW.Runic
 {
     public class NodeTouch : MonoBehaviour
     {
-        [SerializeField] float touchDistance = 0.03f; // TODO refactor to be relative to object size
+        [SerializeField] float touchDistanceScale = 1f; // TODO refactor to be relative to object size
+        public float touchThreshold;
 
-        float distanceRight = Mathf.Infinity;
-        float distanceLeft = Mathf.Infinity;
+        public float distanceRight = Mathf.Infinity;
+        public float distanceLeft = Mathf.Infinity;
 
         bool touched = false;
 
         void Update()
         {
+            touchThreshold = touchDistanceScale * transform.localScale.x;
+
             if (!GameObject.FindGameObjectWithTag("Right Pointer") && !GameObject.FindGameObjectWithTag("Left Pointer")) return;
 
             if (GameObject.FindGameObjectWithTag("Right Pointer"))
@@ -29,7 +32,7 @@ namespace LW.Runic
                 Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Left Pointer").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
-            if (distanceRight < touchDistance || distanceLeft < touchDistance)
+            if (distanceRight < touchThreshold || distanceLeft < touchThreshold)
             {
                 if (!touched)
                 {
