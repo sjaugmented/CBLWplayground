@@ -7,7 +7,7 @@ namespace LW.Runic
 {
     public class NodeController : MonoBehaviour
     {
-        [SerializeField] int nodeID = 1;
+        [SerializeField] int nodeIndex = 1;
         bool isTouched = false;
 
         void Start()
@@ -23,7 +23,7 @@ namespace LW.Runic
         public void Touched()
         {
 			string parentAddress = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>().address1;
-			Debug.Log("touched " + parentAddress + "/node" + nodeID);
+			Debug.Log("touched " + parentAddress + "/node" + nodeIndex);
 
 			//Debug.Log("touched node" + nodeID);
 		}
