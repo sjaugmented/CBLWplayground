@@ -4,4 +4,6 @@
 	{
 		return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
 	}
+
+    
 }

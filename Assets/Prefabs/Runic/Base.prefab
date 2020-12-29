@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 1744669413921779225}
   - component: {fileID: 5539109425380113158}
   - component: {fileID: 7902716280322594332}
-  - component: {fileID: 1387819127346043841}
+  - component: {fileID: 822644412766989678}
   - component: {fileID: 1237702243118753388}
   - component: {fileID: 9128450230952439567}
   - component: {fileID: 8394410407700574766}
+  - component: {fileID: 2308636251480898802}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -31,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 1119999092432553300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 2.02, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 465772522545352070}
   m_RootOrder: 0
@@ -83,8 +84,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &1387819127346043841
-SphereCollider:
+--- !u!65 &822644412766989678
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,10 +93,10 @@ SphereCollider:
   m_GameObject: {fileID: 1119999092432553300}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.49999997
-  m_Center: {x: 0, y: 0, z: 0.000000029802322}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1237702243118753388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +104,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119999092432553300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98c748f3768ab714a8449b60fb9edc5c, type: 3}
   m_Name: 
@@ -112,9 +113,9 @@ MonoBehaviour:
   debounceThreshold: 0.01
   localForward: {x: 0, y: 0, z: 1}
   localUp: {x: 0, y: 1, z: 0}
-  localCenter: {x: 0, y: 0, z: 0}
-  bounds: {x: 0, y: 0}
-  touchableCollider: {fileID: 1387819127346043841}
+  localCenter: {x: 0, y: 0, z: 0.5}
+  bounds: {x: 1, y: 1}
+  touchableCollider: {fileID: 822644412766989678}
 --- !u!114 &9128450230952439567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +123,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119999092432553300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
@@ -148,12 +149,12 @@ MonoBehaviour:
   - Event:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_MethodName: 
+        - m_Target: {fileID: 8394410407700574766}
+          m_MethodName: Touched
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -205,6 +206,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c27720f740a4d646b500c8235188eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nodeID: 1
+--- !u!114 &2308636251480898802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119999092432553300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 308b8d3e3c27f5f45b1fa5df9136104a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  touchDistance: 0.03
 --- !u!1 &1332085936538477095
 GameObject:
   m_ObjectHideFlags: 0
@@ -5408,6 +5423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b22c935b8f2e04dbe27c4049e9d5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 1
 --- !u!1 &6722177251189698785
 GameObject:
   m_ObjectHideFlags: 0

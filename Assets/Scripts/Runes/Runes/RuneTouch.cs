@@ -14,11 +14,6 @@ namespace LW.Runic
         
         bool touched = false;
 
-        void Start()
-		{
-            
-		}
-
         void Update()
 		{
             if (!GameObject.FindGameObjectWithTag("Right Pointer") && !GameObject.FindGameObjectWithTag("Left Pointer")) return;

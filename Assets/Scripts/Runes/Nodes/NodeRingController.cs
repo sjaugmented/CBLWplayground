@@ -4,8 +4,10 @@ using UnityEngine;
 
 namespace LW.Runic
 {
-    public class NodeController : MonoBehaviour
+    public class NodeRingController : MonoBehaviour
     {
+        [SerializeField] float duration = 1;
+
         void Start()
         {
 
@@ -13,12 +15,7 @@ namespace LW.Runic
 
         void Update()
         {
-
-        }
-
-        public void Touched()
-        {
-            Debug.Log("touched");
+            transform.LookAt(Camera.main.transform.position);
         }
     }
 }
