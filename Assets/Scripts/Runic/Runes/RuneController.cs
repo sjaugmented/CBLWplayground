@@ -83,9 +83,9 @@ namespace LW.Runic
 
         public void Touched()
         {
-            if (director.currentMode == RunicDirector.Mode.Node)
+            if (director.node)
 			{
-                GetComponentInChildren<NodeRingController>().
+                GetComponentInChildren<NodeRingController>().ActivateNodes();
             }
 
             // if touched with one finger
