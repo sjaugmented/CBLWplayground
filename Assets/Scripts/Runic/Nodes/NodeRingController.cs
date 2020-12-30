@@ -9,7 +9,9 @@ namespace LW.Runic
         [SerializeField] float duration = 1f;
         float timer = Mathf.Infinity;
 
-        void Update()
+		public float Timer { get => timer; set => timer = value; }
+
+		void Update()
         {
             timer += Time.deltaTime;
             transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);

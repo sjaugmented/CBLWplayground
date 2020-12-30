@@ -15,6 +15,8 @@ namespace LW.Runic
             string message = runeParent.address1 + "/node" + nodeIndex;
 
             runeParent.SendOSCMessage(message);
+
+            GetComponentInParent<NodeRingController>().Timer = Mathf.Infinity;
 		}
 
         public void NotTouched()

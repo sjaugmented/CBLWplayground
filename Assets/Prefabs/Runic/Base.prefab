@@ -818,6 +818,7 @@ MonoBehaviour:
   singleTouchFX: {fileID: 8300000, guid: 696da0c8372f0704abdc9e779db43bab, type: 3}
   doubleTouchFX: {fileID: 8300000, guid: e817530f0bc4e5c4bbe85ed23676a5c7, type: 3}
   particles: {fileID: 7110931076764455358}
+  nodeRing: {fileID: 3315867628450110172}
   force: 1
   address1: 
   address2: 
@@ -5652,7 +5653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51b22c935b8f2e04dbe27c4049e9d5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 1
+  duration: 10
 --- !u!1 &2684076427627926849
 GameObject:
   m_ObjectHideFlags: 0

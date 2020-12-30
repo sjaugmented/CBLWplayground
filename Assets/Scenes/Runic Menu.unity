@@ -898,6 +898,7 @@ MonoBehaviour:
   rightThumbsUp: 0
   rightL: 0
   rightPeace: 0
+  rightThree: 0
   leftHand: 0
   leftRockOn: 0
   leftFist: 0
@@ -907,6 +908,7 @@ MonoBehaviour:
   leftThumbsUp: 0
   leftL: 0
   leftPeace: 0
+  leftThree: 0
   rtPalmUpFloorUp: 0
   rtPalmUpCamFor: 0
   rtPalmRtCamRt: 0
@@ -1380,6 +1382,31 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 2452266860919343391, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: m_Name
+      value: Right Dorsal (gaze)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452266861439804036, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: m_Name
+      value: Right Toggle (gaze)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452266861635336249, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: m_Name
+      value: Left Toggle (node)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452266861703336820, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: currentMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2452266861703336820, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: node
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2452266861703336821, guid: 23c4ab46840cc35408ca844e9f76ab1c,
         type: 3}
       propertyPath: m_Name
@@ -1449,6 +1476,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3235132641226084495, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: m_Name
+      value: Left Dorsal (node)
       objectReference: {fileID: 0}
     - target: {fileID: 3331955200653639318, guid: 23c4ab46840cc35408ca844e9f76ab1c,
         type: 3}

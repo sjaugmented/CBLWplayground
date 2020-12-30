@@ -11,6 +11,7 @@ namespace LW.Runic
         [SerializeField] AudioClip singleTouchFX;
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
+        [SerializeField] NodeRingController nodeRing;
         bool oscTest = false;
 
         public float force = 1;
@@ -27,16 +28,14 @@ namespace LW.Runic
         RunicDirector director;
         HandTracking handtracking;
         EmissionModule emission;
-        GameObject nodeRing;
 
         void Start()
         {
             renderer = GetComponentInChildren<Renderer>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
-            //nodeRing = GetComponentInChildren<NodeRingController>().gameObject;
 
-            GetComponent<Rigidbody>().AddForce(transform.forward * force);
+			GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(address1 + "/receive", OnReceiveOSC);
@@ -44,9 +43,7 @@ namespace LW.Runic
 
             emission = particles.emission;
             emission.enabled = false;
-
-            //nodeRing.SetActive(false);
-        }
+		}
 
         void Update()
         {
@@ -85,7 +82,7 @@ namespace LW.Runic
         {
             if (director.node)
 			{
-                GetComponentInChildren<NodeRingController>().ActivateNodes();
+                nodeRing.ActivateNodes();
             }
 
             // if touched with one finger
