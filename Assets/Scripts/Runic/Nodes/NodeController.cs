@@ -8,11 +8,10 @@ namespace LW.Runic
     public class NodeController : MonoBehaviour
     {
         [SerializeField] int nodeIndex = 1;
-        public bool touched = false;
-
+        [SerializeField] AudioClip touchFX;
+        
         public void Touched()
         {
-            touched = true;
             RuneController runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
             string message = runeParent.address1 + "/node" + nodeIndex;
 
@@ -24,15 +23,21 @@ namespace LW.Runic
         public void NotTouched()
 		{
             // do nothing
-            touched = false;
 		}
 
         IEnumerator ExplodeAndDeactivate()
 		{
             GetComponentInParent<NodeRingController>().Timer = 0;
             // explode collider
-            yield return new WaitForSeconds(1);
+            GetComponent<MeshExploder>().Explode();
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<AudioSource>().PlayOneShot(touchFX);
+            while (GetComponent<AudioSource>().isPlaying)
+			{
+                yield return new WaitForSeconds(1);
+			}
             GetComponentInParent<NodeRingController>().Timer = Mathf.Infinity;
+            GetComponent<MeshRenderer>().enabled = true;
         }
     }
 }

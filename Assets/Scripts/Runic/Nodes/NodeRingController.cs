@@ -6,6 +6,7 @@ namespace LW.Runic
 {
     public class NodeRingController : MonoBehaviour
     {
+        [SerializeField] AudioClip expandFX;
         [SerializeField] float inactiveScale = 0.40757f;
         [SerializeField] float duration = 1f;
         [SerializeField] float growFactor = 1;
@@ -66,7 +67,7 @@ namespace LW.Runic
         IEnumerator ExpandRing()
 		{
             float timer = 0;
-
+            GetComponent<AudioSource>().PlayOneShot(expandFX);
             while (transform.localScale.x < 1)
             {
                 timer += Time.deltaTime;
