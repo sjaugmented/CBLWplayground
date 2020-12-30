@@ -9,15 +9,25 @@ namespace LW.Runic
     {
         [SerializeField] int nodeIndex = 1;
         [SerializeField] AudioClip touchFX;
+
+        bool touched = false;
+        public bool Touched
+		{
+            get { return touched; }
+            set { touched = value; }
+		}
         
-        public void Touched()
+        public void IsTouched()
         {
-            RuneController runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
-            string message = runeParent.address1 + "/node" + nodeIndex;
+            if (!Touched)
+			{
+                StartCoroutine("ExplodeAndDeactivate");
 
-            runeParent.SendOSCMessage(message);
+                RuneController runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
+                string message = runeParent.address1 + "/node" + nodeIndex;
 
-            StartCoroutine("ExplodeAndDeactivate");
+                runeParent.SendOSCMessage(message);
+			}
 		}
 
         public void NotTouched()
@@ -28,16 +38,14 @@ namespace LW.Runic
         IEnumerator ExplodeAndDeactivate()
 		{
             GetComponentInParent<NodeRingController>().Timer = 0;
-            // explode collider
+            Touched = true;
+
             GetComponent<MeshExploder>().Explode();
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<AudioSource>().PlayOneShot(touchFX);
-            while (GetComponent<AudioSource>().isPlaying)
-			{
-                yield return new WaitForSeconds(1);
-			}
-            GetComponentInParent<NodeRingController>().Timer = Mathf.Infinity;
-            GetComponent<MeshRenderer>().enabled = true;
+            yield return new WaitForSeconds(2f);
+            //Touched = false;
+            //GetComponentInParent<NodeRingController>().Timer = Mathf.Infinity;
         }
     }
 }

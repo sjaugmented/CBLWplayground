@@ -110,9 +110,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchDistanceScale: 0.1
-  touchThreshold: 0
-  distanceRight: Infinity
-  distanceLeft: Infinity
 --- !u!114 &3652140920063727774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,11 +124,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   minSpeed: 1
-  maxSpeed: 3
+  maxSpeed: 2
   minRotationSpeed: 90
   maxRotationSpeed: 360
   fadeWaitTime: 0.5
-  fadeTime: 1
+  fadeTime: 2
   useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
@@ -150,7 +147,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.306
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -344,9 +341,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchDistanceScale: 0.1
-  touchThreshold: 0
-  distanceRight: Infinity
-  distanceLeft: Infinity
 --- !u!114 &607618864398086068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,11 +355,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   minSpeed: 1
-  maxSpeed: 3
+  maxSpeed: 2
   minRotationSpeed: 90
   maxRotationSpeed: 360
   fadeWaitTime: 0.5
-  fadeTime: 1
+  fadeTime: 2
   useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
@@ -384,7 +378,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.306
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5774,7 +5768,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.26
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5968,9 +5962,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchDistanceScale: 0.1
-  touchThreshold: 0
-  distanceRight: Infinity
-  distanceLeft: Infinity
 --- !u!114 &3289537003392806546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5985,11 +5976,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   minSpeed: 1
-  maxSpeed: 3
+  maxSpeed: 2
   minRotationSpeed: 90
   maxRotationSpeed: 360
   fadeWaitTime: 0.5
-  fadeTime: 1
+  fadeTime: 2
   useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
@@ -6008,7 +5999,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.306
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -6202,9 +6193,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   touchDistanceScale: 0.1
-  touchThreshold: 0
-  distanceRight: Infinity
-  distanceLeft: Infinity
 --- !u!114 &1749656831262140897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6219,11 +6207,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   minSpeed: 1
-  maxSpeed: 3
+  maxSpeed: 2
   minRotationSpeed: 90
   maxRotationSpeed: 360
   fadeWaitTime: 0.5
-  fadeTime: 1
+  fadeTime: 2
   useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
@@ -6242,7 +6230,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.306
   m_Pitch: 1
   Loop: 0
   Mute: 0

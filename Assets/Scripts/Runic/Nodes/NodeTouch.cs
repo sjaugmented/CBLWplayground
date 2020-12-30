@@ -7,14 +7,14 @@ namespace LW.Runic
     public class NodeTouch : MonoBehaviour
     {
         [SerializeField] float touchDistanceScale = 0.5f; // TODO refactor to be relative to object size
-        public float touchThreshold;
+        float touchThreshold;
 
-        public float distanceRight = Mathf.Infinity;
-        public float distanceLeft = Mathf.Infinity;
+        float distanceRight = Mathf.Infinity;
+        float distanceLeft = Mathf.Infinity;
 
         bool touched = false;
 
-        void Update()
+		void Update()
         {
             touchThreshold = touchDistanceScale * transform.localScale.x;
 
@@ -34,7 +34,7 @@ namespace LW.Runic
             {
                 if (!touched)
                 {
-                    GetComponentInParent<NodeController>().Touched();
+                    GetComponentInParent<NodeController>().IsTouched();
                     touched = true;
                 }
             }

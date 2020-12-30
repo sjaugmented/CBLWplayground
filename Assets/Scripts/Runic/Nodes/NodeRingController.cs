@@ -11,8 +11,8 @@ namespace LW.Runic
         [SerializeField] float duration = 1f;
         [SerializeField] float growFactor = 1;
 
-        float timer = Mathf.Infinity;
-		public float Timer { get => timer; set => timer = value; }
+        float ringTimer = Mathf.Infinity;
+		public float Timer { get => ringTimer; set => ringTimer = value; }
 
         public List<NodeTouch> touchNodes = new List<NodeTouch>(); // TODO private
 
@@ -28,18 +28,23 @@ namespace LW.Runic
 
 		void Update()
         {
-            timer += Time.deltaTime;
+            ringTimer += Time.deltaTime;
             transform.rotation = Quaternion.LookRotation(transform.position - Camera.main.transform.position);
-            if (timer > duration) DeactivateNodeRing();
+            if (ringTimer > duration) DeactivateNodeRing();
         }
 
         public void ActivateNodeRing()
 		{
             gameObject.transform.localScale = new Vector3(inactiveScale, inactiveScale, inactiveScale);
             gameObject.SetActive(true);
-            timer = 0;
+            ringTimer = 0;
             StartCoroutine("ExpandRing");
-		}
+            foreach (NodeTouch node in touchNodes)
+            {
+                node.GetComponent<MeshRenderer>().enabled = true;
+                node.GetComponent<NodeController>().Touched = false;
+            }
+        }
 
         public void DeactivateNodeRing()
 		{
@@ -68,6 +73,13 @@ namespace LW.Runic
 		{
             float timer = 0;
             GetComponent<AudioSource>().PlayOneShot(expandFX);
+
+   //         foreach(NodeTouch node in touchNodes)
+			//{
+   //             node.GetComponent<MeshRenderer>().enabled = true;
+   //             node.GetComponent<NodeController>().Touched = false;
+   //         }
+
             while (transform.localScale.x < 1)
             {
                 timer += Time.deltaTime;
@@ -75,7 +87,7 @@ namespace LW.Runic
                 yield return null;
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
 
             ActivateTouchNodes();
         }
