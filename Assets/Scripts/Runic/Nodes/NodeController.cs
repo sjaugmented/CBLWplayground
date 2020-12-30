@@ -47,5 +47,13 @@ namespace LW.Runic
             //Touched = false;
             //GetComponentInParent<NodeRingController>().Timer = Mathf.Infinity;
         }
+
+        public void IsGazed()
+		{
+            if (GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>().Gaze)
+			{
+                Debug.Log("gazed at me!");
+			}
+		}
     }
 }

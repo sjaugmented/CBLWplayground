@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using LW.Core;
+using Microsoft.MixedReality.Toolkit;
 
 namespace LW.Runic
 {
-    public class RunicDirector : MonoBehaviour
+	public class RunicDirector : MonoBehaviour
     {
         [SerializeField] GameObject rightPointer, leftPointer, rightToggle, leftToggle, rightDorsal, leftDorsal;
 
@@ -15,8 +15,20 @@ namespace LW.Runic
 		public enum Mode { Touch, Node };
 		public Mode currentMode = Mode.Touch;
 
-		public bool node = false;
-		public bool gaze = false;
+		bool node = false;
+		public bool Node
+		{
+			get { return node; }
+			set { node = value; }
+		}
+
+		bool gaze = false;
+		public bool Gaze
+		{
+			get { return gaze; }
+			set { gaze = value; }
+		}
+
 
 		HandTracking handtracking;
         
@@ -69,6 +81,7 @@ namespace LW.Runic
 			{
 				ToggleGaze();
 			}
+
         }
 
         public void ToggleNode()
@@ -76,12 +89,14 @@ namespace LW.Runic
 			if (currentMode == Mode.Touch) currentMode = Mode.Node;
 			else currentMode = Mode.Touch;
 
-			node = !node;
+			Node = !Node;
 		}
 
 		public void ToggleGaze()
 		{
-			gaze = !gaze;
+			Gaze = !Gaze;
+
+			//gameObject.transform.position = CoreServices.InputSystem.EyeGazeProvider.HitPosition;
 		}
     }
 }
