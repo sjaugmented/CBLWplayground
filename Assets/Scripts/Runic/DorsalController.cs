@@ -24,7 +24,7 @@ namespace LW.Runic
 
         void Update()
         {
-            if (director.currentMode == RunicDirector.Mode.Build)
+            if (director.currentMode == RunicDirector.Mode.Touch)
 			{
                 SetDorsalMaterial(buildActiveColor);
 			}

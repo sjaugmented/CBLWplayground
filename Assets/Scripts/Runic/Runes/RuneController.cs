@@ -27,14 +27,16 @@ namespace LW.Runic
         RunicDirector director;
         HandTracking handtracking;
         EmissionModule emission;
+        GameObject nodeRing;
 
         void Start()
         {
             renderer = GetComponentInChildren<Renderer>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
-            GetComponent<Rigidbody>().AddForce(transform.forward * force);
+            //nodeRing = GetComponentInChildren<NodeRingController>().gameObject;
 
+            GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(address1 + "/receive", OnReceiveOSC);
@@ -42,6 +44,8 @@ namespace LW.Runic
 
             emission = particles.emission;
             emission.enabled = false;
+
+            //nodeRing.SetActive(false);
         }
 
         void Update()
@@ -79,9 +83,9 @@ namespace LW.Runic
 
         public void Touched()
         {
-            if (director.currentMode == RunicDirector.Mode.Touch)
+            if (director.currentMode == RunicDirector.Mode.Node)
 			{
-                
+                GetComponentInChildren<NodeRingController>().
             }
 
             // if touched with one finger

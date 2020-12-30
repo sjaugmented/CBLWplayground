@@ -31,6 +31,14 @@ namespace LW.Runic
         {
             if (leftHand)
 			{
+                if (collider.CompareTag("Right Pointer") || collider.CompareTag("Right Middle"))
+                {
+                    if (hands.rightThree)
+                    {
+                        ToggleGaze();
+                    }
+                }
+
                 if (collider.CompareTag("Right Pointer"))
                 {
 					if (!hands.rightPeace)
@@ -54,6 +62,14 @@ namespace LW.Runic
 
             else
 			{
+                if (collider.CompareTag("Left Pointer") || collider.CompareTag("Left Middle"))
+				{
+                    if (hands.leftThree)
+					{
+                        ToggleNode();
+					}
+				}
+
                 if (collider.CompareTag("Left Pointer"))
                 {
                     if (!hands.leftPeace)
@@ -86,12 +102,19 @@ namespace LW.Runic
             Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove		
         }
 
-        private void ToggleMode()
+        private void ToggleNode()
 		{
-			director.ToggleMode();
+			director.ToggleNode();
 			triggered = true;
 			StartCoroutine("ToggleDelay");
 		}
+
+        private void ToggleGaze()
+		{
+            director.ToggleGaze();
+            triggered = true;
+            StartCoroutine("ToggleDelay");
+        }
 
 		IEnumerator ToggleDelay()
         {

@@ -12,8 +12,11 @@ namespace LW.Runic
         List<GameObject> rightHand = new List<GameObject>();
         List<GameObject> leftHand = new List<GameObject>();
 
-		public enum Mode { Build, Touch };
-		public Mode currentMode = Mode.Build;
+		public enum Mode { Touch, Node };
+		public Mode currentMode = Mode.Touch;
+
+		public bool node = false;
+		public bool gaze = false;
 
 		HandTracking handtracking;
         
@@ -55,12 +58,30 @@ namespace LW.Runic
 
 			if (handtracking.leftHand) SetLeftHand(true);
 			else SetLeftHand(false);
+
+			///// DEV CONTROLS
+			if (Input.GetKeyDown(KeyCode.N))
+			{
+				ToggleNode();
+			}
+
+			if (Input.GetKeyDown(KeyCode.G))
+			{
+				ToggleGaze();
+			}
         }
 
-        public void ToggleMode()
+        public void ToggleNode()
 		{
-			if (currentMode == Mode.Build) currentMode = Mode.Touch;
-			else currentMode = Mode.Build;
+			if (currentMode == Mode.Touch) currentMode = Mode.Node;
+			else currentMode = Mode.Touch;
+
+			node = !node;
+		}
+
+		public void ToggleGaze()
+		{
+			gaze = !gaze;
 		}
     }
 }

@@ -33,7 +33,7 @@ namespace LW.Runic
 
         void Update()
         {
-            if (director.currentMode == RunicDirector.Mode.Touch)
+            if (director.currentMode == RunicDirector.Mode.Node)
 			{
                 
             }

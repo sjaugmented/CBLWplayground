@@ -43,6 +43,7 @@ namespace LW.Core
         public bool rightThumbsUp = false;
         public bool rightL = false;
         public bool rightPeace = false;
+        public bool rightThree = false;
 
         // left fingers
         public bool leftHand = false;
@@ -54,6 +55,7 @@ namespace LW.Core
         public bool leftThumbsUp = false;
         public bool leftL = false;
         public bool leftPeace = false;
+        public bool leftThree = false;
         #endregion
 
         public float rtPalmUpFloorUp;
@@ -436,6 +438,12 @@ namespace LW.Core
                     rightPeace = true;
                 }
                 else rightPeace = false;
+
+                if (!IsWithinRange(rtThumbVecPalmRight, 180, 80) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtRingForPalmFor, 0, bigMargin) && !IsWithinRange(rtPinkForPalmFor, 0, bigMargin))
+                {
+                    rightThree = true;
+                }
+                else rightThree = false;
             }
             else
             {
@@ -448,6 +456,7 @@ namespace LW.Core
                 rightThumbsUp = false;
                 rightL = false;
                 rightPeace = false;
+                rightThree = false;
             }
 
             // left hand
@@ -519,6 +528,12 @@ namespace LW.Core
                     leftPeace = true;
                 }
                 else leftPeace = false;
+
+                if (!IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltRingForPalmFor, 0, bigMargin) && !IsWithinRange(ltPinkForPalmFor, 0, bigMargin))
+                {
+                    leftThree = true;
+                }
+                else leftThree = false;
             }
             else
             {
@@ -531,6 +546,7 @@ namespace LW.Core
                 leftThumbsUp = false;
                 leftL = false;
                 leftPeace = false;
+                leftThree = false;
             }
         }
 

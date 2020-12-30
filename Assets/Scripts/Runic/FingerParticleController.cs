@@ -17,7 +17,7 @@ namespace LW.Runic
 
         void Update()
         {
-			if (director.currentMode == RunicDirector.Mode.Touch) emission.enabled = true;
+			if (director.currentMode == RunicDirector.Mode.Node) emission.enabled = true;
 			else emission.enabled = false;
 		}
     }

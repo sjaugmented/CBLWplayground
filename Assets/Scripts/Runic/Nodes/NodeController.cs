@@ -8,29 +8,18 @@ namespace LW.Runic
     public class NodeController : MonoBehaviour
     {
         [SerializeField] int nodeIndex = 1;
-        bool isTouched = false;
-
-        void Start()
-        {
-            
-        }
-
-        void Update()
-        {
-            
-        }
 
         public void Touched()
         {
-			string parentAddress = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>().address1;
-			Debug.Log("touched " + parentAddress + "/node" + nodeIndex);
+			RuneController runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
+            string message = runeParent.address1 + "/node" + nodeIndex;
 
-			//Debug.Log("touched node" + nodeID);
+            runeParent.SendOSCMessage(message);
 		}
 
         public void NotTouched()
 		{
-
+            // do nothing
 		}
     }
 }

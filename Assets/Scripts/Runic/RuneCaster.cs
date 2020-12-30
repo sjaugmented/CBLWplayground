@@ -61,7 +61,7 @@ namespace LW.Runic
             runeType = (RuneType)runeTypeIndex;
             proximitySensor += Time.deltaTime;
 
-            if (director.currentMode == RunicDirector.Mode.Build)
+            if (director.currentMode == RunicDirector.Mode.Touch)
 			{
                 
             }
