@@ -12,6 +12,7 @@ namespace LW.Runic
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
         [SerializeField] NodeRingController nodeRing;
+        [SerializeField] GameObject nodeIndicators;
         bool oscTest = false;
 
         public float force = 1;
@@ -56,6 +57,9 @@ namespace LW.Runic
             if (oscTest) StartCoroutine("PlayParticles");
 
             transform.SetSiblingIndex(siblingIndex);
+
+            if (director.node) nodeIndicators.SetActive(true);
+            else nodeIndicators.SetActive(false);
         }
 
         public void SetRuneAddressAndColor(int runeID, Color colorValue)
@@ -82,7 +86,7 @@ namespace LW.Runic
         {
             if (director.node)
 			{
-                nodeRing.ActivateNodes();
+                nodeRing.ActivateNodeRing();
             }
 
             // if touched with one finger

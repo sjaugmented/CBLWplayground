@@ -6,7 +6,7 @@ namespace LW.Runic
 {
     public class NodeTouch : MonoBehaviour
     {
-        [SerializeField] float touchDistanceScale = 1f; // TODO refactor to be relative to object size
+        [SerializeField] float touchDistanceScale = 0.5f; // TODO refactor to be relative to object size
         public float touchThreshold;
 
         public float distanceRight = Mathf.Infinity;
@@ -23,13 +23,11 @@ namespace LW.Runic
             if (GameObject.FindGameObjectWithTag("Right Pointer"))
             {
                 distanceRight = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Right Pointer").transform.position);
-                Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Right Pointer").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
             if (GameObject.FindGameObjectWithTag("Left Pointer"))
             {
                 distanceLeft = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Left Pointer").transform.position);
-                Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Left Pointer").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
             if (distanceRight < touchThreshold || distanceLeft < touchThreshold)
