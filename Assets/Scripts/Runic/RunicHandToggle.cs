@@ -13,6 +13,8 @@ namespace LW.Runic
     {
         [SerializeField] AudioClip singleTap;
         [SerializeField] AudioClip doubleTap;
+        [SerializeField] AudioClip nodeTap;
+        [SerializeField] AudioClip gazeTap;
         [SerializeField] bool leftHand = false;
         bool triggered = false;
 
@@ -36,6 +38,7 @@ namespace LW.Runic
                     if (hands.rightThree)
                     {
                         ToggleGaze();
+                        GetComponent<AudioSource>().PlayOneShot(gazeTap);
                     }
                 }
 
@@ -67,7 +70,8 @@ namespace LW.Runic
                     if (hands.leftThree)
 					{
                         ToggleNode();
-					}
+                        GetComponent<AudioSource>().PlayOneShot(nodeTap);
+                    }
 				}
 
                 if (collider.CompareTag("Left Pointer"))

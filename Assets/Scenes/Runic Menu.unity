@@ -1392,11 +1392,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Right Toggle (gaze)
       objectReference: {fileID: 0}
+    - target: {fileID: 2452266861439804038, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: nodeTap
+      value: 
+      objectReference: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
+    - target: {fileID: 2452266861439804038, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: gazeTap
+      value: 
+      objectReference: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}
     - target: {fileID: 2452266861635336249, guid: 23c4ab46840cc35408ca844e9f76ab1c,
         type: 3}
       propertyPath: m_Name
       value: Left Toggle (node)
       objectReference: {fileID: 0}
+    - target: {fileID: 2452266861635336251, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: nodeTap
+      value: 
+      objectReference: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
+    - target: {fileID: 2452266861635336251, guid: 23c4ab46840cc35408ca844e9f76ab1c,
+        type: 3}
+      propertyPath: gazeTap
+      value: 
+      objectReference: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}
     - target: {fileID: 2452266861703336820, guid: 23c4ab46840cc35408ca844e9f76ab1c,
         type: 3}
       propertyPath: currentMode
