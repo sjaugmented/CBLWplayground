@@ -15,14 +15,14 @@ namespace LW.Runic
 		public enum Mode { Touch, Node };
 		public Mode currentMode = Mode.Touch;
 
-		bool node = false;
+		public bool node = false;
 		public bool Node
 		{
 			get { return node; }
 			set { node = value; }
 		}
 
-		bool gaze = false;
+		public bool gaze = false;
 		public bool Gaze
 		{
 			get { return gaze; }

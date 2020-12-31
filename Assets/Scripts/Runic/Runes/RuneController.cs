@@ -58,7 +58,7 @@ namespace LW.Runic
 
             transform.SetSiblingIndex(siblingIndex);
 
-            if (director.node) nodeIndicators.SetActive(true);
+            if (director.Node) nodeIndicators.SetActive(true);
             else nodeIndicators.SetActive(false);
         }
 
@@ -84,7 +84,7 @@ namespace LW.Runic
 
         public void Touched()
         {
-            if (director.node)
+            if (director.Node)
 			{
                 nodeRing.ActivateNodeRing();
             }
