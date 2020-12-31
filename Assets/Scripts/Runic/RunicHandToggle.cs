@@ -34,9 +34,9 @@ namespace LW.Runic
 			{
                 if (collider.CompareTag("Right Pointer") || collider.CompareTag("Right Middle"))
                 {
-                    if (hands.rightThree)
+                    if (hands.rightOpen)
                     {
-                        ToggleGaze();
+                        ToggleNode();
                     }
                 }
 
@@ -65,9 +65,9 @@ namespace LW.Runic
 			{
                 if (collider.CompareTag("Left Pointer") || collider.CompareTag("Left Middle"))
 				{
-                    if (hands.leftThree)
+                    if (hands.leftOpen)
 					{
-                        ToggleNode();
+                        ToggleGaze();
                     }
 				}
 

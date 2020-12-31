@@ -427,18 +427,21 @@ namespace LW.Core
                 }
                 else rightPoint = false;
 
+                // look for right L
                 if (IsWithinRange(rtThumbVecPalmRight, 180, 80) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 160, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
                 {
                     rightL = true;
                 }
                 else rightL = false;
                 
+                // look for right peace sign
                 if (!IsWithinRange(rtThumbVecPalmRight, 180, 80) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtRingForPalmFor, 145, bigMargin) && IsWithinRange(rtPinkForPalmFor, 129, bigMargin))
                 {
                     rightPeace = true;
                 }
                 else rightPeace = false;
 
+                // look for right three fingers
                 if (!IsWithinRange(rtThumbVecPalmRight, 180, 80) && IsWithinRange(rtIndMidForPalmFor, 0, bigMargin) && IsWithinRange(rtIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(rtMidForPalmFor, 0, bigMargin) && IsWithinRange(rtRingForPalmFor, 0, bigMargin) && !IsWithinRange(rtPinkForPalmFor, 0, bigMargin))
                 {
                     rightThree = true;
@@ -523,12 +526,14 @@ namespace LW.Core
                 }
                 else leftL = false;
 
+                // left peace
                 if (!IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltRingForPalmFor, 145, bigMargin) && IsWithinRange(ltPinkForPalmFor, 129, bigMargin))
                 {
                     leftPeace = true;
                 }
                 else leftPeace = false;
 
+                // left three fingers
                 if (!IsWithinRange(ltThumbVecPalmRight, 0, 80) && IsWithinRange(ltIndMidForPalmFor, 0, bigMargin) && IsWithinRange(ltIndKnuckForPalmFor, 0, bigMargin) && IsWithinRange(ltMidForPalmFor, 0, bigMargin) && IsWithinRange(ltRingForPalmFor, 0, bigMargin) && !IsWithinRange(ltPinkForPalmFor, 0, bigMargin))
                 {
                     leftThree = true;
