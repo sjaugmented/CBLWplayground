@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using LW.Core;
+using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections.Generic;
 using UnityEngine;
-using LW.Core;
-using Microsoft.MixedReality.Toolkit;
 
 namespace LW.Runic
 {
 	public class RunicDirector : MonoBehaviour
     {
-        [SerializeField] GameObject rightPointer, leftPointer, rightToggle, leftToggle, rightDorsal, leftDorsal;
+		[SerializeField] AudioClip nodeTap;
+		[SerializeField] AudioClip gazeTap;
+
+		[SerializeField] GameObject rightPointer, leftPointer, rightToggle, leftToggle, rightDorsal, leftDorsal;
 
         List<GameObject> rightHand = new List<GameObject>();
         List<GameObject> leftHand = new List<GameObject>();
@@ -29,8 +32,8 @@ namespace LW.Runic
 			set { gaze = value; }
 		}
 
-
 		HandTracking handtracking;
+		AudioSource audio;
         
         void Start()
 		{
@@ -65,6 +68,8 @@ namespace LW.Runic
 
 		void Update()
         {
+			SetGazeProvider();
+			
 			if (handtracking.rightHand) SetRightHand(true);
 			else SetRightHand(false);
 
@@ -77,7 +82,7 @@ namespace LW.Runic
 				ToggleNode();
 			}
 
-			if (Input.GetKeyDown(KeyCode.G))
+			if (Input.GetKeyDown(KeyCode.M))
 			{
 				ToggleGaze();
 			}
@@ -89,14 +94,22 @@ namespace LW.Runic
 			if (currentMode == Mode.Touch) currentMode = Mode.Node;
 			else currentMode = Mode.Touch;
 
+			GetComponent<AudioSource>().PlayOneShot(nodeTap);
 			Node = !Node;
 		}
 
 		public void ToggleGaze()
 		{
+			GetComponent<AudioSource>().PlayOneShot(gazeTap);
 			Gaze = !Gaze;
+		}
 
-			//gameObject.transform.position = CoreServices.InputSystem.EyeGazeProvider.HitPosition;
+		private void SetGazeProvider()
+		{
+			GazeProvider gazeProvider = Camera.main.GetComponent<GazeProvider>();
+
+			if (Gaze) gazeProvider.enabled = true;
+			else gazeProvider.enabled = false;
 		}
     }
 }

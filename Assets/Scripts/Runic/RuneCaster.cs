@@ -67,6 +67,8 @@ namespace LW.Runic
             }
 
             #region DEV MODE
+            if (Input.GetKeyDown(KeyCode.B)) devMode = !devMode;
+
             if (devMode)
             {
                 if (Input.GetKeyDown(KeyCode.R))
