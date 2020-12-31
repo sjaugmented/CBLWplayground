@@ -30,16 +30,10 @@ namespace LW.Runic
 
         private void OnTriggerEnter(Collider collider)
         {
+            
+
             if (leftHand)
 			{
-                if (collider.CompareTag("Right Pointer") || collider.CompareTag("Right Middle"))
-                {
-                    if (hands.rightOpen)
-                    {
-                        ToggleNode();
-                    }
-                }
-
                 if (collider.CompareTag("Right Pointer"))
                 {
 					if (!hands.rightPeace)
@@ -56,21 +50,20 @@ namespace LW.Runic
 
                 if (collider.CompareTag("Right Middle"))
 				{
-                    SendOSC("leftTap2/");
-                    GetComponent<AudioSource>().PlayOneShot(singleTap);
+                    if (hands.rightThree)
+					{
+                        ToggleNode();
+					}
+                    else
+					{
+                        SendOSC("leftTap2/");
+                        GetComponent<AudioSource>().PlayOneShot(singleTap);
+					}
                 }
             }
 
             else
 			{
-                if (collider.CompareTag("Left Pointer") || collider.CompareTag("Left Middle"))
-				{
-                    if (hands.leftOpen)
-					{
-                        ToggleGaze();
-                    }
-				}
-
                 if (collider.CompareTag("Left Pointer"))
                 {
                     if (!hands.leftPeace)
@@ -87,8 +80,15 @@ namespace LW.Runic
 
                 if (collider.CompareTag("Left Middle"))
 				{
-                    SendOSC("rightTap2/");
-                    GetComponent<AudioSource>().PlayOneShot(singleTap);
+                    if (hands.leftThree)
+                    {
+                        ToggleGaze();
+                    }
+                    else
+					{
+                        SendOSC("rightTap2/");
+                        GetComponent<AudioSource>().PlayOneShot(singleTap);
+					}
                 }
             }            
             
