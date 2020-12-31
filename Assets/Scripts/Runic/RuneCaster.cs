@@ -61,11 +61,6 @@ namespace LW.Runic
             runeType = (RuneType)runeTypeIndex;
             proximitySensor += Time.deltaTime;
 
-            if (director.currentMode == RunicDirector.Mode.Touch)
-			{
-                
-            }
-
             #region DEV MODE
             if (Input.GetKeyDown(KeyCode.B)) devMode = !devMode;
 

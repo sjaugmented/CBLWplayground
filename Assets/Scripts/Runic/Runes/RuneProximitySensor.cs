@@ -33,11 +33,6 @@ namespace LW.Runic
 
         void Update()
         {
-            if (director.currentMode == RunicDirector.Mode.Node)
-			{
-                
-            }
-
             float distanceToUser = Vector3.Distance(transform.position, Camera.main.transform.position);
 
             if (distanceToUser < userProximitySet)

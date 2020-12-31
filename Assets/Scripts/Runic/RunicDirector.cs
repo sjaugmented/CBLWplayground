@@ -15,8 +15,8 @@ namespace LW.Runic
         List<GameObject> rightHand = new List<GameObject>();
         List<GameObject> leftHand = new List<GameObject>();
 
-		public enum Mode { Touch, Node };
-		public Mode currentMode = Mode.Touch;
+		//public enum Mode { Touch, Node };
+		//public Mode currentMode = Mode.Touch;
 
 		public bool node = false;
 		public bool Node
@@ -69,7 +69,7 @@ namespace LW.Runic
 		void Update()
         {
 			SetGazeProvider();
-			
+
 			if (handtracking.rightHand) SetRightHand(true);
 			else SetRightHand(false);
 
@@ -91,25 +91,51 @@ namespace LW.Runic
 
         public void ToggleNode()
 		{
-			if (currentMode == Mode.Touch) currentMode = Mode.Node;
-			else currentMode = Mode.Touch;
-
-			GetComponent<AudioSource>().PlayOneShot(nodeTap);
-			Node = !Node;
+			if (Node && Gaze)
+			{
+				Node = false;
+				Gaze = false;
+				GetComponent<AudioSource>().PlayOneShot(nodeTap);
+			}
+			else if (Node && !Gaze)
+			{
+				Node = false;
+				GetComponent<AudioSource>().PlayOneShot(nodeTap);
+			}
+			else
+			{
+				Node = true;
+				GetComponent<AudioSource>().PlayOneShot(nodeTap);
+			}
 		}
 
 		public void ToggleGaze()
 		{
-			GetComponent<AudioSource>().PlayOneShot(gazeTap);
-			Gaze = !Gaze;
+
+			if (Gaze && Node)
+			{
+				Gaze = false;
+				GetComponent<AudioSource>().PlayOneShot(gazeTap);
+			}
+			else if (!Gaze && Node)
+			{
+				Gaze = true;
+				GetComponent<AudioSource>().PlayOneShot(gazeTap);
+			}
+			else if (!Gaze && !Node)
+			{
+				Gaze = true;
+				Node = true;
+				GetComponent<AudioSource>().PlayOneShot(nodeTap);
+			}
 		}
 
 		private void SetGazeProvider()
 		{
-			GazeProvider gazeProvider = Camera.main.GetComponent<GazeProvider>();
+			//GazeProvider gazeProvider = Camera.main.GetComponent<GazeProvider>();
 
-			if (Gaze) gazeProvider.enabled = true;
-			else gazeProvider.enabled = false;
+			//if (Gaze) gazeProvider.enabled = true;
+			//else gazeProvider.enabled = false;
 		}
     }
 }

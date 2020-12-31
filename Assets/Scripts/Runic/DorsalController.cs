@@ -24,14 +24,14 @@ namespace LW.Runic
 
         void Update()
         {
-            if (director.currentMode == RunicDirector.Mode.Touch)
-			{
-                SetDorsalMaterial(buildActiveColor);
-			}
-			else
-			{
-                SetDorsalMaterial(buildInactiveColor);
-            }
+   //         if (director.currentMode == RunicDirector.Mode.Touch)
+			//{
+   //             SetDorsalMaterial(buildActiveColor);
+			//}
+			//else
+			//{
+   //             SetDorsalMaterial(buildInactiveColor);
+   //         }
         }
 
 		private void SetDorsalMaterial(Material mat)

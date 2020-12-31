@@ -11,6 +11,7 @@ namespace LW.Runic
         [SerializeField] AudioClip touchFX;
 
         bool touched = false;
+        float gazeTimer = 0;
         public bool Touched
 		{
             get { return touched; }
@@ -52,8 +53,13 @@ namespace LW.Runic
 		{
             if (GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>().Gaze)
 			{
-                Debug.Log("gazed at me!");
-			}
+                StartCoroutine("ExplodeAndDeactivate");
+
+                RuneController runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
+                string message = runeParent.address1 + "/node" + nodeIndex;
+
+                runeParent.SendOSCMessage(message);
+            }
 		}
     }
 }

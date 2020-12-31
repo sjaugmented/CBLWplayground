@@ -17,8 +17,8 @@ namespace LW.Runic
 
         void Update()
         {
-			if (director.currentMode == RunicDirector.Mode.Node) emission.enabled = true;
-			else emission.enabled = false;
+			//if (director.currentMode == RunicDirector.Mode.Node) emission.enabled = true;
+			//else emission.enabled = false;
 		}
     }
 

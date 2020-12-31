@@ -93,14 +93,14 @@ namespace LW.Runic
             if (!handtracking.rightPeace && !handtracking.leftPeace)
             {
                 isTouched = true;
-                //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
-                SendOSCMessage(address1);
+				GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
+				SendOSCMessage(address1);
             }
             else
             {
                 StartCoroutine("TwoFingerTouchFlicker");
-                //GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
-                SendOSCMessage(address2);
+				GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
+				SendOSCMessage(address2);
             }
         }
 
@@ -108,6 +108,14 @@ namespace LW.Runic
         {
             isTouched = false;
         }
+
+        public void Gazed()
+		{
+            if (director.Gaze)
+			{
+                nodeRing.ActivateNodeRing();
+            }
+		}
 
         public void SendOSCMessage(string address, float value = 0.5f)
         {
