@@ -7,6 +7,7 @@ namespace LW.Runic
 {
 	public class RunicDirector : MonoBehaviour
     {
+		[SerializeField] GameObject gazeHud;
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
@@ -75,6 +76,9 @@ namespace LW.Runic
 
 			if (handtracking.leftHand) SetLeftHand(true);
 			else SetLeftHand(false);
+
+			if (Gaze) gazeHud.SetActive(true);
+			else gazeHud.SetActive(false);
 
 			///// DEV CONTROLS
 			if (Input.GetKeyDown(KeyCode.N))

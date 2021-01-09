@@ -34,64 +34,69 @@ namespace LW.Runic
 
             if (leftHand)
 			{
-                if (collider.CompareTag("Right Pointer"))
-                {
-					if (!hands.rightPeace)
-					{
-						SendOSC("leftTap1/");
-						GetComponent<AudioSource>().PlayOneShot(singleTap);
-					}
-					else
-					{
-						SendOSC("leftTap/peace/");
-						GetComponent<AudioSource>().PlayOneShot(doubleTap);
-					}
-				}
-
-                if (collider.CompareTag("Right Middle"))
+                if (hands.leftFist)
 				{
-                    if (hands.rightThree)
+                    if (collider.CompareTag("Right Pointer"))
 					{
                         ToggleNode();
 					}
-                    else
-					{
+				}
+                else
+				{
+                    if (collider.CompareTag("Right Pointer"))
+                    {
+                        if (!hands.rightPeace)
+                        {
+                            SendOSC("leftTap1/");
+                            GetComponent<AudioSource>().PlayOneShot(singleTap);
+                        }
+                        else
+                        {
+                            SendOSC("leftTap/peace/");
+                            GetComponent<AudioSource>().PlayOneShot(doubleTap);
+                        }
+                    }
+
+                    if (collider.CompareTag("Right Middle"))
+                    {
                         SendOSC("leftTap2/");
                         GetComponent<AudioSource>().PlayOneShot(singleTap);
-					}
+                    }
                 }
             }
 
             else
 			{
-                if (collider.CompareTag("Left Pointer"))
-                {
-                    if (!hands.leftPeace)
-                    {
-                        SendOSC("rightTap1/");
-                        GetComponent<AudioSource>().PlayOneShot(singleTap);
-                    }
-                    else
-                    {
-                        SendOSC("rightTap/peace/");
-                        GetComponent<AudioSource>().PlayOneShot(doubleTap);
-                    }
-                }
-
-                if (collider.CompareTag("Left Middle"))
+                if (hands.rightFist)
 				{
-                    if (hands.leftThree)
-                    {
-                        ToggleGaze();
-                    }
-                    else
+                    if (collider.CompareTag("Left Pointer"))
 					{
+                        ToggleGaze();
+					}
+				}
+                else
+				{
+                    if (collider.CompareTag("Left Pointer"))
+                    {
+                        if (!hands.leftPeace)
+                        {
+                            SendOSC("rightTap1/");
+                            GetComponent<AudioSource>().PlayOneShot(singleTap);
+                        }
+                        else
+                        {
+                            SendOSC("rightTap/peace/");
+                            GetComponent<AudioSource>().PlayOneShot(doubleTap);
+                        }
+                    }
+
+                    if (collider.CompareTag("Left Middle"))
+                    {
                         SendOSC("rightTap2/");
                         GetComponent<AudioSource>().PlayOneShot(singleTap);
-					}
+                    }
                 }
             }            
-            
         }
 
         private void SendOSC(string messageToSend)
