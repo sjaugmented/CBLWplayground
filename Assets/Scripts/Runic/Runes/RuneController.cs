@@ -55,13 +55,6 @@ namespace LW.Runic
 
         }
 
-        private void SetMaterialOpacity(float v)
-		{
-            Color matColor = runeMaterial.color;
-            matColor.a = v;
-            runeMaterial.color = matColor;
-        }
-
         void Update()
         {
             if (director.Node)
@@ -81,17 +74,6 @@ namespace LW.Runic
             }
             else
 			{
-                //if (!director.Node)
-                //{
-                //                renderer.material = runeMaterial;
-                //}
-                //            else
-                //{
-                //                Color matColor = runeMaterial.color;
-                //                matColor.a = 0.8f;
-                //                renderer.material.color = matColor;
-                //}
-
                 renderer.material = runeMaterial;
 			}
 
@@ -99,6 +81,13 @@ namespace LW.Runic
 
             // ordered within Rune Grid for better gathering
             transform.SetSiblingIndex(siblingIndex);
+        }
+
+        private void SetMaterialOpacity(float v)
+		{
+            Color matColor = runeMaterial.color;
+            matColor.a = v;
+            runeMaterial.color = matColor;
         }
 
         public void SetRuneAddressAndMaterial(int runeID, Material material)
