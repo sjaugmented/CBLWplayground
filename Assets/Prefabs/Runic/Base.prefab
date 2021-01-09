@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 8091916883407277581}
   - component: {fileID: 623606313519422440}
   m_Layer: 0
-  m_Name: Sphere (1)
+  m_Name: East
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,8 +107,8 @@ MonoBehaviour:
   useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
-  useMeshBoundsCenter: 0
-  allowShadows: 0
+  useMeshBoundsCenter: 1
+  allowShadows: 1
   shadersAlreadyHandleTransparency: 0
 --- !u!82 &7175946007507815548
 AudioSource:
@@ -309,7 +309,7 @@ GameObject:
   - component: {fileID: 8394410407700574766}
   - component: {fileID: 2308636251480898802}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: North
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5771,7 +5771,7 @@ GameObject:
   - component: {fileID: 3315867628450110172}
   - component: {fileID: 1099181791046390608}
   m_Layer: 0
-  m_Name: Node Ring
+  m_Name: Node Compass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5926,7 +5926,7 @@ GameObject:
   - component: {fileID: 2485660559899836790}
   - component: {fileID: 5353329316797387605}
   m_Layer: 0
-  m_Name: Sphere (2)
+  m_Name: South
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6217,7 +6217,7 @@ GameObject:
   - component: {fileID: 3018068527275804657}
   - component: {fileID: 3940027132060144120}
   m_Layer: 0
-  m_Name: Sphere (3)
+  m_Name: West
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6585,7 +6585,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7970217009649064584
 Transform:
   m_ObjectHideFlags: 0

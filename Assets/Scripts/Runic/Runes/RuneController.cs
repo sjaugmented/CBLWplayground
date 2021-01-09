@@ -19,7 +19,12 @@ namespace LW.Runic
         public string address1;
         public string address2;
         
-        Color color;
+        Color runeColor;
+        public Color RuneColor
+		{
+            get { return runeColor; }
+		}
+
         bool isTouched = false;
         
         int runeColors;
@@ -56,14 +61,14 @@ namespace LW.Runic
             {
                 renderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
             }
-            else renderer.material.color = color;
+            else renderer.material.color = runeColor;
 
             if (oscTest) StartCoroutine("PlayParticles");
 
             transform.SetSiblingIndex(siblingIndex);
 
-            if (director.Node) nodeIndicators.SetActive(true);
-            else nodeIndicators.SetActive(false);
+            if (director.Node) nodeRing.gameObject.SetActive(true);
+            else nodeRing.gameObject.SetActive(false);
         }
 
         public void SetRuneAddressAndColor(int runeID, Color colorValue)
@@ -77,9 +82,9 @@ namespace LW.Runic
 			address1 = name + runeID + "a".ToString();
             address2 = name + runeID + "b".ToString();
             
-            color = colorValue;
+            runeColor = colorValue;
             MainModule particlesMain = particles.main;
-            particlesMain.startColor = color;
+            particlesMain.startColor = runeColor;
 
             gameObject.name = runeID + name;
 

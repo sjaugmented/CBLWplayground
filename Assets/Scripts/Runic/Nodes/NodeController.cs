@@ -17,6 +17,15 @@ namespace LW.Runic
             get { return touched; }
             set { touched = value; }
 		}
+
+        RuneController runeParent;
+
+        void Start()
+		{
+            runeParent = runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
+
+            GetComponent<Renderer>().material.color = runeParent.RuneColor;
+        }
         
         public void IsTouched()
         {
@@ -24,7 +33,6 @@ namespace LW.Runic
 			{
                 StartCoroutine("ExplodeAndDeactivate");
 
-                RuneController runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
                 string message = runeParent.address1 + "/node" + nodeIndex;
 
                 runeParent.SendOSCMessage(message);

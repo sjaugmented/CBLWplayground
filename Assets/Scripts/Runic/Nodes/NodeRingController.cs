@@ -49,8 +49,9 @@ namespace LW.Runic
         public void DeactivateNodeRing()
 		{
             DeactivateTouchNodes();
+            StartCoroutine("ShrinkRing");
 
-            gameObject.SetActive(false);
+            //gameObject.SetActive(false);
 		}
 
         void ActivateTouchNodes()
@@ -74,12 +75,6 @@ namespace LW.Runic
             float timer = 0;
             GetComponent<AudioSource>().PlayOneShot(expandFX);
 
-   //         foreach(NodeTouch node in touchNodes)
-			//{
-   //             node.GetComponent<MeshRenderer>().enabled = true;
-   //             node.GetComponent<NodeController>().Touched = false;
-   //         }
-
             while (transform.localScale.x < 1)
             {
                 timer += Time.deltaTime;
@@ -90,6 +85,27 @@ namespace LW.Runic
             yield return new WaitForSeconds(0.1f);
 
             ActivateTouchNodes();
+        }
+
+        IEnumerator ShrinkRing()
+        {
+            float timer = 0;
+
+            while (transform.localScale.x > inactiveScale)
+            {
+                timer += Time.deltaTime;
+                transform.localScale -= new Vector3(inactiveScale, inactiveScale, inactiveScale) * Time.deltaTime * growFactor;
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(0.1f);
+
+            foreach (NodeTouch node in touchNodes)
+            {
+                node.GetComponent<MeshRenderer>().enabled = true;
+                node.GetComponent<NodeController>().Touched = false;
+            }
+
         }
     }
 }
