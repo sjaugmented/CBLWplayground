@@ -16,6 +16,14 @@ namespace LW.Runic
         [SerializeField] float castDelay = 0.5f; //TODO hardcode
         [SerializeField] float maxPalmDist = 0.5f; //TODO hardcode
         //[SerializeField] float resetWindow = 2; //TODO hardcode
+        
+        [SerializeField] float defaultOSCValue = 127;
+
+        public float DefaultOSCValue
+		{
+            get { return defaultOSCValue; }
+            set { defaultOSCValue = value; }
+		}
 
         [Header("Hook Ups")]
         [SerializeField] GameObject masterRune;

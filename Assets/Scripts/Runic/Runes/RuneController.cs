@@ -24,6 +24,7 @@ namespace LW.Runic
         
         int runeColors;
         int siblingIndex;
+        float defaultOSCValue;
 
         Renderer renderer;
         RunicDirector director;
@@ -44,7 +45,10 @@ namespace LW.Runic
 
             emission = particles.emission;
             emission.enabled = false;
-		}
+
+            defaultOSCValue = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().DefaultOSCValue;
+
+        }
 
         void Update()
         {
@@ -117,8 +121,17 @@ namespace LW.Runic
             }
 		}
 
-        public void SendOSCMessage(string address, float value = 0.5f)
+        public void SendOSCMessage(string address)
         {
+            OscMessage message = new OscMessage();
+            message.address = address;
+            message.values.Add(defaultOSCValue);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().Send(message);
+            Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove
+        }
+
+        public void SendOSCMessage(string address, float value)
+		{
             OscMessage message = new OscMessage();
             message.address = address;
             message.values.Add(value);
