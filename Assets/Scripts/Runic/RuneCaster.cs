@@ -205,7 +205,7 @@ namespace LW.Runic
                 int runeID = runeMaterials.Count - runeBelt.GetCurrentRuneAmmo(runeType);
 
                 RuneController currentRune = rune.GetComponent<RuneController>();
-                currentRune.SetRuneAddressAndColor(runeID, runeMaterials[runeMaterialIndex]);
+                currentRune.SetRuneAddressAndMaterial(runeID, runeMaterials[runeMaterialIndex]);
 
                 float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
                 if (spellForce < 7.5f) spellForce = 7.5f;

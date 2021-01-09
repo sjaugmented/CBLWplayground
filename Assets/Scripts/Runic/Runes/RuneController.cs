@@ -55,35 +55,53 @@ namespace LW.Runic
 
         }
 
+        private void SetMaterialOpacity(float v)
+		{
+            Color matColor = runeMaterial.color;
+            matColor.a = v;
+            runeMaterial.color = matColor;
+        }
+
         void Update()
         {
-            if (isTouched)
+            if (director.Node)
+			{
+				nodeRing.gameObject.SetActive(true);
+                SetMaterialOpacity(0.8f);
+			}
+			else
+			{
+				nodeRing.gameObject.SetActive(false);
+                SetMaterialOpacity(1);
+			}
+
+			if (isTouched)
             {
                 renderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
             }
             else
 			{
-				if (!director.Node)
-				{
-                    renderer.material = runeMaterial;
-				}
-                else
-				{
-                    Color matColor = runeMaterial.color;
-                    matColor.a = 0.8f;
-                    renderer.material.color = matColor;
-				}
+                //if (!director.Node)
+                //{
+                //                renderer.material = runeMaterial;
+                //}
+                //            else
+                //{
+                //                Color matColor = runeMaterial.color;
+                //                matColor.a = 0.8f;
+                //                renderer.material.color = matColor;
+                //}
+
+                renderer.material = runeMaterial;
 			}
 
 			if (oscTest) StartCoroutine("PlayParticles");
 
+            // ordered within Rune Grid for better gathering
             transform.SetSiblingIndex(siblingIndex);
-
-            if (director.Node) nodeRing.gameObject.SetActive(true);
-            else nodeRing.gameObject.SetActive(false);
         }
 
-        public void SetRuneAddressAndColor(int runeID, Material material)
+        public void SetRuneAddressAndMaterial(int runeID, Material material)
         {
             string name = transform.GetChild(0).name;
             runeColors = FindObjectOfType<RuneCaster>().GetRuneColorCount();
