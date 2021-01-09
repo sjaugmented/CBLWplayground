@@ -7,7 +7,7 @@ namespace LW.Runic
     public class NodeRingController : MonoBehaviour
     {
         [SerializeField] AudioClip expandFX;
-        [SerializeField] float inactiveScale = 0.40757f;
+        [SerializeField] float inactiveScale = 0.24352f;
         [SerializeField] float duration = 1f;
         [SerializeField] float growFactor = 1;
 
@@ -98,7 +98,7 @@ namespace LW.Runic
                 yield return null;
             }
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
 
             foreach (NodeTouch node in touchNodes)
             {

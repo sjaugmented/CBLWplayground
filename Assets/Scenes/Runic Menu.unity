@@ -1065,14 +1065,14 @@ MonoBehaviour:
   resetFX: {fileID: 8300000, guid: 81258ead3322992419777a1cf658d897, type: 3}
   gatherFX: {fileID: 8300000, guid: ffc69f3863596a448a66d9775595277f, type: 3}
   runeType: 0
-  runeColors:
-  - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 0.9676375, b: 0, a: 1}
-  - {r: 0, g: 1, b: 0.052033424, a: 1}
-  - {r: 0, g: 0.9806142, b: 1, a: 1}
-  - {r: 0, g: 0.28511548, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0.8970642, a: 1}
+  runeMaterials:
+  - {fileID: 2100000, guid: aecca2fcfb0b57942935955df571d56c, type: 2}
+  - {fileID: 2100000, guid: d695e7707c171e44db965fae8c740094, type: 2}
+  - {fileID: 2100000, guid: 25762952ea60a5142af2b243d2c08c3b, type: 2}
+  - {fileID: 2100000, guid: 8a1f42e73256b414c8eb0afbdd656507, type: 2}
+  - {fileID: 2100000, guid: 28b9823c27cfcad46af1abba39057aa3, type: 2}
+  - {fileID: 2100000, guid: bc0f6dfc9199d784299109c45e17736c, type: 2}
+  - {fileID: 2100000, guid: 9faa0fc7210431e4488ebb8e06e882af, type: 2}
 --- !u!4 &1153755261
 Transform:
   m_ObjectHideFlags: 0
@@ -1080,8 +1080,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1153755259}
-  m_LocalRotation: {x: 0.07372355, y: -0.9228574, z: 0.3053173, w: 0.22289121}
-  m_LocalPosition: {x: 0.33536133, y: 0.5005696, z: 0.9410216}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1359,11 +1359,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2452266861703336820, guid: 23c4ab46840cc35408ca844e9f76ab1c,
-        type: 3}
-      propertyPath: gaze
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2452266861703336821, guid: 23c4ab46840cc35408ca844e9f76ab1c,
         type: 3}
       propertyPath: m_Name

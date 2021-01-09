@@ -38,8 +38,8 @@ namespace LW.Runic
         public RuneType runeType; // TODO private; easy shape switching in inspector
         int runeTypeIndex = 0; // automates rune selection
         
-        [SerializeField] List<Color> runeColors = new List<Color>();
-        int runeColorIndex = 0;
+        [SerializeField] List<Material> runeMaterials = new List<Material>();
+        int runeMaterialIndex = 0;
         
         // stores live drums, for dev purposes only TODO make private
         List<RuneController> liveRunes = new List<RuneController>();
@@ -58,7 +58,7 @@ namespace LW.Runic
             runeBelt = GetComponent<RuneBelt>();
             audio = GetComponent<AudioSource>();
 
-            runeBelt.ResetAllRuneAmmo(runeColors.Count);
+            runeBelt.ResetAllRuneAmmo(runeMaterials.Count);
             masterRune.SetActive(false);
         }
 
@@ -197,15 +197,15 @@ namespace LW.Runic
                 }
 
 
-                runeColorIndex = runeColors.Count - runeBelt.GetCurrentRuneAmmo(runeType);
+                runeMaterialIndex = runeMaterials.Count - runeBelt.GetCurrentRuneAmmo(runeType);
 
                 // reduce ammo
                 runeBelt.ReduceCurrentRuneAmmo(runeType);
                 
-                int runeID = runeColors.Count - runeBelt.GetCurrentRuneAmmo(runeType);
+                int runeID = runeMaterials.Count - runeBelt.GetCurrentRuneAmmo(runeType);
 
                 RuneController currentRune = rune.GetComponent<RuneController>();
-                currentRune.SetRuneAddressAndColor(runeID, runeColors[runeColorIndex]);
+                currentRune.SetRuneAddressAndColor(runeID, runeMaterials[runeMaterialIndex]);
 
                 float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
                 if (spellForce < 7.5f) spellForce = 7.5f;
@@ -224,13 +224,13 @@ namespace LW.Runic
 
 		private void SetNextRuneColor()
         {
-            if (runeColorIndex < runeColors.Count - 1)
+            if (runeMaterialIndex < runeMaterials.Count - 1)
             {
-                runeColorIndex++;
+                runeMaterialIndex++;
             }
             else
             {
-                runeColorIndex = 0;
+                runeMaterialIndex = 0;
             }
         }
 
@@ -259,8 +259,8 @@ namespace LW.Runic
             }
 
             // reset ammo counts, id, shape, color
-            runeBelt.ResetAllRuneAmmo(runeColors.Count);
-            runeColorIndex = 0;
+            runeBelt.ResetAllRuneAmmo(runeMaterials.Count);
+            runeMaterialIndex = 0;
         }
 
         private IEnumerator DropAndDestroy(RuneController drum)
@@ -278,7 +278,7 @@ namespace LW.Runic
 
         public int GetRuneColorCount()
 		{
-            return runeColors.Count;
+            return runeMaterials.Count;
 		}
     }
 }

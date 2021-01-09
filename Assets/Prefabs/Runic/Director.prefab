@@ -541,7 +541,7 @@ MonoBehaviour:
   rightDorsal: {fileID: 2452266860919343391}
   leftDorsal: {fileID: 3235132641226084495}
   node: 1
-  gaze: 1
+  gaze: 0
 --- !u!82 &947464551
 AudioSource:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ namespace LW.Runic
 		{
             runeParent = runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
 
-            GetComponent<Renderer>().material.color = runeParent.RuneColor;
+            GetComponent<Renderer>().material.color = runeParent.RuneMaterial.color;
         }
         
         public void IsTouched()

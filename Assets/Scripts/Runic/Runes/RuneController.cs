@@ -19,10 +19,10 @@ namespace LW.Runic
         public string address1;
         public string address2;
         
-        Color runeColor;
-        public Color RuneColor
+        Material runeMaterial;
+        public Material RuneMaterial
 		{
-            get { return runeColor; }
+            get { return runeMaterial; }
 		}
 
         bool isTouched = false;
@@ -61,9 +61,21 @@ namespace LW.Runic
             {
                 renderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
             }
-            else renderer.material.color = runeColor;
+            else
+			{
+				if (!director.Node)
+				{
+                    renderer.material = runeMaterial;
+				}
+                else
+				{
+                    Color matColor = runeMaterial.color;
+                    matColor.a = 0.8f;
+                    renderer.material.color = matColor;
+				}
+			}
 
-            if (oscTest) StartCoroutine("PlayParticles");
+			if (oscTest) StartCoroutine("PlayParticles");
 
             transform.SetSiblingIndex(siblingIndex);
 
@@ -71,7 +83,7 @@ namespace LW.Runic
             else nodeRing.gameObject.SetActive(false);
         }
 
-        public void SetRuneAddressAndColor(int runeID, Color colorValue)
+        public void SetRuneAddressAndColor(int runeID, Material material)
         {
             string name = transform.GetChild(0).name;
             runeColors = FindObjectOfType<RuneCaster>().GetRuneColorCount();
@@ -82,9 +94,9 @@ namespace LW.Runic
 			address1 = name + runeID + "a".ToString();
             address2 = name + runeID + "b".ToString();
             
-            runeColor = colorValue;
+            runeMaterial = material;
             MainModule particlesMain = particles.main;
-            particlesMain.startColor = runeColor;
+            particlesMain.startColor = runeMaterial.color;
 
             gameObject.name = runeID + name;
 
