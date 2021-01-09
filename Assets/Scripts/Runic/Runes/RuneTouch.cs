@@ -24,12 +24,14 @@ namespace LW.Runic
 			{
                 distanceRight = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Right Pointer").transform.position);
                 Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Right Pointer").GetComponent<Collider>(), GetComponent<Collider>());
+                Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Right Middle").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
 			if (GameObject.FindGameObjectWithTag("Left Pointer"))
 			{
                 distanceLeft = Vector3.Distance(transform.position, GameObject.FindGameObjectWithTag("Left Pointer").transform.position);
                 Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Left Pointer").GetComponent<Collider>(), GetComponent<Collider>());
+                Physics.IgnoreCollision(GameObject.FindGameObjectWithTag("Left Middle").GetComponent<Collider>(), GetComponent<Collider>());
             }
 
             if (distanceRight < touchThreshold || distanceLeft < touchThreshold)
