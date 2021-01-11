@@ -33,7 +33,7 @@ namespace LW.Runic
 			{
                 StartCoroutine("ExplodeAndDeactivate");
 
-                string message = runeParent.address1 + "/node" + nodeIndex;
+                string message = runeParent.addressBasic1 + "/node" + nodeIndex;
 
                 runeParent.SendOSCMessage(message);
 			}
@@ -46,7 +46,7 @@ namespace LW.Runic
 
         IEnumerator ExplodeAndDeactivate()
 		{
-            GetComponentInParent<NodeRingController>().Timer = 0;
+            GetComponentInParent<NodeCompass>().Timer = 0;
             Touched = true;
 
             GetComponent<MeshExploder>().Explode();
@@ -64,7 +64,7 @@ namespace LW.Runic
                 StartCoroutine("ExplodeAndDeactivate");
 
                 RuneController runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
-                string message = runeParent.address1 + "/node" + nodeIndex;
+                string message = runeParent.addressBasic1 + "/node" + nodeIndex;
 
                 runeParent.SendOSCMessage(message);
             }

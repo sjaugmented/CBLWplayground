@@ -5729,7 +5729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   expandFX: {fileID: 8300000, guid: 43e1b82a1d5239c4285a86cc639b5a6b, type: 3}
   inactiveScale: 0.24352
-  duration: 1.5
+  duration: 1
   growFactor: 5
   touchNodes: []
 --- !u!82 &1099181791046390608

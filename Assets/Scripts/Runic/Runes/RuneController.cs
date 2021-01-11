@@ -11,13 +11,15 @@ namespace LW.Runic
         [SerializeField] AudioClip singleTouchFX;
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
-        [SerializeField] NodeRingController nodeRing;
+        [SerializeField] NodeCompass nodeRing;
         [SerializeField] GameObject nodeIndicators;
         bool oscTest = false;
 
         public float force = 1;
-        public string address1;
-        public string address2;
+        public string addressBasic1;
+        public string addressBasic2;
+        public string addressNode1;
+        public string addressNode2;
         
         Material runeMaterial;
         public Material RuneMaterial
@@ -45,7 +47,7 @@ namespace LW.Runic
 			GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(address1 + "/receive", OnReceiveOSC);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/receive", OnReceiveOSC);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(OnReceiveOSC);
 
             emission = particles.emission;
@@ -98,8 +100,10 @@ namespace LW.Runic
             if (name == "Cube") runeID += runeColors;
 			if (name == "Diamond") runeID += runeColors * 2;
 
-			address1 = name + runeID + "a".ToString();
-            address2 = name + runeID + "b".ToString();
+			addressBasic1 = name + runeID + "a".ToString();
+            addressBasic2 = name + runeID + "b".ToString();
+            addressNode1 = name + runeID + "c".ToString();
+            addressNode2 = name + runeID + "d".ToString();
             
             runeMaterial = material;
             MainModule particlesMain = particles.main;
@@ -115,21 +119,36 @@ namespace LW.Runic
             if (director.Node)
 			{
                 nodeRing.ActivateNodeRing();
-            }
 
-            // if touched with one finger
-            if (!handtracking.rightPeace && !handtracking.leftPeace)
-            {
-                isTouched = true;
-				GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
-				SendOSCMessage(address1);
+                if (!handtracking.rightPeace && !handtracking.leftPeace)
+                {
+                    isTouched = true;
+                    //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
+                    SendOSCMessage(addressNode1);
+                }
+                else
+                {
+                    StartCoroutine("TwoFingerTouchFlicker");
+                    GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
+                    SendOSCMessage(addressNode2);
+                }
             }
             else
-            {
-                StartCoroutine("TwoFingerTouchFlicker");
-				GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
-				SendOSCMessage(address2);
-            }
+			{
+                if (!handtracking.rightPeace && !handtracking.leftPeace)
+                {
+                    isTouched = true;
+				    //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
+				    SendOSCMessage(addressBasic1);
+                }
+                else
+                {
+                    StartCoroutine("TwoFingerTouchFlicker");
+				    GetComponent<AudioSource>().PlayOneShot(doubleTouchFX);
+				    SendOSCMessage(addressBasic2);
+                }
+			}
+
         }
 
         public void NotTouched()
