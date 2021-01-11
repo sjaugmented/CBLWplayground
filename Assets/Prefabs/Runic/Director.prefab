@@ -532,6 +532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a83153b928dc2b40bb764ad252d7c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gazeHud: {fileID: 0}
   nodeTap: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
   gazeTap: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}
   rightPointer: {fileID: 488989922999107503}
@@ -540,7 +541,7 @@ MonoBehaviour:
   leftToggle: {fileID: 2452266861635336249}
   rightDorsal: {fileID: 2452266860919343391}
   leftDorsal: {fileID: 3235132641226084495}
-  node: 1
+  node: 0
   gaze: 0
 --- !u!82 &947464551
 AudioSource:

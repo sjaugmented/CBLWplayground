@@ -102,9 +102,9 @@ MonoBehaviour:
   maxSpeed: 2
   minRotationSpeed: 90
   maxRotationSpeed: 360
-  fadeWaitTime: 0.5
-  fadeTime: 2
-  useGravity: 0
+  fadeWaitTime: 0.1
+  fadeTime: 0.2
+  useGravity: 1
   colliderThickness: 0.125
   useNormals: 0
   useMeshBoundsCenter: 1
@@ -393,8 +393,8 @@ MonoBehaviour:
   maxSpeed: 2
   minRotationSpeed: 90
   maxRotationSpeed: 360
-  fadeWaitTime: 0.5
-  fadeTime: 2
+  fadeWaitTime: 0.1
+  fadeTime: 0.2
   useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
@@ -893,8 +893,10 @@ MonoBehaviour:
   nodeRing: {fileID: 3315867628450110172}
   nodeIndicators: {fileID: 0}
   force: 1
-  address1: 
-  address2: 
+  addressBasic1: 
+  addressBasic2: 
+  addressNode1: 
+  addressNode2: 
 --- !u!114 &6101505156175584508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5926,12 +5928,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  minSpeed: 1
-  maxSpeed: 2
+  minSpeed: 0.1
+  maxSpeed: 1
   minRotationSpeed: 90
   maxRotationSpeed: 360
-  fadeWaitTime: 0.5
-  fadeTime: 2
+  fadeWaitTime: 0.1
+  fadeTime: 0.2
   useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
@@ -6217,17 +6219,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  minSpeed: 1
-  maxSpeed: 2
+  minSpeed: 0.1
+  maxSpeed: 0.5
   minRotationSpeed: 90
   maxRotationSpeed: 360
-  fadeWaitTime: 0.5
-  fadeTime: 2
-  useGravity: 0
+  fadeWaitTime: 0.1
+  fadeTime: 0.2
+  useGravity: 1
   colliderThickness: 0.125
   useNormals: 0
-  useMeshBoundsCenter: 0
-  allowShadows: 0
+  useMeshBoundsCenter: 1
+  allowShadows: 1
   shadersAlreadyHandleTransparency: 0
 --- !u!82 &3510859775903444762
 AudioSource:
