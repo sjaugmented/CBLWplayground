@@ -73,7 +73,7 @@ namespace LW.Runic
         IEnumerator ExpandRing()
 		{
             float timer = 0;
-            GetComponent<AudioSource>().PlayOneShot(expandFX);
+            //GetComponent<AudioSource>().PlayOneShot(expandFX);
 
             while (transform.localScale.x < 1)
             {
