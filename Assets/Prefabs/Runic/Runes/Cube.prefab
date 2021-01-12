@@ -190,7 +190,7 @@ PrefabInstance:
         type: 3}
       propertyPath: proximityBubble
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2889271210164478734}
     - target: {fileID: 6708699211070831078, guid: fd984fb308aca3942aacfb3e449dfdd1,
         type: 3}
       propertyPath: m_RootOrder
@@ -211,6 +211,12 @@ PrefabInstance:
 --- !u!4 &2274781863834570698 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1387976063341040032, guid: fd984fb308aca3942aacfb3e449dfdd1,
+    type: 3}
+  m_PrefabInstance: {fileID: 923997607551589994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2889271210164478734 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2651056907970788708, guid: fd984fb308aca3942aacfb3e449dfdd1,
     type: 3}
   m_PrefabInstance: {fileID: 923997607551589994}
   m_PrefabAsset: {fileID: 0}

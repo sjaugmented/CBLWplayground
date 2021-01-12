@@ -33,7 +33,7 @@ Transform:
   m_GameObject: {fileID: 596601827593958277}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.44519576, y: 0.44519576, z: 0.44519576}
   m_Children: []
   m_Father: {fileID: 465772522545352070}
   m_RootOrder: 1
@@ -324,7 +324,7 @@ Transform:
   m_GameObject: {fileID: 1119999092432553300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1.5, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.44519576, y: 0.44519576, z: 0.44519576}
   m_Children: []
   m_Father: {fileID: 465772522545352070}
   m_RootOrder: 0
@@ -930,10 +930,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45e9f84d81dea54abd5c797be5e50f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userProximitySet: 0.4
+  userProximitySet: 0.5
   minHandDistance: 0.15
-  maxHandDistance: 0.3
-  effectiveBubbleScale: 0.67
+  maxHandDistance: 0.1
+  effectiveBubbleScale: 0.5
   proximityBubble: {fileID: 2651056907970788708}
   bubbleScale: 0
 --- !u!114 &1097008933518160294
@@ -5885,7 +5885,7 @@ Transform:
   m_GameObject: {fileID: 2684076427627926849}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.5, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.44519576, y: 0.44519576, z: 0.44519576}
   m_Children: []
   m_Father: {fileID: 465772522545352070}
   m_RootOrder: 2
@@ -6176,7 +6176,7 @@ Transform:
   m_GameObject: {fileID: 4537148962664654421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.44519576, y: 0.44519576, z: 0.44519576}
   m_Children: []
   m_Father: {fileID: 465772522545352070}
   m_RootOrder: 3
