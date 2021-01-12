@@ -5,6 +5,7 @@ namespace LW.Runic
 	{
 		Spheres,
 		Cubes,
-		Diamonds
+		Diamonds, 
+		Capsules
 	}
 }

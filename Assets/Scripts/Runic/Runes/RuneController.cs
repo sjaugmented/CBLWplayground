@@ -12,7 +12,6 @@ namespace LW.Runic
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
         [SerializeField] NodeCompass nodeRing;
-        [SerializeField] GameObject nodeIndicators;
         bool oscTest = false;
 
         public float force = 1;
