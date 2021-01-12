@@ -33,6 +33,8 @@ namespace LW.Runic
 
         void Update()
         {
+            if (runeController.Manipulated) return;
+            
             float distanceToUser = Vector3.Distance(transform.position, Camera.main.transform.position);
 
             if (distanceToUser < userProximitySet)
