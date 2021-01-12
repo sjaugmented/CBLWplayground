@@ -164,12 +164,32 @@ PrefabInstance:
     - target: {fileID: 2651056907970788708, guid: fd984fb308aca3942aacfb3e449dfdd1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: maxHandDistance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: effectiveBubbleScale
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: bubbleScale
+      value: 0.9502711
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: proximityBubble
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6708699211070831078, guid: fd984fb308aca3942aacfb3e449dfdd1,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7970217009649064584, guid: fd984fb308aca3942aacfb3e449dfdd1,
         type: 3}

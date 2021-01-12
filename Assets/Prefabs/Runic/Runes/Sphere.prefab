@@ -166,6 +166,26 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.607
       objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: effectiveBubbleScale
+      value: 0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: maxHandDistance
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: bubbleScale
+      value: 0.6596779
+      objectReference: {fileID: 0}
+    - target: {fileID: 6101505156175584508, guid: fd984fb308aca3942aacfb3e449dfdd1,
+        type: 3}
+      propertyPath: proximityBubble
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6708699211070831078, guid: fd984fb308aca3942aacfb3e449dfdd1,
         type: 3}
       propertyPath: m_RootOrder

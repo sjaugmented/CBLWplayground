@@ -21,7 +21,7 @@ namespace LW.Runic
         bool rightFisted = false;
         bool dualFisted = false;
 
-        float bubbleScale = 0;
+        public float bubbleScale = 0;
 
         void Start()
         {
@@ -55,7 +55,7 @@ namespace LW.Runic
                                 leftFisted = true;
                             }
 							runeController.SendOSCMessage(runeController.addressBasic1 + "/leftProximityAngle", 1 - handtracking.GetStaffForCamUp() / 180);
-							runeController.SendOSCMessage(runeController.addressBasic1 + "/leftProximityDistance", bubbleScale.Remap(1, 0.67f, 1, 0));
+							runeController.SendOSCMessage(runeController.addressBasic1 + "/leftProximityDistance", bubbleScale.Remap(1, effectiveBubbleScale, 1, 0));
                         }
                         else
 						{
@@ -74,7 +74,7 @@ namespace LW.Runic
                                 rightFisted = true;
                             }
 							runeController.SendOSCMessage(runeController.addressBasic1 + "/rightProximityAngle", 1 - handtracking.GetStaffForCamUp() / 180);
-							runeController.SendOSCMessage(runeController.addressBasic1 + "/rightProximityDistance", bubbleScale.Remap(1, 0.67f, 1, 0));
+							runeController.SendOSCMessage(runeController.addressBasic1 + "/rightProximityDistance", bubbleScale.Remap(1, effectiveBubbleScale, 1, 0));
                         }
                         else
                         {
@@ -93,7 +93,7 @@ namespace LW.Runic
                                 dualFisted = true;
                             }
 							runeController.SendOSCMessage(runeController.addressBasic1 + "/proximityAngle", 1 - handtracking.GetStaffForCamUp() / 180);
-							runeController.SendOSCMessage(runeController.addressBasic1 + "/proximityDistance", bubbleScale.Remap(1, 0.67f, 1, 0));
+							runeController.SendOSCMessage(runeController.addressBasic1 + "/proximityDistance", bubbleScale.Remap(1, effectiveBubbleScale, 1, 0));
                         }
                         else
 						{

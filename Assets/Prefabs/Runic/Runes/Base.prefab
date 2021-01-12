@@ -913,7 +913,6 @@ MonoBehaviour:
   doubleTouchFX: {fileID: 8300000, guid: e817530f0bc4e5c4bbe85ed23676a5c7, type: 3}
   particles: {fileID: 7110931076764455358}
   nodeRing: {fileID: 3315867628450110172}
-  nodeIndicators: {fileID: 0}
   force: 1
   addressBasic1: 
   addressBasic2: 
@@ -931,11 +930,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d45e9f84d81dea54abd5c797be5e50f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userProximitySet: 0.7
+  userProximitySet: 0.4
   minHandDistance: 0.15
-  maxHandDistance: 0.4
+  maxHandDistance: 0.3
   effectiveBubbleScale: 0.67
   proximityBubble: {fileID: 2651056907970788708}
+  bubbleScale: 0
 --- !u!114 &1097008933518160294
 MonoBehaviour:
   m_ObjectHideFlags: 0
