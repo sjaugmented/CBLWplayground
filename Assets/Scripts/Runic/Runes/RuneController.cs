@@ -226,11 +226,13 @@ namespace LW.Runic
         public void Manipulating()
 		{
             manipulated = true;
-		}
+            GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().Manipulating = true;
+        }
 
         public void NotManipulating()
 		{
             manipulated = false;
-		}
+            GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().Manipulating = false;
+        }
     }
 }

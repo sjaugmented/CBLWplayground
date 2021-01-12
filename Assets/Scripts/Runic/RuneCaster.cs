@@ -30,11 +30,6 @@ namespace LW.Runic
         [SerializeField] AudioClip resetFX;
         [SerializeField] AudioClip gatherFX;
 
-        float proximitySensor = Mathf.Infinity;
-        float timeSinceLastCast = Mathf.Infinity;
-        float resetTimer = 5;
-        bool readyToGather = false;
-
         public RuneType runeType; // TODO private; easy shape switching in inspector
         int runeTypeIndex = 0; // automates rune selection
         
@@ -43,6 +38,18 @@ namespace LW.Runic
         
         // stores live drums, for dev purposes only TODO make private
         List<RuneController> liveRunes = new List<RuneController>();
+
+        float proximitySensor = Mathf.Infinity;
+        float timeSinceLastCast = Mathf.Infinity;
+        float resetTimer = 5;
+        bool readyToGather = false;
+
+        bool manipulating = false;
+        public bool Manipulating
+        {
+            get { return manipulating; }
+            set { manipulating = value; }
+        }
 
         HandTracking handtracking;
         CastOrigins castOrigins;
@@ -97,7 +104,7 @@ namespace LW.Runic
             }
             #endregion
 
-            if (proximitySensor > 0.1f)
+            if (proximitySensor > 0.1f && !Manipulating)
 			{
                 ////// Set Rune Type
                 if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
