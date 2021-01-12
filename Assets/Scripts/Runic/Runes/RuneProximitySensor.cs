@@ -21,7 +21,7 @@ namespace LW.Runic
         bool rightFisted = false;
         bool dualFisted = false;
 
-        public float bubbleScale = 0;
+        float bubbleScale = 0;
 
         void Start()
         {
