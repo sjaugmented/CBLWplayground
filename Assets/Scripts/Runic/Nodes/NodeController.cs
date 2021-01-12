@@ -22,13 +22,15 @@ namespace LW.Runic
 
         void Start()
 		{
-            runeParent = runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
+            runeParent = UtilityFunctions.FindParentWithTag(gameObject, "Rune").GetComponent<RuneController>();
 
             GetComponent<Renderer>().material.color = runeParent.RuneMaterial.color;
         }
         
         public void IsTouched()
         {
+            if (runeParent.Manipulated) return;
+            
             if (!Touched)
 			{
                 StartCoroutine("ExplodeAndDeactivate");
@@ -59,6 +61,8 @@ namespace LW.Runic
 
         public void IsGazed()
 		{
+            if (runeParent.Manipulated) return;
+            
             if (GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>().Gaze)
 			{
                 StartCoroutine("ExplodeAndDeactivate");

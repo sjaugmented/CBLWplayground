@@ -28,6 +28,12 @@ namespace LW.Runic
 		}
 
         bool isTouched = false;
+
+        bool manipulated = false;
+        public bool Manipulated
+		{
+            get { return manipulated; }
+		}
         
         int runeColors;
         int siblingIndex;
@@ -116,6 +122,8 @@ namespace LW.Runic
 
         public void Touched()
         {
+            if (manipulated) return;
+
             if (director.Node)
 			{
                 nodeRing.ActivateNodeRing();
@@ -215,5 +223,15 @@ namespace LW.Runic
             yield return new WaitForSeconds(0.3f);
             emission.enabled = false;
         }
+
+        public void Manipulating()
+		{
+            manipulated = true;
+		}
+
+        public void NotManipulating()
+		{
+            manipulated = false;
+		}
     }
 }
