@@ -102,13 +102,20 @@ namespace LW.Runic
             string name = transform.GetChild(0).name;
             runeColors = FindObjectOfType<RuneCaster>().GetRuneColorCount();
 
-            if (name == "Cube") runeID += runeColors;
-			if (name == "Diamond") runeID += runeColors * 2;
+            if (name == "Hex") runeID += runeColors;
+			if (name == "Octa") runeID += runeColors * 2;
+			if (name == "Ico") runeID += runeColors * 3;
+			if (name == "Poly") runeID += runeColors * 4;
 
-			addressBasic1 = runeID + name + "-A".ToString();
-            addressBasic2 = runeID + name + "-B".ToString();
-            addressNode1 = runeID + name + "-C".ToString();
-            addressNode2 = runeID + name + "-D".ToString();
+            string idString;
+
+            if (runeID < 10) idString = "0" + runeID.ToString();
+            else idString = runeID.ToString();
+
+			addressBasic1 = idString + name + "-A";
+            addressBasic2 = idString + name + "-B";
+            addressNode1 = idString + name + "-C";
+            addressNode2 = idString + name + "-D";
             
             runeMaterial = material;
             MainModule particlesMain = particles.main;
