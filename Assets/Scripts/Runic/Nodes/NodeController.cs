@@ -19,6 +19,7 @@ namespace LW.Runic
 		}
 
         RuneController runeParent;
+        NodeCompass compassParent;
 
         void Start()
 		{
@@ -26,6 +27,11 @@ namespace LW.Runic
 
             GetComponent<Renderer>().material.color = runeParent.RuneMaterial.color;
         }
+
+        void Update()
+		{
+            if (GetComponentInParent<NodeCompass>().Expanded) transform.Rotate(0, 1, 0);
+		}
         
         public void IsTouched()
         {

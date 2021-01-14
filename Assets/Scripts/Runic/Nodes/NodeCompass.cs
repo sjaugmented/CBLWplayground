@@ -17,10 +17,14 @@ namespace LW.Runic
 
         public List<NodeTouch> touchNodes = new List<NodeTouch>(); // TODO private
 
+        bool expanded = false;
+        public bool Expanded
+		{
+            get { return expanded; }
+		}
+
         void Start()
 		{
-            
-            
             for (int i = 0; i < transform.childCount; i++)
 			{
                 touchNodes.Add(transform.GetChild(i).GetComponent<NodeTouch>());
@@ -90,6 +94,7 @@ namespace LW.Runic
             yield return new WaitForSeconds(0.1f);
 
             ActivateTouchNodes();
+            expanded = true;
         }
 
         IEnumerator ShrinkRing()
@@ -111,6 +116,7 @@ namespace LW.Runic
                 node.GetComponent<NodeController>().Touched = false;
             }
 
+            expanded = false;
         }
     }
 }
