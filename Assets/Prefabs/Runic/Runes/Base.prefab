@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 623606313519422440}
   m_Layer: 0
   m_Name: East
-  m_TagString: Untagged
+  m_TagString: Rune
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -278,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeIndex: 1
   touchFX: {fileID: 8300000, guid: 441a61d0330ea2049b562f188bc31565, type: 3}
+  rateOfRotation: 0.25
 --- !u!114 &623606313519422440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,7 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308b8d3e3c27f5f45b1fa5df9136104a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchDistanceScale: 0.1
+  touchDistanceScale: 0.25
 --- !u!1 &1119999092432553300
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,7 +311,7 @@ GameObject:
   - component: {fileID: 2308636251480898802}
   m_Layer: 0
   m_Name: North
-  m_TagString: Untagged
+  m_TagString: Rune
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -569,6 +570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeIndex: 0
   touchFX: {fileID: 8300000, guid: 441a61d0330ea2049b562f188bc31565, type: 3}
+  rateOfRotation: 0.25
 --- !u!114 &2308636251480898802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308b8d3e3c27f5f45b1fa5df9136104a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchDistanceScale: 0.1
+  touchDistanceScale: 0.25
 --- !u!1 &1332085936538477095
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,7 +949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b29214eeed54d45a795be9e205b904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchDistanceScale: 1
+  touchDistanceScale: 0.5
 --- !u!1 &1459825198594083346
 GameObject:
   m_ObjectHideFlags: 0
@@ -5870,7 +5872,7 @@ GameObject:
   - component: {fileID: 5353329316797387605}
   m_Layer: 0
   m_Name: South
-  m_TagString: Untagged
+  m_TagString: Rune
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6129,6 +6131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeIndex: 2
   touchFX: {fileID: 8300000, guid: 441a61d0330ea2049b562f188bc31565, type: 3}
+  rateOfRotation: 0.25
 --- !u!114 &5353329316797387605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6141,7 +6144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308b8d3e3c27f5f45b1fa5df9136104a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchDistanceScale: 0.1
+  touchDistanceScale: 0.25
 --- !u!1 &4537148962664654421
 GameObject:
   m_ObjectHideFlags: 0
@@ -6161,7 +6164,7 @@ GameObject:
   - component: {fileID: 3940027132060144120}
   m_Layer: 0
   m_Name: West
-  m_TagString: Untagged
+  m_TagString: Rune
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6420,6 +6423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodeIndex: 3
   touchFX: {fileID: 8300000, guid: 441a61d0330ea2049b562f188bc31565, type: 3}
+  rateOfRotation: 0.25
 --- !u!114 &3940027132060144120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6432,7 +6436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308b8d3e3c27f5f45b1fa5df9136104a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchDistanceScale: 0.1
+  touchDistanceScale: 0.25
 --- !u!1 &6722177251189698785
 GameObject:
   m_ObjectHideFlags: 0
@@ -6444,7 +6448,6 @@ GameObject:
   - component: {fileID: 707280978784254831}
   - component: {fileID: 1895135650232904901}
   - component: {fileID: 5670869816125814967}
-  - component: {fileID: 2442981386344370141}
   m_Layer: 0
   m_Name: ProxBubble
   m_TagString: Untagged
@@ -6513,16 +6516,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &2442981386344370141
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6722177251189698785}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.49999997
-  m_Center: {x: 0, y: 0, z: 0.000000029802322}

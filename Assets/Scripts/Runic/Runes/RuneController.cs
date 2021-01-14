@@ -121,7 +121,7 @@ namespace LW.Runic
 
         public void Touched()
         {
-            if (manipulated) return;
+            if (manipulated || GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().Manipulating) return;
 
             if (director.Node)
 			{
@@ -197,11 +197,13 @@ namespace LW.Runic
 
         void OnCollisionEnter(Collision collision)
 		{
-            if (collision.collider.CompareTag("Rune"))
+            if (collision.collider.CompareTag("Rune") || collision.collider.CompareTag("Node"))
 			{
-                Collider runeCollider = collision.gameObject.GetComponent<Collider>();
-                Physics.IgnoreCollision(runeCollider, GetComponent<Collider>());
+                Collider ignoredCollider = collision.gameObject.GetComponent<Collider>();
+                Physics.IgnoreCollision(ignoredCollider, GetComponent<Collider>());
 			}
+
+            Debug.Log(gameObject.name + " collided with " + collision.gameObject.name);
 		}
 
         private IEnumerator TwoFingerTouchFlicker()

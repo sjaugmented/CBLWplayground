@@ -9,6 +9,7 @@ namespace LW.Runic
     {
         [SerializeField] int nodeIndex = 1;
         [SerializeField] AudioClip touchFX;
+        [SerializeField] float rateOfRotation = 0.5f;
 
         bool touched = false;
         float gazeTimer = 0;
@@ -19,7 +20,6 @@ namespace LW.Runic
 		}
 
         RuneController runeParent;
-        NodeCompass compassParent;
 
         void Start()
 		{
@@ -30,7 +30,7 @@ namespace LW.Runic
 
         void Update()
 		{
-            if (GetComponentInParent<NodeCompass>().Expanded) transform.Rotate(0, 1, 0);
+            if (GetComponentInParent<NodeCompass>().Expanded) transform.Rotate(0, rateOfRotation, 0);
 		}
         
         public void IsTouched()
@@ -61,8 +61,6 @@ namespace LW.Runic
             GetComponent<MeshRenderer>().enabled = false;
             GetComponent<AudioSource>().PlayOneShot(touchFX);
             yield return new WaitForSeconds(2f);
-            //Touched = false;
-            //GetComponentInParent<NodeRingController>().Timer = Mathf.Infinity;
         }
 
         public void IsGazed()
@@ -79,5 +77,16 @@ namespace LW.Runic
                 runeParent.SendOSCMessage(message);
             }
 		}
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.CompareTag("Rune") || collision.collider.CompareTag("Node"))
+            {
+                Collider ignoredCollider = collision.gameObject.GetComponent<Collider>();
+                Physics.IgnoreCollision(ignoredCollider, GetComponent<Collider>());
+            }
+
+            Debug.Log(gameObject.name + " collided with " + collision.gameObject.name);
+        }
     }
 }
