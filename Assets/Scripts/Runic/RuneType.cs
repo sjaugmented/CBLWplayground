@@ -3,9 +3,10 @@ namespace LW.Runic
 {
 	public enum RuneType
 	{
-		Spheres,
-		Cubes,
-		Diamonds, 
-		Capsules
+		Sphere,
+		Hexahedron,
+		Octahedron, 
+		Icosahedron,
+		Polyhedron,
 	}
 }

@@ -87,8 +87,6 @@ namespace LW.Runic
                 Collider ignoredCollider = collision.gameObject.GetComponent<Collider>();
                 Physics.IgnoreCollision(ignoredCollider, GetComponent<Collider>());
             }
-
-            Debug.Log(gameObject.name + " collided with " + collision.gameObject.name);
         }
     }
 }

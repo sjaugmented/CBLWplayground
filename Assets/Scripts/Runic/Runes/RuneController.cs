@@ -105,10 +105,10 @@ namespace LW.Runic
             if (name == "Cube") runeID += runeColors;
 			if (name == "Diamond") runeID += runeColors * 2;
 
-			addressBasic1 = name + runeID + "a".ToString();
-            addressBasic2 = name + runeID + "b".ToString();
-            addressNode1 = name + runeID + "c".ToString();
-            addressNode2 = name + runeID + "d".ToString();
+			addressBasic1 = "0" + runeID + name + "-A".ToString();
+            addressBasic2 = "0" + runeID + name + "-B".ToString();
+            addressNode1 = "0" + runeID + name + "-C".ToString();
+            addressNode2 = "0" + runeID + name + "-D".ToString();
             
             runeMaterial = material;
             MainModule particlesMain = particles.main;
@@ -202,8 +202,6 @@ namespace LW.Runic
                 Collider ignoredCollider = collision.gameObject.GetComponent<Collider>();
                 Physics.IgnoreCollision(ignoredCollider, GetComponent<Collider>());
 			}
-
-            Debug.Log(gameObject.name + " collided with " + collision.gameObject.name);
 		}
 
         private IEnumerator TwoFingerTouchFlicker()
