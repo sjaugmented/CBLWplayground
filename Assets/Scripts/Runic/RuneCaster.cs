@@ -158,11 +158,10 @@ namespace LW.Runic
 
 		private void SelectRuneType()
 		{
-            int totalRunes = runeBelt.GetRuneSlots();
             float staffAng = handtracking.GetStaffForCamUp();            
-            float slotSize = 180 / totalRunes; // size of selectable area based on number of Rune Types
+            float slotSize = 180 / runeBelt.GetRuneSlots(); // size of selectable area based on number of Rune Types
 
-            for (int i = 0; i < totalRunes; i++)
+            for (int i = 0; i < runeBelt.GetRuneSlots(); i++)
 			{
                 if (staffAng < (180 - slotSize * i) && staffAng > (180 - slotSize * (i+1)))
 				{
@@ -170,7 +169,6 @@ namespace LW.Runic
 				}
 			}
 
-            // display masterRune with proper child
             foreach (Transform child in masterRune.transform)
 			{
                 child.gameObject.SetActive(false);
@@ -184,8 +182,9 @@ namespace LW.Runic
 		private void CastRune()
         {
             Vector3 castOrigin = Vector3.Lerp(handtracking.rightPalm.Position, handtracking.leftPalm.Position, 0.5f);
-            Quaternion handRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f);
-            Quaternion castRotation = handRotation * Quaternion.Euler(60, 0, 0); // rotational offset - so casts go OUT instead of UP along the hand.Z axis
+            
+            // rotational offset - so casts go OUT instead of UP along the hand.Z axis
+            Quaternion castRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f) * Quaternion.Euler(60, 0, 0); 
 
             if (timeSinceLastCast >= castDelay && runeBelt.GetCurrentRuneAmmo(runeType) > 0)
             {
@@ -203,41 +202,20 @@ namespace LW.Runic
                     rune = Instantiate(runePrefab, castOrigin, castRotation);
                 }
 
-
                 runeMaterialIndex = runeMaterials.Count - runeBelt.GetCurrentRuneAmmo(runeType);
-
-                // reduce ammo
                 runeBelt.ReduceCurrentRuneAmmo(runeType);
-                
                 int runeID = runeMaterials.Count - runeBelt.GetCurrentRuneAmmo(runeType);
-
                 RuneController currentRune = rune.GetComponent<RuneController>();
                 currentRune.SetRuneAddressAndMaterial(runeID, runeMaterials[runeMaterialIndex]);
 
                 float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
                 if (spellForce < 7.5f) spellForce = 7.5f;
-                // set rune casting force and color
                 if (devMode) currentRune.force = force;
                 else currentRune.force = spellForce;
-                // add rune to list of live drums
+
                 liveRunes.Add(currentRune);
 
-                //add to DrumContainer parent
                 currentRune.transform.SetParent(FindObjectOfType<RuneGrid>().transform);
-
-                //SetNextRuneColor();
-            }
-        }
-
-		private void SetNextRuneColor()
-        {
-            if (runeMaterialIndex < runeMaterials.Count - 1)
-            {
-                runeMaterialIndex++;
-            }
-            else
-            {
-                runeMaterialIndex = 0;
             }
         }
 

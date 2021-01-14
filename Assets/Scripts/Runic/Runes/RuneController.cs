@@ -105,10 +105,10 @@ namespace LW.Runic
             if (name == "Cube") runeID += runeColors;
 			if (name == "Diamond") runeID += runeColors * 2;
 
-			addressBasic1 = "0" + runeID + name + "-A".ToString();
-            addressBasic2 = "0" + runeID + name + "-B".ToString();
-            addressNode1 = "0" + runeID + name + "-C".ToString();
-            addressNode2 = "0" + runeID + name + "-D".ToString();
+			addressBasic1 = runeID + name + "-A".ToString();
+            addressBasic2 = runeID + name + "-B".ToString();
+            addressNode1 = runeID + name + "-C".ToString();
+            addressNode2 = runeID + name + "-D".ToString();
             
             runeMaterial = material;
             MainModule particlesMain = particles.main;
