@@ -31,6 +31,8 @@ namespace LW.Runic
         void Update()
 		{
             if (GetComponentInParent<NodeCompass>().Expanded) transform.Rotate(0, rateOfRotation, 0);
+            if (GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>().Gaze) GetComponent<BoxCollider>().enabled = true;
+            else GetComponent<BoxCollider>().enabled = false;
 		}
         
         public void IsTouched()
@@ -80,7 +82,7 @@ namespace LW.Runic
 
         void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.CompareTag("Rune") || collision.collider.CompareTag("Node"))
+            if (collision.gameObject.CompareTag("Rune"))
             {
                 Collider ignoredCollider = collision.gameObject.GetComponent<Collider>();
                 Physics.IgnoreCollision(ignoredCollider, GetComponent<Collider>());
