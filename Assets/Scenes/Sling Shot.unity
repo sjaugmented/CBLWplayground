@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641252, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 17774d288a46c854ab59dad4c940716b,
+  m_LightingDataAsset: {fileID: 112000000, guid: 6a1b67368c4dfcd49ad397be6be64ebf,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -131,6 +131,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2364929825902119934, guid: 5b4802b839cfe8d4298a330e8496bd1e,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2364929825902119934, guid: 5b4802b839cfe8d4298a330e8496bd1e,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -146,6 +151,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364929825902119934, guid: 5b4802b839cfe8d4298a330e8496bd1e,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.000000023672673
+      objectReference: {fileID: 0}
+    - target: {fileID: 2364929825902119934, guid: 5b4802b839cfe8d4298a330e8496bd1e,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.7071073
       objectReference: {fileID: 0}
@@ -158,16 +168,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.000000029802337
-      objectReference: {fileID: 0}
-    - target: {fileID: 2364929825902119934, guid: 5b4802b839cfe8d4298a330e8496bd1e,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.000000023672673
-      objectReference: {fileID: 0}
-    - target: {fileID: 2364929825902119934, guid: 5b4802b839cfe8d4298a330e8496bd1e,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2364929825902119934, guid: 5b4802b839cfe8d4298a330e8496bd1e,
         type: 3}
@@ -399,6 +399,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7834104975948266426, guid: 3298d032ae723244988f30d089c1b389,
         type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7834104975948266426, guid: 3298d032ae723244988f30d089c1b389,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -414,6 +419,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7834104975948266426, guid: 3298d032ae723244988f30d089c1b389,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7834104975948266426, guid: 3298d032ae723244988f30d089c1b389,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: -0.0000020191073
       objectReference: {fileID: 0}
@@ -426,16 +436,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7834104975948266426, guid: 3298d032ae723244988f30d089c1b389,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 7834104975948266426, guid: 3298d032ae723244988f30d089c1b389,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7834104975948266426, guid: 3298d032ae723244988f30d089c1b389,
         type: 3}
@@ -616,6 +616,7 @@ MonoBehaviour:
   rightThumbsUp: 0
   rightL: 0
   rightPeace: 0
+  rightThree: 0
   leftHand: 0
   leftRockOn: 0
   leftFist: 0
@@ -625,6 +626,7 @@ MonoBehaviour:
   leftThumbsUp: 0
   leftL: 0
   leftPeace: 0
+  leftThree: 0
   rtPalmUpFloorUp: 0
   rtPalmUpCamFor: 0
   rtPalmRtCamRt: 0
@@ -662,7 +664,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   palmDist: 0
-  midpoointhandtracking: {x: 0, y: 0, z: 0}
+  midpointhandtracking: {x: 0, y: 0, z: 0}
   rightStreamPos: {x: 0, y: 0, z: 0}
   leftStreamPos: {x: 0, y: 0, z: 0}
 --- !u!1 &528219160
