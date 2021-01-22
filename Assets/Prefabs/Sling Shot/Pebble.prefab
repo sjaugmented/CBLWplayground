@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8758876272911120269}
   - component: {fileID: 8248103414050033449}
   m_Layer: 0
-  m_Name: Arrow
+  m_Name: Pebble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5431807816001466754}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef0a806e7def8124487acf50425217c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 92cf17f0547f5e243949a47dcd46475b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5431807816267698268
@@ -80,7 +80,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5431807816267698271
 Transform:
   m_ObjectHideFlags: 0
@@ -182,7 +182,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5431807816657523113}
   m_LocalRotation: {x: 0.49999854, y: -0.5, z: -0.5, w: 0.5000015}
-  m_LocalPosition: {x: 0.0000019877393, y: 0.0638047, z: 0.87269706}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.055944998, y: 0.097058974, z: 0.055944998}
   m_Children: []
   m_Father: {fileID: 5431807816001466757}
