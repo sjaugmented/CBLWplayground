@@ -4,13 +4,13 @@ using UnityEngine;
 using LW.Core;
 using System;
 
-namespace LW.LightBow
+namespace LW.SlingShot
 {
     public class LightBowController : MonoBehaviour
     {
-        [SerializeField] GameObject sightHud;
-        [SerializeField] GameObject arrowHud;
-        [SerializeField] GameObject arrowPrefab;
+        [SerializeField] GameObject sightHUD;
+        [SerializeField] GameObject pebbleHUD;
+        [SerializeField] GameObject pebblePrefab;
         [SerializeField] float forceMultiplier = 100;
 
         public bool readyToFire = false;
@@ -32,27 +32,27 @@ namespace LW.LightBow
             {
                 float fingerDistance = Vector3.Distance(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position);
                 // activate rangeFinder object
-                sightHud.SetActive(true);
+                sightHUD.SetActive(true);
                 // position between finger tips
-                sightHud.transform.position = bowSights.GetLeftSight();
+                sightHUD.transform.position = bowSights.GetLeftSight();
                 // size to distance
-                sightHud.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
+                sightHUD.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
                 // rotate to face middle finger
-                sightHud.transform.LookAt(handtracking.ltMiddleTip.Position);
+                sightHUD.transform.LookAt(handtracking.ltMiddleTip.Position);
 
                 if (handtracking.rightFist)
                 {
-                    arrowHud.SetActive(true);
-                    arrowHud.transform.position = handtracking.rtIndexMid.Position;
-                    arrowHud.transform.LookAt(bowSights.GetLeftSight());
+                    pebbleHUD.SetActive(true);
+                    pebbleHUD.transform.position = handtracking.rtIndexMid.Position;
+                    pebbleHUD.transform.LookAt(bowSights.GetLeftSight());
                     readyToFire = true;
                 }
             }
             else
             {
                 //deactivate sight and arrow Huds
-                sightHud.SetActive(false);
-                arrowHud.SetActive(false);
+                sightHUD.SetActive(false);
+                pebbleHUD.SetActive(false);
                 readyToFire = false;
             }
 
@@ -69,12 +69,12 @@ namespace LW.LightBow
 
         private void FireArrow()
         {
-            arrowHud.SetActive(false);
-            float bowForce = Vector3.Distance(handtracking.rightPalm.Position, sightHud.transform.position) * forceMultiplier;
-            Debug.Log("Distance: " + Vector3.Distance(handtracking.rightPalm.Position, sightHud.transform.position));
+            pebbleHUD.SetActive(false);
+            float bowForce = Vector3.Distance(handtracking.rightPalm.Position, sightHUD.transform.position) * forceMultiplier;
+            Debug.Log("Distance: " + Vector3.Distance(handtracking.rightPalm.Position, sightHUD.transform.position));
             Debug.Log("force: " + bowForce); // TODO remove
 
-            GameObject newArrow = Instantiate(arrowPrefab, handtracking.rightPalm.Position, arrowHud.transform.rotation);
+            GameObject newArrow = Instantiate(pebblePrefab, handtracking.rightPalm.Position, pebbleHUD.transform.rotation);
 
             newArrow.GetComponent<ArrowController>().force = bowForce;
 

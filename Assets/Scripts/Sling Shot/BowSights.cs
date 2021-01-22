@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LW.Core;
 
-namespace LW.LightBow
+namespace LW.SlingShot
 {
     public class BowSights : MonoBehaviour
     {

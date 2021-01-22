@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace LW.LightBow
+namespace LW.SlingShot
 {
     [RequireComponent(typeof(Rigidbody))]
     public class ArrowController : MonoBehaviour
