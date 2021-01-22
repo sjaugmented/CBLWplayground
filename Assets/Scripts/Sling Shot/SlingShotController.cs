@@ -6,7 +6,7 @@ using System;
 
 namespace LW.SlingShot
 {
-    public class LightBowController : MonoBehaviour
+    public class SlingShotController : MonoBehaviour
     {
         [SerializeField] GameObject sightHUD;
         [SerializeField] GameObject pebbleHUD;
@@ -16,13 +16,13 @@ namespace LW.SlingShot
         public bool readyToFire = false;
 
         HandTracking handtracking;
-        BowSights bowSights;
+        Sights bowSights;
 
         // Start is called before the first frame update
         void Start()
         {
             handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
-            bowSights = GetComponent<BowSights>();
+            bowSights = GetComponent<Sights>();
         }
 
         // Update is called once per frame
@@ -76,7 +76,7 @@ namespace LW.SlingShot
 
             GameObject newArrow = Instantiate(pebblePrefab, handtracking.rightPalm.Position, pebbleHUD.transform.rotation);
 
-            newArrow.GetComponent<ArrowController>().force = bowForce;
+            newArrow.GetComponent<PebbleController>().force = bowForce;
 
             readyToFire = false;
         }

@@ -5,7 +5,7 @@ using LW.Core;
 
 namespace LW.SlingShot
 {
-    public class BowSights : MonoBehaviour
+    public class Sights : MonoBehaviour
     {
         HandTracking handtracking;
 
