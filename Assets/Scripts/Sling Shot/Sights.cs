@@ -13,7 +13,7 @@ namespace LW.SlingShot
 
         void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
+            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
         }
 
         void Update()
