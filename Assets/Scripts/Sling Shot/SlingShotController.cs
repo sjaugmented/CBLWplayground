@@ -32,21 +32,21 @@ namespace LW.SlingShot
             if (handtracking.leftPeace)
 			{
 				float fingerDistance = Vector3.Distance(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position);
-				ActivateSightsHUD(fingerDistance);
+				ActivateSlingShot(fingerDistance);
 
 				if (handtracking.rightFist)
 				{
-					ActivatePebbleHUD(bowSights.GetLeftSight());
+					PullSlingShot(bowSights.GetLeftSight());
 				}
 			}
 			else if (handtracking.rightPeace)
 			{
                 float fingerDistance = Vector3.Distance(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position);
-                ActivateSightsHUD(fingerDistance);
+                ActivateSlingShot(fingerDistance);
 
                 if (handtracking.leftFist)
 				{
-                    ActivatePebbleHUD(bowSights.GetRightSight());
+                    PullSlingShot(bowSights.GetRightSight());
 				}
 			}
 			else
@@ -60,7 +60,7 @@ namespace LW.SlingShot
             WatchForRelease();
         }
 
-		private void ActivatePebbleHUD(Vector3 sights)
+		private void PullSlingShot(Vector3 sights)
 		{
 			pebbleHUD.SetActive(true);
 			pebbleHUD.transform.position = handtracking.rtIndexMid.Position;
@@ -68,7 +68,7 @@ namespace LW.SlingShot
 			rightReadyToFire = true;
 		}
 
-		private void ActivateSightsHUD(float fingerDistance)
+		private void ActivateSlingShot(float fingerDistance)
 		{
 			// activate rangeFinder object
 			sightHUD.SetActive(true);

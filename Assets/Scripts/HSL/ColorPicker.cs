@@ -27,26 +27,21 @@ namespace LW.HSL
         void Update()
         {
             hslOrb.transform.position = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
-            
-            if (!hands.rightPeace && !hands.leftPeace)
-			{
-                if (hands.palmsOpposed)
-				{
-                    hslOrb.gameObject.SetActive(true);
 
-                    if (hands.rightOpen && hands.leftOpen)
-					{
-                        handAngle = hands.GetStaffForCamUp() / 180;
+            if (hands.rightPeace || hands.leftPeace) return;
 
-                        float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
-                        handDistance = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
-					}
-				}
-                else
-				{
-                    hslOrb.gameObject.SetActive(false) ;
-				}
-			}
+            if (hands.palmsOpposed)
+            {
+                hslOrb.gameObject.SetActive(true);
+
+                if (hands.rightOpen && hands.leftOpen)
+                {
+                    handAngle = hands.GetStaffForCamUp() / 180;
+
+                    float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
+                    handDistance = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+                }
+            }
             else
             {
                 hslOrb.gameObject.SetActive(false);
