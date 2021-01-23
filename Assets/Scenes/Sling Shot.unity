@@ -630,13 +630,17 @@ MonoBehaviour:
   rtPalmUpFloorUp: 0
   rtPalmUpCamFor: 0
   rtPalmRtCamRt: 0
+  rtPalmRtCamUp: 0
   rtPalmRtFloorUp: 0
   rtPalmForCamRt: 0
+  rtPalmForFloorUp: 0
   ltPalmUpFloorUp: 0
   ltPalmUpCamFor: 0
   ltPalmRtCamRt: 0
+  ltPalmRtCamUp: 0
   ltPalmRtFloorUp: 0
   ltPalmForCamRt: 0
+  ltPalmForFloorUp: 0
 --- !u!4 &435999548
 Transform:
   m_ObjectHideFlags: 0
@@ -711,8 +715,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maximumHandDistance: 0.3
-  handAngle: 0
-  handDistance: 0
+  hueFloat: 0
+  satFloat: 0
 --- !u!1 &689133175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1447,6 +1451,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6340473913091470944, guid: 7079d504d1f520641b93e2f98b10e12b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6340473913788387328, guid: 7079d504d1f520641b93e2f98b10e12b,
         type: 3}
       propertyPath: m_RootOrder

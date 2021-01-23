@@ -9,8 +9,8 @@ namespace LW.HSL
 {
     public class ColorPicker : MonoBehaviour
     {
-        [SerializeField] float maximumHandDistance = 0.3f;
-        float minimumHandDistance = 0.15f;
+        [SerializeField] float maximumHandDistance = 0.35f;
+        float minimumHandDistance = 0.2f;
         public Color ChosenColor { get; set; }
 
         public float hueFloat = 0;
@@ -40,7 +40,7 @@ namespace LW.HSL
                 {
                     hslOrb.gameObject.SetActive(true);
 
-                    if (hands.rightOpen && hands.leftOpen)
+                    if (!hands.rightFist && !hands.leftFist)
                     {
                         hueFloat = hands.GetStaffForCamUp() / 180;
 

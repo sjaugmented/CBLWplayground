@@ -11,18 +11,16 @@ namespace LW.SlingShot
         bool triggered = false;
 
         SlingShotDirector director;
-        HandTracking hands;
 
         void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
-            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
         }
 
         private void OnTriggerEnter(Collider collider)
         {
-
-
+            if (GameObject.FindGameObjectWithTag("HSLOrb")) return;
+            
             if (leftHand)
             {
                 if (collider.CompareTag("Right Pointer"))
