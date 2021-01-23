@@ -18,9 +18,6 @@ TagManager:
   - Left Pointer
   - Right Pointer
   - OSC
-  - Handtracking
-  - line
-  - Drummer
   - Master Rune
   - Director
   - Caster
@@ -28,6 +25,10 @@ TagManager:
   - Left Middle
   - Rune
   - Node
+  - HandTracking
+  - SlingShot
+  - HSLOrb
+  - ColorPicker
   layers:
   - Default
   - TransparentFX
