@@ -47,7 +47,7 @@ namespace LW.Runic
         {
             renderer = GetComponentInChildren<Renderer>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
-            handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
+            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
 
 			GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);

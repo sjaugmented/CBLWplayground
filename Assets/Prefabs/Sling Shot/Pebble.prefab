@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5431807816001466757}
   - component: {fileID: 8758876272911120269}
   - component: {fileID: 8248103414050033449}
+  - component: {fileID: 2886271508418381689}
   m_Layer: 0
   m_Name: Pebble
   m_TagString: Untagged
@@ -60,6 +61,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92cf17f0547f5e243949a47dcd46475b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2886271508418381689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5431807816001466754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5280beff6abd56a4c893938a1dc7ca59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &5431807816267698268
@@ -167,6 +180,7 @@ GameObject:
   - component: {fileID: 5431807816657523112}
   - component: {fileID: 5431807816657523114}
   - component: {fileID: 5431807816657523115}
+  - component: {fileID: 2303639977255646677}
   m_Layer: 0
   m_Name: Platonic
   m_TagString: Untagged
@@ -214,7 +228,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 71d573ea4cb045cdadc98e56044f6d2c, type: 2}
+  - {fileID: 2100000, guid: b21f9310dc86c434ba50f68f3f64c1df, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -235,3 +249,15 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &2303639977255646677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5431807816657523113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdf56acd28363b5459de3b78c7053417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
