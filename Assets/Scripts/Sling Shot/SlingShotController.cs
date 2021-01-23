@@ -110,9 +110,9 @@ namespace LW.SlingShot
             Debug.Log("Distance: " + Vector3.Distance(handtracking.rightPalm.Position, sightHUD.transform.position));
             Debug.Log("force: " + force); // TODO remove
 
-            GameObject newArrow = Instantiate(pebblePrefab, handtracking.rightPalm.Position, pebbleHUD.transform.rotation);
+            GameObject newPebble = Instantiate(pebblePrefab, handtracking.rightPalm.Position, pebbleHUD.transform.rotation);
 
-            newArrow.GetComponent<PebbleController>().Force = force;
+            newPebble.GetComponent<PebbleController>().Force = force;
 
             rightReadyToFire = false;
         }
