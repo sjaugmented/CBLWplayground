@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using LW.Core;
+using LW.SlingShot;
 using System;
 
 namespace LW.HSL
@@ -12,10 +13,11 @@ namespace LW.HSL
         float minimumHandDistance = 0.15f;
         public Color ChosenColor { get; set; }
 
-        public float handAngle = 0;
-        public float handDistance = 0;
+        public float hueFloat = 0;
+        public float satFloat = 1;
         
         HandTracking hands;
+        SlingShotDirector director;
         HSLOrbController hslOrb;
 
         void Start()
@@ -23,43 +25,63 @@ namespace LW.HSL
             hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
             hslOrb = GameObject.FindGameObjectWithTag("HSLOrb").GetComponent<HSLOrbController>();
 
-            ChosenColor = Color.white;
+            //ChosenColor = Color.white;
         }
 
         void Update()
         {
             hslOrb.transform.position = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
 
-            if (hands.rightPeace || hands.leftPeace) return;
+            if (!GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)
+			{
+                if (hands.rightPeace || hands.leftPeace) return;
 
-            if (hands.palmsOpposed)
-            {
-                hslOrb.gameObject.SetActive(true);
-
-                if (hands.rightOpen && hands.leftOpen)
+                if (hands.palmsOpposed)
                 {
-                    handAngle = hands.GetStaffForCamUp() / 180;
+                    hslOrb.gameObject.SetActive(true);
 
-                    float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
-                    handDistance = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+                    if (hands.rightOpen && hands.leftOpen)
+                    {
+                        hueFloat = hands.GetStaffForCamUp() / 180;
+
+                        float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
+                        satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+                    }
+                }
+                else
+                {
+                    hslOrb.gameObject.SetActive(false);
                 }
             }
             else
-            {
-                hslOrb.gameObject.SetActive(false);
-            }
+			{
+                if (hands.leftPeace)
+                {
+                    hueFloat = hands.ltPalmForFloorUp / 90;
+
+                    if (hands.rightFist)
+					{
+                        satFloat = hands.rtPalmRtCamUp / 180;
+					}
+                }
+                else if (hands.rightPeace)
+                {
+                    hueFloat = hands.rtPalmForFloorUp / 90;
+
+                    if (hands.leftFist)
+					{
+                        satFloat = hands.ltPalmRtCamUp / 180;
+					}
+                }
+                else return;
+			}
 
             SetHueAndSat();
         }
 
-		private void PickColor()
-		{
-			throw new NotImplementedException();
-		}
-
         private void SetHueAndSat()
 		{
-            ChosenColor = Color.HSVToRGB(handAngle, handDistance, 0.5f);
+            ChosenColor = Color.HSVToRGB(hueFloat, satFloat, 0.5f);
 		}
 	}
 }

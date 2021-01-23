@@ -61,13 +61,17 @@ namespace LW.Core
         public float rtPalmUpFloorUp;
         public float rtPalmUpCamFor;
         public float rtPalmRtCamRt;
+        public float rtPalmRtCamUp;
         public float rtPalmRtFloorUp;
         public float rtPalmForCamRt;
+        public float rtPalmForFloorUp;
         public float ltPalmUpFloorUp;
         public float ltPalmUpCamFor;
         public float ltPalmRtCamRt;
+        public float ltPalmRtCamUp;
         public float ltPalmRtFloorUp;
         public float ltPalmForCamRt;
+        public float ltPalmForFloorUp;
 
         Transform cam;
         Transform floor;
@@ -182,12 +186,13 @@ namespace LW.Core
             float rtPalmForCamFor = Vector3.Angle(rightPalm.Forward, cam.forward);
             float rtPalmRtCamFor = Vector3.Angle(rightPalm.Right, cam.forward);
             rtPalmRtCamRt = Vector3.Angle(rightPalm.Right, cam.right);
-            float rtPalmRtCamUp = Vector3.Angle(rightPalm.Right, cam.up);
+            rtPalmRtCamUp = Vector3.Angle(rightPalm.Right, cam.up);
             float rtPalmForFloorFor = Vector3.Angle(rightPalm.Forward, floor.forward);
             float rtPalmRtFloorFor = Vector3.Angle(rightPalm.Right, floor.forward);
             float rtPalmUpCamRt = Vector3.Angle(rightPalm.Up, cam.right);
             rtPalmForCamRt = Vector3.Angle(rightPalm.Forward, cam.right);
             float rtPalmRtFloorRt = Vector3.Angle(rightPalm.Right, floor.right);
+            rtPalmForFloorUp = Vector3.Angle(rightPalm.Forward, floor.up);
 
 
             // left palm angles
@@ -198,12 +203,13 @@ namespace LW.Core
             float ltPalmForCamFor = Vector3.Angle(leftPalm.Forward, cam.forward);
             float ltPalmRtCamFor = Vector3.Angle(leftPalm.Right, cam.forward);
             ltPalmRtCamRt = Vector3.Angle(leftPalm.Right, cam.right);
-            float ltPalmRtCamUp = Vector3.Angle(leftPalm.Right, cam.up);
+            ltPalmRtCamUp = Vector3.Angle(leftPalm.Right, cam.up);
             float ltPalmForFloorFor = Vector3.Angle(leftPalm.Forward, floor.forward);
             float ltPalmRtFloorFor = Vector3.Angle(leftPalm.Right, floor.forward);
             float ltPalmUpCamRt = Vector3.Angle(leftPalm.Up, cam.right);
             ltPalmForCamRt = Vector3.Angle(leftPalm.Forward, cam.right);
             float ltPalmRtFloorRt = Vector3.Angle(leftPalm.Right, floor.right);
+            ltPalmForFloorUp = Vector3.Angle(leftPalm.Forward, floor.up);
 
             #endregion
 
