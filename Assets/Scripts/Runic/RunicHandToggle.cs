@@ -110,16 +110,24 @@ namespace LW.Runic
 
         private void ToggleNode()
 		{
-			director.ToggleNode();
-			triggered = true;
-			StartCoroutine("ToggleDelay");
+			if (!triggered)
+			{
+                director.ToggleNode();
+			    triggered = true;
+			    StartCoroutine("ToggleDelay");
+
+			}
 		}
 
         private void ToggleGaze()
 		{
-            director.ToggleGaze();
-            triggered = true;
-            StartCoroutine("ToggleDelay");
+            if (!triggered)
+			{
+                director.ToggleGaze();
+                triggered = true;
+                StartCoroutine("ToggleDelay");
+
+			}
         }
 
 		IEnumerator ToggleDelay()

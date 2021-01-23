@@ -16,25 +16,24 @@ namespace LW.Runic
         List<GameObject> rightHand = new List<GameObject>();
         List<GameObject> leftHand = new List<GameObject>();
 
-		//public enum Mode { Touch, Node };
-		//public Mode currentMode = Mode.Touch;
+		//public bool node = false;
+		//public bool Node
+		//{
+		//	get { return node; }
+		//	set { node = value; }
+		//}
 
-		public bool node = false;
-		public bool Node
-		{
-			get { return node; }
-			set { node = value; }
-		}
+		//public bool gaze = false;
+		//public bool Gaze
+		//{
+		//	get { return gaze; }
+		//	set { gaze = value; }
+		//}
 
-		public bool gaze = false;
-		public bool Gaze
-		{
-			get { return gaze; }
-			set { gaze = value; }
-		}
+		public bool Node { get; set; }
+		public bool Gaze { get; set; }
 
 		HandTracking handtracking;
-		AudioSource audio;
         
         void Start()
 		{
@@ -69,8 +68,6 @@ namespace LW.Runic
 
 		void Update()
         {
-			SetGazeProvider();
-
 			if (handtracking.rightHand) SetRightHand(true);
 			else SetRightHand(false);
 
@@ -132,14 +129,6 @@ namespace LW.Runic
 				Node = true;
 				GetComponent<AudioSource>().PlayOneShot(nodeTap);
 			}
-		}
-
-		private void SetGazeProvider()
-		{
-			//GazeProvider gazeProvider = Camera.main.GetComponent<GazeProvider>();
-
-			//if (Gaze) gazeProvider.enabled = true;
-			//else gazeProvider.enabled = false;
 		}
     }
 }
