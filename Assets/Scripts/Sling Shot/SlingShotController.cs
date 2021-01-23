@@ -22,7 +22,7 @@ namespace LW.SlingShot
         // Start is called before the first frame update
         void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
+            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
             bowSights = GetComponent<Sights>();
         }
 

@@ -25,7 +25,7 @@ namespace LW.Runic
         {
 			director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
-            hands = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
+            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
 		}
 
         private void OnTriggerEnter(Collider collider)

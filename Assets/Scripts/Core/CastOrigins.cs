@@ -11,7 +11,7 @@ namespace LW.Core
 
         private void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
+            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
         }
 
         private void Update()

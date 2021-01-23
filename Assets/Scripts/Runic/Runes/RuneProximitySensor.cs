@@ -27,7 +27,7 @@ namespace LW.Runic
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeController = GetComponent<RuneController>();
-            handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
+            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
             proximityBubble.localScale = new Vector3(bubbleScale, bubbleScale, bubbleScale);
         }
 

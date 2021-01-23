@@ -59,8 +59,8 @@ namespace LW.Runic
 
         private void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<HandTracking>();
-            castOrigins = GameObject.FindGameObjectWithTag("Handtracking").GetComponent<CastOrigins>();
+            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeBelt = GetComponent<RuneBelt>();
             audio = GetComponent<AudioSource>();
