@@ -11639,7 +11639,7 @@ MonoBehaviour:
   trackedHandness: 2
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0, y: 0.04, z: 0.01}
+  additionalOffset: {x: -0.02, y: 0.03, z: 0.03}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!4 &2452266861301475131
@@ -11714,7 +11714,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2452266861301475132}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5280beff6abd56a4c893938a1dc7ca59, type: 3}
   m_Name: 
@@ -12201,7 +12201,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3235132641339784876}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5280beff6abd56a4c893938a1dc7ca59, type: 3}
   m_Name: 

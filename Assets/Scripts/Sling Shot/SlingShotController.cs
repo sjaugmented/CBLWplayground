@@ -18,14 +18,18 @@ namespace LW.SlingShot
         public bool rightReadyToFire = false;
         public bool leftReadyToFire = false;
 
+        float fingerDistance;
+
         HandTracking handtracking;
-        Sights bowSights;
+        SlingShotDirector director;
+        Sights sights;
 
         // Start is called before the first frame update
         void Start()
         {
             handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
-            bowSights = GetComponent<Sights>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
+            sights = GetComponent<Sights>();
         }
 
         // Update is called once per frame
@@ -33,69 +37,60 @@ namespace LW.SlingShot
         {
             if (handtracking.leftPeace)
 			{
-				float fingerDistance = Vector3.Distance(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position);
-				ActivateSlingShot(fingerDistance);
+				fingerDistance = Vector3.Distance(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position);
+				ActivateSlingShot(handRingLeft, sights.GetLeftSight(), handtracking.ltMiddleTip.Position);
 
 				if (handtracking.rightFist)
 				{
-					PullSlingShot(bowSights.GetLeftSight());
+					PullSlingShot(sights.GetLeftSight());
 				}
 			}
 			else if (handtracking.rightPeace)
 			{
-                float fingerDistance = Vector3.Distance(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position);
-                ActivateSlingShot(fingerDistance);
+                fingerDistance = Vector3.Distance(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position);
+                ActivateSlingShot(handRingRight, sights.GetRightSight(), handtracking.rtMiddleTip.Position);
 
                 if (handtracking.leftFist)
 				{
-                    PullSlingShot(bowSights.GetRightSight());
+                    PullSlingShot(sights.GetRightSight());
 				}
 			}
 			else
             {
-                //deactivate sight and arrow Huds
+                //deactivate HUDs
                 sightHUD.SetActive(false);
                 pebbleHUD.SetActive(false);
+                handRingRight.SetActive(false);
+                handRingLeft.SetActive(false);
                 rightReadyToFire = false;
             }
 
             WatchForRelease();
         }
 
-		private void PullSlingShot(Vector3 sights)
-		{
-			pebbleHUD.SetActive(true);
-			pebbleHUD.transform.position = handtracking.rtIndexMid.Position;
-			pebbleHUD.transform.LookAt(sights);
-			rightReadyToFire = true;
-		}
-
-		private void ActivateSlingShot(float fingerDistance)
+		private void ActivateSlingShot(GameObject handRing, Vector3 sights, Vector3 sightsDirection)
 		{
 			// activate rangeFinder object
 			sightHUD.SetActive(true);
 			// position between finger tips
-			sightHUD.transform.position = bowSights.GetLeftSight();
+			sightHUD.transform.position = sights;
 			// size to distance
 			sightHUD.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
 			// rotate to face middle finger
-			sightHUD.transform.LookAt(handtracking.ltMiddleTip.Position);
+			sightHUD.transform.LookAt(sightsDirection);
 
-            //if ()
-            if (handtracking.leftPeace)
-            {
-                handRingLeft.SetActive(true);
-            }
-            else handRingLeft.SetActive(false);
-
-            if (handtracking.rightPeace)
-            {
-                handRingRight.SetActive(true);
-            }
-            else handRingRight.SetActive(false);
+            if (director.HandPicker) handRing.SetActive(true);
 		}
 
-		private void WatchForRelease()
+        private void PullSlingShot(Vector3 sights)
+        {
+            pebbleHUD.SetActive(true);
+            pebbleHUD.transform.position = handtracking.rtIndexMid.Position;
+            pebbleHUD.transform.LookAt(sights);
+            rightReadyToFire = true;
+        }
+
+        private void WatchForRelease()
         {
             if (rightReadyToFire)
             {
