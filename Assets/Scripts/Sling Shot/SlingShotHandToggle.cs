@@ -27,7 +27,7 @@ namespace LW.SlingShot
             {
                 if (collider.CompareTag("Right Pointer"))
                 {
-                    ToggleOrbMode();
+                    ToggleHandMode();
                 }
             }
 
@@ -35,19 +35,18 @@ namespace LW.SlingShot
             {
                 if (collider.CompareTag("Left Pointer"))
                 {
-                    ToggleOrbMode();
+                    ToggleHandMode();
                 }
             }
         }
 
-        private void ToggleOrbMode()
+        private void ToggleHandMode()
         {
             if (!triggered)
 			{
-                director.ToggleOrbMode();
+                director.ToggleHandMode();
                 triggered = true;
                 StartCoroutine("ToggleDelay");
-
 			}
         }
 

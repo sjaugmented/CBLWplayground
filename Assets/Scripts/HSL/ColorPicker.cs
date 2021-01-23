@@ -22,6 +22,8 @@ namespace LW.HSL
         {
             hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
             hslOrb = GameObject.FindGameObjectWithTag("HSLOrb").GetComponent<HSLOrbController>();
+
+            ChosenColor = Color.white;
         }
 
         void Update()

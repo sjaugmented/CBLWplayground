@@ -11,6 +11,8 @@ namespace LW.SlingShot
         [SerializeField] GameObject sightHUD;
         [SerializeField] GameObject pebbleHUD;
         [SerializeField] GameObject pebblePrefab;
+        [SerializeField] GameObject handRingRight;
+        [SerializeField] GameObject handRingLeft;
         [SerializeField] float forceMultiplier = 100;
 
         public bool rightReadyToFire = false;
@@ -78,6 +80,19 @@ namespace LW.SlingShot
 			sightHUD.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
 			// rotate to face middle finger
 			sightHUD.transform.LookAt(handtracking.ltMiddleTip.Position);
+
+            //if ()
+            if (handtracking.leftPeace)
+            {
+                handRingLeft.SetActive(true);
+            }
+            else handRingLeft.SetActive(false);
+
+            if (handtracking.rightPeace)
+            {
+                handRingRight.SetActive(true);
+            }
+            else handRingRight.SetActive(false);
 		}
 
 		private void WatchForRelease()

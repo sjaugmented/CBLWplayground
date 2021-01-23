@@ -8,15 +8,15 @@ namespace LW.SlingShot
 {
     public class SlingShotDirector : MonoBehaviour
     {
-        [SerializeField] AudioClip orbModeOn;
-        [SerializeField] AudioClip orbModeOff;
+        [SerializeField] AudioClip handOn;
+        [SerializeField] AudioClip handOff;
 
-        [SerializeField] GameObject rightHandGroup, leftHandGroup, rightToggle, leftToggle, rightDorsal, leftDorsal;
+        [SerializeField] GameObject rightHandGroup, leftHandGroup, rightToggle, leftToggle;
 
         List<GameObject> rightHand = new List<GameObject>();
         List<GameObject> leftHand = new List<GameObject>();
 
-        public bool OrbMode { get; set; }
+        public bool HandPicker { get; set; }
 
         HandTracking handtracking;
 
@@ -26,10 +26,8 @@ namespace LW.SlingShot
 
             rightHand.Add(rightHandGroup);
             rightHand.Add(rightToggle);
-            rightHand.Add(rightDorsal);
             leftHand.Add(leftHandGroup);
             leftHand.Add(leftToggle);
-            leftHand.Add(leftDorsal);
 
             SetRightHand(false);
             SetLeftHand(false);
@@ -53,30 +51,38 @@ namespace LW.SlingShot
 
         void Update()
         {
-            if (handtracking.rightHand) SetRightHand(true);
-            else SetRightHand(false);
+            if (handtracking.rightHand)
+			{
+				SetRightHand(true);
+			}
+			else SetRightHand(false);
 
-            if (handtracking.leftHand) SetLeftHand(true);
-            else SetLeftHand(false);
+            if (handtracking.leftHand)
+			{
+				SetLeftHand(true);
+			}
+			else SetLeftHand(false);
+
+            
 
             ///// DEV CONTROLS
             if (Input.GetKeyDown(KeyCode.O))
             {
-                ToggleOrbMode();
+                ToggleHandMode();
             }
         }
 
-		public void ToggleOrbMode()
+		public void ToggleHandMode()
 		{
-            if (OrbMode)
+            if (HandPicker)
 			{
-                OrbMode = false;
-                GetComponent<AudioSource>().PlayOneShot(orbModeOff);
+                HandPicker = false;
+                GetComponent<AudioSource>().PlayOneShot(handOff);
             }
             else
 			{
-                OrbMode = true;
-                GetComponent<AudioSource>().PlayOneShot(orbModeOn);
+                HandPicker = true;
+                GetComponent<AudioSource>().PlayOneShot(handOn);
             }
         }
 	}
