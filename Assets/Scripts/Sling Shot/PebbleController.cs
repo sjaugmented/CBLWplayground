@@ -5,14 +5,14 @@ namespace LW.SlingShot
     [RequireComponent(typeof(Rigidbody))]
     public class PebbleController : MonoBehaviour
     {
-        public float force { get; set; }
+        public float Force { get; set; }
 
         float time = 0;
         float lifeSpan = 5;
 
         void Start()
         {
-            GetComponent<Rigidbody>().AddForce(transform.forward * force);
+            GetComponent<Rigidbody>().AddForce(transform.forward * Force);
         }
 
         void Update()

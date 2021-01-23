@@ -153,7 +153,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 86a24cb9ad0055d4397226be8d7e18c5, type: 2}
+  - {fileID: 2100000, guid: 328bed2a91e00b14189e123081aaab21, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -197,7 +197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5311970574011902885}
   m_Layer: 0
-  m_Name: SightHud
+  m_Name: Sight HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
