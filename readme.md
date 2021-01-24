@@ -1,1 +1,2 @@
-﻿##This is LightWand##
+### Welcome to LightWand
+
