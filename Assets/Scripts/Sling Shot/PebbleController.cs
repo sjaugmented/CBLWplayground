@@ -24,5 +24,16 @@ namespace LW.SlingShot
                 Destroy(gameObject);
             }
         }
+
+        void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Light"))
+			{
+                Material lightMaterial = collision.gameObject.GetComponent<Renderer>().material;
+                lightMaterial.color = GetComponent<Renderer>().material.color;
+                Debug.Log("///Color info///");
+                Debug.Log(lightMaterial.color);
+			}
+        }
     }
 }

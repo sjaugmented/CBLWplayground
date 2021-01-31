@@ -7,18 +7,25 @@ namespace LW.SlingShot
 {
     public class PebbleColor : MonoBehaviour
     {
+        [SerializeField] bool projectile = false;
+
         ColorPicker colorPicker;
         Material material;
         void Start()
         {
             colorPicker = GameObject.FindGameObjectWithTag("ColorPicker").GetComponent<ColorPicker>();
             material = GetComponentInChildren<Renderer>().material;
+            material.color = colorPicker.ChosenColor;
+            material.SetColor("_EmissionColor", colorPicker.ChosenColor);
         }
 
         void Update()
         {
-            material.color = colorPicker.ChosenColor;
-            material.SetColor("_EmissionColor", colorPicker.ChosenColor);
+            if (!projectile)
+			{
+                material.color = colorPicker.ChosenColor;
+                material.SetColor("_EmissionColor", colorPicker.ChosenColor);
+            }
         }
     }
 }

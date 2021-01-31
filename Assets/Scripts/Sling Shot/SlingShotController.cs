@@ -33,6 +33,8 @@ namespace LW.SlingShot
 
         void Update()
         {
+            if (director.BuildMode) { return; }
+
             if (handtracking.leftPeace)
 			{
 				fingerDistance = Vector3.Distance(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position);
