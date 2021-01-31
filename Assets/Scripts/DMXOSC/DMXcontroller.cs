@@ -43,13 +43,13 @@ public class DMXcontroller : MonoBehaviour
         return DMXData;
     }
 
-    public void SetAddress(int channel, int brightness) // send channel and brightness info
+    public void SetAddress(int channel, int value) // send channel and brightness info
     {
-        Debug.Log("DMXcontroller received channel: " + channel + ", brightness: " + brightness); //todo remove
+        Debug.Log("DMXcontroller received channel: " + channel + ", value: " + value); //todo remove
 
         if (channel <= 0) return;
 
-        int x = brightness;
+        int x = value;
         if (x < 0) x = 0;
         if (x > 255) x = 255;
 
