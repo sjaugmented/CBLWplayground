@@ -1012,6 +1012,15 @@ MonoBehaviour:
   skyPanelGreen: 75
   skyPanelBlue: 76
   skyPanelWhite: 77
+  cctDimmer: 1
+  cctKelvin: 2
+  cctGNSat: 3
+  cctXFadeToColor: 4
+  cctHue: 5
+  cctSat: 6
+  hsiDimmer: 1
+  hsiHue: 2
+  hsiSat: 3
   spotRed: 1
   spotGreen: 2
   spotBlue: 3

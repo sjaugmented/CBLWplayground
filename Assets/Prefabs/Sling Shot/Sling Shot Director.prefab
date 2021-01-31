@@ -731,6 +731,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handOn: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}
   handOff: {fileID: 8300000, guid: 504deb8fe0c28884d94abd4cf816ab2c, type: 3}
+  buildOn: {fileID: 8300000, guid: 504deb8fe0c28884d94abd4cf816ab2c, type: 3}
+  buildOff: {fileID: 8300000, guid: fdd259749e8bbd94f8fcb094a9ccee47, type: 3}
   rightHandGroup: {fileID: 1458801012464751739}
   leftHandGroup: {fileID: 1359020375891847169}
   rightToggle: {fileID: 1458801013475704442}
