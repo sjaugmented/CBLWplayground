@@ -956,7 +956,7 @@ MonoBehaviour:
     type: 3}
   handRingRight: {fileID: 2452266861301475132}
   handRingLeft: {fileID: 3235132641339784876}
-  forceMultiplier: 500
+  forceMultiplier: 2000
   rightReadyToFire: 0
   leftReadyToFire: 0
 --- !u!114 &1499304297

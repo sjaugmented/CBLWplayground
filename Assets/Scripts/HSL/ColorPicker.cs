@@ -9,12 +9,14 @@ namespace LW.HSL
 {
     public class ColorPicker : MonoBehaviour
     {
+        [SerializeField] float maxSlingShotPullDistance = 0.25f;
         [SerializeField] float maximumHandDistance = 0.35f;
         float minimumHandDistance = 0.2f;
         public Color ChosenColor { get; set; }
 
         public float hueFloat = 0;
         public float satFloat = 1;
+        public float valFloat = 0;
         
         HandTracking hands;
         SlingShotDirector director;
@@ -55,14 +57,18 @@ namespace LW.HSL
             }
             else
 			{
+                valFloat = Mathf.Clamp(Vector3.Distance(hands.ltIndexTip.Position, hands.rtIndexTip.Position) / maxSlingShotPullDistance, 0, 1);
+                
                 if (hands.leftPeace)
                 {
                     hueFloat = hands.ltPalmForFloorUp / 90;
+                    
 
                     if (hands.rightFist)
 					{
                         satFloat = hands.rtPalmRtCamUp / 180;
-					}
+                        SetHueSatVal();
+                    }
                 }
                 else if (hands.rightPeace)
                 {
@@ -71,17 +77,18 @@ namespace LW.HSL
                     if (hands.leftFist)
 					{
                         satFloat = hands.ltPalmRtCamUp / 180;
-					}
+                        SetHueSatVal();
+                    }
                 }
                 else return;
 			}
 
-            SetHueAndSat();
+            //SetHueSatVal();
         }
 
-        private void SetHueAndSat()
+        private void SetHueSatVal()
 		{
-            ChosenColor = Color.HSVToRGB(hueFloat, satFloat, 0.5f);
+            ChosenColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
 		}
 	}
 }
