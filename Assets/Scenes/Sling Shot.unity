@@ -235,6 +235,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc2b001656cda0b43be88e8e3ef48533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &299114436
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 299114438}
+  - component: {fileID: 299114437}
+  - component: {fileID: 299114439}
+  m_Layer: 0
+  m_Name: Light Holo
+  m_TagString: Light
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &299114437
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299114436}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.94
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &299114438
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299114436}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2130448831}
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &299114439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 299114436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ed861b32eff1b489d0be73835e1d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &314781491
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,9 +772,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8136858ed22c6046ba27ab3a0294b48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxSlingShotPullDistance: 0.25
   maximumHandDistance: 0.3
   hueFloat: 0
   satFloat: 0
+  valFloat: 0
 --- !u!1 &689133175
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,7 +1016,7 @@ MonoBehaviour:
     type: 3}
   handRingRight: {fileID: 2452266861301475132}
   handRingLeft: {fileID: 3235132641339784876}
-  forceMultiplier: 500
+  forceMultiplier: 2000
   rightReadyToFire: 0
   leftReadyToFire: 0
 --- !u!114 &1499304297
@@ -986,11 +1046,11 @@ GameObject:
   - component: {fileID: 1801534004}
   m_Layer: 0
   m_Name: DMX
-  m_TagString: Untagged
+  m_TagString: DMX
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1801534004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1180,6 +1240,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2130448830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2130448831}
+  - component: {fileID: 2130448833}
+  - component: {fileID: 2130448832}
+  m_Layer: 0
+  m_Name: Sphere Platonic
+  m_TagString: Light
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2130448831
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130448830}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 299114438}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &2130448832
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130448830}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &2130448833
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130448830}
+  m_Mesh: {fileID: 4300000, guid: 7d2352d20b98a964f8d3aa0ed69c6c48, type: 3}
 --- !u!1 &2452266861301475132 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8849272409047973676, guid: c065f6fca5c1945408f7b9c97a2d0bb6,
@@ -1453,6 +1592,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5280beff6abd56a4c893938a1dc7ca59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectile: 0
 --- !u!1001 &6340473912414822977
 PrefabInstance:
   m_ObjectHideFlags: 0

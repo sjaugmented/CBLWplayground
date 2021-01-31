@@ -25,7 +25,7 @@ namespace LW.SlingShot
 
         private void OnTriggerEnter(Collider collider)
         {
-            if (GameObject.FindGameObjectWithTag("HSLOrb")) return;
+            if (GameObject.FindGameObjectWithTag("HSLOrb")) { return; }
             
             if (leftHand)
             {
@@ -43,26 +43,6 @@ namespace LW.SlingShot
                 }
             }
         }
-
-  //      private void ToggleHandMode()
-  //      {
-  //          if (!triggered)
-		//	{
-  //              director.ToggleHandMode();
-  //              triggered = true;
-  //              StartCoroutine("ToggleDelay");
-		//	}
-  //      }
-
-  //      void ToggleBuildMode()
-		//{
-  //          if (!triggered)
-		//	{
-  //              director.ToggleBuildMode();
-  //              triggered = true;
-  //              StartCoroutine("ToggleDelay");
-		//	}
-		//}
 
         void ToggleMode(ModeDelegate method)
 		{
