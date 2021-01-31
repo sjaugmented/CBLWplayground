@@ -7,7 +7,7 @@ public class DMXChannels : MonoBehaviour
     public List<int> SkyPanel1 = new List<int>();
     public List<int> SkyPanel2 = new List<int>();
 
-    [Header("Individual channel assignments")]
+    [Header("CCT & RGBW channel assignments")]
     public int skyPanelDimmer;
     public int skyPanelKelvin;
     public int skyPanelXOver;
@@ -15,6 +15,19 @@ public class DMXChannels : MonoBehaviour
     public int skyPanelGreen;
     public int skyPanelBlue;
     public int skyPanelWhite;
+
+    [Header("CCT & HSI channel assignments")]
+    public int cctDimmer = 1;
+    public int cctKelvin = 2;
+    public int cctGNSat = 3;
+    public int cctXFadeToColor = 4;
+    public int cctHue = 5;
+    public int cctSat = 6;
+
+    [Header("HSI channel assignments")]
+    public int hsiDimmer = 1;
+    public int hsiHue = 2;
+    public int hsiSat = 3;
 
     [Header("SpotLight channels")]
     public int spotRed;
