@@ -25,13 +25,17 @@ namespace LW.SlingShot
             }
         }
 
-        void OnCollisionEnter(Collision collision)
+        void OnTriggerEnter(Collider other)
         {
-            if (collision.gameObject.CompareTag("Light"))
+            Debug.Log("collision with " + other.name);
+            
+            if (other.gameObject.CompareTag("Light"))
 			{
-                Material lightMaterial = collision.gameObject.GetComponent<Renderer>().material;
-                lightMaterial.color = GetComponent<Renderer>().material.color;
-                Debug.Log("///Color info///");
+                Material lightMaterial = other.gameObject.GetComponent<Renderer>().material;
+                lightMaterial.color = GetComponent<PebbleColor>().StoredColor;
+                Debug.Log("///Saved Color info///");
+                Debug.Log(GetComponent<PebbleColor>().StoredColor);
+                Debug.Log("///Setting Color info///");
                 Debug.Log(lightMaterial.color);
 			}
         }

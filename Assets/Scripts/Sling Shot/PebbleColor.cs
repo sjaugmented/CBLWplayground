@@ -9,14 +9,20 @@ namespace LW.SlingShot
     {
         [SerializeField] bool projectile = false;
 
+        public Color StoredColor
+		{
+            get; set;
+		}
+
         ColorPicker colorPicker;
         Material material;
         void Start()
         {
             colorPicker = GameObject.FindGameObjectWithTag("ColorPicker").GetComponent<ColorPicker>();
             material = GetComponentInChildren<Renderer>().material;
-            material.color = colorPicker.ChosenColor;
-            material.SetColor("_EmissionColor", colorPicker.ChosenColor);
+            StoredColor = colorPicker.ChosenColor;
+            material.color = StoredColor;
+            material.SetColor("_EmissionColor", StoredColor);
         }
 
         void Update()
