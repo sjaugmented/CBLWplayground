@@ -24,7 +24,6 @@ namespace LW.SlingShot
         SlingShotDirector director;
         Sights sights;
 
-        // Start is called before the first frame update
         void Start()
         {
             handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
@@ -32,7 +31,6 @@ namespace LW.SlingShot
             sights = GetComponent<Sights>();
         }
 
-        // Update is called once per frame
         void Update()
         {
             if (handtracking.leftPeace)

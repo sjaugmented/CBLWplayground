@@ -10,11 +10,17 @@ namespace LW.SlingShot
         [SerializeField] bool leftHand = false;
         bool triggered = false;
 
+        public delegate void ModeDelegate();
+        public ModeDelegate handToggle;
+        public ModeDelegate buildToggle;
+
         SlingShotDirector director;
 
         void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
+            handToggle = director.ToggleHandMode;
+            buildToggle = director.ToggleBuildMode;
         }
 
         private void OnTriggerEnter(Collider collider)
@@ -25,7 +31,7 @@ namespace LW.SlingShot
             {
                 if (collider.CompareTag("Right Pointer"))
                 {
-                    ToggleHandMode();
+                    ToggleMode(handToggle);
                 }
             }
 
@@ -33,19 +39,39 @@ namespace LW.SlingShot
             {
                 if (collider.CompareTag("Left Pointer"))
                 {
-                    ToggleHandMode();
+                    ToggleMode(buildToggle);
                 }
             }
         }
 
-        private void ToggleHandMode()
-        {
+  //      private void ToggleHandMode()
+  //      {
+  //          if (!triggered)
+		//	{
+  //              director.ToggleHandMode();
+  //              triggered = true;
+  //              StartCoroutine("ToggleDelay");
+		//	}
+  //      }
+
+  //      void ToggleBuildMode()
+		//{
+  //          if (!triggered)
+		//	{
+  //              director.ToggleBuildMode();
+  //              triggered = true;
+  //              StartCoroutine("ToggleDelay");
+		//	}
+		//}
+
+        void ToggleMode(ModeDelegate method)
+		{
             if (!triggered)
-			{
-                director.ToggleHandMode();
+            {
+                method();
                 triggered = true;
                 StartCoroutine("ToggleDelay");
-			}
+            }
         }
 
         IEnumerator ToggleDelay()

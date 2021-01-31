@@ -10,6 +10,8 @@ namespace LW.SlingShot
     {
         [SerializeField] AudioClip handOn;
         [SerializeField] AudioClip handOff;
+        [SerializeField] AudioClip buildOn;
+        [SerializeField] AudioClip buildOff;
 
         [SerializeField] GameObject rightHandGroup, leftHandGroup, rightToggle, leftToggle;
 
@@ -17,6 +19,7 @@ namespace LW.SlingShot
         List<GameObject> leftHand = new List<GameObject>();
 
         public bool HandPicker { get; set; }
+        public bool BuildMode { get; set; }
 
         HandTracking handtracking;
 
@@ -85,6 +88,20 @@ namespace LW.SlingShot
                 GetComponent<AudioSource>().PlayOneShot(handOn);
             }
         }
+
+        public void ToggleBuildMode()
+		{
+            if (BuildMode)
+			{
+                BuildMode = false;
+                GetComponent<AudioSource>().PlayOneShot(buildOff);
+			}
+            else
+			{
+                BuildMode = true;
+                GetComponent<AudioSource>().PlayOneShot(buildOn);
+			}
+		}
 	}
 }
 
