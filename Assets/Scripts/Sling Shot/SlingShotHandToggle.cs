@@ -15,10 +15,12 @@ namespace LW.SlingShot
         public ModeDelegate buildToggle;
 
         SlingShotDirector director;
+        HandTracking hands;
 
         void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
+            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
             handToggle = director.ToggleHandMode;
             buildToggle = director.ToggleBuildMode;
         }
@@ -26,6 +28,7 @@ namespace LW.SlingShot
         private void OnTriggerEnter(Collider collider)
         {
             if (GameObject.FindGameObjectWithTag("HSLOrb")) { return; }
+            if (hands.rightPeace || hands.leftPeace) { return; }
             
             if (leftHand)
             {
