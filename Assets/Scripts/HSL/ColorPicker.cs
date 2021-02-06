@@ -44,7 +44,8 @@ namespace LW.HSL
 
                     if (!hands.rightFist && !hands.leftFist)
                     {
-                        hueFloat = hands.GetStaffForCamUp() / 180;
+                        hueFloat = hands.GetStaffForCamUp / 180;
+                        valFloat = hands.GetStaffForCamFor / 90;
 
                         float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
                         satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
@@ -63,7 +64,6 @@ namespace LW.HSL
                 {
                     hueFloat = hands.ltPalmForFloorUp / 90;
                     
-
                     if (hands.rightFist)
 					{
                         satFloat = hands.rtPalmRtCamUp / 180;

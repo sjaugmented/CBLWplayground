@@ -1,19 +1,69 @@
-﻿using System.Collections;
+﻿using LW.HSL;
+using LW.SlingShot;
+using Microsoft.MixedReality.Toolkit.Input;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(EyeTrackingTarget))]
 public class LightHolo : MonoBehaviour
 {
+    [SerializeField] GameObject liveHUD;
+    
     DMXcontroller dmx;
     DMXChannels channels;
+    SlingShotDirector director;
+    ColorPicker colorPicker;
+
+    public bool Live { get; set; }
+
+    private EyeTrackingTarget eyeTracking;
 
     void Start()
     {
         dmx = GameObject.FindGameObjectWithTag("DMX").GetComponent<DMXcontroller>();
         channels = GameObject.FindGameObjectWithTag("DMX").GetComponent < DMXChannels>();
+        director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
+        colorPicker = GameObject.FindGameObjectWithTag("ColorPicker").GetComponent<ColorPicker>();
+
+        //eyeTracking = GetComponent<EyeTrackingTarget>();
+        //eyeTracking.OnSelected.AddListener(TargetSelected);
+        //eyeTracking.OnLookAtStart.AddListener(LookedAt);
+        //eyeTracking.OnLookAway.AddListener(LookedAway);
     }
 
-    public void ChangeLight(float hue, float sat, float val)
+    void Update()
+	{
+        if (Live)
+		{
+            liveHUD.SetActive(true);
+		} else
+		{
+            liveHUD.SetActive(false);
+		}
+        
+        if (Live && !director.HandPicker)
+		{
+            ChangeLight(colorPicker.hueFloat, colorPicker.satFloat, colorPicker.valFloat);
+		}
+
+        if (Input.GetKeyDown(KeyCode.X))
+		{
+            TargetSelected();
+		}
+	}
+
+    public void TargetSelected()
+	{
+        Live = !Live;
+	}
+
+    public void LookedAt()
+	{
+		transform.Rotate(0.1f, 1, 0.1f);
+	}
+
+	public void ChangeLight(float hue, float sat, float val)
 	{
         dmx.SetAddress(channels.hsiHue, Mathf.RoundToInt(hue * 255));
         dmx.SetAddress(channels.hsiSat, Mathf.RoundToInt(sat * 255));
