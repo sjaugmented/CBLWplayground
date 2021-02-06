@@ -1791,6 +1791,7 @@ GameObject:
   - component: {fileID: 2130448831}
   - component: {fileID: 2130448833}
   - component: {fileID: 2130448832}
+  - component: {fileID: 2130448834}
   m_Layer: 0
   m_Name: Sphere Platonic
   m_TagString: Light
@@ -1859,6 +1860,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2130448830}
   m_Mesh: {fileID: 4300000, guid: 7d2352d20b98a964f8d3aa0ed69c6c48, type: 3}
+--- !u!114 &2130448834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2130448830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da54b0e3e107f84b888722e9a09ccae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2452266861301475132 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8849272409047973676, guid: c065f6fca5c1945408f7b9c97a2d0bb6,

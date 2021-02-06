@@ -19,7 +19,7 @@ namespace LW.HSL
 
         void Update()
         {
-            orbColor = colorPicker.ChosenColor;
+            orbColor = colorPicker.PreviewColor;
             
             material.color = orbColor;
             material.SetColor("_EmissionColor", orbColor);

@@ -20,7 +20,7 @@ namespace LW.SlingShot
         {
             colorPicker = GameObject.FindGameObjectWithTag("ColorPicker").GetComponent<ColorPicker>();
             material = GetComponentInChildren<Renderer>().material;
-            StoredColor = colorPicker.ChosenColor;
+            StoredColor = colorPicker.LiveColor;
             material.color = StoredColor;
             material.SetColor("_EmissionColor", StoredColor);
         }
@@ -29,8 +29,8 @@ namespace LW.SlingShot
         {
             if (!projectile)
 			{
-                material.color = colorPicker.ChosenColor;
-                material.SetColor("_EmissionColor", colorPicker.ChosenColor);
+                material.color = colorPicker.LiveColor;
+                material.SetColor("_EmissionColor", colorPicker.LiveColor);
             }
         }
     }

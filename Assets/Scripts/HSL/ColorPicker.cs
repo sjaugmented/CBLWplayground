@@ -12,7 +12,8 @@ namespace LW.HSL
         [SerializeField] float maxSlingShotPullDistance = 0.25f;
         [SerializeField] float maximumHandDistance = 0.35f;
         float minimumHandDistance = 0.2f;
-        public Color ChosenColor { get; set; }
+        public Color LiveColor { get; set; }
+        public Color PreviewColor { get; set; }
 
         public float hueFloat = 0;
         public float satFloat = 1;
@@ -42,13 +43,19 @@ namespace LW.HSL
                 {
                     hslOrb.gameObject.SetActive(true);
 
+                    hueFloat = hands.GetStaffForCamUp / 180;
+                    valFloat = hands.GetStaffForCamFor / 180;
+
+                    float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
+                    satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+
+                    PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+
                     if (!hands.rightFist && !hands.leftFist)
                     {
-                        hueFloat = hands.GetStaffForCamUp / 180;
-                        valFloat = hands.GetStaffForCamFor / 90;
 
-                        float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
-                        satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+
+                        LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
                 else
@@ -67,7 +74,7 @@ namespace LW.HSL
                     if (hands.rightFist)
 					{
                         satFloat = hands.rtPalmRtCamUp / 180;
-                        SetHueSatVal();
+                        PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
                 else if (hands.rightPeace)
@@ -77,19 +84,12 @@ namespace LW.HSL
                     if (hands.leftFist)
 					{
                         satFloat = hands.ltPalmRtCamUp / 180;
-                        SetHueSatVal();
+                        PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
                 else return;
 			}
-
-            //SetHueSatVal();
         }
-
-        private void SetHueSatVal()
-		{
-            ChosenColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
-		}
 	}
 }
 

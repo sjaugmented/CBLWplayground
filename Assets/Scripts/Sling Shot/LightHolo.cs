@@ -44,7 +44,15 @@ public class LightHolo : MonoBehaviour
         
         if (Live && !director.HandPicker)
 		{
-            ChangeLight(colorPicker.hueFloat, colorPicker.satFloat, colorPicker.valFloat);
+            Material holoMat = GetComponentInChildren<LightHoloRendererID>().gameObject.GetComponent<Renderer>().material;
+            holoMat.color = colorPicker.LiveColor;
+            holoMat.SetColor("_EmissionColor", colorPicker.LiveColor);
+            float hue;
+            float sat;
+            float val;
+            Color.RGBToHSV(colorPicker.LiveColor, out hue, out sat, out val);
+
+            ChangeLight(hue, sat, val);
 		}
 
         if (Input.GetKeyDown(KeyCode.X))
