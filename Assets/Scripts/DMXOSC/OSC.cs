@@ -636,6 +636,7 @@ public class OSC : MonoBehaviour
         byte[] packet = new byte[1000];
         int length = OSC.OscMessageToPacket(oscMessage, packet, 1000);
         OscPacketIO.SendPacket(packet, length);
+        Debug.Log("OSC Sending address: " + oscMessage.address + ", value: " + oscMessage.values[0]);
     }
 
     /// <summary>

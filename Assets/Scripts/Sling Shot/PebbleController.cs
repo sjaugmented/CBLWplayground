@@ -46,7 +46,7 @@ namespace LW.SlingShot
                 Material lightMaterial = other.gameObject.GetComponentInChildren<Renderer>().material;
                 lightMaterial.color = GetComponent<PebbleColor>().StoredColor;
 
-                other.GetComponent<LightHolo>().ChangeLight(hue, sat, val);
+                other.GetComponent<LightHolo>().ChangeDMXLight(hue, sat, val);
 			}
         }
     }
