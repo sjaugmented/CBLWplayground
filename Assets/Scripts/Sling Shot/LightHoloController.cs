@@ -7,6 +7,7 @@ namespace LW.SlingShot
 {
 	public class LightHoloController : MonoBehaviour
 	{
+		[SerializeField] private float colliderDistance = 0.2f;
 		[SerializeField] float maxHandDist = 0.5f;
 		[SerializeField] bool devMode = false;
 		[Range(100, 500)] public float force;
@@ -37,24 +38,22 @@ namespace LW.SlingShot
 		    {
 			    lassoPrimed = true;
 		    }
-		    else
-		    {
-			    lassoPrimed = false;
-		    }
 
 		    if (lassoPrimed && hands.rightFist && hands.leftFist)
 		    {
 			    recall = true;
+			    lassoPrimed = false;
 		    }
 
-		    if (recall && holoOut)
-		    {
+		    float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
+
+			if (recall && holoOut)
+			{
+				GetComponent<Collider>().enabled = false;
 			    lassoOrigin = Camera.main.transform.position - new Vector3(0, 0.3f, 0);
 			    transform.LookAt(lassoOrigin);
 
-			    float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
-
-			    if (distToOrigin > 0.2)
+			    if (distToOrigin > colliderDistance)
 			    {
 					GetComponent<Rigidbody>().AddForce((transform.forward * 10));
 			    }
@@ -90,7 +89,6 @@ namespace LW.SlingShot
 
 				    }
 			    }
-
 		    }
 		    #endregion
 		}
@@ -118,12 +116,18 @@ namespace LW.SlingShot
 			{
 				transform.position = castOrigin;
 				transform.rotation = castRotation;
-				force = (1 - (castOrigins.palmDist / maxHandDist)) * 500;
+				force = (1 - (castOrigins.palmDist / maxHandDist)) * 750;
 			}
 
 			GetComponent<Rigidbody>().AddForce(transform.forward * Mathf.Clamp(force, 100, 500));
-
+			StartCoroutine("DelayCollider");
 			holoOut = true;
+	    }
+
+	    IEnumerator DelayCollider()
+	    {
+		    yield return new WaitForSeconds(1);
+		    GetComponent<Collider>().enabled = true;
 	    }
 	}
 	

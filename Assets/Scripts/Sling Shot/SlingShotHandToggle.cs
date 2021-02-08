@@ -16,11 +16,13 @@ namespace LW.SlingShot
 
         SlingShotDirector director;
         HandTracking hands;
+        private LightHolo light;
 
         void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
             hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            light = GameObject.FindGameObjectWithTag("Light").GetComponent<LightHolo>();
             handToggle = director.ToggleHandMode;
             buildToggle = director.ToggleBuildMode;
         }
@@ -42,7 +44,7 @@ namespace LW.SlingShot
             {
                 if (collider.CompareTag("Left Pointer"))
                 {
-                    ToggleMode(buildToggle);
+	                light.Live = !light.Live;
                 }
             }
         }
