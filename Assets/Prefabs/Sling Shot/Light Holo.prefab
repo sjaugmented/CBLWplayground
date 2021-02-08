@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1243663989303133696}
   - component: {fileID: 1243663989303133709}
   - component: {fileID: 299114437}
+  - component: {fileID: 1243663989054888396}
   m_Layer: 0
   m_Name: Light Holo
   m_TagString: Light
@@ -192,6 +193,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc52d2cfdf1d5b46ae7baca221262a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHandDist: 0.5
+--- !u!54 &1243663989054888396
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243663989303133710}
+  serializedVersion: 2
+  m_Mass: 0.1
+  m_Drag: 2.5
+  m_AngularDrag: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1243663989663953951
 GameObject:
   m_ObjectHideFlags: 0
