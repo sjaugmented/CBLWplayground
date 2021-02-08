@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 1243663989303133710}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1243663990697216117}
   - {fileID: 1243663989980462652}
@@ -194,6 +194,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHandDist: 0.5
+  devMode: 1
+  force: 0
+  holoOut: 1
+  lassoPrimed: 0
+  recall: 0
 --- !u!54 &1243663989054888396
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -202,7 +207,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1243663989303133710}
   serializedVersion: 2
-  m_Mass: 0.1
+  m_Mass: 0.5
   m_Drag: 2.5
   m_AngularDrag: 1
   m_UseGravity: 0

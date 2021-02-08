@@ -9,17 +9,19 @@ namespace LW.SlingShot
 	{
 		[SerializeField] float maxHandDist = 0.5f;
 		[SerializeField] bool devMode = false;
-		[Range(10, 200)] float force;
+		[Range(100, 500)] public float force;
 		
 		HandTracking hands;
+		private CastOrigins castOrigins;
 		public bool holoOut = false;
 		public bool lassoPrimed = false;
 		public bool recall = false;
-		//private Vector3 currentPos;
+		private Vector3 lassoOrigin;
 
 		void Start()
 		{
 			hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+			castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
 		}
 
 	    void Update()
@@ -47,20 +49,26 @@ namespace LW.SlingShot
 
 		    if (recall && holoOut)
 		    {
-			    Vector3 lassoOrigin = Camera.main.transform.position - new Vector3(0, 0.3f, 0);
+			    lassoOrigin = Camera.main.transform.position - new Vector3(0, 0.3f, 0);
 			    transform.LookAt(lassoOrigin);
-			    if (transform.position != lassoOrigin)
+
+			    float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
+
+			    if (distToOrigin > 0.2)
 			    {
-					GetComponent<Rigidbody>().AddForce((transform.forward * 5));
+					GetComponent<Rigidbody>().AddForce((transform.forward * 10));
 			    }
 			    else
 			    {
-				    recall = false;
 				    Component[] childRends = GetComponentsInChildren<Renderer>();
 				    foreach (Renderer rend in childRends)
 				    {
 					    rend.enabled = false;
 				    }
+				    transform.position = lassoOrigin;
+				    
+				    recall = false;
+				    holoOut = false;
 			    }
 		    }
 
@@ -70,33 +78,50 @@ namespace LW.SlingShot
 			    force += Input.mouseScrollDelta.y;
 			    if (Input.GetKeyDown(KeyCode.Z))
 			    {
-					ThrowHolo();
+				   if( !holoOut) ThrowHolo();
 			    }
 
 			    if (Input.GetKeyDown(KeyCode.G))
 			    {
-				    recall = true;
+				    if (holoOut)
+				    {
+						Debug.Log("lasso-ing");
+					    recall = true;
+
+				    }
 			    }
 
 		    }
-		    
-
 		    #endregion
 		}
 
 	    private void ThrowHolo()
 	    {
-			Component[] childRends = GetComponentsInChildren<Renderer>();
+			Vector3 castOrigin = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
+		    Quaternion castRotation = Quaternion.Slerp(hands.rightPalm.Rotation, hands.leftPalm.Rotation, 0.5f) *
+		                              Quaternion.Euler(60, 0, 0);
+		    transform.position = castOrigin;
+		    transform.rotation = castRotation;
+		    
+		    Component[] childRends = GetComponentsInChildren<Renderer>();
 			foreach (Renderer rend in childRends)
 			{
 				rend.enabled = true;
 			}
 
-			Vector3 castOrigin = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
-		    Quaternion castRotation = Quaternion.Slerp(hands.rightPalm.Rotation, hands.leftPalm.Rotation, 0.5f) *
-		                              Quaternion.Euler(60, 0, 0);
+			if (devMode)
+			{
+				transform.position = lassoOrigin;
+				transform.rotation = Camera.main.transform.rotation;
+			}
+			else
+			{
+				transform.position = castOrigin;
+				transform.rotation = castRotation;
+				force = (1 - (castOrigins.palmDist / maxHandDist)) * 500;
+			}
 
-			GetComponent<Rigidbody>().AddForce(transform.forward * force);
+			GetComponent<Rigidbody>().AddForce(transform.forward * Mathf.Clamp(force, 100, 500));
 
 			holoOut = true;
 	    }
