@@ -973,6 +973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e45fb16a80ce704eba779905de2312a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testBool: 0
   rightSight: {x: 0, y: 0, z: 0}
   leftSight: {x: 0, y: 0, z: 0}
 --- !u!1 &1801534003
@@ -1249,6 +1250,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Light Holo
       objectReference: {fileID: 0}
+    - target: {fileID: 1243663990697216010, guid: 8127644fa56d6b74fadd1d3236db8296,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1243663990697216011, guid: 8127644fa56d6b74fadd1d3236db8296,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: e7ddcbbc1830a44f4b666eb3cc988ebd, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8127644fa56d6b74fadd1d3236db8296, type: 3}
 --- !u!1 &2452266861301475132 stripped
