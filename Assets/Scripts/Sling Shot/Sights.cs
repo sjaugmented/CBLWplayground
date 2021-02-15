@@ -7,6 +7,8 @@ namespace LW.SlingShot
 {
     public class Sights : MonoBehaviour
     {
+        [SerializeField] bool testBool = false; // TODO remove
+        
         HandTracking handtracking;
 
         public Vector3 rightSight, leftSight;
