@@ -33,6 +33,8 @@ namespace LW.HSL
 
         void Update()
         {
+            if (GameObject.FindGameObjectWithTag("Light").GetComponent<LightHolo>().Manipulated) { hslOrb.gameObject.SetActive(false); }
+            
             hslOrb.transform.position = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
 
             if (!GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)

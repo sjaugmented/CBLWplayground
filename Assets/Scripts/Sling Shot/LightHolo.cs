@@ -107,4 +107,6 @@ public class LightHolo : MonoBehaviour
 	{
 		transform.Rotate(0.1f, 1, 0.1f);
 	}
+
+    public bool Manipulated {get; set;}
 }
