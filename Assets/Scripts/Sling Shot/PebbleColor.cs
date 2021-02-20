@@ -7,6 +7,7 @@ namespace LW.SlingShot
 {
     public class PebbleColor : MonoBehaviour
     {
+        [Tooltip("Instantiated projectile vs static HUD element")]
         [SerializeField] bool projectile = false;
 
         public Color StoredColor
@@ -20,7 +21,7 @@ namespace LW.SlingShot
         {
             colorPicker = GameObject.FindGameObjectWithTag("ColorPicker").GetComponent<ColorPicker>();
             material = GetComponentInChildren<Renderer>().material;
-            StoredColor = colorPicker.LiveColor;
+            StoredColor = colorPicker.PreviewColor;
             material.color = StoredColor;
             material.SetColor("_EmissionColor", StoredColor);
         }
@@ -29,7 +30,7 @@ namespace LW.SlingShot
         {
             if (!projectile)
 			{
-                material.color = colorPicker.LiveColor;
+                material.color = colorPicker.PreviewColor;
                 material.SetColor("_EmissionColor", colorPicker.LiveColor);
             }
         }

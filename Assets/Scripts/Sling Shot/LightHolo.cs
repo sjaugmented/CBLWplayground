@@ -67,7 +67,7 @@ public class LightHolo : MonoBehaviour
         dmx.SetAddress(channels.hsiDimmer, Mathf.RoundToInt(dim * 255));
 	}
 
-	private void ChangeOSCLight(float hue, float sat, float dim)
+	public void ChangeOSCLight(float hue, float sat, float dim)
 	{
 		List<float> vals = new List<float>
 		{

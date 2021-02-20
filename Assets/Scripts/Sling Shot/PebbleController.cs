@@ -47,6 +47,7 @@ namespace LW.SlingShot
                 lightMaterial.color = GetComponent<PebbleColor>().StoredColor;
 
                 other.GetComponent<LightHolo>().ChangeDMXLight(hue, sat, val);
+                other.GetComponent<LightHolo>().ChangeOSCLight(hue, sat, val);
 			}
         }
     }

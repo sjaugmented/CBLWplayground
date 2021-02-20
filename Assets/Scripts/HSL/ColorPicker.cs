@@ -67,7 +67,8 @@ namespace LW.HSL
             }
             else
 			{
-                valFloat = Mathf.Clamp(Vector3.Distance(hands.ltIndexTip.Position, hands.rtIndexTip.Position) / maxSlingShotPullDistance, 0, 1);
+                // valFloat = Mathf.Clamp(Vector3.Distance(hands.leftPalm.Position, hands.rightPalm.Position) / maxSlingShotPullDistance, 0, 1);
+                valFloat = 1;
                 
                 if (hands.leftPeace)
                 {
