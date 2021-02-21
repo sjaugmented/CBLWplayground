@@ -42,6 +42,7 @@ namespace LW.HSL
                 // TODO 
                 // add readouts to HSI orb for three axis
                 // rethink staff angles
+                //
 
                 if (hands.rightPeace || hands.leftPeace) return;
 

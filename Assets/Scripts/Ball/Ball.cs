@@ -16,7 +16,11 @@ namespace LW.Ball{
 
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
+        [SerializeField] float magnetRange = 0.1f;
+        [SerializeField] float stopRange = 0.06f;
         [SerializeField] float magnetism = 2;
+
+        public float distanceToHand;
 
         HandTracking hands;
 
@@ -28,10 +32,11 @@ namespace LW.Ball{
 
         void Update()
         {
-            float distanceToHand = Vector3.Distance(transform.position, hands.rightPalm.Position);
+            distanceToHand = Vector3.Distance(transform.position, hands.rightPalm.Position);
 
-            if (distanceToHand < 0.05f) {
+            if (distanceToHand < magnetRange && distanceToHand > stopRange) {
                 // gentle push toward hand
+                // TODO needs stop/brakes
                 transform.LookAt(hands.rightPalm.Position);
                 GetComponent<Rigidbody>().AddForce(transform.forward * magnetism);
             }
@@ -39,7 +44,9 @@ namespace LW.Ball{
 
         public void DestroySelf() {
             GetComponentInChildren<MeshExploder>().Explode();
-            GetComponent<AudioSource>().PlayOneShot(destroyFX);
+            if (!GetComponent<AudioSource>().isPlaying) {
+                GetComponent<AudioSource>().PlayOneShot(destroyFX);
+            }
             GetComponentInChildren<MeshRenderer>().enabled = false;
             var particles = GetComponentInChildren<ParticleSystem>().emission;
             particles.enabled = false;

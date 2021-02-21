@@ -8,54 +8,72 @@ namespace LW.Ball {
     public class BallCaster : MonoBehaviour
     {
         [SerializeField] GameObject ballPrefab;
+        [SerializeField] float destroyDelay = 1;
         public bool Ball {get; set;}
 
-        float conjureReady, destroyReady = Mathf.Infinity;
+        bool conjureReady, destroyReady = false;
+        float conjureTimer, destroyTimer = Mathf.Infinity;
 
         HandTracking hands;
+        GameObject ballInstance;
         
         void Start()
         {
             hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
-            Ball = false;
+
+            if (GameObject.FindGameObjectWithTag("Ball")) {
+                Ball = true;
+                ballInstance = GameObject.FindGameObjectWithTag("Ball");
+            }
+            else {
+                Ball = false;
+            }
         }
 
         void Update()
         {
-            conjureReady += Time.deltaTime;
-            destroyReady += Time.deltaTime;
+            conjureTimer += Time.deltaTime;
+            destroyTimer += Time.deltaTime;
 
             if (!Ball) {
                 if (hands.rightFist && hands.rtPalmUpFloorUp > 140) {
-                    conjureReady = 0;
-                    Debug.Log("conjureReady");
+                    if (!conjureReady) {
+                        conjureTimer = 0;
+                        conjureReady = true;
+                        Debug.Log("conjureReady");
+                    }
+                }
+                else {
+                    conjureReady = false;
                 }
 
-                if (conjureReady < 3 && hands.rightOpen) {
+                if (conjureTimer < 3 && hands.rightOpen) {
                     ConjureBall();
                 }
             }
             else {
                 if (hands.rightOpen && hands.rtPalmUpFloorUp < 40) {
-                    destroyReady = 0;
-                    Debug.Log("destroyReady");
+                    if (!destroyReady) {
+                        destroyTimer = 0;
+                        destroyReady = true;
+                        Debug.Log("destroyReady");
+                    }
+                    
+                } else {
+                    destroyReady = false;
                 }
 
-                if (destroyReady < 3 && hands.rightFist) {
+                if (destroyTimer < 3 && hands.rightFist) {
                     StartCoroutine("DestroyBall");
                 }
             }
-
-
         }
 
-        GameObject ballInstance;
-        [SerializeField] float destroyDelay = 1;
 
         private void ConjureBall()
         {
             Ball = true;
-            ballInstance = Instantiate(ballPrefab, hands.rightPalm.Position, hands.rightPalm.Rotation);
+            ballInstance = Instantiate(ballPrefab, hands.rightPalm.Position + new Vector3(0, 0.1f, 0), hands.rightPalm.Rotation);
         }
 
         IEnumerator DestroyBall()

@@ -30,6 +30,7 @@ TagManager:
   - HSLOrb
   - ColorPicker
   - DMX
+  - Ball
   layers:
   - Default
   - TransparentFX

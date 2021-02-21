@@ -4861,11 +4861,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   minSpeed: 1
-  maxSpeed: 5
+  maxSpeed: 2
   minRotationSpeed: 90
   maxRotationSpeed: 360
-  fadeWaitTime: 0.5
-  fadeTime: 2
+  fadeWaitTime: 0.2
+  fadeTime: 0.3
   useGravity: 1
   colliderThickness: 0.125
   useNormals: 0
@@ -4899,7 +4899,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2193309183216341837}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2193309182879926445}
@@ -5011,8 +5011,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2193309183216341837}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
+  m_Mass: 0.1
+  m_Drag: 2
   m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -5033,4 +5033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conjureFX: {fileID: 8300000, guid: 2d369608f583cdf4fbf2baaea1051616, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
-  magnetism: 2
+  magnetRange: 0.2
+  stopRange: 0.06
+  magnetism: 0.5
+  distanceToHand: 0
