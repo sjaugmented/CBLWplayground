@@ -17,6 +17,7 @@ namespace LW.Ball {
         void Start()
         {
             hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            Ball = false;
         }
 
         void Update()
@@ -25,8 +26,9 @@ namespace LW.Ball {
             destroyReady += Time.deltaTime;
 
             if (!Ball) {
-                if (hands.rightFist && hands.rtPalmUpFloorUp < 10) {
+                if (hands.rightFist && hands.rtPalmUpFloorUp > 140) {
                     conjureReady = 0;
+                    Debug.Log("conjureReady");
                 }
 
                 if (conjureReady < 3 && hands.rightOpen) {
@@ -34,8 +36,9 @@ namespace LW.Ball {
                 }
             }
             else {
-                if (hands.rightOpen && hands.rtPalmUpFloorUp > 170) {
+                if (hands.rightOpen && hands.rtPalmUpFloorUp < 40) {
                     destroyReady = 0;
+                    Debug.Log("destroyReady");
                 }
 
                 if (destroyReady < 3 && hands.rightFist) {

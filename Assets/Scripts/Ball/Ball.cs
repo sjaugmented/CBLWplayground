@@ -38,7 +38,7 @@ namespace LW.Ball{
         }
 
         public void DestroySelf() {
-            GetComponent<MeshExploder>().Explode();
+            GetComponentInChildren<MeshExploder>().Explode();
             GetComponent<AudioSource>().PlayOneShot(destroyFX);
             GetComponentInChildren<MeshRenderer>().enabled = false;
             var particles = GetComponentInChildren<ParticleSystem>().emission;
