@@ -15,7 +15,7 @@ namespace LW.Runic
         float ringTimer = Mathf.Infinity;
 		public float Timer { get => ringTimer; set => ringTimer = value; }
 
-        public List<NodeTouch> touchNodes = new List<NodeTouch>(); // TODO private
+        private List<NodeTouch> touchNodes = new List<NodeTouch>();
 
         bool expanded = false;
         public bool Expanded
