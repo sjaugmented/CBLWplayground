@@ -39,6 +39,10 @@ namespace LW.HSL
 
             if (!GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)
 			{
+                // TODO 
+                // add readouts to HSI orb for three axis
+                // rethink staff angles
+
                 if (hands.rightPeace || hands.leftPeace) return;
 
                 if (hands.palmsOpposed)
@@ -67,26 +71,26 @@ namespace LW.HSL
             }
             else
 			{
-                // valFloat = Mathf.Clamp(Vector3.Distance(hands.leftPalm.Position, hands.rightPalm.Position) / maxSlingShotPullDistance, 0, 1);
-                valFloat = 1;
+                valFloat = Mathf.Clamp(Vector3.Distance(hands.leftPalm.Position, hands.rightPalm.Position) / maxSlingShotPullDistance, 0, 1);
+                satFloat = 1;
                 
                 if (hands.leftPeace)
                 {
-                    hueFloat = hands.ltPalmForFloorUp / 90;
+                    // hueFloat = hands.ltPalmForFloorUp / 90;
                     
                     if (hands.rightFist)
 					{
-                        satFloat = hands.rtPalmRtCamUp / 180;
+                        hueFloat = hands.rtPalmRtCamUp / 180;
                         PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
                 else if (hands.rightPeace)
                 {
-                    hueFloat = hands.rtPalmForFloorUp / 90;
+                    // hueFloat = hands.rtPalmForFloorUp / 90;
 
                     if (hands.leftFist)
 					{
-                        satFloat = hands.ltPalmRtCamUp / 180;
+                        hueFloat = hands.ltPalmRtCamUp / 180;
                         PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
