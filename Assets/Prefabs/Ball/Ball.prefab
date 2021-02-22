@@ -5012,8 +5012,8 @@ Rigidbody:
   m_GameObject: {fileID: 2193309183216341837}
   serializedVersion: 2
   m_Mass: 0.1
-  m_Drag: 2
-  m_AngularDrag: 0.05
+  m_Drag: 1
+  m_AngularDrag: 0.5
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -5033,7 +5033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   conjureFX: {fileID: 8300000, guid: 2d369608f583cdf4fbf2baaea1051616, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
-  magnetRange: 0.2
-  stopRange: 0.06
-  magnetism: 0.5
+  magnetRange: 0.1
+  stopRange: 0
+  magnetism: 0.005
   distanceToHand: 0
