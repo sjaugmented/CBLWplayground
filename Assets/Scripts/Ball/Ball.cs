@@ -20,7 +20,7 @@ namespace LW.Ball{
         [SerializeField] float stopRange = 0.06f;
         [SerializeField] float magnetism = 2;
 
-        public float distanceToHand;
+        public float distanceToRtHand, distanceToLtHand;
 
         HandTracking hands;
 
@@ -32,12 +32,15 @@ namespace LW.Ball{
 
         void Update()
         {
-            distanceToHand = Vector3.Distance(transform.position, hands.rightPalm.Position);
+            distanceToRtHand = Vector3.Distance(transform.position, hands.rightPalm.Position);
+            distanceToLtHand = Vector3.Distance(transform.position, hands.leftPalm.Position);
 
-            if (distanceToHand < magnetRange && distanceToHand > stopRange) {
-                // gentle push toward hand
-                // TODO needs stop/brakes
+            if (distanceToRtHand < magnetRange && distanceToRtHand > stopRange) {
                 transform.LookAt(hands.rightPalm.Position);
+                GetComponent<Rigidbody>().AddForce(transform.forward * magnetism);
+            }
+            if (distanceToLtHand < magnetRange && distanceToLtHand > stopRange) {
+                transform.LookAt(hands.leftPalm.Position);
                 GetComponent<Rigidbody>().AddForce(transform.forward * magnetism);
             }
         }
