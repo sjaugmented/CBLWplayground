@@ -98,10 +98,15 @@ namespace LW.Core
         float staffForFloorUp;
         float staffForCamRight;
 
-        public float GetStaffForCamUp()
+        public float GetStaffForCamUp
         {
-            return staffForCamUp;
+            get { return staffForCamUp; }
         }
+
+        public float GetStaffForCamFor
+		{
+            get { return staffForCamFor; }
+		}
 
         private void ProcessStaffAngle()
         {

@@ -107,8 +107,6 @@ namespace LW.SlingShot
         {
             pebbleHUD.SetActive(false);
             float force = Vector3.Distance(handtracking.rightPalm.Position, sightHUD.transform.position) * forceMultiplier;
-            Debug.Log("Distance: " + Vector3.Distance(handtracking.rightPalm.Position, sightHUD.transform.position));
-            Debug.Log("force: " + force); // TODO remove
 
             GameObject newPebble = Instantiate(pebblePrefab, handtracking.rightPalm.Position, pebbleHUD.transform.rotation);
 
