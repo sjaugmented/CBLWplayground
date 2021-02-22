@@ -18,7 +18,7 @@ namespace LW.Ball{
         [SerializeField] AudioClip destroyFX;
         [SerializeField] float magnetRange = 0.1f;
         [SerializeField] float stopRange = 0.06f;
-        [SerializeField] float magnetism = 2;
+        [SerializeField] float magneticForce = 2;
 
         public float distanceToRtHand, distanceToLtHand;
 
@@ -35,14 +35,19 @@ namespace LW.Ball{
             distanceToRtHand = Vector3.Distance(transform.position, hands.rightPalm.Position);
             distanceToLtHand = Vector3.Distance(transform.position, hands.leftPalm.Position);
 
-            if (distanceToRtHand < magnetRange && distanceToRtHand > stopRange) {
-                transform.LookAt(hands.rightPalm.Position);
-                GetComponent<Rigidbody>().AddForce(transform.forward * magnetism);
+            if (distanceToRtHand < magnetRange && distanceToRtHand > stopRange)
+            {
+                Magnetism(hands.rightPalm.Position);
             }
             if (distanceToLtHand < magnetRange && distanceToLtHand > stopRange) {
-                transform.LookAt(hands.leftPalm.Position);
-                GetComponent<Rigidbody>().AddForce(transform.forward * magnetism);
+                Magnetism(hands.leftPalm.Position);
             }
+        }
+
+        private void Magnetism(Vector3 attraction)
+        {
+            transform.LookAt(attraction);
+            GetComponent<Rigidbody>().AddForce(transform.forward * magneticForce);
         }
 
         public void DestroySelf() {
