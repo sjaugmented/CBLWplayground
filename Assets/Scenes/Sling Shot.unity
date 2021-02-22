@@ -716,6 +716,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSlingShotPullDistance: 0.25
   maximumHandDistance: 0.3
+  hueHud: {fileID: 814233363}
+  satHud: {fileID: 1715089865}
+  valHud: {fileID: 2005392752}
   hueFloat: 0
   satFloat: 0
   valFloat: 0

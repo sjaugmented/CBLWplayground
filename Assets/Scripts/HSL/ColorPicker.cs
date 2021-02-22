@@ -64,9 +64,9 @@ namespace LW.HSL
 
                     // TODO 
                     // remove
-                    hueHud.text = Math.Round(hueFloat * 255).ToString();
-                    satHud.text = Math.Round(satFloat * 255).ToString();
-                    valHud.text = Math.Round(valFloat * 255).ToString();
+                    hueHud.text = "Hue: " + Math.Round(hueFloat * 255).ToString();
+                    satHud.text = "Sat: " + Math.Round(satFloat * 255).ToString();
+                    valHud.text = "Val: " + Math.Round(valFloat * 255).ToString();
                     // rethink staff angles - consider extra guard rails
                 }
                 else
