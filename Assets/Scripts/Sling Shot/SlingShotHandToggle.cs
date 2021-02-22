@@ -15,17 +15,22 @@ namespace LW.SlingShot
         public ModeDelegate buildToggle;
 
         SlingShotDirector director;
+        HandTracking hands;
+        private LightHolo light;
 
         void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
+            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            light = GameObject.FindGameObjectWithTag("Light").GetComponent<LightHolo>();
             handToggle = director.ToggleHandMode;
             buildToggle = director.ToggleBuildMode;
         }
 
         private void OnTriggerEnter(Collider collider)
         {
-            if (GameObject.FindGameObjectWithTag("HSLOrb")) return;
+            if (GameObject.FindGameObjectWithTag("HSLOrb")) { return; }
+            if (hands.rightPeace || hands.leftPeace) { return; }
             
             if (leftHand)
             {
@@ -39,30 +44,10 @@ namespace LW.SlingShot
             {
                 if (collider.CompareTag("Left Pointer"))
                 {
-                    ToggleMode(buildToggle);
+	                light.Live = !light.Live;
                 }
             }
         }
-
-  //      private void ToggleHandMode()
-  //      {
-  //          if (!triggered)
-		//	{
-  //              director.ToggleHandMode();
-  //              triggered = true;
-  //              StartCoroutine("ToggleDelay");
-		//	}
-  //      }
-
-  //      void ToggleBuildMode()
-		//{
-  //          if (!triggered)
-		//	{
-  //              director.ToggleBuildMode();
-  //              triggered = true;
-  //              StartCoroutine("ToggleDelay");
-		//	}
-		//}
 
         void ToggleMode(ModeDelegate method)
 		{

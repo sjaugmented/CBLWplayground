@@ -15,8 +15,8 @@ namespace LW.Runic
         [Header("Controller Settings")]
         [SerializeField] float castDelay = 0.5f; //TODO hardcode
         [SerializeField] float maxPalmDist = 0.5f; //TODO hardcode
-        //[SerializeField] float resetWindow = 2; //TODO hardcode
         
+        [Header("OSC")]
         [SerializeField] float defaultOSCValue = 127;
 
         public float DefaultOSCValue
@@ -158,7 +158,7 @@ namespace LW.Runic
 
 		private void SelectRuneType()
 		{
-            float staffAng = handtracking.GetStaffForCamUp();            
+            float staffAng = handtracking.GetStaffForCamUp;            
             float slotSize = 180 / runeBelt.GetRuneSlots(); // size of selectable area based on number of Rune Types
 
             for (int i = 0; i < runeBelt.GetRuneSlots(); i++)

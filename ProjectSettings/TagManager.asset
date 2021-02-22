@@ -29,6 +29,8 @@ TagManager:
   - SlingShot
   - HSLOrb
   - ColorPicker
+  - DMX
+  - Ball
   layers:
   - Default
   - TransparentFX

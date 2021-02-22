@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,7 +19,7 @@ namespace LW.HSL
 
         void Update()
         {
-            orbColor = colorPicker.ChosenColor;
+            orbColor = colorPicker.PreviewColor;
             
             material.color = orbColor;
             material.SetColor("_EmissionColor", orbColor);
