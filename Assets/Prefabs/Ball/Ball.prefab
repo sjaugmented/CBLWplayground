@@ -4860,13 +4860,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  minSpeed: 1
-  maxSpeed: 2
+  minSpeed: 0.1
+  maxSpeed: 1
   minRotationSpeed: 90
   maxRotationSpeed: 360
   fadeWaitTime: 0.2
   fadeTime: 0.3
-  useGravity: 1
+  useGravity: 0
   colliderThickness: 0.125
   useNormals: 0
   useMeshBoundsCenter: 0
@@ -5034,7 +5034,6 @@ MonoBehaviour:
   conjureFX: {fileID: 8300000, guid: 2d369608f583cdf4fbf2baaea1051616, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
   magnetRange: 0.1
-  stopRange: 0
   magneticForce: 0.05
   distanceToRtHand: 0
   distanceToLtHand: 0

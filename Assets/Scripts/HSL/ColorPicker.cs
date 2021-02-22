@@ -4,6 +4,7 @@ using UnityEngine;
 using LW.Core;
 using LW.SlingShot;
 using System;
+using TMPro;
 
 namespace LW.HSL
 {
@@ -11,6 +12,9 @@ namespace LW.HSL
     {
         [SerializeField] float maxSlingShotPullDistance = 0.25f;
         [SerializeField] float maximumHandDistance = 0.35f;
+        [SerializeField] TextMeshPro hueHud;
+        [SerializeField] TextMeshPro satHud;
+        [SerializeField] TextMeshPro valHud;
         float minimumHandDistance = 0.2f;
         public Color LiveColor { get; set; }
         public Color PreviewColor { get; set; }
@@ -39,11 +43,6 @@ namespace LW.HSL
 
             if (!GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)
 			{
-                // TODO 
-                // add readouts to HSI orb for three axis
-                // rethink staff angles
-                //
-
                 if (hands.rightPeace || hands.leftPeace) return;
 
                 if (hands.palmsOpposed)
@@ -60,10 +59,15 @@ namespace LW.HSL
 
                     if (!hands.rightFist && !hands.leftFist)
                     {
-
-
                         LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
+
+                    // TODO 
+                    // remove
+                    hueHud.text = Math.Round(hueFloat * 255).ToString();
+                    satHud.text = Math.Round(satFloat * 255).ToString();
+                    valHud.text = Math.Round(valFloat * 255).ToString();
+                    // rethink staff angles - consider extra guard rails
                 }
                 else
                 {
