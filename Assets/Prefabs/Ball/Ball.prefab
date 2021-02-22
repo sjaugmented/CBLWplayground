@@ -5035,5 +5035,6 @@ MonoBehaviour:
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
   magnetRange: 0.1
   stopRange: 0
-  magnetism: 0.005
-  distanceToHand: 0
+  magneticForce: 0.05
+  distanceToRtHand: 0
+  distanceToLtHand: 0

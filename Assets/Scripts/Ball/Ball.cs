@@ -17,7 +17,7 @@ namespace LW.Ball{
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] float magnetRange = 0.1f;
-        [SerializeField] float stopRange = 0.06f;
+        // [SerializeField] float stopRange = 0.06f;
         [SerializeField] float magneticForce = 2;
 
         public float distanceToRtHand, distanceToLtHand;
@@ -35,11 +35,11 @@ namespace LW.Ball{
             distanceToRtHand = Vector3.Distance(transform.position, hands.rightPalm.Position);
             distanceToLtHand = Vector3.Distance(transform.position, hands.leftPalm.Position);
 
-            if (distanceToRtHand < magnetRange && distanceToRtHand > stopRange)
+            if (distanceToRtHand < magnetRange)
             {
                 Magnetism(hands.rightPalm.Position);
             }
-            if (distanceToLtHand < magnetRange && distanceToLtHand > stopRange) {
+            if (distanceToLtHand < magnetRange) {
                 Magnetism(hands.leftPalm.Position);
             }
         }
