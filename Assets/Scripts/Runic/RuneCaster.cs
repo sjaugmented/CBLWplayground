@@ -55,7 +55,7 @@ namespace LW.Runic
         CastOrigins castOrigins;
         RunicDirector director;
         RuneBelt runeBelt;
-        AudioSource audio;
+        AudioSource audioSource;
 
         private void Start()
         {
@@ -63,7 +63,7 @@ namespace LW.Runic
             castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeBelt = GetComponent<RuneBelt>();
-            audio = GetComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
 
             runeBelt.ResetAllRuneAmmo(runeMaterials.Count);
             masterRune.SetActive(false);
@@ -221,7 +221,7 @@ namespace LW.Runic
 
         private void GatherRunes()
 		{
-            if (!audio.isPlaying) audio.PlayOneShot(gatherFX);
+            if (!audioSource.isPlaying) audioSource.PlayOneShot(gatherFX);
             RuneGrid grid = FindObjectOfType<RuneGrid>();
             grid.UpdateCollection();
             grid.PositionGrid();
@@ -231,9 +231,9 @@ namespace LW.Runic
         {
             if (liveRunes.Count == 0) return;
             
-            if (!audio.isPlaying)
+            if (!audioSource.isPlaying)
             {
-                audio.PlayOneShot(resetFX);
+                audioSource.PlayOneShot(resetFX);
             }
 
             // clear all runes

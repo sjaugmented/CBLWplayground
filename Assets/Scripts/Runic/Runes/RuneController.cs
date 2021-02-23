@@ -38,14 +38,14 @@ namespace LW.Runic
         int siblingIndex;
         float defaultOSCValue;
 
-        Renderer renderer;
+        Renderer thisRenderer;
         RunicDirector director;
         HandTracking handtracking;
         EmissionModule emission;
 
         void Start()
         {
-            renderer = GetComponentInChildren<Renderer>();
+            thisRenderer = GetComponentInChildren<Renderer>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
 
@@ -77,11 +77,11 @@ namespace LW.Runic
 
 			if (isTouched)
             {
-                renderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
+                thisRenderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
             }
             else
 			{
-                renderer.material = runeMaterial;
+                thisRenderer.material = runeMaterial;
 			}
 
 			if (oscTest) StartCoroutine("PlayParticles");

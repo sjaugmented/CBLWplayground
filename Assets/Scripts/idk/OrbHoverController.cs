@@ -23,7 +23,7 @@ public class OrbHoverController : MonoBehaviour
     Rigidbody rigidBody;
     OSC osc;
     Renderer render;
-    Collider collider;
+    Collider thisCollider;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +32,8 @@ public class OrbHoverController : MonoBehaviour
         render = GetComponent<Renderer>();
         osc = FindObjectOfType<OSC>();
 
-        collider = GetComponent<SphereCollider>();
-        collider.enabled = true;
+        thisCollider = GetComponent<SphereCollider>();
+        thisCollider.enabled = true;
 
         osc.SetAddressHandler(OSCtoReceive, OnReceiveOSC);
     }
