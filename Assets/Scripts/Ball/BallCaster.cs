@@ -52,7 +52,7 @@ namespace LW.Ball {
                 }
             }
             else {
-                if (hands.rightOpen && hands.rtPalmUpFloorUp < 40) {
+                if (hands.rightOpen && hands.rtPalmUpCamFor > 150) {
                     if (!destroyReady) {
                         destroyTimer = 0;
                         destroyReady = true;
@@ -63,12 +63,11 @@ namespace LW.Ball {
                     destroyReady = false;
                 }
 
-                if (destroyTimer < 3 && hands.rightFist) {
+                if (destroyTimer < 1 && hands.rightFist) {
                     StartCoroutine("DestroyBall");
                 }
             }
         }
-
 
         private void ConjureBall()
         {

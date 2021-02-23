@@ -14,6 +14,8 @@ namespace LW.Ball{
         // can catch in forcefield between hands and manipulate floats
         // receive OSC to explode orb on downbeat
 
+
+        [SerializeField] string oscAddress;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] float magnetRange = 0.1f;
@@ -22,12 +24,16 @@ namespace LW.Ball{
 
         public float distanceToRtHand, distanceToLtHand;
 
+        float hueVal = Mathf.Epsilon;
+
         HandTracking hands;
+        OSC osc;
 
         void Start()
         {
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
             hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
         }
 
         void Update()
@@ -44,11 +50,35 @@ namespace LW.Ball{
             }
         }
 
+        private void OnCollisionEnter(Collision other) {
+            if (other.gameObject.CompareTag("Player")) {
+                // increment OSC/hue vals
+                hueVal += 0.1388f; // 1/5 of 360
+                if (hueVal > 1) {
+                    hueVal -= 1;
+                }
+                var particleColor = GetComponentInChildren<ParticleSystem>().colorOverLifetime;
+                Debug.Log("old color: " + particleColor);
+                particleColor.color = Color.HSVToRGB(hueVal, 1, 1);
+                Debug.Log("new color: " + particleColor);
+                SendOSC(oscAddress, hueVal);
+            }
+        }
+
+        private void SendOSC(string address, float val) {
+            OscMessage message = new OscMessage();
+            message.address = address;
+            message.values.Add(val);
+            osc.Send(message);
+        }
+
         private void Magnetism(Vector3 attraction)
         {
             transform.LookAt(attraction);
             GetComponent<Rigidbody>().AddForce(transform.forward * magneticForce);
         }
+
+        public bool Handled {get; set;}
 
         public void DestroySelf() {
             GetComponentInChildren<MeshExploder>().Explode();

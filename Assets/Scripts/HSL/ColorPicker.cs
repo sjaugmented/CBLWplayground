@@ -49,8 +49,17 @@ namespace LW.HSL
                 {
                     hslOrb.gameObject.SetActive(true);
 
-                    hueFloat = hands.GetStaffForCamUp / 180;
-                    valFloat = hands.GetStaffForCamFor / 180;
+                    // TODO remap Hue to 27-230
+                    if (hands.GetStaffForCamUp > 20 && hands.GetStaffForCamUp < 162) {
+                        var adjustedAngle = hands.GetStaffForCamUp - 20;
+                        hueFloat = adjustedAngle / 142;
+                    }
+
+                    // TODO remap val to 69-188
+                    if (hands.GetStaffForCamFor > 69 && hands.GetStaffForCamFor < 188) {
+                        var adjustedAngle = hands.GetStaffForCamFor - 69;
+                        valFloat = adjustedAngle / 119;
+                    }
 
                     float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
                     satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
