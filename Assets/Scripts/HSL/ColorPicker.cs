@@ -37,53 +37,14 @@ namespace LW.HSL
 
         void Update()
         {
-            if (GameObject.FindGameObjectWithTag("Light").GetComponent<LightHolo>().Manipulated) { hslOrb.gameObject.SetActive(false); }
+            if (GameObject.FindGameObjectWithTag("Light").GetComponent<LightHolo>().Manipulated) { 
+                hslOrb.gameObject.SetActive(false); 
+                return;
+            }
             
             hslOrb.transform.position = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
 
-            if (!GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)
-			{
-                if (hands.rightPeace || hands.leftPeace) return;
-
-                if (hands.palmsOpposed)
-                {
-                    hslOrb.gameObject.SetActive(true);
-
-                    // TODO remap Hue to 27-230
-                    if (hands.GetStaffForCamUp > 20 && hands.GetStaffForCamUp < 162) {
-                        var adjustedAngle = hands.GetStaffForCamUp - 20;
-                        hueFloat = adjustedAngle / 142;
-                    }
-
-                    // TODO remap val to 69-188
-                    if (hands.GetStaffForCamFor > 69 && hands.GetStaffForCamFor < 188) {
-                        var adjustedAngle = hands.GetStaffForCamFor - 69;
-                        valFloat = adjustedAngle / 119;
-                    }
-
-                    float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
-                    satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
-
-                    PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
-
-                    if (!hands.rightFist && !hands.leftFist)
-                    {
-                        LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
-                    }
-
-                    // TODO 
-                    // remove
-                    hueHud.text = "Hue: " + Math.Round(hueFloat * 255).ToString();
-                    satHud.text = "Sat: " + Math.Round(satFloat * 255).ToString();
-                    valHud.text = "Val: " + Math.Round(valFloat * 255).ToString();
-                    // rethink staff angles - consider extra guard rails
-                }
-                else
-                {
-                    hslOrb.gameObject.SetActive(false);
-                }
-            }
-            else
+            if (GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)
 			{
                 valFloat = Mathf.Clamp(Vector3.Distance(hands.leftPalm.Position, hands.rightPalm.Position) / maxSlingShotPullDistance, 0, 1);
                 satFloat = 1;
@@ -109,6 +70,49 @@ namespace LW.HSL
                     }
                 }
                 else return;
+                
+            }
+            else
+			{
+                if (hands.rightPeace || hands.leftPeace) return;
+
+                if (hands.palmsOpposed)
+                {
+                    hslOrb.gameObject.SetActive(true);
+
+                    // TODO remap Hue to 27-230
+                    if (hands.GetStaffForCamUp > 20 && hands.GetStaffForCamUp < 162) {
+                        var adjustedAngle = hands.GetStaffForCamUp - 20;
+                        hueFloat = adjustedAngle / 142;
+                    }
+
+                    // TODO remap val to 69-188
+                    if (hands.GetStaffForCamFor > 48 && hands.GetStaffForCamFor < 132) {
+                        var adjustedAngle = hands.GetStaffForCamFor - 48;
+                        valFloat = adjustedAngle / 84;
+                    }
+
+                    float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
+                    satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+
+                    PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+
+                    if (!hands.rightFist && !hands.leftFist)
+                    {
+                        LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+                    }
+
+                    // TODO 
+                    // remove
+                    hueHud.text = "Hue: " + Math.Round(hueFloat * 255).ToString();
+                    satHud.text = "Sat: " + Math.Round(satFloat * 255).ToString();
+                    valHud.text = "Val: " + Math.Round(valFloat * 255).ToString();
+                    // rethink staff angles - consider extra guard rails
+                }
+                else
+                {
+                    hslOrb.gameObject.SetActive(false);
+                }
 			}
         }
 	}

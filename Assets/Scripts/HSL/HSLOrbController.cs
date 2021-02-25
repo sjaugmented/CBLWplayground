@@ -19,6 +19,7 @@ namespace LW.HSL
 
         void Update()
         {
+            transform.LookAt(2 * transform.position - Camera.main.transform.position);
             orbColor = colorPicker.PreviewColor;
             
             material.color = orbColor;

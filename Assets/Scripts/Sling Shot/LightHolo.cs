@@ -10,6 +10,8 @@ using UnityEngine;
 public class LightHolo : MonoBehaviour
 {
     [SerializeField] GameObject liveHUD;
+
+    public bool LookedAt { get; set; }
     
     DMXcontroller dmx;
     DMXChannels channels;
@@ -32,6 +34,10 @@ public class LightHolo : MonoBehaviour
 
     void Update()
 	{
+        if (LookedAt) {
+            transform.Rotate(0.1f, 1, 0.1f);
+        }
+
         if (Live)
 		{
             liveHUD.SetActive(true);
@@ -101,11 +107,6 @@ public class LightHolo : MonoBehaviour
 	public void TargetSelected()
 	{
         Live = !Live;
-	}
-
-    public void LookedAt()
-	{
-		transform.Rotate(0.1f, 1, 0.1f);
 	}
 
     public bool Manipulated {get; set;}

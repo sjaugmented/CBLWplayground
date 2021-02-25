@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using System.Collections.Generic;
 
 #if UNITY_WSA && DOTNETWINRT_PRESENT
 using Microsoft.Windows.Foundation.Metadata;
