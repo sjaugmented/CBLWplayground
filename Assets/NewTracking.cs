@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Microsoft.MixedReality.Toolkit.Input;
+﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
@@ -46,13 +43,15 @@ namespace LW.Core{
         void Update()
         {
             FindJoints();
-            WatchHands();
-            WatchRightPalm();
-            WatchLeftPalm();
+            FindHands();
+
+            WatchPalms();
+
             WatchFormations();
+            
             WatchStaff();
-            WatchRightFingers();
-            WatchLeftFingers();
+
+            WatchPoses();
         }
 
         private void FindJoints()
@@ -68,15 +67,15 @@ namespace LW.Core{
             foundLtPalm = HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out ltPalm);
         }
 
-        private void WatchHands()
+        private void FindHands()
         {
             if (foundRtPalm && foundLtPalm) {
                 handedness = Hands.both;
             }
-            else if (foundRtPalm && !foundLtPalm) {
+            else if (foundRtPalm) {
                 handedness = Hands.right;
             }
-            else if (!foundRtPalm && foundLtPalm) {
+            else if (foundLtPalm) {
                 handedness = Hands.left;
             }
             else {
@@ -84,8 +83,9 @@ namespace LW.Core{
             }
         }
 
-        private void WatchRightPalm() 
+        private void WatchPalms() 
         {
+            // RIGHT
             rtPalmForward = Vector3.Angle(rtPalm.Up, cam.forward);
             rtPalmUp = Vector3.Angle(rtPalm.Up, floor.up);
             rtPalmRt = Vector3.Angle(rtPalm.Up, cam.right);
@@ -113,10 +113,8 @@ namespace LW.Core{
             if (IsPosed(rtPalmRt, 0)) {
                 rightPalm = Direction.side;
             }
-        }
 
-        private void WatchLeftPalm() 
-        {
+            // LEFT
             ltPalmForward = Vector3.Angle(ltPalm.Up, cam.forward);
             ltPalmUp = Vector3.Angle(ltPalm.Up, floor.up);
             ltPalmRt = Vector3.Angle(ltPalm.Up, cam.right);
@@ -183,12 +181,13 @@ namespace LW.Core{
             staffFloorUp = Vector3.Angle(staff, floor.up);
         }
 
-        private void WatchRightFingers()
+        private void WatchPoses()
         {
+            // RIGHT
             float rtIndForward = Vector3.Angle(rtIndex.Forward, rtPalm.Forward);
             float rtIndForCamFor = Vector3.Angle(rtIndex.Forward, cam.forward);
             float rtMidForward = Vector3.Angle(rtMiddle.Forward, rtPalm.Forward);
-            float rtThumbOut = Vector3.Angle(rtThumb.Forward, rtPalm.Right);
+            float rtThumbOut = Vector3.Angle(rtThumb.Forward, rtPalm.Right * -1);
             float rtThumbForward = Vector3.Angle(rtThumb.Forward, rtPalm.Forward);
 
             if (!foundRtPalm) {
@@ -199,39 +198,19 @@ namespace LW.Core{
                 rightPose = Pose.pointer;
             }
 
-            else if (IsPosed(rtIndForward, 0) &&(IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180) )&& (IsPosed(rtThumbOut, 20) || IsPosed(rtThumbOut, 50))) {
+            if (IsPosed(rtIndForward, 0) &&(IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180) )&& (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = Pose.peace;
             }
 
-            else if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && (IsPosed(rtThumbOut, 130))) {
+            if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && (IsPosed(rtThumbOut, 30))) {
                 rightPose = Pose.flat;
             }
 
-            else if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 20) || IsPosed(rtThumbOut, 50))) {
+            if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = Pose.fist;
             }
 
-            else {
-                rightPose = Pose.none;
-            }
-
-
-            #region Debug land - TODO remove
-            if (printAngles) {
-                Debug.Log("rtIndexForward: " + rtIndForward);
-                Debug.Log("rtMiddleForward: " + rtMidForward);
-                Debug.Log("rtThumbOut: " + rtThumbOut);
-            }
-
-            // if (!foundRtIndex) Debug.Log("LOST RIGHT INDEX");
-            // if (!foundRtMiddle) Debug.Log("LOST RIGHT MIDDLE");
-            // if (!foundRtThumb) Debug.Log("LOST RIGHT THUMB");
-            // if (!foundRtPalm) Debug.Log("LOST RIGHT PALM");
-            #endregion
-        }
-
-        private void WatchLeftFingers()
-        {
+            // LEFT
             float ltIndForward = Vector3.Angle(ltIndex.Forward, ltPalm.Forward);
             float ltIndForCamFor = Vector3.Angle(ltIndex.Forward, cam.forward);
             float ltMidForward = Vector3.Angle(ltMiddle.Forward, ltPalm.Forward);
@@ -242,56 +221,37 @@ namespace LW.Core{
                 leftPose = Pose.none;
             }
 
-            // pointer
             if (IsPosed(ltIndForward, 0) && (!foundLtMiddle || !IsPosed(ltMidForward, 0))) {
                 leftPose = Pose.pointer;
             }
 
-            // peace
-            else if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
+            if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = Pose.peace;
             }
 
-            // flat
-            else if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0)) && (IsPosed(ltThumbOut, 30))) {
+            if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0)) && (IsPosed(ltThumbOut, 30))) {
                 leftPose = Pose.flat;
             }
 
-            // fist
-            else if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
+            if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = Pose.fist;
             }
 
-            else {
-                leftPose = Pose.none;
-            }
-
-
             #region Debug land - TODO remove
             if (printAngles) {
+                Debug.Log("rtIndexForward: " + rtIndForward);
+                Debug.Log("rtMiddleForward: " + rtMidForward);
+                Debug.Log("rtThumbOut: " + rtThumbOut);
                 Debug.Log("ltIndexForward: " + ltIndForward);
                 Debug.Log("ltMiddleForward: " + ltMidForward);
                 Debug.Log("ltThumbOut: " + ltThumbOut);
             }
-
-            // if (!foundLtIndex) Debug.Log("LOST LEFT INDEX");
-            // if (!foundLtMiddle) Debug.Log("LOST LEFT MIDDLE");
-            // if (!foundLtThumb) Debug.Log("LOST LEFT THUMB");
-            // if (!foundLtPalm) Debug.Log("LOST LEFT PALM");
             #endregion
         }
 
         private bool IsPosed(float pose, float target)
         {
-            bool withinRange = false;
-
-            float top = target + marginOfError;
-            float bottom = target - marginOfError;
-            if (pose > bottom && pose < top) {
-                withinRange = true;
-            }
-
-            return withinRange;
+            return (pose < target + marginOfError && pose > target - marginOfError);
         }
     }
 

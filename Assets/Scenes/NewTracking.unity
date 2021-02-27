@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   marginOfError: 40
-  printAngles: 0
+  printAngles: 1
   handedness: 3
   palms: 5
   rightPalm: 5
