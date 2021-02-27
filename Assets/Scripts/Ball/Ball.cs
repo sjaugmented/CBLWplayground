@@ -25,6 +25,7 @@ namespace LW.Ball{
         public float distanceToRtHand, distanceToLtHand;
 
         float hueVal = Mathf.Epsilon;
+        int oscVal = 0;
 
         HandTracking hands;
         OSC osc;
@@ -52,16 +53,18 @@ namespace LW.Ball{
 
         private void OnCollisionEnter(Collision other) {
             if (other.gameObject.CompareTag("Player")) {
-                // increment OSC/hue vals
                 hueVal += 0.1388f; // 1/5 of 360
                 if (hueVal > 1) {
                     hueVal -= 1;
                 }
+                // TODO particles not changing color
                 var particleColor = GetComponentInChildren<ParticleSystem>().colorOverLifetime;
                 Debug.Log("old color: " + particleColor);
                 particleColor.color = Color.HSVToRGB(hueVal, 1, 1);
                 Debug.Log("new color: " + particleColor);
-                SendOSC(oscAddress, hueVal);
+                
+                oscVal += 1;
+                SendOSC(oscAddress, oscVal);
             }
         }
 
