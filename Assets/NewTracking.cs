@@ -53,7 +53,26 @@ namespace LW.Core{
 
         Vector3 staff;
         float staffForward, staffUp, staffRight, staffFloorUp, staffFloorForward;
-        float rtPalmForward, rtPalmUp, rtPalmIn, ltPalmForward, ltPalmUp, ltPalmIn;
+        float rtPalmForward, rtPalmUp, rtPalmIn, rtLauncher, ltPalmForward, ltPalmUp, ltPalmIn, ltLauncher;
+
+        public float StaffUp
+        {
+            get { return staffUp; }
+        }
+
+        public float StaffForward
+        {
+            get { return staffForward; }
+        }
+
+        public float RtLauncher
+        {
+            get { return rtLauncher; }
+        }
+        public float LtLauncher
+        {
+            get { return ltLauncher; }
+        }
 
         Transform cam;
         Transform floor;
@@ -117,10 +136,12 @@ namespace LW.Core{
             rtPalmForward = Vector3.Angle(rtPalm.Up, cam.forward);
             rtPalmUp = Vector3.Angle(rtPalm.Up, floor.up);
             rtPalmIn = Vector3.Angle(rtPalm.Up, cam.right);
+            rtLauncher = Vector3.Angle(rtPalm.Right, cam.up);
 
             ltPalmForward = Vector3.Angle(ltPalm.Up, cam.forward);
             ltPalmUp = Vector3.Angle(ltPalm.Up, floor.up);
             ltPalmIn = Vector3.Angle(ltPalm.Up, cam.right * -1); // inverted for symmetry
+            ltLauncher = Vector3.Angle(ltPalm.Right, cam.up);
 
             if (!foundRtPalm) {
                 rightPalm = Direction.none;

@@ -21,6 +21,7 @@ namespace LW.Ball{
         [SerializeField] float magnetRange = 0.1f;
         // [SerializeField] float stopRange = 0.06f;
         [SerializeField] float magneticForce = 2;
+        [SerializeField] float bounceForce = 1;
 
         public float distanceToRtHand, distanceToLtHand;
 
@@ -30,12 +31,16 @@ namespace LW.Ball{
         // HandTracking hands;
         NewTracking tracking;
         OSC osc;
+        BallCaster caster;
 
         void Start()
         {
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
+            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
+
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(oscAddress + "/receive", OnReceiveOSC);
         }
 
         void Update()
@@ -53,19 +58,28 @@ namespace LW.Ball{
         }
 
         private void OnCollisionEnter(Collision other) {
+            Vector3 collisionForce = other.impulse / Time.fixedDeltaTime;
+            Debug.Log("FORCE>>>>>>>>>>>>>>>>>>>>>" + collisionForce);
             if (other.gameObject.CompareTag("Player")) {
+                
                 hueVal += 0.1388f; // 1/5 of 360
                 if (hueVal > 1) {
                     hueVal -= 1;
                 }
                 // TODO particles not changing color
                 var particleColor = GetComponentInChildren<ParticleSystem>().colorOverLifetime;
+                var ballMaterial = GetComponentInChildren<Renderer>().material;
                 Debug.Log("old color: " + particleColor);
                 particleColor.color = Color.HSVToRGB(hueVal, 1, 1);
+                ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
                 Debug.Log("new color: " + particleColor);
                 
                 oscVal += 1;
                 SendOSC(oscAddress, oscVal);
+            }
+            else
+            {
+                caster.StartCoroutine("DestroyBall");
             }
         }
 
@@ -92,6 +106,12 @@ namespace LW.Ball{
             GetComponentInChildren<MeshRenderer>().enabled = false;
             var particles = GetComponentInChildren<ParticleSystem>().emission;
             particles.enabled = false;
+
+        }
+
+        void OnReceiveOSC(OscMessage message)
+        {
+            Debug.Log("OSC received: " + message);
         }
     }
 }

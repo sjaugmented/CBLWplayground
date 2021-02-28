@@ -78,7 +78,7 @@ namespace LW.Ball {
             ballInstance = Instantiate(ballPrefab, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
         }
 
-        IEnumerator DestroyBall()
+        public IEnumerator DestroyBall()
         {
             ballInstance.GetComponent<Ball>().DestroySelf();
             yield return new WaitForSeconds(destroyDelay);

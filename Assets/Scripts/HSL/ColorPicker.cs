@@ -22,14 +22,15 @@ namespace LW.HSL
         public float hueFloat = 0;
         public float satFloat = 1;
         public float valFloat = 0;
-        
-        HandTracking hands;
+
+        //HandTracking hands;
+        NewTracking tracking;
         SlingShotDirector director;
         HSLOrbController hslOrb;
 
         void Start()
         {
-            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             hslOrb = GameObject.FindGameObjectWithTag("HSLOrb").GetComponent<HSLOrbController>();
 
             //ChosenColor = Color.white;
@@ -42,30 +43,30 @@ namespace LW.HSL
                 return;
             }
             
-            hslOrb.transform.position = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
+            hslOrb.transform.position = Vector3.Lerp(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position, 0.5f);
 
             if (GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)
 			{
-                valFloat = Mathf.Clamp(Vector3.Distance(hands.leftPalm.Position, hands.rightPalm.Position) / maxSlingShotPullDistance, 0, 1);
+                valFloat = Mathf.Clamp(Vector3.Distance(tracking.GetLtPalm.Position, tracking.GetRtPalm.Position) / maxSlingShotPullDistance, 0, 1);
                 satFloat = 1;
                 
-                if (hands.leftPeace)
+                if (tracking.leftPose == LWPose.peace)
                 {
                     // hueFloat = hands.ltPalmForFloorUp / 90;
                     
-                    if (hands.rightFist)
+                    if (tracking.rightPose == LWPose.fist)
 					{
-                        hueFloat = hands.rtPalmRtCamUp / 180;
+                        hueFloat = tracking.RtLauncher / 180;
                         PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
-                else if (hands.rightPeace)
+                else if (tracking.rightPose == LWPose.peace)
                 {
                     // hueFloat = hands.rtPalmForFloorUp / 90;
 
-                    if (hands.leftFist)
+                    if (tracking.leftPose == LWPose.fist)
 					{
-                        hueFloat = hands.ltPalmRtCamUp / 180;
+                        hueFloat = tracking.LtLauncher / 180;
                         PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
@@ -74,30 +75,30 @@ namespace LW.HSL
             }
             else
 			{
-                if (hands.rightPeace || hands.leftPeace) return;
+                if (tracking.rightPose == LWPose.peace || tracking.leftPose == LWPose.peace) return;
 
-                if (hands.palmsOpposed)
+                if (tracking.palms == Formation.together)
                 {
                     hslOrb.gameObject.SetActive(true);
 
                     // TODO remap Hue to 27-230
-                    if (hands.GetStaffForCamUp > 20 && hands.GetStaffForCamUp < 162) {
-                        var adjustedAngle = hands.GetStaffForCamUp - 20;
+                    if (tracking.StaffUp > 20 && tracking.StaffUp < 162) {
+                        var adjustedAngle = tracking.StaffUp - 20;
                         hueFloat = adjustedAngle / 142;
                     }
 
                     // TODO remap val to 69-188
-                    if (hands.GetStaffForCamFor > 48 && hands.GetStaffForCamFor < 132) {
-                        var adjustedAngle = hands.GetStaffForCamFor - 48;
+                    if (tracking.StaffForward > 48 && tracking.StaffForward < 132) {
+                        var adjustedAngle = tracking.StaffForward - 48;
                         valFloat = adjustedAngle / 84;
                     }
 
-                    float rawHandDist = Vector3.Distance(hands.rightPalm.Position, hands.leftPalm.Position);
+                    float rawHandDist = Vector3.Distance(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position);
                     satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
 
                     PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
 
-                    if (!hands.rightFist && !hands.leftFist)
+                    if (tracking.rightPose != LWPose.fist && tracking.leftPose != LWPose.fist)
                     {
                         LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }

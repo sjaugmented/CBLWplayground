@@ -4781,7 +4781,7 @@ Transform:
   m_GameObject: {fileID: 2193309182879926446}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.08, y: 0.08, z: 0.08}
   m_Children: []
   m_Father: {fileID: 2193309183216341836}
   m_RootOrder: 0
@@ -4852,7 +4852,7 @@ MonoBehaviour:
   maxRotationSpeed: 360
   fadeWaitTime: 0.2
   fadeTime: 0.3
-  useGravity: 0
+  useGravity: 1
   colliderThickness: 0.125
   useNormals: 0
   useMeshBoundsCenter: 0
@@ -5085,14 +5085,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2193309183216341837}
   serializedVersion: 2
-  m_Mass: 2
+  m_Mass: 1
   m_Drag: 1
   m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!75 &7866984593117579412
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -5117,10 +5117,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc5a83f1a537c04da8045d8fe8bbbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oscAddress: 
+  oscAddress: ballsucker
   conjureFX: {fileID: 8300000, guid: 2d369608f583cdf4fbf2baaea1051616, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
   magnetRange: 0.1
   magneticForce: 0.2
+  bounceForce: 1
   distanceToRtHand: 0
   distanceToLtHand: 0
