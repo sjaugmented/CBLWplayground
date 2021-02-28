@@ -229,9 +229,11 @@ namespace LW.Core{
             if (printAngles) {
                 Debug.Log("rtIndexForward: " + rtIndForward);
                 Debug.Log("rtMiddleForward: " + rtMidForward);
+                Debug.Log("rtPinkyForward: " + rtPinkyForward);
                 Debug.Log("rtThumbOut: " + rtThumbOut);
                 Debug.Log("ltIndexForward: " + ltIndForward);
                 Debug.Log("ltMiddleForward: " + ltMidForward);
+                Debug.Log("ltPinkyForward: " + ltPinkyForward);
                 Debug.Log("ltThumbOut: " + ltThumbOut);
             }
             #endregion
