@@ -8,11 +8,13 @@ namespace LW.Core{
         [SerializeField] float marginOfError = 40;
         [SerializeField] bool printAngles = true;
 
+        // TODO make private
         public enum Hands {right, left, both, none}
         public enum Direction {up, down, palmOut, palmIn, side, none};
         public enum Formation {palmsIn, palmsOut, together, palmsUp, palmsDown, none}
-        public enum Pose {pointer, peace, flat, fist, none}
+        public enum Pose {pointer, peace, flat, fist, gun, rockOn, any, none}
 
+        // TODO make private
         public Hands handedness = Hands.none;
         public Formation palms = Formation.none;
         public Direction rightPalm = Direction.none;
@@ -20,15 +22,15 @@ namespace LW.Core{
         public Pose rightPose = Pose.none;
         public Pose leftPose = Pose.none;
         
-        MixedRealityPose rtIndex, rtMiddle, rtThumb, rtPalm;
-        MixedRealityPose ltIndex, ltMiddle, ltThumb, ltPalm;
+        MixedRealityPose rtIndex, rtMiddle, rtPinky, rtThumb, rtPalm;
+        MixedRealityPose ltIndex, ltMiddle, ltPinky, ltThumb, ltPalm;
 
-        bool foundRtIndex, foundRtMiddle, foundRtThumb, foundRtPalm;
-        bool foundLtIndex, foundLtMiddle, foundLtThumb, foundLtPalm;
+        bool foundRtIndex, foundRtMiddle, foundRtPinky, foundRtThumb, foundRtPalm;
+        bool foundLtIndex, foundLtMiddle, foundLtPinky, foundLtThumb, foundLtPalm;
 
         Vector3 staff;
-        public float staffForward, staffUp, staffRight, staffFloorUp, staffFloorForward;
-        public float rtPalmForward, rtPalmUp, rtPalmRt, ltPalmForward, ltPalmUp, ltPalmRt;
+        float staffForward, staffUp, staffRight, staffFloorUp, staffFloorForward;
+        float rtPalmForward, rtPalmUp, rtPalmRt, ltPalmForward, ltPalmUp, ltPalmRt;
 
         Transform cam;
         Transform floor;
@@ -59,12 +61,16 @@ namespace LW.Core{
             foundRtIndex = HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndex);
             foundRtMiddle = HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Right, out rtMiddle);
             foundRtThumb = HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Right, out rtThumb);
+            foundRtPinky = HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Right, out rtPinky);
             foundRtPalm = HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Right, out rtPalm);
 
             foundLtIndex = HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out ltIndex);
             foundLtMiddle = HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleTip, Handedness.Left, out ltMiddle);
             foundLtThumb = HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumb);
+            foundLtPinky = HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinky);
             foundLtPalm = HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out ltPalm);
+
+            // TODO create test, if any of the above are ever false, trigger a HUD element
         }
 
         private void FindHands()
@@ -177,52 +183,47 @@ namespace LW.Core{
 
         private void WatchPoses()
         {
+            #region finger angles
             float rtIndForward = Vector3.Angle(rtIndex.Forward, rtPalm.Forward);
             float rtIndForCamFor = Vector3.Angle(rtIndex.Forward, cam.forward);
             float rtMidForward = Vector3.Angle(rtMiddle.Forward, rtPalm.Forward);
-            float rtThumbOut = Vector3.Angle(rtThumb.Forward, rtPalm.Right * -1);
-            float rtThumbForward = Vector3.Angle(rtThumb.Forward, rtPalm.Forward);
+            float rtPinkyForward = Vector3.Angle(rtPinky.Forward, rtPalm.Forward);
+            float rtThumbOut = Vector3.Angle(rtThumb.Forward, rtPalm.Right * -1); // inverted for symmetry with left thumb values
 
             float ltIndForward = Vector3.Angle(ltIndex.Forward, ltPalm.Forward);
             float ltIndForCamFor = Vector3.Angle(ltIndex.Forward, cam.forward);
             float ltMidForward = Vector3.Angle(ltMiddle.Forward, ltPalm.Forward);
+            float ltPinkyForward = Vector3.Angle(ltPinky.Forward, ltPalm.Forward);
             float ltThumbOut = Vector3.Angle(ltThumb.Forward, ltPalm.Right);
-            float ltThumbForward = Vector3.Angle(ltThumb.Forward, ltPalm.Forward);
-            
-            // if (!foundRtPalm) {
-            //     rightPose = Pose.none;
-            // }
-            // if (!foundLtPalm) {
-            //     leftPose = Pose.none;
-            // }
+            #endregion
 
-            if (IsPosed(rtIndForward, 0) && (!foundRtMiddle || !IsPosed(rtMidForward, 0))) {
-                rightPose = Pose.pointer;
-            }
-            if (IsPosed(ltIndForward, 0) && (!foundLtMiddle || !IsPosed(ltMidForward, 0))) {
-                leftPose = Pose.pointer;
-            }
-
-            if (IsPosed(rtIndForward, 0) &&(IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180) )&& (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
+            if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = Pose.peace;
             }
-            if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
-                leftPose = Pose.peace;
-            }
-
-            if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && (IsPosed(rtThumbOut, 30))) {
-                rightPose = Pose.flat;
-            }
-            if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0)) && (IsPosed(ltThumbOut, 30))) {
-                leftPose = Pose.flat;
-            }
-
-            if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
+            else if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = Pose.fist;
             }
-            if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
+            else if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && IsPosed(rtPinkyForward, 0) && IsPosed(rtThumbOut, 30)) {
+                rightPose = Pose.flat;
+            }
+            else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0))) {
+                rightPose = Pose.pointer;
+            }
+            else { rightPose = Pose.any; }
+            
+            if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
+                leftPose = Pose.peace;
+            }
+            else if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = Pose.fist;
             }
+            else if (IsPosed(ltIndForward, 0) && IsPosed(ltMidForward, 0) && IsPosed(ltPinkyForward, 0) && IsPosed(ltThumbOut, 30)) {
+                leftPose = Pose.flat;
+            }
+            else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0))) {
+                leftPose = Pose.pointer;
+            }
+            else { leftPose = Pose.any; }
 
             #region Debug land - TODO remove
             if (printAngles) {
