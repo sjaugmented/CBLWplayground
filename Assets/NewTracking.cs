@@ -85,60 +85,52 @@ namespace LW.Core{
 
         private void WatchPalms() 
         {
-            // RIGHT
             rtPalmForward = Vector3.Angle(rtPalm.Up, cam.forward);
             rtPalmUp = Vector3.Angle(rtPalm.Up, floor.up);
             rtPalmRt = Vector3.Angle(rtPalm.Up, cam.right);
 
+            ltPalmForward = Vector3.Angle(ltPalm.Up, cam.forward);
+            ltPalmUp = Vector3.Angle(ltPalm.Up, floor.up);
+            ltPalmRt = Vector3.Angle(ltPalm.Up, cam.right);
+
             if (!foundRtPalm) {
                 rightPalm = Direction.none;
+            }
+            if (!foundLtPalm) {
+                leftPalm = Direction.none;
             }
 
             if (IsPosed(rtPalmForward, 0)) {
                 rightPalm = Direction.palmIn;
             }
+            if (IsPosed(ltPalmForward, 0)) {
+                leftPalm = Direction.palmIn;
+            }
 
             if (IsPosed(rtPalmForward, 180)) {
                 rightPalm = Direction.palmOut;
+            }
+            if (IsPosed(ltPalmForward, 180)) {
+                leftPalm = Direction.palmOut;
             }
             
             if (IsPosed(rtPalmUp, 0)) {
                 rightPalm = Direction.down;
             }
+            if (IsPosed(ltPalmUp, 0)) {
+                leftPalm = Direction.down;
+            }
             
             if (IsPosed(rtPalmUp, 180)) {
                 rightPalm = Direction.up;
+            }
+            if (IsPosed(ltPalmUp, 180)) {
+                leftPalm = Direction.up;
             }
 
             if (IsPosed(rtPalmRt, 0)) {
                 rightPalm = Direction.side;
             }
-
-            // LEFT
-            ltPalmForward = Vector3.Angle(ltPalm.Up, cam.forward);
-            ltPalmUp = Vector3.Angle(ltPalm.Up, floor.up);
-            ltPalmRt = Vector3.Angle(ltPalm.Up, cam.right);
-
-            if (!foundLtPalm) {
-                leftPalm = Direction.none;
-            }
-
-            if (IsPosed(ltPalmForward, 0)) {
-                leftPalm = Direction.palmIn;
-            }
-
-            if (IsPosed(ltPalmForward, 180)) {
-                leftPalm = Direction.palmOut;
-            }
-            
-            if (IsPosed(ltPalmUp, 0)) {
-                leftPalm = Direction.down;
-            }
-            
-            if (IsPosed(ltPalmUp, 180)) {
-                leftPalm = Direction.up;
-            }
-
             if (IsPosed(ltPalmRt, 180)) {
                 leftPalm = Direction.side;
             }
@@ -146,9 +138,11 @@ namespace LW.Core{
 
         private void WatchFormations()
         {
+            float palmToPalm = Vector3.Angle(rtPalm.Up, ltPalm.Up);
+            
             if (!foundRtPalm || !foundLtPalm) { palms = Formation.none; }
             
-            if (rightPalm == Direction.side && leftPalm == Direction.side) {
+            if (IsPosed(palmToPalm, 180)) {
                 palms = Formation.together;
             }
 
@@ -183,56 +177,49 @@ namespace LW.Core{
 
         private void WatchPoses()
         {
-            // RIGHT
             float rtIndForward = Vector3.Angle(rtIndex.Forward, rtPalm.Forward);
             float rtIndForCamFor = Vector3.Angle(rtIndex.Forward, cam.forward);
             float rtMidForward = Vector3.Angle(rtMiddle.Forward, rtPalm.Forward);
             float rtThumbOut = Vector3.Angle(rtThumb.Forward, rtPalm.Right * -1);
             float rtThumbForward = Vector3.Angle(rtThumb.Forward, rtPalm.Forward);
 
-            if (!foundRtPalm) {
-                rightPose = Pose.none;
-            }
-
-            if (IsPosed(rtIndForward, 0) && (!foundRtMiddle || !IsPosed(rtMidForward, 0))) {
-                rightPose = Pose.pointer;
-            }
-
-            if (IsPosed(rtIndForward, 0) &&(IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180) )&& (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
-                rightPose = Pose.peace;
-            }
-
-            if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && (IsPosed(rtThumbOut, 30))) {
-                rightPose = Pose.flat;
-            }
-
-            if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
-                rightPose = Pose.fist;
-            }
-
-            // LEFT
             float ltIndForward = Vector3.Angle(ltIndex.Forward, ltPalm.Forward);
             float ltIndForCamFor = Vector3.Angle(ltIndex.Forward, cam.forward);
             float ltMidForward = Vector3.Angle(ltMiddle.Forward, ltPalm.Forward);
             float ltThumbOut = Vector3.Angle(ltThumb.Forward, ltPalm.Right);
             float ltThumbForward = Vector3.Angle(ltThumb.Forward, ltPalm.Forward);
+            
+            // if (!foundRtPalm) {
+            //     rightPose = Pose.none;
+            // }
+            // if (!foundLtPalm) {
+            //     leftPose = Pose.none;
+            // }
 
-            if (!foundLtPalm) {
-                leftPose = Pose.none;
+            if (IsPosed(rtIndForward, 0) && (!foundRtMiddle || !IsPosed(rtMidForward, 0))) {
+                rightPose = Pose.pointer;
             }
-
             if (IsPosed(ltIndForward, 0) && (!foundLtMiddle || !IsPosed(ltMidForward, 0))) {
                 leftPose = Pose.pointer;
             }
 
+            if (IsPosed(rtIndForward, 0) &&(IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180) )&& (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
+                rightPose = Pose.peace;
+            }
             if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = Pose.peace;
             }
 
+            if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && (IsPosed(rtThumbOut, 30))) {
+                rightPose = Pose.flat;
+            }
             if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0)) && (IsPosed(ltThumbOut, 30))) {
                 leftPose = Pose.flat;
             }
 
+            if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
+                rightPose = Pose.fist;
+            }
             if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = Pose.fist;
             }
@@ -254,5 +241,4 @@ namespace LW.Core{
             return (pose < target + marginOfError && pose > target - marginOfError);
         }
     }
-
 }
