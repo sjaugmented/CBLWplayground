@@ -9,17 +9,19 @@ namespace LW.Ball {
     {
         [SerializeField] GameObject ballPrefab;
         [SerializeField] float destroyDelay = 1;
+        [SerializeField] float zOffset = 0.1f;
         public bool Ball {get; set;}
 
         bool conjureReady, destroyReady = false;
         float conjureTimer, destroyTimer = Mathf.Infinity;
 
-        HandTracking hands;
+        // HandTracking hands;
+        NewTracking tracking;
         GameObject ballInstance;
         
         void Start()
         {
-            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 
             if (GameObject.FindGameObjectWithTag("Ball")) {
                 Ball = true;
@@ -36,7 +38,7 @@ namespace LW.Ball {
             destroyTimer += Time.deltaTime;
 
             if (!Ball) {
-                if (hands.rightFist && hands.rtPalmUpFloorUp > 140) {
+                if (tracking.rightPose == LWPose.fist && tracking.rightPalm == Direction.up) {
                     if (!conjureReady) {
                         conjureTimer = 0;
                         conjureReady = true;
@@ -47,12 +49,12 @@ namespace LW.Ball {
                     conjureReady = false;
                 }
 
-                if (conjureTimer < 3 && hands.rightOpen) {
+                if (conjureTimer < 3 && tracking.rightPose == LWPose.flat) {
                     ConjureBall();
                 }
             }
             else {
-                if (hands.rightOpen && hands.rtPalmUpCamFor > 150) {
+                if (tracking.rightPose == LWPose.flat && tracking.rightPalm == Direction.palmIn) {
                     if (!destroyReady) {
                         destroyTimer = 0;
                         destroyReady = true;
@@ -63,7 +65,7 @@ namespace LW.Ball {
                     destroyReady = false;
                 }
 
-                if (destroyTimer < 1 && hands.rightFist) {
+                if (destroyTimer < 1 && tracking.rightPose == LWPose.fist) {
                     StartCoroutine("DestroyBall");
                 }
             }
@@ -72,7 +74,8 @@ namespace LW.Ball {
         private void ConjureBall()
         {
             Ball = true;
-            ballInstance = Instantiate(ballPrefab, hands.rightPalm.Position + new Vector3(0, 0.1f, 0), hands.rightPalm.Rotation);
+            Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
+            ballInstance = Instantiate(ballPrefab, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
         }
 
         IEnumerator DestroyBall()

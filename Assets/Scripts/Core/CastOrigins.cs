@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine;
 
 namespace LW.Core
 {
@@ -7,11 +8,12 @@ namespace LW.Core
         public float palmDist;
         public Vector3 midpointhandtracking, rightStreamPos, leftStreamPos;
 
-        HandTracking handtracking;
+        // HandTracking handtracking;
+        NewTracking tracking;
 
         private void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
         }
 
         private void Update()
@@ -21,11 +23,11 @@ namespace LW.Core
 
         private void CalcHandPositions()
         {
-            palmDist = Vector3.Distance(handtracking.rightPalm.Position, handtracking.leftPalm.Position);
+            palmDist = Vector3.Distance(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position);
 
-            midpointhandtracking = Vector3.Lerp(handtracking.rightPalm.Position, handtracking.leftPalm.Position, 0.5f);
-            rightStreamPos = Vector3.Lerp(handtracking.rtIndexTip.Position, handtracking.rtPinkyTip.Position, 0.5f);
-            leftStreamPos = Vector3.Lerp(handtracking.ltIndexTip.Position, handtracking.ltPinkyTip.Position, 0.5f);
+            midpointhandtracking = Vector3.Lerp(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position, 0.5f);
+            rightStreamPos = Vector3.Lerp(tracking.GetRtIndex.Position, tracking.GetRtPinky.Position, 0.5f);
+            leftStreamPos = Vector3.Lerp(tracking.GetLtIndex.Position, tracking.GetLtPinky.Position, 0.5f);
         }
     }
 }

@@ -27,27 +27,28 @@ namespace LW.Ball{
         float hueVal = Mathf.Epsilon;
         int oscVal = 0;
 
-        HandTracking hands;
+        // HandTracking hands;
+        NewTracking tracking;
         OSC osc;
 
         void Start()
         {
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
-            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
         }
 
         void Update()
         {
-            distanceToRtHand = Vector3.Distance(transform.position, hands.rightPalm.Position);
-            distanceToLtHand = Vector3.Distance(transform.position, hands.leftPalm.Position);
+            distanceToRtHand = Vector3.Distance(transform.position, tracking.GetRtPalm.Position);
+            distanceToLtHand = Vector3.Distance(transform.position, tracking.GetLtPalm.Position);
 
             if (distanceToRtHand < magnetRange)
             {
-                Magnetism(hands.rightPalm.Position);
+                Magnetism(tracking.GetRtPalm.Position);
             }
             if (distanceToLtHand < magnetRange) {
-                Magnetism(hands.leftPalm.Position);
+                Magnetism(tracking.GetLtPalm.Position);
             }
         }
 
