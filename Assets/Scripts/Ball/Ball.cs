@@ -41,6 +41,7 @@ namespace LW.Ball{
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
 
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(oscAddress + "/receive", OnReceiveOSC);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(OnReceiveOSC);
         }
 
         void Update()
@@ -112,6 +113,7 @@ namespace LW.Ball{
         void OnReceiveOSC(OscMessage message)
         {
             Debug.Log("OSC received: " + message);
+            caster.StartCoroutine("DestroyBall");
         }
     }
 }
