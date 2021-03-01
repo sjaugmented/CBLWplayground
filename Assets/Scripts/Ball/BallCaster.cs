@@ -8,7 +8,6 @@ namespace LW.Ball {
     public class BallCaster : MonoBehaviour
     {
         [SerializeField] GameObject ballPrefab;
-        [SerializeField] float destroyDelay = 1;
         [SerializeField] float zOffset = 0.1f;
         public bool Ball {get; set;}
 
@@ -66,7 +65,7 @@ namespace LW.Ball {
                 }
 
                 if (destroyTimer < 1 && tracking.rightPose == LWPose.fist) {
-                    StartCoroutine("DestroyBall");
+                    DestroyBall();
                 }
             }
         }
@@ -78,12 +77,9 @@ namespace LW.Ball {
             ballInstance = Instantiate(ballPrefab, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
         }
 
-        public IEnumerator DestroyBall()
+        public void DestroyBall()
         {
-            ballInstance.GetComponent<Ball>().DestroySelf();
-            yield return new WaitForSeconds(destroyDelay);
-            Destroy(ballInstance);
-            Ball = false;
+            ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
         }
     }
 }

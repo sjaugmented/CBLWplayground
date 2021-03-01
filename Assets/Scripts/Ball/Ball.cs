@@ -9,26 +9,27 @@ namespace LW.Ball{
     public class Ball : MonoBehaviour
     {
         // TODO
-        // tennis ball
-        // each hit changes color and sends OSC
         // can catch in forcefield between hands and manipulate floats
-        // receive OSC to explode orb on downbeat
-
 
         [SerializeField] string oscAddress;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
+        [SerializeField] float destroyDelay = 0.5f;
         [SerializeField] float magnetRange = 0.1f;
         // [SerializeField] float stopRange = 0.06f;
         [SerializeField] float magneticForce = 2;
         [SerializeField] float bounceForce = 1;
+        [SerializeField] float touchFrequency = 1;
+        float touchTimer = Mathf.Infinity;
+        bool touchToggled = false;
+        [SerializeField] float forceMult = 10000;
+        [SerializeField] float killForce = 1000;
 
         public float distanceToRtHand, distanceToLtHand;
 
         float hueVal = Mathf.Epsilon;
         int oscVal = 0;
 
-        // HandTracking hands;
         NewTracking tracking;
         OSC osc;
         BallCaster caster;
@@ -46,6 +47,8 @@ namespace LW.Ball{
 
         void Update()
         {
+            touchTimer += Time.deltaTime;
+            
             distanceToRtHand = Vector3.Distance(transform.position, tracking.GetRtPalm.Position);
             distanceToLtHand = Vector3.Distance(transform.position, tracking.GetLtPalm.Position);
 
@@ -59,28 +62,41 @@ namespace LW.Ball{
         }
 
         private void OnCollisionEnter(Collision other) {
-            Vector3 collisionForce = other.impulse / Time.fixedDeltaTime;
+            float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
             Debug.Log("FORCE>>>>>>>>>>>>>>>>>>>>>" + collisionForce);
+
             if (other.gameObject.CompareTag("Player")) {
-                
-                hueVal += 0.1388f; // 1/5 of 360
-                if (hueVal > 1) {
-                    hueVal -= 1;
+                if (!touchToggled)
+                {
+                    touchTimer = 0;
+                    touchToggled = true;
                 }
-                // TODO particles not changing color
-                var particleColor = GetComponentInChildren<ParticleSystem>().colorOverLifetime;
-                var ballMaterial = GetComponentInChildren<Renderer>().material;
-                Debug.Log("old color: " + particleColor);
-                particleColor.color = Color.HSVToRGB(hueVal, 1, 1);
-                ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
-                Debug.Log("new color: " + particleColor);
-                
-                oscVal += 1;
-                SendOSC(oscAddress, oscVal);
+
+                if (touchTimer > touchFrequency)
+                {
+                    hueVal += 0.1388f; // 1/5 of 360
+                    if (hueVal > 1)
+                    {
+                        hueVal -= 1;
+                    }
+
+                    // TODO particles not changing color
+                    //var particleColor = GetComponentInChildren<ParticleSystem>().colorOverLifetime;
+                    var ballMaterial = GetComponentInChildren<Renderer>().material;
+                    //Debug.Log("old color: " + particleColor);
+                    //particleColor.color = Color.HSVToRGB(hueVal, 1, 1);
+                    ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
+                    //Debug.Log("new color: " + particleColor);
+
+                    oscVal += 1;
+                    SendOSC(oscAddress, oscVal);
+                    touchToggled = false;
+                }
             }
-            else
+            else if (other.gameObject.layer == 31 && collisionForce >= killForce)
             {
                 caster.StartCoroutine("DestroyBall");
+                Debug.Log(other.collider.gameObject.layer);
             }
         }
 
@@ -99,22 +115,26 @@ namespace LW.Ball{
 
         public bool Handled {get; set;}
 
-        public void DestroySelf() {
+        void OnReceiveOSC(OscMessage message)
+        {
+            Debug.Log("OSC received: " + message);
+            // TODO rethink this logic of having caster destroy Ball
+            StartCoroutine("DestroySelf");
+        }
+
+        IEnumerator DestroySelf() {
             GetComponentInChildren<MeshExploder>().Explode();
             if (!GetComponent<AudioSource>().isPlaying) {
                 GetComponent<AudioSource>().PlayOneShot(destroyFX);
             }
             GetComponentInChildren<MeshRenderer>().enabled = false;
-            var particles = GetComponentInChildren<ParticleSystem>().emission;
-            particles.enabled = false;
-
+            //var particles = GetComponentInChildren<ParticleSystem>().emission;
+            //particles.enabled = false;
+            yield return new WaitForSeconds(destroyDelay);
+            caster.Ball = false;
+            Destroy(gameObject);
         }
 
-        void OnReceiveOSC(OscMessage message)
-        {
-            Debug.Log("OSC received: " + message);
-            caster.StartCoroutine("DestroyBall");
-        }
     }
 }
 

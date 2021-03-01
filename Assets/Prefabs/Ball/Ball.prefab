@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8581110822269228913
 Transform:
   m_ObjectHideFlags: 0
@@ -5120,8 +5120,12 @@ MonoBehaviour:
   oscAddress: ballsucker
   conjureFX: {fileID: 8300000, guid: 2d369608f583cdf4fbf2baaea1051616, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
+  destroyDelay: 0.5
   magnetRange: 0.1
-  magneticForce: 0.2
+  magneticForce: 0
   bounceForce: 1
+  touchFrequency: 0.5
+  forceMult: 100000
+  killForce: 0.0001
   distanceToRtHand: 0
   distanceToLtHand: 0
