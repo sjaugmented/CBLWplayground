@@ -116,7 +116,7 @@ namespace LW.SlingShot
 			{
 				transform.position = castOrigin;
 				transform.rotation = castRotation;
-				force = (1 - (castOrigins.palmDist / maxHandDist)) * 750;
+				force = (1 - (castOrigins.PalmsDist / maxHandDist)) * 750;
 			}
 
 			GetComponent<Rigidbody>().AddForce(transform.forward * Mathf.Clamp(force, 100, 500));

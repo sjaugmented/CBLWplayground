@@ -175,7 +175,7 @@ namespace LW.Runic
 			}
             masterRune.transform.GetChild(runeTypeIndex).gameObject.SetActive(true);
 
-            masterRune.transform.position = castOrigins.midpointhandtracking;
+            masterRune.transform.position = castOrigins.PalmsMidpoint;
             masterRune.transform.LookAt(Camera.main.transform);
 		}
 
@@ -208,7 +208,7 @@ namespace LW.Runic
                 RuneController currentRune = rune.GetComponent<RuneController>();
                 currentRune.SetRuneAddressAndMaterial(runeID, runeMaterials[runeMaterialIndex]);
 
-                float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
+                float spellForce = (1 - (castOrigins.PalmsDist / maxPalmDist)) * 50;
                 if (spellForce < 7.5f) spellForce = 7.5f;
                 if (devMode) currentRune.force = force;
                 else currentRune.force = spellForce;

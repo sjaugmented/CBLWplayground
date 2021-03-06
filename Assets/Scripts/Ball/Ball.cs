@@ -31,6 +31,7 @@ namespace LW.Ball{
         int oscVal = 0;
 
         NewTracking tracking;
+        CastOrigins castOrigins;
         OSC osc;
         BallCaster caster;
 
@@ -38,9 +39,12 @@ namespace LW.Ball{
         {
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+            castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
 
+            // TODO
+            // lens test
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(oscAddress + "/receive", OnReceiveOSC);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(OnReceiveOSC);
         }
@@ -51,6 +55,17 @@ namespace LW.Ball{
             
             distanceToRtHand = Vector3.Distance(transform.position, tracking.GetRtPalm.Position);
             distanceToLtHand = Vector3.Distance(transform.position, tracking.GetLtPalm.Position);
+
+            // TODO 
+            // remote test
+            // refactor for better readability
+            GetComponent<Rigidbody>().useGravity = !GameObject.FindGameObjectWithTag("ForceField").GetComponent<ForceField>().Caught;
+
+            if (!GetComponent<Rigidbody>().useGravity)
+            {
+                transform.position = castOrigins.PalmsMidpoint;
+                return;
+            }
 
             if (distanceToRtHand < magnetRange)
             {
@@ -80,13 +95,8 @@ namespace LW.Ball{
                         hueVal -= 1;
                     }
 
-                    // TODO particles not changing color
-                    //var particleColor = GetComponentInChildren<ParticleSystem>().colorOverLifetime;
                     var ballMaterial = GetComponentInChildren<Renderer>().material;
-                    //Debug.Log("old color: " + particleColor);
-                    //particleColor.color = Color.HSVToRGB(hueVal, 1, 1);
                     ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
-                    //Debug.Log("new color: " + particleColor);
 
                     oscVal += 1;
                     SendOSC(oscAddress, oscVal);
@@ -123,13 +133,12 @@ namespace LW.Ball{
         }
 
         IEnumerator DestroySelf() {
+            SendOSC("byeBall", 1);
             GetComponentInChildren<MeshExploder>().Explode();
             if (!GetComponent<AudioSource>().isPlaying) {
                 GetComponent<AudioSource>().PlayOneShot(destroyFX);
             }
             GetComponentInChildren<MeshRenderer>().enabled = false;
-            //var particles = GetComponentInChildren<ParticleSystem>().emission;
-            //particles.enabled = false;
             yield return new WaitForSeconds(destroyDelay);
             caster.Ball = false;
             Destroy(gameObject);

@@ -2,12 +2,12 @@
 using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
-namespace LW.Core{
+namespace LW.Core {
     
     public enum Hands {right, left, both, none}
     public enum Direction {up, down, palmOut, palmIn, side, none};
     public enum Formation {palmsIn, palmsOut, together, palmsUp, palmsDown, none}
-    public enum LWPose {pointer, peace, flat, fist, gun, rockOn, any, none}
+    public enum HandPose {pointer, peace, flat, fist, gun, rockOn, any, none}
 
     public class NewTracking : MonoBehaviour
     {
@@ -18,8 +18,8 @@ namespace LW.Core{
         public Formation palms = Formation.none;
         public Direction rightPalm = Direction.none;
         public Direction leftPalm = Direction.none;
-        public LWPose rightPose = LWPose.none;
-        public LWPose leftPose = LWPose.none;
+        public HandPose rightPose = HandPose.none;
+        public HandPose leftPose = HandPose.none;
         
         MixedRealityPose rtIndex, rtMiddle, rtPinky, rtThumb, rtPalm;
         MixedRealityPose ltIndex, ltMiddle, ltPinky, ltThumb, ltPalm;
@@ -242,32 +242,32 @@ namespace LW.Core{
             #endregion
 
             if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
-                rightPose = LWPose.peace;
+                rightPose = HandPose.peace;
             }
             else if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
-                rightPose = LWPose.fist;
+                rightPose = HandPose.fist;
             }
             else if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && IsPosed(rtPinkyForward, 0) && IsPosed(rtThumbOut, 30)) {
-                rightPose = LWPose.flat;
+                rightPose = HandPose.flat;
             }
             else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0))) {
-                rightPose = LWPose.pointer;
+                rightPose = HandPose.pointer;
             }
-            else { rightPose = LWPose.any; }
+            else { rightPose = HandPose.any; }
             
             if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
-                leftPose = LWPose.peace;
+                leftPose = HandPose.peace;
             }
             else if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
-                leftPose = LWPose.fist;
+                leftPose = HandPose.fist;
             }
             else if (IsPosed(ltIndForward, 0) && IsPosed(ltMidForward, 0) && IsPosed(ltPinkyForward, 0) && IsPosed(ltThumbOut, 30)) {
-                leftPose = LWPose.flat;
+                leftPose = HandPose.flat;
             }
             else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0))) {
-                leftPose = LWPose.pointer;
+                leftPose = HandPose.pointer;
             }
-            else { leftPose = LWPose.any; }
+            else { leftPose = HandPose.any; }
 
             #region Debug land - TODO remove
             if (printAngles) {

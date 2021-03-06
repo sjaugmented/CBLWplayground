@@ -50,21 +50,21 @@ namespace LW.HSL
                 valFloat = Mathf.Clamp(Vector3.Distance(tracking.GetLtPalm.Position, tracking.GetRtPalm.Position) / maxSlingShotPullDistance, 0, 1);
                 satFloat = 1;
                 
-                if (tracking.leftPose == LWPose.peace)
+                if (tracking.leftPose == HandPose.peace)
                 {
                     // hueFloat = hands.ltPalmForFloorUp / 90;
                     
-                    if (tracking.rightPose == LWPose.fist)
+                    if (tracking.rightPose == HandPose.fist)
 					{
                         hueFloat = tracking.RtLauncher / 180;
                         PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
                 }
-                else if (tracking.rightPose == LWPose.peace)
+                else if (tracking.rightPose == HandPose.peace)
                 {
                     // hueFloat = hands.rtPalmForFloorUp / 90;
 
-                    if (tracking.leftPose == LWPose.fist)
+                    if (tracking.leftPose == HandPose.fist)
 					{
                         hueFloat = tracking.LtLauncher / 180;
                         PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
@@ -75,19 +75,17 @@ namespace LW.HSL
             }
             else
 			{
-                if (tracking.rightPose == LWPose.peace || tracking.leftPose == LWPose.peace) return;
+                if (tracking.rightPose == HandPose.peace || tracking.leftPose == HandPose.peace) return;
 
                 if (tracking.palms == Formation.together)
                 {
                     hslOrb.gameObject.SetActive(true);
 
-                    // TODO remap Hue to 27-230
                     if (tracking.StaffUp > 20 && tracking.StaffUp < 162) {
                         var adjustedAngle = tracking.StaffUp - 20;
                         hueFloat = adjustedAngle / 142;
                     }
 
-                    // TODO remap val to 69-188
                     if (tracking.StaffForward > 48 && tracking.StaffForward < 132) {
                         var adjustedAngle = tracking.StaffForward - 48;
                         valFloat = adjustedAngle / 84;
@@ -98,7 +96,7 @@ namespace LW.HSL
 
                     PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
 
-                    if (tracking.rightPose != LWPose.fist && tracking.leftPose != LWPose.fist)
+                    if (tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
                     {
                         LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
                     }
@@ -108,7 +106,8 @@ namespace LW.HSL
                     hueHud.text = "Hue: " + Math.Round(hueFloat * 255).ToString();
                     satHud.text = "Sat: " + Math.Round(satFloat * 255).ToString();
                     valHud.text = "Val: " + Math.Round(valFloat * 255).ToString();
-                    // rethink staff angles - consider extra guard rails
+                    
+                    // figure out color cube
                 }
                 else
                 {
