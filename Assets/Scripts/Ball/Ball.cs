@@ -29,11 +29,13 @@ namespace LW.Ball{
 
         float hueVal = Mathf.Epsilon;
         int oscVal = 0;
+        bool gravity;
 
         NewTracking tracking;
         CastOrigins castOrigins;
         OSC osc;
         BallCaster caster;
+        ForceField forceField;
 
         void Start()
         {
@@ -42,6 +44,9 @@ namespace LW.Ball{
             castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
+
+            gravity = GetComponent<Rigidbody>().useGravity;
+            forceField = GameObject.FindGameObjectWithTag("ForceField").GetComponent<ForceField>();
 
             // TODO
             // lens test
@@ -59,13 +64,13 @@ namespace LW.Ball{
             // TODO 
             // remote test
             // refactor for better readability
-            GetComponent<Rigidbody>().useGravity = !GameObject.FindGameObjectWithTag("ForceField").GetComponent<ForceField>().Caught;
+            //gravity = forceField ? !forceField.Caught : true;
 
-            if (!GetComponent<Rigidbody>().useGravity)
-            {
-                transform.position = castOrigins.PalmsMidpoint;
-                return;
-            }
+            //if (!gravity)
+            //{
+            //    transform.position = castOrigins.PalmsMidpoint;
+            //    return;
+            //}
 
             if (distanceToRtHand < magnetRange)
             {
@@ -80,34 +85,41 @@ namespace LW.Ball{
             float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
             Debug.Log("FORCE>>>>>>>>>>>>>>>>>>>>>" + collisionForce);
 
-            if (other.gameObject.CompareTag("Player")) {
-                if (!touchToggled)
-                {
-                    touchTimer = 0;
-                    touchToggled = true;
-                }
-
-                if (touchTimer > touchFrequency)
-                {
-                    hueVal += 0.1388f; // 1/5 of 360
-                    if (hueVal > 1)
+            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("ForceField"))
+            {
+                if (other.gameObject.CompareTag("Player")) {
+                    if (!touchToggled)
                     {
-                        hueVal -= 1;
+                        touchTimer = 0;
+                        touchToggled = true;
                     }
 
-                    var ballMaterial = GetComponentInChildren<Renderer>().material;
-                    ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
+                    if (touchTimer > touchFrequency)
+                    {
+                        hueVal += 0.1388f; // 1/5 of 360
+                        if (hueVal > 1)
+                        {
+                            hueVal -= 1;
+                        }
 
-                    oscVal += 1;
-                    SendOSC(oscAddress, oscVal);
-                    touchToggled = false;
+                        var ballMaterial = GetComponentInChildren<Renderer>().material;
+                        ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
+
+                        oscVal += 1;
+                        SendOSC(oscAddress, oscVal);
+                        touchToggled = false;
+                    }
                 }
             }
-            else if (other.gameObject.layer == 31 && collisionForce >= killForce)
+            else
             {
-                caster.StartCoroutine("DestroyBall");
-                Debug.Log(other.collider.gameObject.layer);
+                if (collisionForce >= killForce)
+                {
+                    //caster.StartCoroutine("DestroyBall");
+                    Debug.Log(other.collider.gameObject.layer);
+                }
             }
+            
         }
 
         private void SendOSC(string address, float val) {

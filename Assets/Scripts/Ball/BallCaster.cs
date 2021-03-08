@@ -88,38 +88,48 @@ namespace LW.Ball
                 }
 
                 // catch, manipulate, throw
-                if (tracking.palms == Formation.palmsIn && origins.PalmsDist < holdDistance)
+                if (tracking.palms == Formation.together && origins.PalmsDist < holdDistance)
                 {
-                    // TODO
-                    // remote test
-                    forceField.transform.position = origins.PalmsMidpoint;
-                    forceField.GetComponent<CapsuleCollider>().height = origins.PalmsDist;
+                    //// TODO
+                    //// remote test
+                    //forceField.SetActive(true);
+                    //forceField.transform.position = origins.PalmsMidpoint;
+                    //forceField.GetComponent<CapsuleCollider>().height = origins.PalmsDist;
 
-                    if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-                    {
-                        // neutral
-                    }
+                    //if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                    //{
+                    //    // neutral
+                    //}
 
-                    if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
-                    {
-                        // manipulate
-                    }
+                    //if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                    //{
+                    //    // manipulate
+                    //}
+
+                    ballInstance.GetComponent<Rigidbody>().useGravity = false;
+                    ballInstance.GetComponent<ConstantForce>().enabled = false;
+                }
+                else {
+                    //forceField.SetActive(false); 
+
+                    ballInstance.GetComponent<Rigidbody>().useGravity = true;
+                    ballInstance.GetComponent<ConstantForce>().enabled = true;
                 }
 
-                if (Held && tracking.palms == Formation.palmsOut)
-                {
-                    // throw
+                //if (forceField.GetComponent<ForceField>().Caught && tracking.palms == Formation.palmsOut)
+                //{
+                //    // throw
 
-                    // TODO
-                    // remote test
-                    forceField.GetComponent<ForceField>().Caught = false;
-                    Quaternion castRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f) * Quaternion.Euler(60, 0, 0);
-                    float force = (1 - (origins.PalmsDist / holdDistance)) * 50;
+                //    // TODO
+                //    // remote test
+                //    forceField.GetComponent<ForceField>().Caught = false;
+                //    Quaternion castRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f) * Quaternion.Euler(60, 0, 0);
+                //    float force = (1 - (origins.PalmsDist / holdDistance)) * 50;
                     
-                    //ballInstance.transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                    ballInstance.transform.rotation = castRotation;
-                    ballInstance.GetComponent<Rigidbody>().AddForce(transform.forward * force);
-                }
+                //    //ballInstance.transform.LookAt(2 * transform.position - Camera.main.transform.position);
+                //    ballInstance.transform.rotation = castRotation;
+                //    ballInstance.GetComponent<Rigidbody>().AddForce(transform.forward * force);
+                //}
             }
         }
 

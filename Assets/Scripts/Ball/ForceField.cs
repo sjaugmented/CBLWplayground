@@ -7,15 +7,25 @@ namespace LW.Ball
     public class ForceField : MonoBehaviour
     {
         public bool Caught { get; set; }
-        private void OnTriggerEnter(Collider other)
+
+        BallCaster caster;
+
+        private void Start()
         {
-            Caught = true;
+            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
         }
 
-        private void Update()
-        {
-            GetComponent<CapsuleCollider>().enabled = !Caught;
-        }
+        //private void Update()
+        //{
+        //    GetComponent<CapsuleCollider>().enabled = !Caught;
+        //    Debug.Log("Caught = " + Caught);
+        //}
+        
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    Caught = true;
+        //}
+
     }
 }
 
