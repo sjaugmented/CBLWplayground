@@ -108,6 +108,8 @@ namespace LW.HSL
                     valHud.text = "Val: " + Math.Round(valFloat * 255).ToString();
                     
                     // figure out color cube
+                    // TODO
+                    // graft runic proximity controls for 3 axis float controller 
                 }
                 else
                 {

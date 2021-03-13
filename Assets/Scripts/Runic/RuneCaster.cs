@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace LW.Runic
 {
+    // TODO
+    // OSC receive visuals...
+    // sparkle & spin
     public class RuneCaster : MonoBehaviour
     {
         [Header("DevMode controls")]

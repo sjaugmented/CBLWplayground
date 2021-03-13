@@ -10,8 +10,11 @@ namespace LW.Ball{
     {
         // TODO
         // can catch in forcefield between hands and manipulate floats
+        // TODO
+        // every cast levels up the world integer 
 
-        [SerializeField] string oscAddress;
+        [SerializeField] string killCode;
+        [SerializeField] string glitterCode;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] float destroyDelay = 0.5f;
@@ -50,8 +53,8 @@ namespace LW.Ball{
 
             // TODO
             // lens test
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(oscAddress + "/receive", OnReceiveOSC);
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(OnReceiveOSC);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(killCode, KillBall);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(glitterCode, GlitterBall);
         }
 
         void Update()
@@ -106,7 +109,7 @@ namespace LW.Ball{
                         ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
 
                         oscVal += 1;
-                        SendOSC(oscAddress, oscVal);
+                        SendOSC(killCode, oscVal);
                         touchToggled = false;
                     }
                 }
@@ -137,11 +140,18 @@ namespace LW.Ball{
 
         public bool Handled {get; set;}
 
-        void OnReceiveOSC(OscMessage message)
+        void KillBall(OscMessage message)
         {
             Debug.Log("OSC received: " + message);
             // TODO rethink this logic of having caster destroy Ball
             StartCoroutine("DestroySelf");
+        }
+
+        void GlitterBall(OscMessage message)
+        {
+            Debug.Log("OSC received: " + message);
+            // TODO rethink this logic of having caster destroy Ball
+            GetComponentInChildren<MeshExploder>().Explode();
         }
 
         IEnumerator DestroySelf() {
