@@ -30,8 +30,6 @@ namespace LW.Runic
 
         private void OnTriggerEnter(Collider collider)
         {
-            
-
             if (leftHand)
 			{
                 if (tracking.leftPose == HandPose.fist)

@@ -213,52 +213,52 @@ namespace LW.Core {
             float ltThumbOut = Vector3.Angle(ltThumb.Forward, ltPalm.Right);
             #endregion
 
-            if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
+            if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
+                rightPose = HandPose.fist;
+            }
+            else if (IsPosed(rtIndForward, 0) && IsPosed(rtMidForward, 0) && IsPosed(rtPinkyForward, 0) && IsPosed(rtThumbOut, 30)) {
+                rightPose = HandPose.flat;
+            }
+            else if (IsPosed(rtIndForward, 0) && IsPosed(rtMidForward, 0) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.peace;
             }
-            else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 0) || !IsPosed(rtPinkyForward, 180)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130)))
+            else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && IsPosed(rtPinkyForward, 0))
             {
                 rightPose = HandPose.rockOn;                          
             }
-            else if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
-                rightPose = HandPose.fist;
-            }
-            else if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0)) && IsPosed(rtPinkyForward, 0) && IsPosed(rtThumbOut, 30)) {
-                rightPose = HandPose.flat;
-            }
-            else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0))) {
+            else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.pointer;
             }
             else { rightPose = HandPose.any; }
             
-            if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
-                leftPose = HandPose.peace;
-            }
-            else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0) || IsPosed(ltMidForward, 180)) && (IsPosed(ltPinkyForward, 0) || !IsPosed(ltPinkyForward, 180)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130)))
-            {
-                leftPose = HandPose.rockOn;
-            }
-            else if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
+            if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.fist;
             }
             else if (IsPosed(ltIndForward, 0) && IsPosed(ltMidForward, 0) && IsPosed(ltPinkyForward, 0) && IsPosed(ltThumbOut, 30)) {
                 leftPose = HandPose.flat;
             }
-            else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0))) {
+            else if (IsPosed(ltIndForward, 0) && IsPosed(ltMidForward, 0) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
+                leftPose = HandPose.peace;
+            }
+            else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0) || IsPosed(ltMidForward, 180)) && IsPosed(ltPinkyForward, 0))
+            {
+                leftPose = HandPose.rockOn;
+            }
+            else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.pointer;
             }
             else { leftPose = HandPose.any; }
 
             #region Debug land - TODO remove
             if (printAngles) {
-                Debug.Log("rtIndexForward: " + rtIndForward);
-                Debug.Log("rtMiddleForward: " + rtMidForward);
+                //Debug.Log("rtIndexForward: " + rtIndForward);
+                //Debug.Log("rtMiddleForward: " + rtMidForward);
                 Debug.Log("rtPinkyForward: " + rtPinkyForward);
-                Debug.Log("rtThumbOut: " + rtThumbOut);
-                Debug.Log("ltIndexForward: " + ltIndForward);
-                Debug.Log("ltMiddleForward: " + ltMidForward);
+                //Debug.Log("rtThumbOut: " + rtThumbOut);
+                //Debug.Log("ltIndexForward: " + ltIndForward);
+                //Debug.Log("ltMiddleForward: " + ltMidForward);
                 Debug.Log("ltPinkyForward: " + ltPinkyForward);
-                Debug.Log("ltThumbOut: " + ltThumbOut);
+                //Debug.Log("ltThumbOut: " + ltThumbOut);
             }
             #endregion
         }

@@ -14,6 +14,7 @@ namespace LW.Runic
         [SerializeField] NodeCompass nodeRing;
         [SerializeField] string spinCode;
         [SerializeField] string sparkleCode;
+        [SerializeField] float spinRate = 0.1f; // TODO make private
         bool oscTest = false;
 
         public float force = 1;
@@ -56,7 +57,7 @@ namespace LW.Runic
 
             //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(spinCode, SpinRune);
             //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(sparkleCode, Sparkle);
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(Sparkle);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(SpinRune);
 
             defaultOSCValue = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().DefaultOSCValue;
 
@@ -88,11 +89,14 @@ namespace LW.Runic
 
             // ordered within Rune Grid for better gathering
             transform.SetSiblingIndex(siblingIndex);
+
+            if (spinning) { transform.Rotate(0, spinRate, 0); }
         }
 
         void SpinRune(OscMessage message)
         {
             spinning = !spinning;
+            Debug.Log("spinning = " + spinning);
         }
 
         void Sparkle(OscMessage message)
