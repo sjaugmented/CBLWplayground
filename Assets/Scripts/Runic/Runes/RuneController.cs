@@ -12,6 +12,8 @@ namespace LW.Runic
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
         [SerializeField] NodeCompass nodeRing;
+        [SerializeField] string spinCode;
+        [SerializeField] string sparkleCode;
         bool oscTest = false;
 
         public float force = 1;
@@ -29,6 +31,7 @@ namespace LW.Runic
         bool isTouched = false;
 
         bool manipulated = false;
+        bool spinning = false;
         public bool Manipulated
 		{
             get { return manipulated; }
@@ -40,23 +43,20 @@ namespace LW.Runic
 
         Renderer thisRenderer;
         RunicDirector director;
-        HandTracking handtracking;
-        EmissionModule emission;
+        NewTracking tracking;
 
         void Start()
         {
             thisRenderer = GetComponentInChildren<Renderer>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 
 			GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/receive", OnReceiveOSC);
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(OnReceiveOSC);
-
-            emission = particles.emission;
-            emission.enabled = false;
+            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(spinCode, SpinRune);
+            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(sparkleCode, Sparkle);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(Sparkle);
 
             defaultOSCValue = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().DefaultOSCValue;
 
@@ -90,6 +90,23 @@ namespace LW.Runic
             transform.SetSiblingIndex(siblingIndex);
         }
 
+        void SpinRune(OscMessage message)
+        {
+            spinning = !spinning;
+        }
+
+        void Sparkle(OscMessage message)
+        {
+            GetComponentInChildren<ParticleSystem>().Play();
+        }
+
+        //IEnumerator Sparkle()
+        //{
+        //    // something
+        //    GetComponentInChildren<ParticleSystem>().Play();
+        //    yield return new WaitForSeconds(0.2f);
+        //}
+
         private void SetMaterialOpacity(float v)
 		{
             Color matColor = runeMaterial.color;
@@ -118,8 +135,6 @@ namespace LW.Runic
             addressNode2 = idString + name + "-D";
             
             runeMaterial = material;
-            MainModule particlesMain = particles.main;
-            particlesMain.startColor = runeMaterial.color;
 
             gameObject.name = runeID + name;
 
@@ -134,7 +149,7 @@ namespace LW.Runic
 			{
                 nodeRing.ActivateNodeRing();
 
-                if (!handtracking.rightPeace && !handtracking.leftPeace)
+                if (tracking.rightPose != HandPose.peace && tracking.leftPose != HandPose.peace)
                 {
                     isTouched = true;
                     //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
@@ -149,7 +164,7 @@ namespace LW.Runic
             }
             else
 			{
-                if (!handtracking.rightPeace && !handtracking.leftPeace)
+                if (tracking.rightPose != HandPose.peace && tracking.leftPose != HandPose.peace)
                 {
                     isTouched = true;
 				    //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
@@ -221,15 +236,7 @@ namespace LW.Runic
             yield return new WaitForSeconds(0.2f);
             isTouched = false;
 		}
-
-        private IEnumerator PlayParticles()
-        {
-            Debug.Log("pulsing");
-            emission.enabled = true;
-            yield return new WaitForSeconds(0.3f);
-            emission.enabled = false;
-        }
-
+        
         public void Manipulating()
 		{
             manipulated = true;

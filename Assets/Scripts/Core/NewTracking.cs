@@ -24,55 +24,27 @@ namespace LW.Core {
         MixedRealityPose rtIndex, rtMiddle, rtPinky, rtThumb, rtPalm;
         MixedRealityPose ltIndex, ltMiddle, ltPinky, ltThumb, ltPalm;
 
-        public MixedRealityPose GetRtPalm {
-            get { return rtPalm; }
-        }
-
-        public MixedRealityPose GetLtPalm {
-            get {return ltPalm;}
-        }
-
-        public MixedRealityPose GetRtIndex {
-            get {return rtIndex;}
-        }
-
-        public MixedRealityPose GetLtIndex {
-            get {return ltIndex;}
-        }
-
-        public MixedRealityPose GetRtPinky {
-            get { return rtPinky; }
-        }
-
-        public MixedRealityPose GetLtPinky {
-            get { return ltPinky; }
-        }
-
         bool foundRtIndex, foundRtMiddle, foundRtPinky, foundRtThumb, foundRtPalm;
         bool foundLtIndex, foundLtMiddle, foundLtPinky, foundLtThumb, foundLtPalm;
-
+        
         Vector3 staff;
         float staffForward, staffUp, staffRight, staffFloorUp, staffFloorForward;
         float rtPalmForward, rtPalmUp, rtPalmIn, rtLauncher, ltPalmForward, ltPalmUp, ltPalmIn, ltLauncher;
-
-        public float StaffUp
-        {
-            get { return staffUp; }
-        }
-
-        public float StaffForward
-        {
-            get { return staffForward; }
-        }
-
-        public float RtLauncher
-        {
-            get { return rtLauncher; }
-        }
-        public float LtLauncher
-        {
-            get { return ltLauncher; }
-        }
+        
+        #region Getters
+        public MixedRealityPose GetRtPalm { get { return rtPalm; } }
+        public MixedRealityPose GetLtPalm { get {return ltPalm;} }
+        public MixedRealityPose GetRtIndex { get {return rtIndex;} }
+        public MixedRealityPose GetLtIndex { get {return ltIndex;} }
+        public MixedRealityPose GetRtPinky { get { return rtPinky; } }
+        public MixedRealityPose GetLtPinky { get { return ltPinky; } }
+        public bool FoundRightHand { get { return foundRtPalm; } }
+        public bool FoundLeftHand { get { return foundLtPalm; } }
+        public float StaffUp { get { return staffUp; } }
+        public float StaffForward { get { return staffForward; } }
+        public float RtLauncher { get { return rtLauncher; } }
+        public float LtLauncher { get { return ltLauncher; } }
+        #endregion
 
         Transform cam;
         Transform floor;
@@ -244,6 +216,10 @@ namespace LW.Core {
             if (IsPosed(rtIndForward, 0) && (IsPosed(rtMidForward, 0) || !IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.peace;
             }
+            else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 0) || !IsPosed(rtPinkyForward, 180)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130)))
+            {
+                rightPose = HandPose.rockOn;                          
+            }
             else if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.fist;
             }
@@ -257,6 +233,10 @@ namespace LW.Core {
             
             if (IsPosed(ltIndForward, 0) && (IsPosed(ltMidForward, 0) || !IsPosed(ltMidForward, 180)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.peace;
+            }
+            else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0) || IsPosed(ltMidForward, 180)) && (IsPosed(ltPinkyForward, 0) || !IsPosed(ltPinkyForward, 180)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130)))
+            {
+                leftPose = HandPose.rockOn;
             }
             else if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.fist;

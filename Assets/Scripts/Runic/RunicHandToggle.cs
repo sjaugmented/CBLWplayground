@@ -19,13 +19,13 @@ namespace LW.Runic
 
         RunicDirector director;
         OSC osc;
-        HandTracking hands;
+        NewTracking tracking;
 
         void Start()
         {
 			director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
-            hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 		}
 
         private void OnTriggerEnter(Collider collider)
@@ -34,7 +34,7 @@ namespace LW.Runic
 
             if (leftHand)
 			{
-                if (hands.leftFist)
+                if (tracking.leftPose == HandPose.fist)
 				{
                     if (collider.CompareTag("Right Pointer"))
 					{
@@ -45,7 +45,7 @@ namespace LW.Runic
 				{
                     if (collider.CompareTag("Right Pointer"))
                     {
-                        if (!hands.rightPeace)
+                        if (tracking.rightPose != HandPose.peace)
                         {
                             SendOSC("leftTap1/");
                             GetComponent<AudioSource>().PlayOneShot(singleTap);
@@ -67,7 +67,7 @@ namespace LW.Runic
 
             else
 			{
-                if (hands.rightFist)
+                if (tracking.rightPose == HandPose.fist)
 				{
                     if (collider.CompareTag("Left Pointer"))
 					{
@@ -78,7 +78,7 @@ namespace LW.Runic
 				{
                     if (collider.CompareTag("Left Pointer"))
                     {
-                        if (!hands.leftPeace)
+                        if (tracking.leftPose != HandPose.peace)
                         {
                             SendOSC("rightTap1/");
                             GetComponent<AudioSource>().PlayOneShot(singleTap);

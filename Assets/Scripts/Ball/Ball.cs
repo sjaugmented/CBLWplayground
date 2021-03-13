@@ -32,24 +32,24 @@ namespace LW.Ball{
 
         float hueVal = Mathf.Epsilon;
         int oscVal = 0;
-        bool gravity;
+        //bool gravity;
 
         NewTracking tracking;
-        CastOrigins castOrigins;
+        //CastOrigins castOrigins;
         OSC osc;
         BallCaster caster;
-        ForceField forceField;
+        //ForceField forceField;
 
         void Start()
         {
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            //castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
 
-            gravity = GetComponent<Rigidbody>().useGravity;
-            forceField = GameObject.FindGameObjectWithTag("ForceField").GetComponent<ForceField>();
+            //gravity = GetComponent<Rigidbody>().useGravity; // TODO do we need this?
+            //forceField = GameObject.FindGameObjectWithTag("ForceField").GetComponent<ForceField>();
 
             // TODO
             // lens test
@@ -63,17 +63,6 @@ namespace LW.Ball{
             
             distanceToRtHand = Vector3.Distance(transform.position, tracking.GetRtPalm.Position);
             distanceToLtHand = Vector3.Distance(transform.position, tracking.GetLtPalm.Position);
-
-            // TODO 
-            // remote test
-            // refactor for better readability
-            //gravity = forceField ? !forceField.Caught : true;
-
-            //if (!gravity)
-            //{
-            //    transform.position = castOrigins.PalmsMidpoint;
-            //    return;
-            //}
 
             if (distanceToRtHand < magnetRange)
             {
@@ -142,15 +131,12 @@ namespace LW.Ball{
 
         void KillBall(OscMessage message)
         {
-            Debug.Log("OSC received: " + message);
             // TODO rethink this logic of having caster destroy Ball
             StartCoroutine("DestroySelf");
         }
 
         void GlitterBall(OscMessage message)
         {
-            Debug.Log("OSC received: " + message);
-            // TODO rethink this logic of having caster destroy Ball
             GetComponentInChildren<MeshExploder>().Explode();
         }
 
