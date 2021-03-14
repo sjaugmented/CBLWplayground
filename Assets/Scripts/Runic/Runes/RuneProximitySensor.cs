@@ -47,7 +47,7 @@ namespace LW.Runic
 
                     if (bubbleScale > effectiveBubbleScale) // ie, if bubble is visible -ish
                     {
-                        if (tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
+                        if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
                         {
                             if (!leftFisted)
 							{

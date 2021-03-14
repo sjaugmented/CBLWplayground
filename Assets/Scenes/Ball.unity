@@ -604,7 +604,8 @@ MonoBehaviour:
   ballPrefab: {fileID: 2193309183216341837, guid: 0e2773d268d0e2246a7dc0b18767d165,
     type: 3}
   zOffset: 0.03
-  holdDistance: 0.3
+  holdDistance: 0.5
+  forceMultiplier: 500
 --- !u!4 &688426549
 Transform:
   m_ObjectHideFlags: 0

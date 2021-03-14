@@ -30,8 +30,20 @@ namespace LW.Ball{
 
         public float distanceToRtHand, distanceToLtHand;
 
+        int worldLevel = 0;
+        int touchValue = 0;
+        public int WorldLevel 
+        { 
+            get { return worldLevel;  }
+            set { worldLevel = value; } 
+        }
+        public int TouchLevel
+        {
+            get { return touchValue; }
+            set { touchValue = value; }
+        }
+
         float hueVal = Mathf.Epsilon;
-        int oscVal = 0;
         //bool gravity;
 
         NewTracking tracking;
@@ -51,10 +63,10 @@ namespace LW.Ball{
             //gravity = GetComponent<Rigidbody>().useGravity; // TODO do we need this?
             //forceField = GameObject.FindGameObjectWithTag("ForceField").GetComponent<ForceField>();
 
-            // TODO
-            // lens test
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(killCode, KillBall);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(glitterCode, GlitterBall);
+
+            SendOSC("iAM!");
         }
 
         void Update()
@@ -97,8 +109,8 @@ namespace LW.Ball{
                         var ballMaterial = GetComponentInChildren<Renderer>().material;
                         ballMaterial.color = Color.HSVToRGB(hueVal, 1, 1);
 
-                        oscVal += 1;
-                        SendOSC(killCode, oscVal);
+                        touchValue += 1;
+                        SendOSC("touched", touchValue);
                         touchToggled = false;
                     }
                 }
@@ -114,9 +126,9 @@ namespace LW.Ball{
             
         }
 
-        private void SendOSC(string address, float val) {
+        public void SendOSC(string address, float val = 1) {
             OscMessage message = new OscMessage();
-            message.address = address;
+            message.address = worldLevel + "/" + address + "/";
             message.values.Add(val);
             osc.Send(message);
         }
@@ -137,11 +149,13 @@ namespace LW.Ball{
 
         void GlitterBall(OscMessage message)
         {
+            SendMessage("GlitterBall");
             GetComponentInChildren<MeshExploder>().Explode();
         }
 
-        IEnumerator DestroySelf() {
-            SendOSC("byeBall", 1);
+        IEnumerator DestroySelf() 
+        {
+            SendOSC("iDead");
             GetComponentInChildren<MeshExploder>().Explode();
             if (!GetComponent<AudioSource>().isPlaying) {
                 GetComponent<AudioSource>().PlayOneShot(destroyFX);

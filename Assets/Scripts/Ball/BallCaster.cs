@@ -12,6 +12,7 @@ namespace LW.Ball
         [SerializeField] GameObject ballPrefab;
         [SerializeField] float zOffset = 0.1f;
         [SerializeField] float holdDistance = 0.3f;
+        [SerializeField] float forceMultiplier = 100;
         public bool Ball { get; set; }
         public bool Held { get; set; }
 
@@ -21,11 +22,17 @@ namespace LW.Ball
         NewTracking tracking;
         CastOrigins origins;
         GameObject ballInstance;
+        OSC osc;
+        private bool leftFisted;
+        private bool rightFisted;
+        private bool dualFisted;
+        bool hasBoosted = false;
 
         void Start()
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
 
             if (GameObject.FindGameObjectWithTag("Ball"))
             {
@@ -66,6 +73,8 @@ namespace LW.Ball
             }
             else
             {
+                if (!ballInstance) { return; }
+
                 if (tracking.rightPose == HandPose.flat && tracking.rightPalm == Direction.palmIn)
                 {
                     if (!destroyReady)
@@ -89,46 +98,94 @@ namespace LW.Ball
                 // catch, manipulate, throw
                 if (tracking.palms == Formation.together && origins.PalmsDist < holdDistance)
                 {
-                    //// TODO
-                    //// remote test
-                    //forceField.SetActive(true);
-                    //forceField.transform.position = origins.PalmsMidpoint;
-                    //forceField.GetComponent<CapsuleCollider>().height = origins.PalmsDist;
-
-                    //if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-                    //{
-                    //    // neutral
-                    //}
-
-                    //if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
-                    //{
-                    //    // manipulate
-                    //}
-
                     ballInstance.GetComponent<Rigidbody>().useGravity = false;
                     ballInstance.GetComponent<ConstantForce>().enabled = false;
+
+                    // prox floats
+                    if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
+                    {
+                        if (!leftFisted)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("leftFistOn");
+                            leftFisted = true;
+                        }
+                        
+                        
+                        ballInstance.GetComponent<Ball>().SendOSC("leftProximityAngle", 1 - tracking.StaffUp / 180);
+                        ballInstance.GetComponent<Ball>().SendOSC("leftProximityDistance", origins.PalmsDist / holdDistance);
+                    }
+                    else
+                    {
+                        if (leftFisted)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("leftFistOff");
+                            leftFisted = false;
+                        }
+                    }
+
+                    if (tracking.rightPose == HandPose.fist && tracking.leftPose != HandPose.fist)
+                    {
+                        if (!rightFisted)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("rightFistOn");
+                            rightFisted = true;
+                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("rightProximityAngle", 1 - tracking.StaffUp / 180);
+                        ballInstance.GetComponent<Ball>().SendOSC("rightProximityDistance", origins.PalmsDist / holdDistance);
+                    }
+                    else
+                    {
+                        if (rightFisted)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("rightFistOff");
+                            rightFisted = false;
+                        }
+                    }
+
+                    if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                    {
+                        if (!dualFisted)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("dualFistOn");
+                            dualFisted = true;
+                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("proximityAngle", 1 - tracking.StaffUp / 180);
+                        ballInstance.GetComponent<Ball>().SendOSC("proximityDistance", origins.PalmsDist / holdDistance);
+                    }
+                    else
+                    {
+                        if (dualFisted)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("dualFistOff");
+                            dualFisted = false;
+                        }
+                    }
                 }
                 else {
-                    //forceField.SetActive(false); 
-
                     ballInstance.GetComponent<Rigidbody>().useGravity = true;
                     ballInstance.GetComponent<ConstantForce>().enabled = true;
                 }
 
-                //if (forceField.GetComponent<ForceField>().Caught && tracking.palms == Formation.palmsOut)
-                //{
-                //    // throw
+                // boosting
+                if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                {
+                    if (!hasBoosted)
+                    {
+                        ballInstance.GetComponent<Ball>().WorldLevel++;
+                        ballInstance.GetComponent<Ball>().TouchLevel = 0;
+                        ballInstance.GetComponent<Ball>().SendOSC("boosting");
+                        ballInstance.transform.LookAt(2 * ballInstance.transform.position - Camera.main.transform.position);
+                        ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * forceMultiplier);
+                        hasBoosted = true;
+                    }
+                }
+                else { hasBoosted = false; }
 
-                //    // TODO
-                //    // remote test
-                //    forceField.GetComponent<ForceField>().Caught = false;
-                //    Quaternion castRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f) * Quaternion.Euler(60, 0, 0);
-                //    float force = (1 - (origins.PalmsDist / holdDistance)) * 50;
-                    
-                //    //ballInstance.transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                //    ballInstance.transform.rotation = castRotation;
-                //    ballInstance.GetComponent<Rigidbody>().AddForce(transform.forward * force);
-                //}
+                if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                {
+                    ballInstance.transform.LookAt(Camera.main.transform.position);
+                    ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * (forceMultiplier / 5));
+                }
             }
         }
 
@@ -141,7 +198,10 @@ namespace LW.Ball
 
         public void DestroyBall()
         {
-            ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
+            if (ballInstance)
+            {
+                ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
+            }
         }
     }
 }
