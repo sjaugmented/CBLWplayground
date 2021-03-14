@@ -21,17 +21,20 @@ namespace LW.SlingShot
         {
             colorPicker = GameObject.FindGameObjectWithTag("ColorPicker").GetComponent<ColorPicker>();
             material = GetComponentInChildren<Renderer>().material;
+            
             StoredColor = colorPicker.PreviewColor;
-            material.color = StoredColor;
-            material.SetColor("_EmissionColor", StoredColor);
+            //material.color = StoredColor;
+            //material.SetColor("_EmissionColor", StoredColor);
+
+            Debug.Log("Pebble's StoredColor: " + StoredColor);
         }
 
         void Update()
         {
             if (!projectile)
-			{
+            {
                 material.color = colorPicker.PreviewColor;
-                material.SetColor("_EmissionColor", colorPicker.LiveColor);
+                material.SetColor("_EmissionColor", colorPicker.PreviewColor);
             }
         }
     }

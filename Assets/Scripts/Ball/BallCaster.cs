@@ -18,7 +18,6 @@ namespace LW.Ball
         bool conjureReady, destroyReady = false;
         float conjureTimer, destroyTimer = Mathf.Infinity;
 
-        // HandTracking hands;
         NewTracking tracking;
         CastOrigins origins;
         GameObject ballInstance;

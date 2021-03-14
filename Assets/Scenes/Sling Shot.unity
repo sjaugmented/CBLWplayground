@@ -667,10 +667,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53999eeae34e05f429f4a16149d4eb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  palmDist: 0
-  midpointhandtracking: {x: 0, y: 0, z: 0}
-  rightStreamPos: {x: 0, y: 0, z: 0}
-  leftStreamPos: {x: 0, y: 0, z: 0}
 --- !u!1 &437481172
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,7 +1143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   marginOfError: 40
-  printAngles: 1
+  printAngles: 0
   handedness: 3
   palms: 5
   rightPalm: 5
@@ -1166,10 +1162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53999eeae34e05f429f4a16149d4eb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  palmDist: 0
-  midpointhandtracking: {x: 0, y: 0, z: 0}
-  rightStreamPos: {x: 0, y: 0, z: 0}
-  leftStreamPos: {x: 0, y: 0, z: 0}
 --- !u!4 &1336077448
 Transform:
   m_ObjectHideFlags: 0

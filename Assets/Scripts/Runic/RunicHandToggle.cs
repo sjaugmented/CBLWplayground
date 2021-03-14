@@ -17,9 +17,9 @@ namespace LW.Runic
         [SerializeField] bool leftHand = false;
         bool triggered = false;
 
+        NewTracking tracking;
         RunicDirector director;
         OSC osc;
-        NewTracking tracking;
 
         void Start()
         {

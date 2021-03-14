@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using LW.Core;
 using System;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using Microsoft.MixedReality.Toolkit.Input;
 
 namespace LW.SlingShot
 {
@@ -20,44 +22,48 @@ namespace LW.SlingShot
 
         float fingerDistance;
 
-        HandTracking handtracking;
+        NewTracking tracking;
         SlingShotDirector director;
         Sights sights;
 
         void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>();
             sights = GetComponent<Sights>();
         }
 
         void Update()
         {
+            MixedRealityPose rtMiddleKnuckle, ltMiddleKnuckle;
+
+            HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Right, out rtMiddleKnuckle);
+            HandJointUtils.TryGetJointPose(TrackedHandJoint.MiddleKnuckle, Handedness.Left, out ltMiddleKnuckle);
+
             if (director.BuildMode) { return; }
 
-            if (handtracking.leftPeace)
+            if (tracking.leftPose == HandPose.peace)
 			{
-				fingerDistance = Vector3.Distance(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position);
-				ActivateSlingShot(handRingLeft, sights.GetLeftSight(), handtracking.ltMiddleTip.Position);
+				fingerDistance = Vector3.Distance(tracking.GetLtIndex.Position, tracking.GetLtMiddle.Position);
+				ActivateSlingShot(handRingLeft, sights.GetLeftSight(), tracking.GetLtMiddle.Position);
 
-				if (handtracking.rightFist)
+				if (tracking.rightPose == HandPose.fist)
 				{
-					PullSlingShot(sights.GetLeftSight());
+					PullSlingShot(sights.GetLeftSight(), rtMiddleKnuckle.Position);
 				}
 			}
-			else if (handtracking.rightPeace)
+			else if (tracking.rightPose == HandPose.peace)
 			{
-                fingerDistance = Vector3.Distance(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position);
-                ActivateSlingShot(handRingRight, sights.GetRightSight(), handtracking.rtMiddleTip.Position);
+                fingerDistance = Vector3.Distance(tracking.GetRtIndex.Position, tracking.GetRtMiddle.Position);
+                ActivateSlingShot(handRingRight, sights.GetRightSight(), tracking.GetRtMiddle.Position);
 
-                if (handtracking.leftFist)
+                if (tracking.leftPose == HandPose.fist)
 				{
-                    PullSlingShot(sights.GetRightSight());
+                    PullSlingShot(sights.GetRightSight(), ltMiddleKnuckle.Position);
 				}
 			}
 			else
             {
-                //deactivate HUDs
                 sightHUD.SetActive(false);
                 pebbleHUD.SetActive(false);
                 handRingRight.SetActive(false);
@@ -68,51 +74,49 @@ namespace LW.SlingShot
             WatchForRelease();
         }
 
-		private void ActivateSlingShot(GameObject handRing, Vector3 sights, Vector3 sightsDirection)
+		private void ActivateSlingShot(GameObject handRing, Vector3 sights, Vector3 middleFinger)
 		{
-			// activate rangeFinder object
 			sightHUD.SetActive(true);
-			// position between finger tips
 			sightHUD.transform.position = sights;
-			// size to distance
 			sightHUD.transform.localScale = new Vector3(fingerDistance, fingerDistance, fingerDistance);
-			// rotate to face middle finger
-			sightHUD.transform.LookAt(sightsDirection);
+			sightHUD.transform.LookAt(middleFinger);
 
-            if (director.HandPicker) handRing.SetActive(true);
+            if (director.SlingShot) handRing.SetActive(true);
 		}
 
-        private void PullSlingShot(Vector3 sights)
+        private void PullSlingShot(Vector3 sights, Vector3 launchPosition)
         {
             pebbleHUD.SetActive(true);
-            pebbleHUD.transform.position = handtracking.rtIndexMid.Position;
+            pebbleHUD.transform.position = launchPosition;
             pebbleHUD.transform.LookAt(sights);
             rightReadyToFire = true;
         }
 
         private void WatchForRelease()
         {
+            // TODO can you combine these toggles?
             if (rightReadyToFire)
             {
-                if (!handtracking.rightFist) Fire();
+                if (tracking.rightPose != HandPose.fist) Fire();
             }
 
             if (leftReadyToFire)
 			{
-                if (!handtracking.leftFist) Fire();
+                if (tracking.leftPose != HandPose.fist) Fire();
 			}
         }
 
         private void Fire()
         {
             pebbleHUD.SetActive(false);
-            float force = Vector3.Distance(handtracking.rightPalm.Position, sightHUD.transform.position) * forceMultiplier;
+            float force = Vector3.Distance(tracking.GetRtPalm.Position, sightHUD.transform.position) * forceMultiplier;
 
-            GameObject newPebble = Instantiate(pebblePrefab, handtracking.rightPalm.Position, pebbleHUD.transform.rotation);
+            GameObject newPebble = Instantiate(pebblePrefab, tracking.GetRtPalm.Position, pebbleHUD.transform.rotation);
 
             newPebble.GetComponent<PebbleController>().Force = force;
 
             rightReadyToFire = false;
+            leftReadyToFire = false;
         }
     }
 }

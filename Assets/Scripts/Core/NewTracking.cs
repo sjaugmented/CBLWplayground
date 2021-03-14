@@ -35,7 +35,9 @@ namespace LW.Core {
         public MixedRealityPose GetRtPalm { get { return rtPalm; } }
         public MixedRealityPose GetLtPalm { get {return ltPalm;} }
         public MixedRealityPose GetRtIndex { get {return rtIndex;} }
+        public MixedRealityPose GetRtMiddle { get { return rtMiddle; } }
         public MixedRealityPose GetLtIndex { get {return ltIndex;} }
+        public MixedRealityPose GetLtMiddle { get { return ltMiddle; } }
         public MixedRealityPose GetRtPinky { get { return rtPinky; } }
         public MixedRealityPose GetLtPinky { get { return ltPinky; } }
         public bool FoundRightHand { get { return foundRtPalm; } }
@@ -108,7 +110,7 @@ namespace LW.Core {
             rtPalmForward = Vector3.Angle(rtPalm.Up, cam.forward);
             rtPalmUp = Vector3.Angle(rtPalm.Up, floor.up);
             rtPalmIn = Vector3.Angle(rtPalm.Up, cam.right);
-            rtLauncher = Vector3.Angle(rtPalm.Right, cam.up);
+            rtLauncher = Vector3.Angle(rtPalm.Right, cam.up); // TODO move launchers off of NewTracker
 
             ltPalmForward = Vector3.Angle(ltPalm.Up, cam.forward);
             ltPalmUp = Vector3.Angle(ltPalm.Up, floor.up);

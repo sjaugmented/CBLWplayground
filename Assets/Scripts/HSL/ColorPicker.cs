@@ -23,7 +23,6 @@ namespace LW.HSL
         public float satFloat = 1;
         public float valFloat = 0;
 
-        //HandTracking hands;
         NewTracking tracking;
         SlingShotDirector director;
         HSLOrbController hslOrb;
@@ -36,6 +35,7 @@ namespace LW.HSL
             //ChosenColor = Color.white;
         }
 
+
         void Update()
         {
             if (GameObject.FindGameObjectWithTag("Light").GetComponent<LightHolo>().Manipulated) { 
@@ -45,7 +45,7 @@ namespace LW.HSL
             
             hslOrb.transform.position = Vector3.Lerp(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position, 0.5f);
 
-            if (GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().HandPicker)
+            if (GameObject.FindGameObjectWithTag("Director").GetComponent<SlingShotDirector>().SlingShot)
 			{
                 valFloat = Mathf.Clamp(Vector3.Distance(tracking.GetLtPalm.Position, tracking.GetRtPalm.Position) / maxSlingShotPullDistance, 0, 1);
                 satFloat = 1;
@@ -71,45 +71,93 @@ namespace LW.HSL
                     }
                 }
                 else return;
-                
             }
             else
 			{
-                if (tracking.rightPose == HandPose.peace || tracking.leftPose == HandPose.peace) return;
+                if (tracking.rightPose == HandPose.peace || tracking.leftPose == HandPose.peace) 
+                {
+                    hslOrb.gameObject.SetActive(false);
+                    return; 
+                }
 
                 if (tracking.palms == Formation.together)
                 {
                     hslOrb.gameObject.SetActive(true);
 
-                    if (tracking.StaffUp > 20 && tracking.StaffUp < 162) {
-                        var adjustedAngle = tracking.StaffUp - 20;
-                        hueFloat = adjustedAngle / 142;
-                    }
+                    #region 3 axis 1.0
+                    //if (tracking.StaffUp > 20 && tracking.StaffUp < 162) {
+                    //    var adjustedAngle = tracking.StaffUp - 20;
+                    //    hueFloat = adjustedAngle / 142;
+                    //}
 
-                    if (tracking.StaffForward > 48 && tracking.StaffForward < 132) {
-                        var adjustedAngle = tracking.StaffForward - 48;
-                        valFloat = adjustedAngle / 84;
-                    }
+                    //if (tracking.StaffForward > 48 && tracking.StaffForward < 132) {
+                    //    var adjustedAngle = tracking.StaffForward - 48;
+                    //    valFloat = adjustedAngle / 84;
+                    //}
 
-                    float rawHandDist = Vector3.Distance(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position);
-                    satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+                    //float rawHandDist = Vector3.Distance(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position);
+                    //satFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
 
-                    PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+                    //PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
 
-                    if (tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
+                    //if (tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
+                    //{
+                    //    LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+                    //}
+                    #endregion
+
+                    if (tracking.rightPose != HandPose.pointer && tracking.leftPose != HandPose.pointer)
                     {
-                        LiveColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+                        if (tracking.rightPose == HandPose.fist && tracking.leftPose != HandPose.fist)
+                        {
+                            hueFloat = tracking.StaffUp / 180;
+                        }
+
+                        if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
+                        {
+                            satFloat = tracking.StaffUp / 180;
+                        }
+
+                        if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                        {
+                            float rawHandDist = Vector3.Distance(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position);
+                            valFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+                        }
+
+
+                        PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+
+                        if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                        {
+                            LiveColor = PreviewColor;
+                        }
+                    }
+                    else
+                    {
+                        if (tracking.rightPose == HandPose.pointer && (tracking.leftPose != HandPose.fist || tracking.leftPose != HandPose.pointer))
+                        {
+                            hueFloat = tracking.StaffUp / 180;
+                        }
+
+                        if ((tracking.rightPose != HandPose.fist || tracking.rightPose != HandPose.pointer) && tracking.leftPose == HandPose.pointer)
+                        {
+                            satFloat = tracking.StaffUp / 180;
+                        }
+
+                        float rawHandDist = Vector3.Distance(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position);
+                        valFloat = Mathf.Clamp(1 - (rawHandDist - minimumHandDistance) / maximumHandDistance, 0, 1);
+
+                        PreviewColor = Color.HSVToRGB(hueFloat, satFloat, valFloat);
+                        LiveColor = PreviewColor;
                     }
 
-                    // TODO 
-                    // remove
+                    
+                    // TODO remove
                     hueHud.text = "Hue: " + Math.Round(hueFloat * 255).ToString();
                     satHud.text = "Sat: " + Math.Round(satFloat * 255).ToString();
                     valHud.text = "Val: " + Math.Round(valFloat * 255).ToString();
                     
-                    // figure out color cube
-                    // TODO
-                    // graft runic proximity controls for 3 axis float controller 
+                    // TODO color cube selector
                 }
                 else
                 {

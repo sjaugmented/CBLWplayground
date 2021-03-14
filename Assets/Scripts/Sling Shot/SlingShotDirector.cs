@@ -18,14 +18,14 @@ namespace LW.SlingShot
         List<GameObject> rightHand = new List<GameObject>();
         List<GameObject> leftHand = new List<GameObject>();
 
-        public bool HandPicker { get; set; }
+        public bool SlingShot { get; set; }
         public bool BuildMode { get; set; }
 
-        HandTracking handtracking;
+        NewTracking tracking;
 
         void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 
             rightHand.Add(rightHandGroup);
             rightHand.Add(rightToggle);
@@ -54,13 +54,13 @@ namespace LW.SlingShot
 
         void Update()
         {
-            if (handtracking.rightHand)
+            if (tracking.FoundRightHand)
 			{
 				SetRightHand(true);
 			}
 			else SetRightHand(false);
 
-            if (handtracking.leftHand)
+            if (tracking.FoundLeftHand)
 			{
 				SetLeftHand(true);
 			}
@@ -71,20 +71,20 @@ namespace LW.SlingShot
             ///// DEV CONTROLS
             if (Input.GetKeyDown(KeyCode.O))
             {
-                ToggleHandMode();
+                ToggleSlingShot();
             }
         }
 
-		public void ToggleHandMode()
+		public void ToggleSlingShot()
 		{
-            if (HandPicker)
+            if (SlingShot)
 			{
-                HandPicker = false;
+                SlingShot = false;
                 GetComponent<AudioSource>().PlayOneShot(handOff);
             }
             else
 			{
-                HandPicker = true;
+                SlingShot = true;
                 GetComponent<AudioSource>().PlayOneShot(handOn);
             }
         }

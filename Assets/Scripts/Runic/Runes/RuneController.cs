@@ -12,9 +12,11 @@ namespace LW.Runic
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
         [SerializeField] NodeCompass nodeRing;
+
         [SerializeField] string spinCode;
         [SerializeField] string sparkleCode;
         [SerializeField] float spinRate = 0.1f; // TODO make private
+        
         bool oscTest = false;
 
         public float force = 1;
@@ -23,7 +25,6 @@ namespace LW.Runic
         public string addressNode1;
         public string addressNode2;
         
-        Material runeMaterial;
         public Material RuneMaterial
 		{
             get { return runeMaterial; }
@@ -42,9 +43,10 @@ namespace LW.Runic
         int siblingIndex;
         float defaultOSCValue;
 
-        Renderer thisRenderer;
-        RunicDirector director;
         NewTracking tracking;
+        RunicDirector director;
+        Material runeMaterial;
+        Renderer thisRenderer;
 
         void Start()
         {
@@ -55,9 +57,9 @@ namespace LW.Runic
 			GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
-            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(spinCode, SpinRune);
-            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(sparkleCode, Sparkle);
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(SpinRune);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(spinCode, SpinRune);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(sparkleCode, Sparkle);
+            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(SpinRune);
 
             defaultOSCValue = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().DefaultOSCValue;
 
