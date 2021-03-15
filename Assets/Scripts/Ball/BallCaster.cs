@@ -12,7 +12,8 @@ namespace LW.Ball
         [SerializeField] GameObject ballPrefab;
         [SerializeField] float zOffset = 0.1f;
         [SerializeField] float holdDistance = 0.3f;
-        [SerializeField] float forceMultiplier = 100;
+        [SerializeField] float boostMultiplier = 100;
+        [SerializeField] float summonMultiplier = 100;
         public bool Ball { get; set; }
         public bool Held { get; set; }
 
@@ -175,16 +176,17 @@ namespace LW.Ball
                         ballInstance.GetComponent<Ball>().TouchLevel = 0;
                         ballInstance.GetComponent<Ball>().SendOSC("boosting");
                         ballInstance.transform.LookAt(2 * ballInstance.transform.position - Camera.main.transform.position);
-                        ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * forceMultiplier);
+                        ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * boostMultiplier);
                         hasBoosted = true;
                     }
                 }
                 else { hasBoosted = false; }
 
+                // summoning
                 if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
                     ballInstance.transform.LookAt(Camera.main.transform.position);
-                    ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * (forceMultiplier / 5));
+                    ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * summonMultiplier);
                 }
             }
         }
