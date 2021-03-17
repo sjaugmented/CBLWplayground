@@ -11,9 +11,10 @@ namespace LW.Ball
         [SerializeField] GameObject forceField;
         [SerializeField] GameObject ballPrefab;
         [SerializeField] float zOffset = 0.1f;
-        [SerializeField] float holdDistance = 0.3f;
-        [SerializeField] float boostMultiplier = 100;
-        [SerializeField] float summonMultiplier = 100;
+        [SerializeField] float holdDistance = 0.5f;
+        [SerializeField] float boostMultiplier = 5;
+        [SerializeField] float summonMultiplier = 5;
+        [SerializeField] float liftMultiplier = 3;
         public bool Ball { get; set; }
         public bool Held { get; set; }
 
@@ -175,10 +176,10 @@ namespace LW.Ball
                         ballInstance.GetComponent<Ball>().WorldLevel++;
                         ballInstance.GetComponent<Ball>().TouchLevel = 0;
                         ballInstance.GetComponent<Ball>().SendOSC("boosting");
-                        ballInstance.transform.LookAt(2 * ballInstance.transform.position - Camera.main.transform.position);
-                        ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * boostMultiplier);
                         hasBoosted = true;
                     }
+                    ballInstance.transform.LookAt(2 * ballInstance.transform.position - Camera.main.transform.position);
+                    ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * (origins.PalmsDist / holdDistance * boostMultiplier));
                 }
                 else { hasBoosted = false; }
 
@@ -186,7 +187,14 @@ namespace LW.Ball
                 if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
                     ballInstance.transform.LookAt(Camera.main.transform.position);
-                    ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * summonMultiplier);
+                    ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * (origins.PalmsDist / holdDistance * summonMultiplier));
+                }
+
+                // lift
+                if (tracking.palms == Formation.palmsUp && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                {
+                    ballInstance.transform.rotation = new Quaternion(0, 0, 0, 0);
+                    ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.up * (origins.PalmsDist / holdDistance * liftMultiplier));
                 }
             }
         }

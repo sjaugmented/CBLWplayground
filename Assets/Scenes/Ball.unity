@@ -605,7 +605,8 @@ MonoBehaviour:
     type: 3}
   zOffset: 0.03
   holdDistance: 0.5
-  forceMultiplier: 500
+  boostMultiplier: 5
+  summonMultiplier: 5
 --- !u!4 &688426549
 Transform:
   m_ObjectHideFlags: 0

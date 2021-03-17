@@ -57,9 +57,11 @@ namespace LW.Runic
 			GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(spinCode, SpinRune);
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(sparkleCode, Sparkle);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/" + spinCode, SpinRune);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/" + sparkleCode, Sparkle);
             //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(SpinRune);
+
+            Debug.Log(addressBasic1 + "/" + spinCode);
 
             defaultOSCValue = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().DefaultOSCValue;
 

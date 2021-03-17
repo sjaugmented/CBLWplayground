@@ -65,10 +65,9 @@ namespace LW.Core {
 
             WatchPalmDirections();
 
+            WatchStaff();
             WatchFormations();
             
-            WatchStaff();
-
             WatchPoses();
         }
 
@@ -160,33 +159,6 @@ namespace LW.Core {
             }
         }
 
-        private void WatchFormations()
-        {
-            float palmToPalm = Vector3.Angle(rtPalm.Up, ltPalm.Up);
-            
-            if (!foundRtPalm || !foundLtPalm) { palms = Formation.none; }
-            
-            if (IsPosed(palmToPalm, 180)) {
-                palms = Formation.together;
-            }
-
-            if (rightPalm == Direction.palmOut && leftPalm == Direction.palmOut) {
-                palms = Formation.palmsOut;
-            }
-
-            if (rightPalm == Direction.palmIn && leftPalm == Direction.palmIn) {
-                palms = Formation.palmsIn;
-            }
-
-            if (rightPalm == Direction.up && leftPalm == Direction.up) {
-                palms = Formation.palmsUp;
-            }
-            
-            if (rightPalm == Direction.down && leftPalm == Direction.down) {
-                palms = Formation.palmsDown;
-            }
-        }
-
         private void WatchStaff() 
         {
             if (handedness != Hands.both) { return; }
@@ -197,6 +169,43 @@ namespace LW.Core {
             staffRight = Vector3.Angle(staff, cam.right);
             staffFloorForward = Vector3.Angle(staff, floor.forward);
             staffFloorUp = Vector3.Angle(staff, floor.up);
+        }
+
+        private void WatchFormations()
+        {
+            float palmToPalm = Vector3.Angle(rtPalm.Up, ltPalm.Up);
+
+            Debug.Log(staffUp);
+            
+            if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalm == Direction.up && leftPalm == Direction.down) || (rightPalm == Direction.down && leftPalm == Direction.up)))) 
+            { 
+                palms = Formation.none; 
+            }
+
+            else if (IsPosed(palmToPalm, 180)) {
+                palms = Formation.together;
+            }
+
+            else if (rightPalm == Direction.palmOut && leftPalm == Direction.palmOut) {
+                palms = Formation.palmsOut;
+            }
+
+            else if (rightPalm == Direction.palmIn && leftPalm == Direction.palmIn) {
+                palms = Formation.palmsIn;
+            }
+
+            else if (rightPalm == Direction.up && leftPalm == Direction.up) {
+                palms = Formation.palmsUp;
+            }
+
+            else if (rightPalm == Direction.down && leftPalm == Direction.down) {
+                palms = Formation.palmsDown;
+            }
+
+            else
+            {
+                palms = Formation.none;
+            }
         }
 
         private void WatchPoses()
