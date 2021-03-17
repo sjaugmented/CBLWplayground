@@ -59,9 +59,10 @@ namespace LW.Runic
 
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/" + spinCode, SpinRune);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/" + sparkleCode, Sparkle);
-            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(SpinRune);
+            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(Sparkle);
 
-            Debug.Log(addressBasic1 + "/" + spinCode);
+            //SendOSCMessage(addressBasic1 + "/" + spinCode);
+            //SendOSCMessage(addressBasic1 + "/" + sparkleCode);
 
             defaultOSCValue = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().DefaultOSCValue;
 

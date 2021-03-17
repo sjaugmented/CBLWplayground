@@ -175,8 +175,6 @@ namespace LW.Core {
         {
             float palmToPalm = Vector3.Angle(rtPalm.Up, ltPalm.Up);
 
-            Debug.Log(staffUp);
-            
             if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalm == Direction.up && leftPalm == Direction.down) || (rightPalm == Direction.down && leftPalm == Direction.up)))) 
             { 
                 palms = Formation.none; 
