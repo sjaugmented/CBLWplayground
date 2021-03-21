@@ -175,12 +175,12 @@ namespace LW.Core {
         {
             float palmToPalm = Vector3.Angle(rtPalm.Up, ltPalm.Up);
 
-            if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalm == Direction.up && leftPalm == Direction.down) || (rightPalm == Direction.down && leftPalm == Direction.up)))) 
-            { 
-                palms = Formation.none; 
-            }
+            //if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalm == Direction.up && leftPalm == Direction.down) || (rightPalm == Direction.down && leftPalm == Direction.up)))) 
+            //{ 
+            //    palms = Formation.none; 
+            //}
 
-            else if (IsPosed(palmToPalm, 180)) {
+            if (IsPosed(palmToPalm, 180)) {
                 palms = Formation.together;
             }
 
