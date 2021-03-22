@@ -7,11 +7,11 @@ namespace LW.Core {
     public enum Hands {right, left, both, none}
     public enum Direction {up, down, palmOut, palmIn, side, none};
     public enum Formation {palmsIn, palmsOut, together, palmsUp, palmsDown, none}
-    public enum HandPose {pointer, peace, flat, fist, gun, rockOn, any, none}
+    public enum HandPose {pointer, peace, flat, fist, gun, thumbsUp, rockOn, any, none}
 
     public class NewTracking : MonoBehaviour
     {
-        [SerializeField] float marginOfError = 40;
+        [SerializeField] float strictMargin = 20;
         [SerializeField] bool printAngles = true;
 
         public Hands handedness = Hands.none;
@@ -29,7 +29,7 @@ namespace LW.Core {
         
         Vector3 staff;
         float staffForward, staffUp, staffRight, staffFloorUp, staffFloorForward;
-        float rtPalmForward, rtPalmUp, rtPalmIn, rtLauncher, ltPalmForward, ltPalmUp, ltPalmIn, ltLauncher;
+        float rtPalmForward, rtPalmUpRelative, rtPalmUpAbsolute, rtPalmIn, rtLauncher, ltPalmForward, ltPalmUpRelative, ltPalmUpAbsolute, ltPalmIn, ltLauncher;
         
         #region Getters
         public MixedRealityPose GetRtPalm { get { return rtPalm; } }
@@ -107,12 +107,14 @@ namespace LW.Core {
         private void WatchPalmDirections() 
         {
             rtPalmForward = Vector3.Angle(rtPalm.Up, cam.forward);
-            rtPalmUp = Vector3.Angle(rtPalm.Up, floor.up);
+            rtPalmUpRelative = Vector3.Angle(rtPalm.Up, cam.up);
+            rtPalmUpAbsolute = Vector3.Angle(rtPalm.Up, floor.up);
             rtPalmIn = Vector3.Angle(rtPalm.Up, cam.right);
             rtLauncher = Vector3.Angle(rtPalm.Right, cam.up); // TODO move launchers off of NewTracker
 
             ltPalmForward = Vector3.Angle(ltPalm.Up, cam.forward);
-            ltPalmUp = Vector3.Angle(ltPalm.Up, floor.up);
+            ltPalmUpRelative = Vector3.Angle(ltPalm.Up, cam.up);
+            ltPalmUpAbsolute = Vector3.Angle(ltPalm.Up, floor.up);
             ltPalmIn = Vector3.Angle(ltPalm.Up, cam.right * -1); // inverted for symmetry
             ltLauncher = Vector3.Angle(ltPalm.Right, cam.up);
 
@@ -137,17 +139,18 @@ namespace LW.Core {
                 leftPalm = Direction.palmOut;
             }
             
-            if (IsPosed(rtPalmUp, 0)) {
+
+            if (IsPosed(rtPalmUpRelative, 0)) {
                 rightPalm = Direction.down;
             }
-            if (IsPosed(ltPalmUp, 0)) {
+            if (IsPosed(ltPalmUpRelative, 0)) {
                 leftPalm = Direction.down;
             }
             
-            if (IsPosed(rtPalmUp, 180)) {
+            if (IsPosed(rtPalmUpRelative, 180)) {
                 rightPalm = Direction.up;
             }
-            if (IsPosed(ltPalmUp, 180)) {
+            if (IsPosed(ltPalmUpRelative, 180)) {
                 leftPalm = Direction.up;
             }
 
@@ -175,12 +178,12 @@ namespace LW.Core {
         {
             float palmToPalm = Vector3.Angle(rtPalm.Up, ltPalm.Up);
 
-            //if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalm == Direction.up && leftPalm == Direction.down) || (rightPalm == Direction.down && leftPalm == Direction.up)))) 
-            //{ 
-            //    palms = Formation.none; 
-            //}
+            if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalm == Direction.up && leftPalm == Direction.down) || (rightPalm == Direction.down && leftPalm == Direction.up))))
+            {
+                palms = Formation.none;
+            }
 
-            if (IsPosed(palmToPalm, 180)) {
+            else if (IsPosed(palmToPalm, 180)) {
                 palms = Formation.together;
             }
 
@@ -222,8 +225,13 @@ namespace LW.Core {
             float ltThumbOut = Vector3.Angle(ltThumb.Forward, ltPalm.Right);
             #endregion
 
+            // RIGHT
             if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.fist;
+            }
+            else if (IsPosed(rtIndForward, 140) && IsPosed(rtMidForward, 140) && (IsPosed(rtThumbOut, 30) || IsPosed(rtThumbOut, 50)))
+            {
+                rightPose = HandPose.thumbsUp;
             }
             else if (IsPosed(rtIndForward, 0) && IsPosed(rtMidForward, 0) && IsPosed(rtPinkyForward, 0) && IsPosed(rtThumbOut, 30)) {
                 rightPose = HandPose.flat;
@@ -233,15 +241,20 @@ namespace LW.Core {
             }
             else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && IsPosed(rtPinkyForward, 0))
             {
-                rightPose = HandPose.rockOn;                          
+                //rightPose = HandPose.rockOn;                          
             }
             else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.pointer;
             }
             else { rightPose = HandPose.any; }
             
+            // LEFT
             if (IsPosed(ltIndForward, 140) && IsPosed(ltMidForward, 140) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.fist;
+            }
+            else if (IsPosed(ltIndForward, 125) && IsPosed(ltMidForward, 100) && (IsPosed(ltThumbOut, 30) || IsPosed(ltThumbOut, 50)))
+            {
+                leftPose = HandPose.thumbsUp;
             }
             else if (IsPosed(ltIndForward, 0) && IsPosed(ltMidForward, 0) && IsPosed(ltPinkyForward, 0) && IsPosed(ltThumbOut, 30)) {
                 leftPose = HandPose.flat;
@@ -251,7 +264,7 @@ namespace LW.Core {
             }
             else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0) || IsPosed(ltMidForward, 180)) && IsPosed(ltPinkyForward, 0))
             {
-                leftPose = HandPose.rockOn;
+                //leftPose = HandPose.rockOn;
             }
             else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.pointer;
@@ -260,19 +273,19 @@ namespace LW.Core {
 
             #region Debug land - TODO remove
             if (printAngles) {
-                //Debug.Log("rtIndexForward: " + rtIndForward);
-                //Debug.Log("rtMiddleForward: " + rtMidForward);
-                Debug.Log("rtPinkyForward: " + rtPinkyForward);
-                //Debug.Log("rtThumbOut: " + rtThumbOut);
-                //Debug.Log("ltIndexForward: " + ltIndForward);
-                //Debug.Log("ltMiddleForward: " + ltMidForward);
-                Debug.Log("ltPinkyForward: " + ltPinkyForward);
-                //Debug.Log("ltThumbOut: " + ltThumbOut);
+                Debug.Log("rtIndexForward: " + rtIndForward);
+                Debug.Log("rtMiddleForward: " + rtMidForward);
+                //Debug.Log("rtPinkyForward: " + rtPinkyForward);
+                Debug.Log("rtThumbOut: " + rtThumbOut);
+                Debug.Log("ltIndexForward: " + ltIndForward);
+                Debug.Log("ltMiddleForward: " + ltMidForward);
+                //Debug.Log("ltPinkyForward: " + ltPinkyForward);
+                Debug.Log("ltThumbOut: " + ltThumbOut);
             }
             #endregion
         }
 
-        public bool IsPosed(float pose, float target)
+        public bool IsPosed(float pose, float target, float marginOfError = 40)
         {
             return (pose < target + marginOfError && pose > target - marginOfError);
         }

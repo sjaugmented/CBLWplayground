@@ -10,14 +10,17 @@ namespace LW.Ball{
     {
         [SerializeField] string killCode;
         [SerializeField] string glitterCode;
+        //[SerializeField] AudioSource ballAmbience;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
+        [SerializeField] AudioClip bounceFX;
         [SerializeField] float destroyDelay = 0.5f;
         // [SerializeField] float stopRange = 0.06f;
         [SerializeField] float bounceForce = 1;
         [SerializeField] float touchFrequency = 1;
         [SerializeField] float forceMult = 10000;
         [SerializeField] float killForce = 1000;
+        [SerializeField] float bounce = 10;
 
         public float distanceToRtHand, distanceToLtHand;
 
@@ -59,24 +62,55 @@ namespace LW.Ball{
             
             distanceToRtHand = Vector3.Distance(transform.position, tracking.GetRtPalm.Position);
             distanceToLtHand = Vector3.Distance(transform.position, tracking.GetLtPalm.Position);
+            
+            ParticleSystem particles = GetComponentInChildren<ParticleSystem>();
+            Light light = GetComponentInChildren<Light>();
+            var main = particles.main;
+            var emission = particles.emission;
+            main.startLifetime = caster.Held ? 3 : 1.15f;
+            main.startSpeed = caster.Held ? 1f : 0.25f;
+            emission.enabled = !caster.Frozen;
+            light.enabled = !caster.Frozen;
 
             if (alive)
             {
-                ParticleSystem particles = GetComponentInChildren<ParticleSystem>();
-                var main = particles.main;
                 main.startColor = Color.HSVToRGB(hueVal, 1, 1);
-
-                Light light = GetComponentInChildren<Light>();
                 light.color = Color.HSVToRGB(hueVal, 1, 1);
 
             }
+
+            if (caster.Frozen)
+            {
+                SendOSC("frozen");
+            }
+
+            //if (caster.Frozen && ballAmbience.isPlaying)
+            //{
+            //    ballAmbience.Stop();
+            //}
+
+            //if (!caster.Frozen && !ballAmbience.isPlaying)
+            //{
+            //    ballAmbience.Play();
+            //}
         }
 
         private void OnCollisionEnter(Collision other) {
             float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
             Debug.Log("FORCE>>>>" + collisionForce);
 
-            if (other.gameObject.CompareTag("Player") || other.gameObject.CompareTag("ForceField"))
+            Vector3 dir = other.contacts[0].point - transform.position;
+            dir = -dir.normalized;
+
+            var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
+            GetComponent<Rigidbody>().AddForce(dir * force * bounce);
+
+            if (!GetComponent<AudioSource>().isPlaying)
+            {
+                GetComponent<AudioSource>().PlayOneShot(bounceFX);
+            }
+
+            if (other.gameObject.CompareTag("Player"))
             {
                 if (other.gameObject.CompareTag("Player")) {
                     if (!touchToggled)

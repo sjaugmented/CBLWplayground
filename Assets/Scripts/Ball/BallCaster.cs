@@ -8,7 +8,8 @@ namespace LW.Ball
 {
     public class BallCaster : MonoBehaviour
     {
-        [SerializeField] GameObject forceField;
+        [SerializeField] AudioSource forceFX;
+        [SerializeField] AudioClip freezeFX;
         [SerializeField] GameObject ballPrefab;
         [SerializeField] float zOffset = 0.1f;
         [SerializeField] float holdDistance = 0.5f;
@@ -17,6 +18,7 @@ namespace LW.Ball
         [SerializeField] float liftMultiplier = 3;
         public bool Ball { get; set; }
         public bool Held { get; set; }
+        public bool Frozen { get; set; }
 
         bool conjureReady, destroyReady = false;
         float conjureTimer, destroyTimer = Mathf.Infinity;
@@ -29,6 +31,7 @@ namespace LW.Ball
         private bool rightFisted;
         private bool dualFisted;
         bool hasBoosted = false;
+        bool frozenTriggered = false;
 
         void Start()
         {
@@ -77,6 +80,9 @@ namespace LW.Ball
             {
                 if (!ballInstance) { return; }
 
+                ballInstance.GetComponent<Rigidbody>().useGravity = !Held && !Frozen;
+                ballInstance.GetComponent<ConstantForce>().enabled = !Held && !Frozen;
+                
                 if (tracking.rightPose == HandPose.flat && tracking.rightPalm == Direction.palmIn)
                 {
                     if (!destroyReady)
@@ -100,8 +106,8 @@ namespace LW.Ball
                 // catch, manipulate, throw
                 if (tracking.palms == Formation.together && origins.PalmsDist < holdDistance)
                 {
-                    ballInstance.GetComponent<Rigidbody>().useGravity = false;
-                    ballInstance.GetComponent<ConstantForce>().enabled = false;
+                    Held = true;
+                    ballInstance.GetComponent<Ball>().SendOSC("holding");
 
                     // prox floats
                     if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
@@ -162,15 +168,38 @@ namespace LW.Ball
                             dualFisted = false;
                         }
                     }
+
+                    if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
+                    {
+                        if (!frozenTriggered)
+                        {
+                            Frozen = !Frozen;
+
+                            if(!Frozen && !GetComponent<AudioSource>().isPlaying)
+                            {
+                                GetComponent<AudioSource>().PlayOneShot(freezeFX);
+                            }
+
+                            frozenTriggered = true;
+                        }
+                    }
+                    if (tracking.rightPose != HandPose.thumbsUp && tracking.leftPose != HandPose.thumbsUp)
+                    {
+                        frozenTriggered = false;
+                        //if (!GetComponent<AudioSource>().isPlaying)
+                        //{
+                        //    GetComponent<AudioSource>().PlayOneShot(freezeFX);
+                        //}
+                    }
                 }
                 else {
-                    ballInstance.GetComponent<Rigidbody>().useGravity = true;
-                    ballInstance.GetComponent<ConstantForce>().enabled = true;
+                    Held = false;
                 }
 
                 // boosting
                 if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
+                    Held = true;
                     if (!hasBoosted)
                     {
                         ballInstance.GetComponent<Ball>().WorldLevel++;
@@ -180,27 +209,45 @@ namespace LW.Ball
                     }
                     ballInstance.transform.LookAt(2 * ballInstance.transform.position - Camera.main.transform.position);
                     ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * (origins.PalmsDist / holdDistance * boostMultiplier));
+
+                    forceFX.Play();
                 }
-                else { hasBoosted = false; }
+                else { 
+                    hasBoosted = false;
+                    forceFX.Stop();
+                }
 
                 // summoning
                 if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
                     ballInstance.transform.LookAt(Camera.main.transform.position);
                     ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * (origins.PalmsDist / holdDistance * summonMultiplier));
+
+                    forceFX.Play();
+                }
+                else { 
+                    forceFX.Stop();  
                 }
 
                 // lift
-                if (tracking.palms == Formation.palmsUp && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                if (tracking.palms == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
                 {
                     ballInstance.transform.rotation = new Quaternion(0, 0, 0, 0);
                     ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.up * (origins.PalmsDist / holdDistance * liftMultiplier));
+
+                    forceFX.Play();
+                }
+                else
+                {
+                    forceFX.Stop();
                 }
             }
         }
 
         private void ConjureBall()
         {
+            Frozen = false;
+            Held = false;
             Ball = true;
             Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
             ballInstance = Instantiate(ballPrefab, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
