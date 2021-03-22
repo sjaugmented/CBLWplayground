@@ -39,15 +39,15 @@ namespace LW.SlingShot
 
         void OnTriggerEnter(Collider other)
         {
-            Debug.Log("collision with " + other.name);
+            Debug.Log("collision with " + other.name); // TODO remove
             
             if (other.gameObject.CompareTag("Light"))
 			{
                 Material lightMaterial = other.gameObject.GetComponentInChildren<Renderer>().material;
                 lightMaterial.color = GetComponent<PebbleColor>().StoredColor;
 
-                other.GetComponent<LightHolo>().ChangeDMXLight(hue, sat, val);
-                other.GetComponent<LightHolo>().ChangeOSCLight(hue, sat, val);
+                other.GetComponent<LightHolo>().ChangeDMX(hue, sat, val);
+                other.GetComponent<LightHolo>().ChangeOSC(hue, sat, val);
 			}
         }
     }

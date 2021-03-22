@@ -11,8 +11,8 @@ namespace LW.SlingShot
 		[SerializeField] float maxHandDist = 0.5f;
 		[SerializeField] bool devMode = false;
 		[Range(100, 500)] public float force;
-		
-		HandTracking hands;
+
+		NewTracking tracking;
 		private CastOrigins castOrigins;
 		public bool holoOut = false;
 		public bool lassoPrimed = false;
@@ -21,25 +21,27 @@ namespace LW.SlingShot
 
 		void Start()
 		{
-			hands = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 			castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+
+			Physics.IgnoreLayerCollision(0, 31);
 		}
 
 	    void Update()
 	    {
 		    //currentPos = transform.position;
 		    
-		    if (hands.palmsOut && hands.rightOpen && hands.leftOpen && !holoOut)
+		    if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat && !holoOut)
 		    {
 			    ThrowHolo();
 		    }
 
-		    if (hands.palmsIn && !hands.rightFist && !hands.leftFist)
+		    if (tracking.palms == Formation.palmsIn && tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
 		    {
 			    lassoPrimed = true;
 		    }
 
-		    if (lassoPrimed && hands.rightFist && hands.leftFist)
+		    if (lassoPrimed && tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
 		    {
 			    recall = true;
 			    lassoPrimed = false;
@@ -95,8 +97,8 @@ namespace LW.SlingShot
 
 	    private void ThrowHolo()
 	    {
-			Vector3 castOrigin = Vector3.Lerp(hands.rightPalm.Position, hands.leftPalm.Position, 0.5f);
-		    Quaternion castRotation = Quaternion.Slerp(hands.rightPalm.Rotation, hands.leftPalm.Rotation, 0.5f) *
+			Vector3 castOrigin = Vector3.Lerp(tracking.GetRtPalm.Position, tracking.GetLtPalm.Position, 0.5f);
+		    Quaternion castRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f) *
 		                              Quaternion.Euler(60, 0, 0);
 		    transform.position = castOrigin;
 		    transform.rotation = castRotation;
@@ -116,7 +118,7 @@ namespace LW.SlingShot
 			{
 				transform.position = castOrigin;
 				transform.rotation = castRotation;
-				force = (1 - (castOrigins.palmDist / maxHandDist)) * 750;
+				force = (1 - (castOrigins.PalmsDist / maxHandDist)) * 750;
 			}
 
 			GetComponent<Rigidbody>().AddForce(transform.forward * Mathf.Clamp(force, 100, 500));
@@ -129,6 +131,11 @@ namespace LW.SlingShot
 		    yield return new WaitForSeconds(1);
 		    GetComponent<Collider>().enabled = true;
 	    }
-	}
+
+        private void OnCollisionEnter(Collision collision)
+        {
+			Debug.Log("collided with " + collision.gameObject.layer);
+        }
+    }
 	
 }

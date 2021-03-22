@@ -39,7 +39,7 @@ public class OrbCastController : MonoBehaviour
     Rigidbody rigidBody;
     DMXcontroller dmx;
     OSC osc;
-    Collider collider;
+    Collider thisCollider;
     EyeTrackingTarget eyeTracking;
 
     public string GetMessageOSC()
@@ -53,7 +53,7 @@ public class OrbCastController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         dmx = FindObjectOfType<DMXcontroller>();
         osc = FindObjectOfType<OSC>();
-        collider = GetComponent<SphereCollider>();
+        thisCollider = GetComponent<SphereCollider>();
         eyeTracking = GetComponent<EyeTrackingTarget>();
         eyeTracking.enabled = false;
 

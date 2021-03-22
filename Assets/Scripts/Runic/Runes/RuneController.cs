@@ -12,6 +12,11 @@ namespace LW.Runic
         [SerializeField] AudioClip doubleTouchFX;
         [SerializeField] ParticleSystem particles;
         [SerializeField] NodeCompass nodeRing;
+
+        [SerializeField] string spinCode;
+        [SerializeField] string sparkleCode;
+        [SerializeField] float spinRate = 0.1f; // TODO make private
+        
         bool oscTest = false;
 
         public float force = 1;
@@ -20,7 +25,6 @@ namespace LW.Runic
         public string addressNode1;
         public string addressNode2;
         
-        Material runeMaterial;
         public Material RuneMaterial
 		{
             get { return runeMaterial; }
@@ -29,6 +33,7 @@ namespace LW.Runic
         bool isTouched = false;
 
         bool manipulated = false;
+        bool spinning = false;
         public bool Manipulated
 		{
             get { return manipulated; }
@@ -38,25 +43,26 @@ namespace LW.Runic
         int siblingIndex;
         float defaultOSCValue;
 
-        Renderer renderer;
+        NewTracking tracking;
         RunicDirector director;
-        HandTracking handtracking;
-        EmissionModule emission;
+        Material runeMaterial;
+        Renderer thisRenderer;
 
         void Start()
         {
-            renderer = GetComponentInChildren<Renderer>();
+            thisRenderer = GetComponentInChildren<Renderer>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 
 			GetComponent<Rigidbody>().AddForce(transform.forward * force);
             GetComponent<AudioSource>().PlayOneShot(castFX);
 
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/receive", OnReceiveOSC);
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(OnReceiveOSC);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/" + spinCode, SpinRune);
+            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(addressBasic1 + "/" + sparkleCode, Sparkle);
+            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(Sparkle);
 
-            emission = particles.emission;
-            emission.enabled = false;
+            //SendOSCMessage(addressBasic1 + "/" + spinCode);
+            //SendOSCMessage(addressBasic1 + "/" + sparkleCode);
 
             defaultOSCValue = GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().DefaultOSCValue;
 
@@ -77,18 +83,38 @@ namespace LW.Runic
 
 			if (isTouched)
             {
-                renderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
+                thisRenderer.material.color = Color.HSVToRGB(0, 0, 0.2f);
             }
             else
 			{
-                renderer.material = runeMaterial;
+                thisRenderer.material = runeMaterial;
 			}
 
 			if (oscTest) StartCoroutine("PlayParticles");
 
             // ordered within Rune Grid for better gathering
             transform.SetSiblingIndex(siblingIndex);
+
+            if (spinning) { transform.Rotate(0, spinRate, 0); }
         }
+
+        void SpinRune(OscMessage message)
+        {
+            spinning = !spinning;
+            Debug.Log("spinning = " + spinning);
+        }
+
+        void Sparkle(OscMessage message)
+        {
+            GetComponentInChildren<ParticleSystem>().Play();
+        }
+
+        //IEnumerator Sparkle()
+        //{
+        //    // something
+        //    GetComponentInChildren<ParticleSystem>().Play();
+        //    yield return new WaitForSeconds(0.2f);
+        //}
 
         private void SetMaterialOpacity(float v)
 		{
@@ -118,8 +144,6 @@ namespace LW.Runic
             addressNode2 = idString + name + "-D";
             
             runeMaterial = material;
-            MainModule particlesMain = particles.main;
-            particlesMain.startColor = runeMaterial.color;
 
             gameObject.name = runeID + name;
 
@@ -134,7 +158,7 @@ namespace LW.Runic
 			{
                 nodeRing.ActivateNodeRing();
 
-                if (!handtracking.rightPeace && !handtracking.leftPeace)
+                if (tracking.rightPose != HandPose.peace && tracking.leftPose != HandPose.peace)
                 {
                     isTouched = true;
                     //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
@@ -149,7 +173,7 @@ namespace LW.Runic
             }
             else
 			{
-                if (!handtracking.rightPeace && !handtracking.leftPeace)
+                if (tracking.rightPose != HandPose.peace && tracking.leftPose != HandPose.peace)
                 {
                     isTouched = true;
 				    //GetComponent<AudioSource>().PlayOneShot(singleTouchFX);
@@ -221,15 +245,7 @@ namespace LW.Runic
             yield return new WaitForSeconds(0.2f);
             isTouched = false;
 		}
-
-        private IEnumerator PlayParticles()
-        {
-            Debug.Log("pulsing");
-            emission.enabled = true;
-            yield return new WaitForSeconds(0.3f);
-            emission.enabled = false;
-        }
-
+        
         public void Manipulating()
 		{
             manipulated = true;

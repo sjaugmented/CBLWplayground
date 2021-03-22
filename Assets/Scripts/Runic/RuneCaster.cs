@@ -45,25 +45,26 @@ namespace LW.Runic
         bool readyToGather = false;
 
         bool manipulating = false;
+
         public bool Manipulating
         {
             get { return manipulating; }
             set { manipulating = value; }
         }
 
-        HandTracking handtracking;
+        NewTracking tracking;
         CastOrigins castOrigins;
         RunicDirector director;
         RuneBelt runeBelt;
-        AudioSource audio;
+        AudioSource audioSource;
 
         private void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             castOrigins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeBelt = GetComponent<RuneBelt>();
-            audio = GetComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
 
             runeBelt.ResetAllRuneAmmo(runeMaterials.Count);
             masterRune.SetActive(false);
@@ -107,7 +108,7 @@ namespace LW.Runic
             if (proximitySensor > 0.1f && !Manipulating)
 			{
                 ////// Set Rune Type
-                if (handtracking.palmsOpposed && handtracking.rightFist && handtracking.leftFist)
+                if (tracking.palms == Formation.together && tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
                     masterRune.SetActive(true);
                     SelectRuneType();
@@ -115,7 +116,7 @@ namespace LW.Runic
                 else masterRune.SetActive(false);
 
                 ////// Casting
-                if (handtracking.palmsOut && handtracking.rightOpen && handtracking.leftOpen)
+                if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
                     CastRune();
                 }
@@ -129,7 +130,7 @@ namespace LW.Runic
             #region Gather & Reset - activates Build Mode (!!Build mode deprecated for now!!)
             ////// Gather Runes
             // prime the gather runes method
-            if (!handtracking.twoHands && handtracking.rightRockOn)
+            if ((tracking.handedness == Hands.right || tracking.handedness == Hands.both) && tracking.rightPose == HandPose.rockOn)
             {
                 if (!readyToGather)
                 {
@@ -140,7 +141,7 @@ namespace LW.Runic
             else { readyToGather = false; }
 
             // trigger the gather runes method
-            if (resetTimer < 2 && !handtracking.twoHands && handtracking.rightFist)
+            if (resetTimer < 2 && (tracking.handedness == Hands.right || tracking.handedness == Hands.both) && tracking.rightPose == HandPose.fist)
             {
                 GatherRunes();
                 //director.currentMode = RunicDirector.Mode.Build;
@@ -148,22 +149,22 @@ namespace LW.Runic
             }
 
             ////// Reset Interface
-            if (handtracking.palmsIn && handtracking.rightFist && handtracking.leftFist)
+            if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
             {
                 Reset();
                 //director.currentMode = RunicDirector.Mode.Build;
             }
 			#endregion
+
 		}
 
 		private void SelectRuneType()
 		{
-            float staffAng = handtracking.GetStaffForCamUp;            
             float slotSize = 180 / runeBelt.GetRuneSlots(); // size of selectable area based on number of Rune Types
 
             for (int i = 0; i < runeBelt.GetRuneSlots(); i++)
 			{
-                if (staffAng < (180 - slotSize * i) && staffAng > (180 - slotSize * (i+1)))
+                if (tracking.StaffUp < (180 - slotSize * i) && tracking.StaffUp > (180 - slotSize * (i+1)))
 				{
                     runeTypeIndex = i;
 				}
@@ -175,17 +176,13 @@ namespace LW.Runic
 			}
             masterRune.transform.GetChild(runeTypeIndex).gameObject.SetActive(true);
 
-            masterRune.transform.position = castOrigins.midpointhandtracking;
+            masterRune.transform.position = castOrigins.PalmsMidpoint;
             masterRune.transform.LookAt(Camera.main.transform);
+
 		}
 
 		private void CastRune()
         {
-            Vector3 castOrigin = Vector3.Lerp(handtracking.rightPalm.Position, handtracking.leftPalm.Position, 0.5f);
-            
-            // rotational offset - so casts go OUT instead of UP along the hand.Z axis
-            Quaternion castRotation = Quaternion.Slerp(handtracking.rightPalm.Rotation, handtracking.leftPalm.Rotation, 0.5f) * Quaternion.Euler(60, 0, 0); 
-
             if (timeSinceLastCast >= castDelay && runeBelt.GetCurrentRuneAmmo(runeType) > 0)
             {
                 timeSinceLastCast = 0;
@@ -199,7 +196,7 @@ namespace LW.Runic
                 }
                 else
                 {
-                    rune = Instantiate(runePrefab, castOrigin, castRotation);
+                    rune = Instantiate(runePrefab, castOrigins.PalmsMidpoint, castOrigins.CastRotation);
                 }
 
                 runeMaterialIndex = runeMaterials.Count - runeBelt.GetCurrentRuneAmmo(runeType);
@@ -208,7 +205,7 @@ namespace LW.Runic
                 RuneController currentRune = rune.GetComponent<RuneController>();
                 currentRune.SetRuneAddressAndMaterial(runeID, runeMaterials[runeMaterialIndex]);
 
-                float spellForce = (1 - (castOrigins.palmDist / maxPalmDist)) * 50;
+                float spellForce = (1 - (castOrigins.PalmsDist / maxPalmDist)) * 50;
                 if (spellForce < 7.5f) spellForce = 7.5f;
                 if (devMode) currentRune.force = force;
                 else currentRune.force = spellForce;
@@ -221,7 +218,7 @@ namespace LW.Runic
 
         private void GatherRunes()
 		{
-            if (!audio.isPlaying) audio.PlayOneShot(gatherFX);
+            if (!audioSource.isPlaying) audioSource.PlayOneShot(gatherFX);
             RuneGrid grid = FindObjectOfType<RuneGrid>();
             grid.UpdateCollection();
             grid.PositionGrid();
@@ -231,9 +228,9 @@ namespace LW.Runic
         {
             if (liveRunes.Count == 0) return;
             
-            if (!audio.isPlaying)
+            if (!audioSource.isPlaying)
             {
-                audio.PlayOneShot(resetFX);
+                audioSource.PlayOneShot(resetFX);
             }
 
             // clear all runes

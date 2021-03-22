@@ -7,19 +7,19 @@ namespace LW.SlingShot
 {
     public class Sights : MonoBehaviour
     {
-        HandTracking handtracking;
+        NewTracking tracking;
 
         public Vector3 rightSight, leftSight;
 
         void Start()
         {
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
         }
 
         void Update()
         {
-            rightSight = Vector3.Lerp(handtracking.rtIndexTip.Position, handtracking.rtMiddleTip.Position, 0.5f);
-            leftSight = Vector3.Lerp(handtracking.ltIndexTip.Position, handtracking.ltMiddleTip.Position, 0.5f);
+            rightSight = Vector3.Lerp(tracking.GetRtIndex.Position, tracking.GetRtMiddle.Position, 0.5f);
+            leftSight = Vector3.Lerp(tracking.GetLtIndex.Position, tracking.GetLtMiddle.Position, 0.5f);
         }
 
         public Vector3 GetRightSight()
