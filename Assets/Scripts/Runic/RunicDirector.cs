@@ -33,11 +33,11 @@ namespace LW.Runic
 		public bool Node { get; set; }
 		public bool Gaze { get; set; }
 
-		HandTracking handtracking;
+		NewTracking tracking;
         
         void Start()
 		{
-			handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 			
 			rightHand.Add(rightPointer);
 			rightHand.Add(rightToggle);
@@ -68,10 +68,10 @@ namespace LW.Runic
 
 		void Update()
         {
-			if (handtracking.rightHand) SetRightHand(true);
+			if (tracking.FoundRightHand) SetRightHand(true);
 			else SetRightHand(false);
 
-			if (handtracking.leftHand) SetLeftHand(true);
+			if (tracking.FoundLeftHand) SetLeftHand(true);
 			else SetLeftHand(false);
 
 			if (Gaze) gazeHud.SetActive(true);

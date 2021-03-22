@@ -313,7 +313,7 @@ namespace LW.Core
             DMXChannels dmxChan = FindObjectOfType<DMXChannels>();
 
             int dimmerChan = 0;
-            int kelvinChan = 1;
+            // int kelvinChan = 1;
             int xOverChan = 3;
 
             dmx.ResetDMX();

@@ -10,6 +10,8 @@ using UnityEngine;
 public class LightHolo : MonoBehaviour
 {
     [SerializeField] GameObject liveHUD;
+
+    public bool LookedAt { get; set; }
     
     DMXcontroller dmx;
     DMXChannels channels;
@@ -32,6 +34,10 @@ public class LightHolo : MonoBehaviour
 
     void Update()
 	{
+        if (LookedAt) {
+            transform.Rotate(0.1f, 1, 0.1f);
+        }
+
         if (Live)
 		{
             liveHUD.SetActive(true);
@@ -40,18 +46,16 @@ public class LightHolo : MonoBehaviour
             liveHUD.SetActive(false);
 		}
         
-        if (Live && !director.HandPicker)
+        if (Live && !director.SlingShot)
 		{
             Material holoMat = GetComponentInChildren<LightHoloRendererID>().gameObject.GetComponent<Renderer>().material;
             holoMat.color = colorPicker.LiveColor;
             holoMat.SetColor("_EmissionColor", colorPicker.LiveColor);
-            float hue;
-            float sat;
-            float dim;
+            float hue, sat, dim;
             Color.RGBToHSV(colorPicker.LiveColor, out hue, out sat, out dim);
 
-            ChangeDMXLight(hue, sat, dim);
-            ChangeOSCLight(hue, sat, dim);
+            ChangeDMX(hue, sat, dim);
+            ChangeOSC(hue, sat, dim);
 		}
 
         if (Input.GetKeyDown(KeyCode.X))
@@ -60,14 +64,14 @@ public class LightHolo : MonoBehaviour
 		}
 	}
 
-	public void ChangeDMXLight(float hue, float sat, float dim)
+	public void ChangeDMX(float hue, float sat, float dim)
 	{
         dmx.SetAddress(channels.hsiHue, Mathf.RoundToInt(hue * 255));
         dmx.SetAddress(channels.hsiSat, Mathf.RoundToInt(sat * 255));
         dmx.SetAddress(channels.hsiDimmer, Mathf.RoundToInt(dim * 255));
 	}
 
-	public void ChangeOSCLight(float hue, float sat, float dim)
+	public void ChangeOSC(float hue, float sat, float dim)
 	{
 		List<float> vals = new List<float>
 		{
@@ -101,11 +105,6 @@ public class LightHolo : MonoBehaviour
 	public void TargetSelected()
 	{
         Live = !Live;
-	}
-
-    public void LookedAt()
-	{
-		transform.Rotate(0.1f, 1, 0.1f);
 	}
 
     public bool Manipulated {get; set;}

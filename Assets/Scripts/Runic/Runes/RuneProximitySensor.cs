@@ -15,7 +15,7 @@ namespace LW.Runic
 
         RunicDirector director;
         RuneController runeController;
-        HandTracking handtracking;
+        NewTracking tracking;
 
         bool leftFisted = false;
         bool rightFisted = false;
@@ -27,7 +27,7 @@ namespace LW.Runic
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<RunicDirector>();
             runeController = GetComponent<RuneController>();
-            handtracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<HandTracking>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             proximityBubble.localScale = new Vector3(bubbleScale, bubbleScale, bubbleScale);
         }
 
@@ -41,20 +41,20 @@ namespace LW.Runic
             {
                 GameObject.FindGameObjectWithTag("Caster").GetComponent<RuneCaster>().TriggerProximitySensor();
 
-                if (handtracking.twoHands)
+                if (tracking.handedness == Hands.both)
                 {
                     ActivateProximityBubble();
 
-                    if (bubbleScale > effectiveBubbleScale) // if bubble is visible -ish
+                    if (bubbleScale > effectiveBubbleScale) // ie, if bubble is visible -ish
                     {
-                        if (!handtracking.rightFist && handtracking.leftFist)
+                        if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
                         {
                             if (!leftFisted)
 							{
                                 runeController.SendOSCMessage("leftFistOn");
                                 leftFisted = true;
                             }
-							runeController.SendOSCMessage(runeController.addressBasic1 + "/leftProximityAngle", 1 - handtracking.GetStaffForCamUp / 180);
+							runeController.SendOSCMessage(runeController.addressBasic1 + "/leftProximityAngle", 1 - tracking.StaffUp / 180);
 							runeController.SendOSCMessage(runeController.addressBasic1 + "/leftProximityDistance", bubbleScale.Remap(1, effectiveBubbleScale, 1, 0));
                         }
                         else
@@ -66,14 +66,14 @@ namespace LW.Runic
                             }
 						}
 
-                        if (handtracking.rightFist && !handtracking.leftFist)
+                        if (tracking.rightPose == HandPose.fist && tracking.leftPose != HandPose.fist)
                         {
                             if (!rightFisted)
                             {
                                 runeController.SendOSCMessage("rightFistOn");
                                 rightFisted = true;
                             }
-							runeController.SendOSCMessage(runeController.addressBasic1 + "/rightProximityAngle", 1 - handtracking.GetStaffForCamUp / 180);
+							runeController.SendOSCMessage(runeController.addressBasic1 + "/rightProximityAngle", 1 - tracking.StaffUp / 180);
 							runeController.SendOSCMessage(runeController.addressBasic1 + "/rightProximityDistance", bubbleScale.Remap(1, effectiveBubbleScale, 1, 0));
                         }
                         else
@@ -85,14 +85,14 @@ namespace LW.Runic
                             }
                         }
 
-                        if (handtracking.rightFist && handtracking.leftFist)
+                        if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                         {
                             if (!dualFisted)
 							{
                                 runeController.SendOSCMessage("dualFistOn");
                                 dualFisted = true;
                             }
-							runeController.SendOSCMessage(runeController.addressBasic1 + "/proximityAngle", 1 - handtracking.GetStaffForCamUp / 180);
+							runeController.SendOSCMessage(runeController.addressBasic1 + "/proximityAngle", 1 - tracking.StaffUp / 180);
 							runeController.SendOSCMessage(runeController.addressBasic1 + "/proximityDistance", bubbleScale.Remap(1, effectiveBubbleScale, 1, 0));
                         }
                         else
@@ -118,7 +118,7 @@ namespace LW.Runic
 
         private void ActivateProximityBubble()
         {
-            float distanceToHand = Vector3.Distance(transform.position, handtracking.rightPalm.Position);
+            float distanceToHand = Vector3.Distance(transform.position, tracking.GetRtPalm.Position);
 
             bubbleScale = Mathf.Clamp(1 - ((distanceToHand - minHandDistance) / maxHandDistance), 0, 1);
             proximityBubble.localScale = new Vector3(bubbleScale, bubbleScale, bubbleScale);

@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Sling Shot.unity
-    guid: 098fe706a4251bd4f96ef6eb9f10e11c
+    path: Assets/Scenes/Runic Menu.unity
+    guid: e57afa9d5f069b642b2062ace8dd7cad
   m_configObjects: {}
