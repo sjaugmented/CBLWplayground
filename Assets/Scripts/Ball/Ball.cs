@@ -14,6 +14,7 @@ namespace LW.Ball{
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] AudioClip bounceFX;
+        [SerializeField] float explosionDelay = 0.5f;
         [SerializeField] float destroyDelay = 0.5f;
         // [SerializeField] float stopRange = 0.06f;
         [SerializeField] float bounceForce = 1;
@@ -36,12 +37,12 @@ namespace LW.Ball{
         NewTracking tracking;
         OSC osc;
         BallCaster caster;
-        ParticleSystem particles;
+        ParticleSystem innerParticles;
 
         void Start()
         {
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
-            particles = GetComponentInChildren<ParticleSystem>();
+            innerParticles = GetComponentInChildren<ParticleSystem>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
@@ -98,6 +99,8 @@ namespace LW.Ball{
         private void OnCollisionEnter(Collision other) {
             float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
             Debug.Log("FORCE>>>>" + collisionForce);
+
+            if (caster.Frozen) { return; }
 
             Vector3 dir = other.contacts[0].point - transform.position;
             dir = -dir.normalized;
@@ -167,27 +170,35 @@ namespace LW.Ball{
         void GlitterBall(OscMessage message)
         {
             SendMessage("GlitterBall");
-            GetComponentInChildren<MeshExploder>().Explode();
+            GetComponentInChildren<FacePlayer>().GetComponent<ParticleSystem>().Play();
         }
 
         IEnumerator DestroySelf() 
         {
             SendOSC("iDead");
             alive = false;
-            var emission = particles.emission;
+            
+            var emission = innerParticles.emission;
             emission.enabled = false;
-            GetComponentInChildren<MeshExploder>().Explode();
+            var deathParticles = GetComponentInChildren<DeathParticles>().GetComponent<ParticleSystem>();
+            var deathMain = deathParticles.main;
+            deathMain.startColor = Color.HSVToRGB(hueVal, 1, 1);
+            deathParticles.Play();
+
+            //GetComponentInChildren<MeshExploder>().Explode();
 
             if (!GetComponent<AudioSource>().isPlaying) {
                 GetComponent<AudioSource>().PlayOneShot(destroyFX);
             }
 
+            yield return new WaitForSeconds(explosionDelay);
+            
             MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
             foreach(MeshRenderer mesh in meshes)
             {
                 mesh.enabled = false;
             }
-
+                       
             yield return new WaitForSeconds(destroyDelay);
             
             caster.Ball = false;

@@ -106,15 +106,8 @@ namespace LW.Runic
 
         void Sparkle(OscMessage message)
         {
-            GetComponentInChildren<ParticleSystem>().Play();
+            GetComponent<ParticleSystem>().Play();
         }
-
-        //IEnumerator Sparkle()
-        //{
-        //    // something
-        //    GetComponentInChildren<ParticleSystem>().Play();
-        //    yield return new WaitForSeconds(0.2f);
-        //}
 
         private void SetMaterialOpacity(float v)
 		{
