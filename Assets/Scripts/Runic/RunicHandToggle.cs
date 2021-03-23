@@ -32,7 +32,7 @@ namespace LW.Runic
         {
             if (leftHand)
 			{
-                if (tracking.leftPose == HandPose.fist)
+                if (tracking.leftPose != HandPose.flat)
 				{
                     if (collider.CompareTag("Right Pointer"))
 					{
@@ -65,7 +65,7 @@ namespace LW.Runic
 
             else
 			{
-                if (tracking.rightPose == HandPose.fist)
+                if (tracking.rightPose != HandPose.flat)
 				{
                     if (collider.CompareTag("Left Pointer"))
 					{

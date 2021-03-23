@@ -25,7 +25,7 @@ namespace LW.Ball{
 
         public float distanceToRtHand, distanceToLtHand;
 
-        public int WorldLevel { get; set; }
+        //public int WorldLevel { get; set; }
         public int TouchLevel { get; set; }
 
         float touchTimer = Mathf.Infinity;
@@ -53,7 +53,7 @@ namespace LW.Ball{
 
             SendOSC("iAM!");
 
-            WorldLevel = 1;
+            //WorldLevel = 1;
             TouchLevel = 0;
         }
 
@@ -154,7 +154,7 @@ namespace LW.Ball{
 
         public void SendOSC(string address, float val = 1) {
             OscMessage message = new OscMessage();
-            message.address = WorldLevel + "/" + address + "/";
+            message.address = caster.WorldLevel + "/" + address + "/";
             message.values.Add(val);
             osc.Send(message);
         }

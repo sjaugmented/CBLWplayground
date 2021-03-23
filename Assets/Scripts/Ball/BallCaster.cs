@@ -10,12 +10,15 @@ namespace LW.Ball
     {
         [SerializeField] AudioSource forceFX;
         [SerializeField] AudioClip freezeFX;
-        [SerializeField] GameObject ballPrefab;
+        [SerializeField] GameObject uniBall;
+        [SerializeField] GameObject multiBall;
         [SerializeField] float zOffset = 0.1f;
         [SerializeField] float holdDistance = 0.5f;
         [SerializeField] float boostMultiplier = 5;
         [SerializeField] float summonMultiplier = 5;
         [SerializeField] float liftMultiplier = 3;
+
+        public int WorldLevel { get; set; }
         public bool Ball { get; set; }
         public bool Held { get; set; }
         public bool Frozen { get; set; }
@@ -48,6 +51,8 @@ namespace LW.Ball
             {
                 Ball = false;
             }
+
+            WorldLevel = 1;
         }
 
         void Update()
@@ -202,8 +207,8 @@ namespace LW.Ball
                     Held = true;
                     if (!hasBoosted)
                     {
-                        ballInstance.GetComponent<Ball>().WorldLevel++;
-                        ballInstance.GetComponent<Ball>().TouchLevel = 0;
+                        //WorldLevel++;
+                        //ballInstance.GetComponent<Ball>().TouchLevel = 0;
                         ballInstance.GetComponent<Ball>().SendOSC("boosting");
                         hasBoosted = true;
                     }
@@ -250,7 +255,15 @@ namespace LW.Ball
             Held = false;
             Ball = true;
             Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
-            ballInstance = Instantiate(ballPrefab, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+            
+            if (WorldLevel == 1)
+            {
+                ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+            }
+            else
+            {
+                ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+            }
         }
 
         public void DestroyBall()
