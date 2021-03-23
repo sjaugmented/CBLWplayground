@@ -83,17 +83,21 @@ namespace LW.Ball
 		{
 			if (!Portal)
             {
+				Portal = true;
 				Transform player = Camera.main.transform;
 				portal = Instantiate(portalPrefab, player.position + player.forward * portalSpawnDistance, player.rotation);
-				portal.transform.LookAt(player.position);
-				//portal.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
-				Portal = true;
+				//portal.transform.LookAt(player.position);
+				Debug.Log("spawned");
             }
 			else
             {
-				Destroy(portal);
+				Debug.Log("destroying");
+				portal.GetComponent<PortalController>().DestroySelf();
 				Portal = false;
+				Debug.Log("destroyed");
             }
+			
+			Debug.Log("Portal: " + Portal);
 		}
 
 		public void ToggleGaze()

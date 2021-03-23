@@ -24,15 +24,28 @@ namespace LW.Ball
         {
             if (other.CompareTag("Ball"))
             {
-                Debug.Log("ball!");
+                Debug.Log("Hello " + other.name);
                 caster.DestroyBall();
-                caster.WorldLevel += 1;
-                Debug.Log("WorldLevel: " + caster.WorldLevel);
                 if (!GetComponent<AudioSource>().isPlaying)
                 {
                     GetComponent<AudioSource>().PlayOneShot(breachFX);
                 }
             }
+            if (other.name == "Ball(Clone)")
+            {
+                caster.WorldLevel = 2;
+            }
+            else
+            {
+                caster.WorldLevel = 1;
+            }
+            Debug.Log("WorldLevel: " + caster.WorldLevel);
+        }
+
+        public void DestroySelf()
+        {
+            Debug.Log("goodbye");
+            Destroy(gameObject);
         }
     }
 }

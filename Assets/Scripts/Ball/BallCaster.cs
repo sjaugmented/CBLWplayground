@@ -119,19 +119,39 @@ namespace LW.Ball
                     {
                         if (!leftFisted)
                         {
-                            ballInstance.GetComponent<Ball>().SendOSC("leftFistOn");
+                            if (WorldLevel == 1)
+                            {
+                                ballInstance.GetComponent<Ball>().SendOSC("leftFistOn");
+                            }
+                            else
+                            {
+                                ballInstance.GetComponent<MultiBall>().SendOSC("leftFistOff");
+                            }
                             leftFisted = true;
                         }
                         
-                        
-                        ballInstance.GetComponent<Ball>().SendOSC("leftProximityAngle", 1 - tracking.StaffUp / 180);
-                        ballInstance.GetComponent<Ball>().SendOSC("leftProximityDistance", origins.PalmsDist / holdDistance);
+                        if (WorldLevel == 1)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("leftProximityAngle", 1 - tracking.StaffUp / 180);
+                            ballInstance.GetComponent<Ball>().SendOSC("leftProximityDistance", origins.PalmsDist / holdDistance);
+                        } else
+                        {
+                            ballInstance.GetComponent<MultiBall>().SendOSC("leftProximityAngle", 1 - tracking.StaffUp / 180);
+                            ballInstance.GetComponent<MultiBall>().SendOSC("leftProximityDistance", origins.PalmsDist / holdDistance);
+                        }
                     }
                     else
                     {
                         if (leftFisted)
                         {
-                            ballInstance.GetComponent<Ball>().SendOSC("leftFistOff");
+                            if (WorldLevel == 1)
+                            {
+                                ballInstance.GetComponent<Ball>().SendOSC("leftFistOff");
+                            }
+                            else
+                            {
+                                ballInstance.GetComponent<MultiBall>().SendOSC("leftFistOff");
+                            }
                             leftFisted = false;
                         }
                     }
@@ -140,17 +160,40 @@ namespace LW.Ball
                     {
                         if (!rightFisted)
                         {
-                            ballInstance.GetComponent<Ball>().SendOSC("rightFistOn");
+                            if (WorldLevel == 1)
+                            {
+                                ballInstance.GetComponent<Ball>().SendOSC("rightFistOn");
+                            }
+                            else
+                            {
+                                ballInstance.GetComponent<MultiBall>().SendOSC("rightFistOff");
+                            }
                             rightFisted = true;
                         }
-                        ballInstance.GetComponent<Ball>().SendOSC("rightProximityAngle", 1 - tracking.StaffUp / 180);
-                        ballInstance.GetComponent<Ball>().SendOSC("rightProximityDistance", origins.PalmsDist / holdDistance);
+
+                        if (WorldLevel == 1)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("rightProximityAngle", 1 - tracking.StaffUp / 180);
+                            ballInstance.GetComponent<Ball>().SendOSC("rightProximityDistance", origins.PalmsDist / holdDistance);
+
+                        } else
+                        {
+                            ballInstance.GetComponent<MultiBall>().SendOSC("rightProximityAngle", 1 - tracking.StaffUp / 180);
+                            ballInstance.GetComponent<MultiBall>().SendOSC("rightProximityDistance", origins.PalmsDist / holdDistance);
+                        }
                     }
                     else
                     {
                         if (rightFisted)
                         {
-                            ballInstance.GetComponent<Ball>().SendOSC("rightFistOff");
+                            if (WorldLevel == 1)
+                            {
+                                ballInstance.GetComponent<Ball>().SendOSC("rightFistOff");
+                            }
+                            else
+                            {
+                                ballInstance.GetComponent<MultiBall>().SendOSC("rightFistOff");
+                            }
                             rightFisted = false;
                         }
                     }
@@ -159,17 +202,40 @@ namespace LW.Ball
                     {
                         if (!dualFisted)
                         {
-                            ballInstance.GetComponent<Ball>().SendOSC("dualFistOn");
+                            if (WorldLevel == 1)
+                            {
+                                ballInstance.GetComponent<Ball>().SendOSC("dualFistOn");
+                            }
+                            else
+                            {
+                                ballInstance.GetComponent<MultiBall>().SendOSC("dualFistOn");
+                            }
                             dualFisted = true;
                         }
-                        ballInstance.GetComponent<Ball>().SendOSC("proximityAngle", 1 - tracking.StaffUp / 180);
-                        ballInstance.GetComponent<Ball>().SendOSC("proximityDistance", origins.PalmsDist / holdDistance);
+
+                        if (WorldLevel == 1)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("proximityAngle", 1 - tracking.StaffUp / 180);
+                            ballInstance.GetComponent<Ball>().SendOSC("proximityDistance", origins.PalmsDist / holdDistance);
+                            
+                        } else
+                        {
+                            ballInstance.GetComponent<MultiBall>().SendOSC("proximityAngle", 1 - tracking.StaffUp / 180);
+                            ballInstance.GetComponent<MultiBall>().SendOSC("proximityDistance", origins.PalmsDist / holdDistance);
+                        }
                     }
                     else
                     {
                         if (dualFisted)
                         {
-                            ballInstance.GetComponent<Ball>().SendOSC("dualFistOff");
+                            if (WorldLevel == 1)
+                            {
+                                ballInstance.GetComponent<Ball>().SendOSC("dualFistOff");
+                            }
+                            else
+                            {
+                                ballInstance.GetComponent<MultiBall>().SendOSC("dualFistOff");
+                            }
                             dualFisted = false;
                         }
                     }
@@ -207,9 +273,14 @@ namespace LW.Ball
                     Held = true;
                     if (!hasBoosted)
                     {
-                        //WorldLevel++;
-                        //ballInstance.GetComponent<Ball>().TouchLevel = 0;
-                        ballInstance.GetComponent<Ball>().SendOSC("boosting");
+                        if (WorldLevel == 1)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("boosting");
+                        }
+                        else
+                        {
+                            ballInstance.GetComponent<MultiBall>().SendOSC("boosting");
+                        }
                         hasBoosted = true;
                     }
                     ballInstance.transform.LookAt(2 * ballInstance.transform.position - Camera.main.transform.position);
@@ -225,18 +296,45 @@ namespace LW.Ball
                 // summoning
                 if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
+                    if (!hasBoosted)
+                    {
+                        if (WorldLevel == 1)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("summoning");
+                        }
+                        else
+                        {
+                            ballInstance.GetComponent<MultiBall>().SendOSC("summoning");
+                        }
+                        hasBoosted = true;
+                    }
+
                     ballInstance.transform.LookAt(Camera.main.transform.position);
                     ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.forward * (origins.PalmsDist / holdDistance * summonMultiplier));
 
                     forceFX.Play();
                 }
-                else { 
-                    forceFX.Stop();  
+                else {
+                    hasBoosted = false;
+                    forceFX.Stop();
                 }
 
                 // lift
                 if (tracking.palms == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
                 {
+                    if (!hasBoosted)
+                    {
+                        if (WorldLevel == 1)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("lifting");
+                        }
+                        else
+                        {
+                            ballInstance.GetComponent<MultiBall>().SendOSC("lifting");
+                        }
+                        hasBoosted = true;
+                    }
+
                     ballInstance.transform.rotation = new Quaternion(0, 0, 0, 0);
                     ballInstance.GetComponent<Rigidbody>().AddForce(ballInstance.transform.up * (origins.PalmsDist / holdDistance * liftMultiplier));
 
@@ -244,6 +342,7 @@ namespace LW.Ball
                 }
                 else
                 {
+                    hasBoosted = false;
                     forceFX.Stop();
                 }
             }
@@ -262,7 +361,7 @@ namespace LW.Ball
             }
             else
             {
-                ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+                ballInstance = Instantiate(multiBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
             }
         }
 
@@ -270,7 +369,14 @@ namespace LW.Ball
         {
             if (ballInstance)
             {
-                ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
+                if (WorldLevel == 1)
+                {
+                    ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
+                }
+                else
+                {
+                    ballInstance.GetComponent<MultiBall>().StartCoroutine("DestroySelf");
+                }
             }
         }
     }

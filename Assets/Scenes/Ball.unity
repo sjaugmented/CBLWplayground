@@ -14340,7 +14340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   portalPrefab: {fileID: 5888753813319515515, guid: 240535ec37025694aa97202cde47eea1,
     type: 3}
-  portalSpawnDistance: 1
+  portalSpawnDistance: 2
   gazeHud: {fileID: 434274824}
   nodeTap: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
   gazeTap: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}

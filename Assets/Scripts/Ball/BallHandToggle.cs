@@ -35,7 +35,9 @@ namespace LW.Ball
                 {
                     if (collider.CompareTag("Right Pointer"))
                     {
+                        Debug.Log("LEFT DORSAL TAP");
                         SpawnPortal();
+                        Debug.Log("post spawn");
                     }
                 }
                 else
@@ -107,12 +109,14 @@ namespace LW.Ball
 
         private void SpawnPortal()
         {
+            Debug.Log("inside SpawnPortal");
             if (!triggered)
             {
+                Debug.Log("toggling Portal");
                 director.TogglePortal();
                 triggered = true;
                 StartCoroutine("ToggleDelay");
-
+                Debug.Log("toggled Portal");
             }
         }
 
@@ -130,7 +134,7 @@ namespace LW.Ball
         IEnumerator ToggleDelay()
         {
             yield return new WaitForSeconds(1);
-            triggered = !triggered;
+            triggered = false;
         }
     }
 }
