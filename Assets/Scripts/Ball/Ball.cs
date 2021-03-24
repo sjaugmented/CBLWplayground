@@ -34,6 +34,8 @@ namespace LW.Ball{
         float hueVal = Mathf.Epsilon;
         bool alive = true;
 
+        bool frozenSent, deathSent;
+
         NewTracking tracking;
         OSC osc;
         BallCaster caster;
@@ -82,8 +84,16 @@ namespace LW.Ball{
 
             if (caster.Frozen)
             {
-                SendOSC("frozen");
+                if (!frozenSent)
+                {
+                    SendOSC("frozen");
+                    frozenSent = true;
+                }
+            } else
+            {
+                frozenSent = false;
             }
+            
 
             //if (caster.Frozen && ballAmbience.isPlaying)
             //{
@@ -98,7 +108,7 @@ namespace LW.Ball{
 
         private void OnCollisionEnter(Collision other) {
             float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
-            Debug.Log("FORCE>>>>" + collisionForce);
+            //Debug.Log("FORCE>>>>" + collisionForce);
 
             if (caster.Frozen) { return; }
 
@@ -175,7 +185,12 @@ namespace LW.Ball{
 
         IEnumerator DestroySelf() 
         {
-            SendOSC("iDead");
+            if (!deathSent)
+            {
+                SendOSC("iDead");
+                deathSent = true;
+            }
+            
             alive = false;
             
             var emission = innerParticles.emission;

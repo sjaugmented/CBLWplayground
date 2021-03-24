@@ -32,6 +32,7 @@ namespace LW.Ball
 
         float hueVal = Mathf.Epsilon;
         bool alive = true;
+        bool frozenSent, deathSent;
 
         NewTracking tracking;
         OSC osc;
@@ -81,14 +82,22 @@ namespace LW.Ball
 
             if (caster.Frozen)
             {
-                SendOSC("frozen");
+                if (!frozenSent)
+                {
+                    SendOSC("frozen");
+                    frozenSent = true;
+                }
+            }
+            else
+            {
+                frozenSent = false;
             }
         }
 
         private void OnCollisionEnter(Collision other)
         {
             float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
-            Debug.Log("FORCE>>>>" + collisionForce);
+            //Debug.Log("FORCE>>>>" + collisionForce);
 
             if (caster.Frozen) { return; }
 
@@ -96,7 +105,7 @@ namespace LW.Ball
             dir = -dir.normalized;
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
-            GetComponent<Rigidbody>().AddForce(dir * force * bounce);
+            //GetComponent<Rigidbody>().AddForce(dir * force * bounce);
 
             if (!GetComponent<AudioSource>().isPlaying)
             {
@@ -125,7 +134,7 @@ namespace LW.Ball
                 if (collisionForce >= killForce)
                 {
                     //caster.StartCoroutine("DestroyBall");
-                    Debug.Log(other.collider.gameObject.layer);
+                    //Debug.Log(other.collider.gameObject.layer);
                 }
             }
 
@@ -167,11 +176,13 @@ namespace LW.Ball
 
         IEnumerator DestroySelf()
         {
-            SendOSC("iDead");
+            if (!deathSent)
+            {
+                SendOSC("iDead");
+                deathSent = true;
+            }
             alive = false;
 
-            //var emission = innerParticles.emission;
-            //emission.enabled = false;
             //var deathParticles = GetComponentInChildren<DeathParticles>().GetComponent<ParticleSystem>();
             //var deathMain = deathParticles.main;
             //deathMain.startColor = Color.HSVToRGB(hueVal, 1, 1);
@@ -183,15 +194,6 @@ namespace LW.Ball
             {
                 GetComponent<AudioSource>().PlayOneShot(destroyFX);
             }
-
-            Transform child = transform.GetChild(0);
-            MeshExploder[] exploders = child.gameObject.GetComponentsInChildren<MeshExploder>();
-            foreach (MeshExploder exploder in exploders)
-            {
-                exploder.Explode();
-            }
-
-            yield return new WaitForSeconds(explosionDelay);
 
             MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
             foreach (MeshRenderer mesh in meshes)

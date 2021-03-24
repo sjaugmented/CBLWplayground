@@ -1311,8 +1311,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 688426549}
-  - component: {fileID: 688426548}
   - component: {fileID: 688426550}
+  - component: {fileID: 688426548}
   m_Layer: 0
   m_Name: Ball Caster
   m_TagString: Caster
@@ -1342,6 +1342,7 @@ MonoBehaviour:
   boostMultiplier: 3
   summonMultiplier: 3
   liftMultiplier: 3
+  worldLvl: 2
 --- !u!4 &688426549
 Transform:
   m_ObjectHideFlags: 0
@@ -1801,6 +1802,7 @@ MonoBehaviour:
   inPort: 7000
   outIP: 255.255.255.255
   outPort: 8000
+  printOSC: 0
 --- !u!4 &851767835
 Transform:
   m_ObjectHideFlags: 0
@@ -9101,7 +9103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!198 &591123157815830596
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -13890,7 +13892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &787187214275824631
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14549,7 +14551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &2616740022200572270
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -14795,7 +14797,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &3331955198771218962
 MonoBehaviour:
   m_ObjectHideFlags: 0

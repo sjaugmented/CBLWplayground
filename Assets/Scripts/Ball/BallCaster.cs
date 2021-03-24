@@ -17,8 +17,11 @@ namespace LW.Ball
         [SerializeField] float boostMultiplier = 5;
         [SerializeField] float summonMultiplier = 5;
         [SerializeField] float liftMultiplier = 3;
-
-        public int WorldLevel { get; set; }
+        [SerializeField] int worldLvl = 0;
+        public int WorldLevel {
+            get { return worldLvl; }
+            set { worldLvl = value; }
+        }
         public bool Ball { get; set; }
         public bool Held { get; set; }
         public bool Frozen { get; set; }
@@ -35,6 +38,9 @@ namespace LW.Ball
         private bool dualFisted;
         bool hasBoosted = false;
         bool frozenTriggered = false;
+
+        bool holdOSC, summonOSC, liftOSC, deadOSC;
+
 
         void Start()
         {
@@ -55,6 +61,7 @@ namespace LW.Ball
             WorldLevel = 1;
         }
 
+
         void Update()
         {
             conjureTimer += Time.deltaTime;
@@ -68,7 +75,6 @@ namespace LW.Ball
                     {
                         conjureTimer = 0;
                         conjureReady = true;
-                        Debug.Log("conjureReady");
                     }
                 }
                 else
@@ -94,7 +100,6 @@ namespace LW.Ball
                     {
                         destroyTimer = 0;
                         destroyReady = true;
-                        Debug.Log("destroyReady");
                     }
 
                 }
@@ -112,7 +117,20 @@ namespace LW.Ball
                 if (tracking.palms == Formation.together && origins.PalmsDist < holdDistance)
                 {
                     Held = true;
-                    ballInstance.GetComponent<Ball>().SendOSC("holding");
+                    if (!holdOSC)
+                    {
+                        if (WorldLevel == 1)
+                        {
+                            ballInstance.GetComponent<Ball>().SendOSC("holding");
+
+                        }
+                        else
+                        {
+                            ballInstance.GetComponent<MultiBall>().SendOSC("holding");
+
+                        }
+                        holdOSC = true;
+                    }
 
                     // prox floats
                     if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
@@ -265,12 +283,12 @@ namespace LW.Ball
                 }
                 else {
                     Held = false;
+                    holdOSC = false;
                 }
 
                 // boosting
                 if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
-                    Held = true;
                     if (!hasBoosted)
                     {
                         if (WorldLevel == 1)

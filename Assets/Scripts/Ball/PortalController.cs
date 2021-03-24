@@ -24,7 +24,6 @@ namespace LW.Ball
         {
             if (other.CompareTag("Ball"))
             {
-                Debug.Log("Hello " + other.name);
                 caster.DestroyBall();
                 if (!GetComponent<AudioSource>().isPlaying)
                 {
@@ -39,12 +38,10 @@ namespace LW.Ball
             {
                 caster.WorldLevel = 1;
             }
-            Debug.Log("WorldLevel: " + caster.WorldLevel);
         }
 
         public void DestroySelf()
         {
-            Debug.Log("goodbye");
             Destroy(gameObject);
         }
     }

@@ -5009,7 +5009,7 @@ GameObject:
   - component: {fileID: 4607359742932750253}
   - component: {fileID: 3634210435180566554}
   m_Layer: 0
-  m_Name: Ball
+  m_Name: Ball Copy
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

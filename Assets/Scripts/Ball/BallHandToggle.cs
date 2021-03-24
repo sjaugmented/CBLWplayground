@@ -35,9 +35,7 @@ namespace LW.Ball
                 {
                     if (collider.CompareTag("Right Pointer"))
                     {
-                        Debug.Log("LEFT DORSAL TAP");
                         SpawnPortal();
-                        Debug.Log("post spawn");
                     }
                 }
                 else
@@ -104,19 +102,15 @@ namespace LW.Ball
             message.address = messageToSend;
             message.values.Add(1);
             osc.Send(message);
-            Debug.Log(this.gameObject.name + " sending OSC:" + message); // todo remove		
         }
 
         private void SpawnPortal()
         {
-            Debug.Log("inside SpawnPortal");
             if (!triggered)
             {
-                Debug.Log("toggling Portal");
                 director.TogglePortal();
                 triggered = true;
                 StartCoroutine("ToggleDelay");
-                Debug.Log("toggled Portal");
             }
         }
 

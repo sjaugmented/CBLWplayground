@@ -624,7 +624,7 @@ public class OSC : MonoBehaviour
     }
 
 
-
+    [SerializeField] bool printOSC = false;
 
     /// <summary>
     /// Send an individual OSC message.  Internally takes the OscMessage object and 
@@ -636,7 +636,10 @@ public class OSC : MonoBehaviour
         byte[] packet = new byte[1000];
         int length = OSC.OscMessageToPacket(oscMessage, packet, 1000);
         OscPacketIO.SendPacket(packet, length);
-        Debug.Log("OSC Sending address: " + oscMessage.address + ", value: " + oscMessage.values[0]);
+        if (printOSC)
+        {
+            Debug.Log("OSC Sending address: " + oscMessage.address + ", value: " + oscMessage.values[0]);
+        }
     }
 
     /// <summary>
