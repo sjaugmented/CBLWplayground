@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using LW.Core;
-using System.Collections.Generic;
 
 namespace LW.Ball{
     [RequireComponent(typeof(AudioSource))]
@@ -10,13 +9,11 @@ namespace LW.Ball{
     {
         [SerializeField] string killCode;
         [SerializeField] string glitterCode;
-        //[SerializeField] AudioSource ballAmbience;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] AudioClip bounceFX;
         [SerializeField] float explosionDelay = 0.5f;
         [SerializeField] float destroyDelay = 0.5f;
-        // [SerializeField] float stopRange = 0.06f;
         [SerializeField] float bounceForce = 1;
         [SerializeField] float touchFrequency = 1;
         [SerializeField] float forceMult = 10000;
@@ -25,15 +22,12 @@ namespace LW.Ball{
 
         public float distanceToRtHand, distanceToLtHand;
 
-        //public int WorldLevel { get; set; }
         public int TouchLevel { get; set; }
 
         float touchTimer = Mathf.Infinity;
         bool touchToggled = false;
-        
         float hueVal = Mathf.Epsilon;
         bool alive = true;
-
         bool frozenSent, deathSent;
 
         NewTracking tracking;
@@ -54,8 +48,6 @@ namespace LW.Ball{
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(GlitterBall);
 
             SendOSC("iAM!");
-
-            //WorldLevel = 1;
             TouchLevel = 0;
         }
 
@@ -66,21 +58,22 @@ namespace LW.Ball{
             distanceToRtHand = Vector3.Distance(transform.position, tracking.GetRtPalm.Position);
             distanceToLtHand = Vector3.Distance(transform.position, tracking.GetLtPalm.Position);
             
-            ParticleSystem particles = GetComponentInChildren<ParticleSystem>();
-            Light light = GetComponentInChildren<Light>();
-            var main = particles.main;
-            var emission = particles.emission;
-            main.startLifetime = caster.Held ? 3 : 1.15f;
-            main.startSpeed = caster.Held ? 1f : 0.25f;
-            emission.enabled = !caster.Frozen;
-            light.enabled = !caster.Frozen;
+            // TODO move to particle controller script
+            //ParticleSystem particles = GetComponentInChildren<ParticleSystem>();
+            //Light light = GetComponentInChildren<Light>();
+            //var main = particles.main;
+            //var emission = particles.emission;
+            //main.startLifetime = caster.Held ? 3 : 1.15f;
+            //main.startSpeed = caster.Held ? 1f : 0.25f;
+            //emission.enabled = !caster.Frozen;
+            //light.enabled = !caster.Frozen;
 
-            if (alive)
-            {
-                main.startColor = Color.HSVToRGB(hueVal, 1, 1);
-                light.color = Color.HSVToRGB(hueVal, 1, 1);
+            //if (alive)
+            //{
+            //    main.startColor = Color.HSVToRGB(hueVal, 1, 1);
+            //    light.color = Color.HSVToRGB(hueVal, 1, 1);
 
-            }
+            //}
 
             if (caster.Frozen)
             {
@@ -93,22 +86,10 @@ namespace LW.Ball{
             {
                 frozenSent = false;
             }
-            
-
-            //if (caster.Frozen && ballAmbience.isPlaying)
-            //{
-            //    ballAmbience.Stop();
-            //}
-
-            //if (!caster.Frozen && !ballAmbience.isPlaying)
-            //{
-            //    ballAmbience.Play();
-            //}
         }
 
         private void OnCollisionEnter(Collision other) {
-            float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
-            //Debug.Log("FORCE>>>>" + collisionForce);
+            //float collisionForce = other.impulse.magnitude * forceMult / Time.fixedDeltaTime;
 
             if (caster.Frozen) { return; }
 
@@ -116,12 +97,13 @@ namespace LW.Ball{
             dir = -dir.normalized;
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
-            GetComponent<Rigidbody>().AddForce(dir * force * bounce);
+            // TODO move to bounce script
+            //GetComponent<Rigidbody>().AddForce(dir * force * bounce);
 
-            if (!GetComponent<AudioSource>().isPlaying)
-            {
-                GetComponent<AudioSource>().PlayOneShot(bounceFX);
-            }
+            //if (!GetComponent<AudioSource>().isPlaying)
+            //{
+            //    GetComponent<AudioSource>().PlayOneShot(bounceFX);
+            //}
 
             if (other.gameObject.CompareTag("Player"))
             {
@@ -139,24 +121,16 @@ namespace LW.Ball{
                     }
                 }
             }
-            else
-            {
-                if (collisionForce >= killForce)
-                {
-                    //caster.StartCoroutine("DestroyBall");
-                    Debug.Log(other.collider.gameObject.layer);
-                }
-            }
-            
         }
 
         private void TouchResponse()
         {
-            hueVal += 0.1388f; // 1/5 of 360
-            if (hueVal > 1)
-            {
-                hueVal -= 1;
-            }
+            // TODO move to hue script
+            //hueVal += 0.1388f; // 1/5 of 360
+            //if (hueVal > 1)
+            //{
+            //    hueVal -= 1;
+            //}
 
             TouchLevel += 1;
             SendOSC("touched", TouchLevel);
@@ -177,11 +151,12 @@ namespace LW.Ball{
             StartCoroutine("DestroySelf");
         }
 
-        void GlitterBall(OscMessage message)
-        {
-            SendMessage("GlitterBall");
-            GetComponentInChildren<FacePlayer>().GetComponent<ParticleSystem>().Play();
-        }
+        // TODO move to glitter script
+        //void GlitterBall(OscMessage message)
+        //{
+        //    SendMessage("GlitterBall");
+        //    GetComponentInChildren<FacePlayer>().GetComponent<ParticleSystem>().Play();
+        //}
 
         IEnumerator DestroySelf() 
         {
@@ -193,27 +168,26 @@ namespace LW.Ball{
             
             alive = false;
             
-            var emission = innerParticles.emission;
-            emission.enabled = false;
-            var deathParticles = GetComponentInChildren<DeathParticles>().GetComponent<ParticleSystem>();
-            var deathMain = deathParticles.main;
-            deathMain.startColor = Color.HSVToRGB(hueVal, 1, 1);
-            deathParticles.Play();
+            // TODO move to particle controller script
+            //var emission = innerParticles.emission;
+            //emission.enabled = false;
+            //var deathParticles = GetComponentInChildren<DeathParticles>().GetComponent<ParticleSystem>();
+            //var deathMain = deathParticles.main;
+            //deathMain.startColor = Color.HSVToRGB(hueVal, 1, 1);
+            //deathParticles.Play();
+            
+            // yield return new WaitForSeconds(explosionDelay);
 
-            //GetComponentInChildren<MeshExploder>().Explode();
+            //MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
+            //foreach(MeshRenderer mesh in meshes)
+            //{
+            //    mesh.enabled = false;
+            //}
 
             if (!GetComponent<AudioSource>().isPlaying) {
                 GetComponent<AudioSource>().PlayOneShot(destroyFX);
             }
 
-            yield return new WaitForSeconds(explosionDelay);
-            
-            MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
-            foreach(MeshRenderer mesh in meshes)
-            {
-                mesh.enabled = false;
-            }
-                       
             yield return new WaitForSeconds(destroyDelay);
             
             caster.Ball = false;

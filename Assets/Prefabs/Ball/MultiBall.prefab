@@ -5737,7 +5737,7 @@ GameObject:
   - component: {fileID: -5959625245434725205}
   - component: {fileID: 2726644664601050328}
   - component: {fileID: 7866984593117579412}
-  - component: {fileID: -2171033411292267020}
+  - component: {fileID: 5961802338991539391}
   m_Layer: 0
   m_Name: MultiBall
   m_TagString: Ball
@@ -5982,7 +5982,7 @@ ConstantForce:
   m_RelativeForce: {x: 0, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
---- !u!114 &-2171033411292267020
+--- !u!114 &5961802338991539391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5991,21 +5991,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2193309183216341837}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 665eee0e787840744993ed5adacc309e, type: 3}
+  m_Script: {fileID: 11500000, guid: bbc5a83f1a537c04da8045d8fe8bbbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   killCode: kill
   glitterCode: glitter
-  conjureFX: {fileID: 8300000, guid: 2d369608f583cdf4fbf2baaea1051616, type: 3}
+  conjureFX: {fileID: 8300000, guid: 38de37df5a00e9e49afa785483afba2a, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
   bounceFX: {fileID: 8300000, guid: d29443f41001c3a45b959b79b6a8722b, type: 3}
-  explosionDelay: 0.5
+  explosionDelay: 0.2
   destroyDelay: 0.5
   bounceForce: 1
   touchFrequency: 0.5
-  forceMult: 10000
-  killForce: 1000
-  bounce: 10
+  forceMult: 100000
+  killForce: 0.0001
+  bounce: 5
   distanceToRtHand: 0
   distanceToLtHand: 0
 --- !u!114 &1049553720014763265
