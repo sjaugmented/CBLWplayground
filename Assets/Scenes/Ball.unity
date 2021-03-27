@@ -1339,10 +1339,10 @@ MonoBehaviour:
     type: 3}
   zOffset: 0.03
   holdDistance: 0.5
-  boostMultiplier: 3
+  boostMultiplier: 10
   summonMultiplier: 3
   liftMultiplier: 3
-  worldLvl: 2
+  worldLvl: 1
 --- !u!4 &688426549
 Transform:
   m_ObjectHideFlags: 0
