@@ -22,7 +22,7 @@ namespace LW.Ball
             get { return worldLvl; }
             set { worldLvl = value; }
         }
-        public bool Ball { get; set; }
+        public bool BallInPlay { get; set; }
         public bool Held { get; set; }
         public bool Frozen { get; set; }
 
@@ -32,7 +32,6 @@ namespace LW.Ball
         NewTracking tracking;
         CastOrigins origins;
         GameObject ballInstance;
-        OSC osc;
         private bool leftFisted;
         private bool rightFisted;
         private bool dualFisted;
@@ -46,16 +45,15 @@ namespace LW.Ball
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
 
             if (GameObject.FindGameObjectWithTag("Ball"))
             {
-                Ball = true;
+                BallInPlay = true;
                 ballInstance = GameObject.FindGameObjectWithTag("Ball");
             }
             else
             {
-                Ball = false;
+                BallInPlay = false;
             }
 
             WorldLevel = 1;
@@ -67,7 +65,7 @@ namespace LW.Ball
             conjureTimer += Time.deltaTime;
             destroyTimer += Time.deltaTime;
 
-            if (!Ball)
+            if (!BallInPlay)
             {
                 if (tracking.rightPose == HandPose.fist && tracking.rightPalm == Direction.up)
                 {
@@ -119,16 +117,7 @@ namespace LW.Ball
                     Held = true;
                     if (!holdOSC)
                     {
-                        if (WorldLevel == 1)
-                        {
-                            ballInstance.GetComponent<Ball>().SendOSC("holding");
-
-                        }
-                        else
-                        {
-                            ballInstance.GetComponent<MultiBall>().SendOSC("holding");
-
-                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("holding");
                         holdOSC = true;
                     }
 
@@ -137,39 +126,18 @@ namespace LW.Ball
                     {
                         if (!leftFisted)
                         {
-                            if (WorldLevel == 1)
-                            {
-                                ballInstance.GetComponent<Ball>().SendOSC("leftFistOn");
-                            }
-                            else
-                            {
-                                ballInstance.GetComponent<MultiBall>().SendOSC("leftFistOff");
-                            }
+                            ballInstance.GetComponent<Ball>().SendOSC("leftFistOn");
                             leftFisted = true;
                         }
-                        
-                        if (WorldLevel == 1)
-                        {
-                            ballInstance.GetComponent<Ball>().SendOSC("leftProximityAngle", 1 - tracking.StaffUp / 180);
-                            ballInstance.GetComponent<Ball>().SendOSC("leftProximityDistance", origins.PalmsDist / holdDistance);
-                        } else
-                        {
-                            ballInstance.GetComponent<MultiBall>().SendOSC("leftProximityAngle", 1 - tracking.StaffUp / 180);
-                            ballInstance.GetComponent<MultiBall>().SendOSC("leftProximityDistance", origins.PalmsDist / holdDistance);
-                        }
+
+                        ballInstance.GetComponent<Ball>().SendOSC("leftProximityAngle", 1 - tracking.StaffUp / 180);
+                        ballInstance.GetComponent<Ball>().SendOSC("leftProximityDistance", origins.PalmsDist / holdDistance);
                     }
                     else
                     {
                         if (leftFisted)
                         {
-                            if (WorldLevel == 1)
-                            {
-                                ballInstance.GetComponent<Ball>().SendOSC("leftFistOff");
-                            }
-                            else
-                            {
-                                ballInstance.GetComponent<MultiBall>().SendOSC("leftFistOff");
-                            }
+                            ballInstance.GetComponent<Ball>().SendOSC("leftFistOff");
                             leftFisted = false;
                         }
                     }
@@ -178,40 +146,18 @@ namespace LW.Ball
                     {
                         if (!rightFisted)
                         {
-                            if (WorldLevel == 1)
-                            {
-                                ballInstance.GetComponent<Ball>().SendOSC("rightFistOn");
-                            }
-                            else
-                            {
-                                ballInstance.GetComponent<MultiBall>().SendOSC("rightFistOff");
-                            }
+                            ballInstance.GetComponent<Ball>().SendOSC("rightFistOn");
                             rightFisted = true;
                         }
 
-                        if (WorldLevel == 1)
-                        {
-                            ballInstance.GetComponent<Ball>().SendOSC("rightProximityAngle", 1 - tracking.StaffUp / 180);
-                            ballInstance.GetComponent<Ball>().SendOSC("rightProximityDistance", origins.PalmsDist / holdDistance);
-
-                        } else
-                        {
-                            ballInstance.GetComponent<MultiBall>().SendOSC("rightProximityAngle", 1 - tracking.StaffUp / 180);
-                            ballInstance.GetComponent<MultiBall>().SendOSC("rightProximityDistance", origins.PalmsDist / holdDistance);
-                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("rightProximityAngle", 1 - tracking.StaffUp / 180);
+                        ballInstance.GetComponent<Ball>().SendOSC("rightProximityDistance", origins.PalmsDist / holdDistance);
                     }
                     else
                     {
                         if (rightFisted)
                         {
-                            if (WorldLevel == 1)
-                            {
-                                ballInstance.GetComponent<Ball>().SendOSC("rightFistOff");
-                            }
-                            else
-                            {
-                                ballInstance.GetComponent<MultiBall>().SendOSC("rightFistOff");
-                            }
+                            ballInstance.GetComponent<Ball>().SendOSC("rightFistOff");
                             rightFisted = false;
                         }
                     }
@@ -220,40 +166,18 @@ namespace LW.Ball
                     {
                         if (!dualFisted)
                         {
-                            if (WorldLevel == 1)
-                            {
-                                ballInstance.GetComponent<Ball>().SendOSC("dualFistOn");
-                            }
-                            else
-                            {
-                                ballInstance.GetComponent<MultiBall>().SendOSC("dualFistOn");
-                            }
+                            ballInstance.GetComponent<Ball>().SendOSC("dualFistOn");
                             dualFisted = true;
                         }
 
-                        if (WorldLevel == 1)
-                        {
-                            ballInstance.GetComponent<Ball>().SendOSC("proximityAngle", 1 - tracking.StaffUp / 180);
-                            ballInstance.GetComponent<Ball>().SendOSC("proximityDistance", origins.PalmsDist / holdDistance);
-                            
-                        } else
-                        {
-                            ballInstance.GetComponent<MultiBall>().SendOSC("proximityAngle", 1 - tracking.StaffUp / 180);
-                            ballInstance.GetComponent<MultiBall>().SendOSC("proximityDistance", origins.PalmsDist / holdDistance);
-                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("proximityAngle", 1 - tracking.StaffUp / 180);
+                        ballInstance.GetComponent<Ball>().SendOSC("proximityDistance", origins.PalmsDist / holdDistance);
                     }
                     else
                     {
                         if (dualFisted)
                         {
-                            if (WorldLevel == 1)
-                            {
-                                ballInstance.GetComponent<Ball>().SendOSC("dualFistOff");
-                            }
-                            else
-                            {
-                                ballInstance.GetComponent<MultiBall>().SendOSC("dualFistOff");
-                            }
+                            ballInstance.GetComponent<Ball>().SendOSC("dualFistOff");
                             dualFisted = false;
                         }
                     }
@@ -275,10 +199,6 @@ namespace LW.Ball
                     if (tracking.rightPose != HandPose.thumbsUp && tracking.leftPose != HandPose.thumbsUp)
                     {
                         frozenTriggered = false;
-                        //if (!GetComponent<AudioSource>().isPlaying)
-                        //{
-                        //    GetComponent<AudioSource>().PlayOneShot(freezeFX);
-                        //}
                     }
                 }
                 else {
@@ -291,14 +211,7 @@ namespace LW.Ball
                 {
                     if (!hasBoosted)
                     {
-                        if (WorldLevel == 1)
-                        {
-                            ballInstance.GetComponent<Ball>().SendOSC("boosting");
-                        }
-                        else
-                        {
-                            ballInstance.GetComponent<MultiBall>().SendOSC("boosting");
-                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("boosting");
                         hasBoosted = true;
                     }
                     ballInstance.transform.LookAt(2 * ballInstance.transform.position - Camera.main.transform.position);
@@ -316,14 +229,7 @@ namespace LW.Ball
                 {
                     if (!hasBoosted)
                     {
-                        if (WorldLevel == 1)
-                        {
-                            ballInstance.GetComponent<Ball>().SendOSC("summoning");
-                        }
-                        else
-                        {
-                            ballInstance.GetComponent<MultiBall>().SendOSC("summoning");
-                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("summoning");
                         hasBoosted = true;
                     }
 
@@ -342,14 +248,7 @@ namespace LW.Ball
                 {
                     if (!hasBoosted)
                     {
-                        if (WorldLevel == 1)
-                        {
-                            ballInstance.GetComponent<Ball>().SendOSC("lifting");
-                        }
-                        else
-                        {
-                            ballInstance.GetComponent<MultiBall>().SendOSC("lifting");
-                        }
+                        ballInstance.GetComponent<Ball>().SendOSC("lifting");
                         hasBoosted = true;
                     }
 
@@ -370,7 +269,7 @@ namespace LW.Ball
         {
             Frozen = false;
             Held = false;
-            Ball = true;
+            BallInPlay = true;
             Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
             
             if (WorldLevel == 1)
@@ -387,14 +286,7 @@ namespace LW.Ball
         {
             if (ballInstance)
             {
-                if (WorldLevel == 1)
-                {
-                    ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
-                }
-                else
-                {
-                    ballInstance.GetComponent<MultiBall>().StartCoroutine("DestroySelf");
-                }
+                ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
             }
         }
     }

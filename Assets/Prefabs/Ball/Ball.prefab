@@ -5008,6 +5008,7 @@ GameObject:
   - component: {fileID: 7866984593117579412}
   - component: {fileID: 4607359742932750253}
   - component: {fileID: 3634210435180566554}
+  - component: {fileID: 5145626739213686484}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -5260,7 +5261,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killCode: kill
-  glitterCode: glitter
   conjureFX: {fileID: 8300000, guid: 38de37df5a00e9e49afa785483afba2a, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
   bounceFX: {fileID: 8300000, guid: d29443f41001c3a45b959b79b6a8722b, type: 3}
@@ -5270,9 +5270,21 @@ MonoBehaviour:
   touchFrequency: 0.5
   forceMult: 100000
   killForce: 0.0001
+  hasBounce: 1
   bounce: 5
-  distanceToRtHand: 0
-  distanceToLtHand: 0
+--- !u!114 &5145626739213686484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309183216341837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0c2d7e6e1b870642a18bb4e9a2fd5f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glitterCode: glitter
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0
@@ -10398,6 +10410,7 @@ GameObject:
   - component: {fileID: 2286948575127346801}
   - component: {fileID: 6553039215330814807}
   - component: {fileID: 2109400324200489764}
+  - component: {fileID: 2906337654915167902}
   m_Layer: 0
   m_Name: Glitter Particles
   m_TagString: Ball
@@ -15152,6 +15165,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c301fd63aa6b747b8e69970fc4f7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2906337654915167902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345121157754330294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea4f9ce3244d9784d83da11c649e744c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &781139950231823990
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15246,15 +15271,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fed0085feea1eaf40865f61dd2098dca, type: 3}
---- !u!1 &438612181381159719 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fed0085feea1eaf40865f61dd2098dca,
-    type: 3}
-  m_PrefabInstance: {fileID: 781139950231823990}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &963088451716137373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fed0085feea1eaf40865f61dd2098dca,
+    type: 3}
+  m_PrefabInstance: {fileID: 781139950231823990}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &438612181381159719 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fed0085feea1eaf40865f61dd2098dca,
     type: 3}
   m_PrefabInstance: {fileID: 781139950231823990}
   m_PrefabAsset: {fileID: 0}
