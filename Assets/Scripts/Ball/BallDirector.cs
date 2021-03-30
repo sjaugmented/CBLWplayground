@@ -17,7 +17,13 @@ namespace LW.Ball
 		List<GameObject> rightHand = new List<GameObject>();
 		List<GameObject> leftHand = new List<GameObject>();
 
-		public bool Portal { get; set; }
+		public bool Portal = false;
+
+		public void TogglePortalBool()
+        {
+			Portal = !Portal;
+        }
+		//public bool Portal { get; set; }
 		public bool Gaze { get; set; }
 
 		GameObject portal;
@@ -83,15 +89,15 @@ namespace LW.Ball
 		{
 			if (!Portal)
             {
-				Portal = true;
-				Transform player = Camera.main.transform;
+                Portal = true;
+                Transform player = Camera.main.transform;
 				portal = Instantiate(portalPrefab, player.position + player.forward * portalSpawnDistance, player.rotation);
 				//portal.transform.LookAt(player.position);
             }
 			else
             {
-				portal.GetComponent<PortalController>().DestroySelf();
-				Portal = false;
+				portal.GetComponent<PortalController>().SelfDestruct();
+                Portal = false;
             }
 			
 		}

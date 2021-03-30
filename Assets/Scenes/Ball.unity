@@ -1802,7 +1802,7 @@ MonoBehaviour:
   inPort: 7000
   outIP: 255.255.255.255
   outPort: 8000
-  printOSC: 0
+  printOSC: 1
 --- !u!4 &851767835
 Transform:
   m_ObjectHideFlags: 0
@@ -14137,7 +14137,7 @@ GameObject:
   - component: {fileID: 1979737016}
   - component: {fileID: 2452266860407818044}
   m_Layer: 0
-  m_Name: Left Toggle (node)
+  m_Name: Left Toggle (portal)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14352,6 +14352,7 @@ MonoBehaviour:
   leftToggle: {fileID: 2452266860407818043}
   rightDorsal: {fileID: 2452266862078146077}
   leftDorsal: {fileID: 3235132642183819149}
+  Portal: 0
 --- !u!4 &2452266861773551491
 Transform:
   m_ObjectHideFlags: 0
