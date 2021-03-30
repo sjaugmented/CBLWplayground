@@ -94,8 +94,6 @@ namespace LW.Ball
 
         private void ConjureBall()
         {
-            jedi.Frozen = false;
-            jedi.Held = false;
             BallInPlay = true;
             Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
 

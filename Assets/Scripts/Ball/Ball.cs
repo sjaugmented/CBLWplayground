@@ -31,19 +31,23 @@ namespace LW.Ball{
         BallOsc osc;
         Rigidbody rigidbody;
 
+        private void Awake()
+        {
+            osc = GetComponent<BallOsc>();
+        }
+
         void Start()
         {
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             jedi = GetComponent<BallJedi>();
-            osc = GetComponent<BallOsc>();
             rigidbody = GetComponent<Rigidbody>();
 
             TouchLevel = 0;
             Hue = 0;
             touchTimer = Mathf.Infinity;
 
-            osc.Send("iAM!");
+            //osc.Send("iAM!");
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
         }
 

@@ -19,11 +19,15 @@ public class BallOsc : MonoBehaviour
 
     bool holdOSC, frozenOSC, leftFisted, rightFisted, dualFisted;
 
+    private void Awake()
+    {
+        osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
+    }
+
     void Start()
     {
         tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
         origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-        osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
         caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
         jedi = GetComponent<BallJedi>();
         ball = GetComponent<Ball>();
@@ -32,6 +36,8 @@ public class BallOsc : MonoBehaviour
         GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(killCode, ball.KillBall);
         //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(glitterCode, GlitterBall);
         GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(particles.GlitterBall);
+
+        Send("iAM!");
     }
 
     void Update()
@@ -146,7 +152,7 @@ public class BallOsc : MonoBehaviour
         }
     }
 
-    public void Send(string address, float val = 1)
+    public void Send(string address = "default", float val = 1)
     {
         OscMessage message = new OscMessage();
         message.address = caster.WorldLevel + "/" + address + "/";
