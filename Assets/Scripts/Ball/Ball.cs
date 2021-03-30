@@ -7,7 +7,6 @@ namespace LW.Ball{
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
-        [SerializeField] string killCode;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] AudioClip bounceFX;
@@ -39,8 +38,6 @@ namespace LW.Ball{
             jedi = GetComponent<BallJedi>();
             osc = GetComponent<BallOsc>();
             rigidbody = GetComponent<Rigidbody>();
-
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(killCode, KillBall);
 
             TouchLevel = 0;
             Hue = 0;
@@ -121,7 +118,7 @@ namespace LW.Ball{
             osc.Send("touched", TouchLevel);
         }
 
-        void KillBall(OscMessage message)
+        public void KillBall(OscMessage message)
         {
             StartCoroutine("DestroySelf");
         }

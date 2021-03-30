@@ -5008,7 +5008,9 @@ GameObject:
   - component: {fileID: 7866984593117579412}
   - component: {fileID: 4607359742932750253}
   - component: {fileID: 3634210435180566554}
+  - component: {fileID: 7484735728138884248}
   - component: {fileID: 5145626739213686484}
+  - component: {fileID: 2454764655673570708}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -5162,7 +5164,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 33deb9f93d3d27248b14b0bab39a9616, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -5260,7 +5262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc5a83f1a537c04da8045d8fe8bbbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killCode: kill
   conjureFX: {fileID: 8300000, guid: 38de37df5a00e9e49afa785483afba2a, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
   bounceFX: {fileID: 8300000, guid: d29443f41001c3a45b959b79b6a8722b, type: 3}
@@ -5272,6 +5273,26 @@ MonoBehaviour:
   killForce: 0.0001
   hasBounce: 1
   bounce: 5
+--- !u!114 &7484735728138884248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309183216341837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa5c522e9bf096e46bdbdd801d8096c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forceFX: {fileID: 4607359742932750253}
+  freezeFX: {fileID: 8300000, guid: 07b87954db10ab24c965f6f1f0a8892f, type: 3}
+  pushMultiplier: 10
+  pullMultiplier: 5
+  liftMultiplier: 3
+  holdDistance: 0.5
+  fists: 3
+  power: 3
 --- !u!114 &5145626739213686484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5284,6 +5305,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c2d7e6e1b870642a18bb4e9a2fd5f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2454764655673570708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309183216341837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb379d34a1e6343499ca494fe03cd4c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  killCode: kill
   glitterCode: glitter
 --- !u!1 &3175291041352865394
 GameObject:
@@ -15271,15 +15305,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fed0085feea1eaf40865f61dd2098dca, type: 3}
---- !u!4 &963088451716137373 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fed0085feea1eaf40865f61dd2098dca,
-    type: 3}
-  m_PrefabInstance: {fileID: 781139950231823990}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &438612181381159719 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fed0085feea1eaf40865f61dd2098dca,
+    type: 3}
+  m_PrefabInstance: {fileID: 781139950231823990}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &963088451716137373 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fed0085feea1eaf40865f61dd2098dca,
     type: 3}
   m_PrefabInstance: {fileID: 781139950231823990}
   m_PrefabAsset: {fileID: 0}

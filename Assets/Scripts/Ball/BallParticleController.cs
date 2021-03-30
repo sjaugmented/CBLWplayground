@@ -6,8 +6,6 @@ namespace LW.Ball
 {
     public class BallParticleController : MonoBehaviour
     {
-        [SerializeField] string glitterCode;
-
         Ball ball;
         ParticleSystem innerParticles;
         BallJedi jedi;
@@ -16,9 +14,6 @@ namespace LW.Ball
             ball = GetComponent<Ball>();
             innerParticles = GetComponentInChildren<ParticleSystem>();
             jedi = GetComponentInParent<BallJedi>();
-            
-            //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(glitterCode, GlitterBall);
-            GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(GlitterBall);
         }
 
         void Update()
@@ -37,7 +32,7 @@ namespace LW.Ball
             light.color = Color.HSVToRGB(ball.Hue, 1, 1);
         }
 
-        void GlitterBall(OscMessage message)
+        public void GlitterBall(OscMessage message)
         {
             SendMessage("GlitterBall");
             GetComponentInChildren<GlitterParticlesId>().GetComponent<ParticleSystem>().Play();

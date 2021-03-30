@@ -6,13 +6,18 @@ using UnityEngine;
 
 public class BallOsc : MonoBehaviour
 {
+    [SerializeField] string killCode;
+    [SerializeField] string glitterCode;
+
     NewTracking tracking;
     CastOrigins origins;
     OSC osc;
     BallCaster caster;
     BallJedi jedi;
+    Ball ball;
+    BallParticleController particles;
 
-    bool holdOSC, frozenOSC, summonOSC, hasPushed, hasPulled, hasLifted, liftOSC, leftFisted, rightFisted, dualFisted, deadOSC;
+    bool holdOSC, frozenOSC, leftFisted, rightFisted, dualFisted;
 
     void Start()
     {
@@ -21,6 +26,12 @@ public class BallOsc : MonoBehaviour
         osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
         caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
         jedi = GetComponent<BallJedi>();
+        ball = GetComponent<Ball>();
+        particles = GetComponent<BallParticleController>();
+
+        GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(killCode, ball.KillBall);
+        //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(glitterCode, GlitterBall);
+        GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(particles.GlitterBall);
     }
 
     void Update()
@@ -121,43 +132,18 @@ public class BallOsc : MonoBehaviour
 
         if (jedi.power == TheForce.push)
         {
-            if (!hasPushed)
-            {
-                Send("pushing");
-                hasPushed = true;
-            }
+            Send("pushing");
         } 
-        else
-        {
-            hasPushed = false;
-        }
 
         if (jedi.power == TheForce.pull)
         {
-            if (!hasPulled)
-            {
-                Send("pulling");
-                hasPushed = true;
-            }
-        }
-        else
-        {
-            hasPulled = false;
+            Send("pulling");
         }
 
         if (jedi.power == TheForce.lift)
         {
-            if (!hasLifted)
-            {
-                Send("lifting");
-                hasLifted = true;
-            }
+            Send("lifting");
         }
-        else
-        {
-            hasLifted = false;
-        }
-
     }
 
     public void Send(string address, float val = 1)
