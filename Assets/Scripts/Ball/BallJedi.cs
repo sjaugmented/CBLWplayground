@@ -13,6 +13,7 @@ namespace LW.Ball
         [SerializeField] float pushMultiplier = 5;
         [SerializeField] float pullMultiplier = 5;
         [SerializeField] float liftMultiplier = 3;
+        [SerializeField] float recallMultiplier = 10;
         [SerializeField] float holdDistance = 0.5f;
         public float HoldDistance
         {
@@ -30,44 +31,55 @@ namespace LW.Ball
         {
             get { return liftMultiplier; }
         }
+        public float RecallForce
+        {
+            get { return recallMultiplier; }
+        }
         public bool Held { get; set; }
         public bool Frozen { get; set; }
-        public Hands fists = Hands.none;
-        public TheForce power = TheForce.idle;
+        public bool Recall { get; set; }
+        public Hands Fists = Hands.none;
+        public TheForce Power = TheForce.idle;
 
         bool frozenTriggered;
+        float lassoTimer = Mathf.Infinity;
 
         NewTracking tracking;
         CastOrigins origins;
+        Rigidbody rigidbody;
 
         void Start()
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            rigidbody = GetComponent<Rigidbody>();
         }
 
         void Update()
         {
-            GetComponent<Rigidbody>().useGravity = !Held && !Frozen;
-            GetComponent<ConstantForce>().enabled = !Held && !Frozen;
+            lassoTimer += Time.deltaTime;
 
+            GetComponent<ConstantForce>().enabled = !Held && !Frozen;
+            rigidbody.useGravity = !Held && !Frozen;
+
+            #region HOLDING & FISTS
             if (tracking.palms == Formation.together && origins.PalmsDist < holdDistance)
             {
                 Held = true;
 
                 if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
-                    fists = Hands.left;
+                    Fists = Hands.left;
                 }
 
                 if (tracking.rightPose == HandPose.fist && tracking.leftPose != HandPose.fist)
                 {
-                    fists = Hands.right;
+                    Fists = Hands.right;
                 }
 
                 if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
-                    fists = Hands.both;
+                    Fists = Hands.both;
                 }
 
                 if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
@@ -93,28 +105,46 @@ namespace LW.Ball
             {
                 Held = false;
             }
+            #endregion
 
+            #region RETRIEVE
+            if (tracking.rightPose == HandPose.fist && tracking.rightPalm == Direction.palmOut)
+            {
+                lassoTimer = 0;
+            }
 
+            if (lassoTimer < 2 && tracking.rightPose == HandPose.flat && tracking.rightPalm == Direction.palmOut)
+            {
+                Recall = true;
+            }
+            else
+            {
+                Recall = false;
+            }
+            #endregion
+
+            #region FORCES
             if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
-                power = TheForce.push;
+                Power = TheForce.push;
                 //forceFX.Play();
             }
             else if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
-                power = TheForce.pull;
+                Power = TheForce.pull;
                 //forceFX.Play();
             }
             else if (tracking.palms == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
             {
-                power = TheForce.lift;
+                Power = TheForce.lift;
                 //forceFX.Play();
             }
             else
             {
-                power = TheForce.idle;
+                Power = TheForce.idle;
                 //forceFX.Stop();
             }
+            #endregion
         }
     }
 

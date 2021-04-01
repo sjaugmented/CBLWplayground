@@ -1332,16 +1332,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b68f2f2e2551884c9b0a7b61e02f96e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceFX: {fileID: 688426550}
-  freezeFX: {fileID: 8300000, guid: 07b87954db10ab24c965f6f1f0a8892f, type: 3}
   uniBall: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
   multiBall: {fileID: 2193309183216341837, guid: 0e2773d268d0e2246a7dc0b18767d165,
     type: 3}
   zOffset: 0.03
-  holdDistance: 0.5
-  boostMultiplier: 10
-  summonMultiplier: 3
-  liftMultiplier: 3
   worldLvl: 1
 --- !u!4 &688426549
 Transform:
@@ -1560,7 +1554,7 @@ GameObject:
   - component: {fileID: 733917316}
   - component: {fileID: 733917318}
   m_Layer: 0
-  m_Name: NewTracking
+  m_Name: HandTracking
   m_TagString: HandTracking
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

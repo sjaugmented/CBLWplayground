@@ -5267,12 +5267,13 @@ MonoBehaviour:
   bounceFX: {fileID: 8300000, guid: d29443f41001c3a45b959b79b6a8722b, type: 3}
   explosionDelay: 0.2
   destroyDelay: 0.5
-  bounceForce: 1
+  bounceForce: 2
   touchFrequency: 0.5
   forceMult: 100000
   killForce: 0.0001
   hasBounce: 1
   bounce: 5
+  recallDistance: 0.2
 --- !u!114 &7484735728138884248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5285,14 +5286,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c522e9bf096e46bdbdd801d8096c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceFX: {fileID: 0}
   freezeFX: {fileID: 8300000, guid: 07b87954db10ab24c965f6f1f0a8892f, type: 3}
   pushMultiplier: 10
   pullMultiplier: 3
   liftMultiplier: 3
+  recallMultiplier: 10
   holdDistance: 0.5
-  fists: 3
-  power: 3
+  Fists: 3
+  Power: 4
 --- !u!114 &5145626739213686484
 MonoBehaviour:
   m_ObjectHideFlags: 0

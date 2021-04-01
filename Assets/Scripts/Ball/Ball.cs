@@ -18,12 +18,14 @@ namespace LW.Ball{
         [SerializeField] float killForce = 1000;
         [SerializeField] bool hasBounce = true;
         [SerializeField] float bounce = 10;
+        [SerializeField] float recallDistance = 0.3f;
 
         public int TouchLevel { get; set; }
         public float Hue { get; set; }
 
         float touchTimer;
         bool touchToggled;
+        Vector3 lassoOrigin;
 
         CastOrigins origins;
         BallCaster caster;
@@ -47,30 +49,44 @@ namespace LW.Ball{
             Hue = 0;
             touchTimer = Mathf.Infinity;
 
-            //osc.Send("iAM!");
+
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
         }
 
         void Update()
         {
             touchTimer += Time.deltaTime;
+            float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
 
-            if (jedi.power == TheForce.push)
+            if (jedi.Power == TheForce.push)
             {
                 transform.LookAt(2 * transform.position - Camera.main.transform.position);
                 rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * jedi.PushForce));
             }
 
-            if (jedi.power == TheForce.pull)
+            if (jedi.Power == TheForce.pull)
             {
                 transform.LookAt(Camera.main.transform.position);
                 rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * jedi.PullForce));
             }
 
-            if (jedi.power == TheForce.lift)
+            if (jedi.Power == TheForce.lift)
             {
                 transform.rotation = new Quaternion(0, 0, 0, 0);
                 rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * jedi.LiftForce));
+            }
+
+            if (jedi.Recall)
+            {
+                lassoOrigin = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>().GetRtPalm.Position;
+                //transform.position = lassoOrigin;
+                transform.LookAt(lassoOrigin);
+
+                if (distToOrigin > recallDistance)
+                {
+                    rigidbody.AddForce((transform.forward * jedi.RecallForce));
+                }
+                jedi.Recall = false;
             }
         }
 
@@ -107,6 +123,10 @@ namespace LW.Ball{
                         touchToggled = false;
                     }
                 }
+            }
+            else
+            {
+                osc.Send("bounced", TouchLevel);
             }
         }
 

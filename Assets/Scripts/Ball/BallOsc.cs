@@ -76,7 +76,7 @@ public class BallOsc : MonoBehaviour
             frozenOSC = false;
         }
 
-        if (jedi.fists == Hands.left)
+        if (jedi.Fists == Hands.left)
         {
             if (!leftFisted)
             {
@@ -96,7 +96,7 @@ public class BallOsc : MonoBehaviour
             leftFisted = false;
         }
 
-        if (jedi.fists == Hands.right)
+        if (jedi.Fists == Hands.right)
         {
             if (!rightFisted)
             {
@@ -116,7 +116,7 @@ public class BallOsc : MonoBehaviour
             rightFisted = false;
         }
 
-        if (jedi.fists == Hands.both)
+        if (jedi.Fists == Hands.both)
         {
             if (!dualFisted)
             {
@@ -136,17 +136,17 @@ public class BallOsc : MonoBehaviour
             dualFisted = false;
         }
 
-        if (jedi.power == TheForce.push)
+        if (jedi.Power == TheForce.push)
         {
             Send("pushing");
         } 
 
-        if (jedi.power == TheForce.pull)
+        if (jedi.Power == TheForce.pull)
         {
             Send("pulling");
         }
 
-        if (jedi.power == TheForce.lift)
+        if (jedi.Power == TheForce.lift)
         {
             Send("lifting");
         }
