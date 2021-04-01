@@ -41,7 +41,7 @@ namespace LW.Ball
         public Hands Fists = Hands.none;
         public TheForce Power = TheForce.idle;
 
-        bool frozenTriggered;
+        bool frozenTriggered, lassoReady;
         float lassoTimer = Mathf.Infinity;
 
         NewTracking tracking;
@@ -110,14 +110,26 @@ namespace LW.Ball
             #region RETRIEVE
             if (tracking.rightPose == HandPose.fist && tracking.rightPalm == Direction.palmOut)
             {
-                lassoTimer = 0;
+                if (!lassoReady)
+                {
+                    lassoTimer = 0;
+                    lassoReady = true;
+                }
+            }
+            else
+            {
+                lassoReady = false;
             }
 
-            if (lassoTimer < 2 && tracking.rightPose == HandPose.flat && tracking.rightPalm == Direction.palmOut)
+            if (lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalm == Direction.palmOut)
             {
                 Recall = true;
             }
-            else
+            //else
+            //{
+            //    Recall = false;
+            //}
+            if (tracking.rightPose != HandPose.fist)
             {
                 Recall = false;
             }

@@ -22,11 +22,13 @@ namespace LW.Ball{
 
         public int TouchLevel { get; set; }
         public float Hue { get; set; }
+        public bool CoreActive { get; set; }
 
         float touchTimer;
         bool touchToggled;
         Vector3 lassoOrigin;
 
+        NewTracking tracking;
         CastOrigins origins;
         BallCaster caster;
         BallJedi jedi;
@@ -40,6 +42,7 @@ namespace LW.Ball{
 
         void Start()
         {
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             jedi = GetComponent<BallJedi>();
@@ -48,7 +51,7 @@ namespace LW.Ball{
             TouchLevel = 0;
             Hue = 0;
             touchTimer = Mathf.Infinity;
-
+            CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
         }
@@ -86,7 +89,7 @@ namespace LW.Ball{
                 {
                     rigidbody.AddForce((transform.forward * jedi.RecallForce));
                 }
-                jedi.Recall = false;
+                //jedi.Recall = false;
             }
         }
 
@@ -110,18 +113,16 @@ namespace LW.Ball{
 
             if (other.gameObject.CompareTag("Player"))
             {
-                if (other.gameObject.CompareTag("Player")) {
-                    if (!touchToggled)
-                    {
-                        touchTimer = 0;
-                        touchToggled = true;
-                    }
+                if (!touchToggled)
+                {
+                    touchTimer = 0;
+                    touchToggled = true;
+                }
 
-                    if (touchTimer > touchFrequency)
-                    {
-                        TouchResponse();
-                        touchToggled = false;
-                    }
+                if (touchTimer > touchFrequency)
+                {
+                    TouchResponse();
+                    touchToggled = false;
                 }
             }
             else
@@ -132,14 +133,25 @@ namespace LW.Ball{
 
         private void TouchResponse()
         {
-            Hue += 0.1388f; // 1/5 of 360
+            TouchLevel += 1;
+
+            if (tracking.rightPose == HandPose.pointer || tracking.leftPose == HandPose.pointer)
+            {
+                CoreActive = true;
+                osc.Send("touched/primary", TouchLevel);
+            }
+            if (tracking.rightPose == HandPose.peace || tracking.leftPose == HandPose.peace)
+            {
+                CoreActive = false;
+                osc.Send("touched/secondary", TouchLevel);
+            }
+            
+            Hue += 0.1388f; // five colors: 1/5 of 360
             if (Hue > 1)
             {
                 Hue -= 1;
             }
 
-            TouchLevel += 1;
-            osc.Send("touched", TouchLevel);
         }
 
         public void KillBall(OscMessage message)

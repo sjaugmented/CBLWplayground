@@ -22,13 +22,11 @@ namespace LW.Ball
         float conjureTimer, destroyTimer = Mathf.Infinity;
 
         NewTracking tracking;
-        BallJedi jedi;
         GameObject ballInstance;
         
         void Start()
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            jedi = GetComponent<BallJedi>();
 
             if (GameObject.FindGameObjectWithTag("Ball"))
             {
@@ -85,7 +83,7 @@ namespace LW.Ball
                     destroyReady = false;
                 }
 
-                if (destroyTimer < 1 && tracking.rightPose == HandPose.fist)
+                if (destroyTimer < 1 && conjureTimer > 3 && tracking.rightPose == HandPose.fist)
                 {
                     DestroyBall();
                 }

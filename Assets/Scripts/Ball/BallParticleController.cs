@@ -23,10 +23,10 @@ namespace LW.Ball
             
             main.startLifetime = jedi.Held ? 3 : 1.15f;
             main.startSpeed = jedi.Held ? 1f : 0.25f;
-            emission.enabled = !jedi.Frozen;
+            emission.enabled = !jedi.Frozen && ball.CoreActive;
             
             Light light = GetComponentInChildren<Light>();
-            light.enabled = !jedi.Frozen;
+            light.enabled = !jedi.Frozen && ball.CoreActive;
 
             main.startColor = Color.HSVToRGB(ball.Hue, 1, 1);
             light.color = Color.HSVToRGB(ball.Hue, 1, 1);
