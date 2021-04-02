@@ -141,14 +141,14 @@ namespace LW.Ball
                 Power = TheForce.push;
                 //forceFX.Play();
             }
-            else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-            {
-                Power = TheForce.pull;
-                //forceFX.Play();
-            }
             else if (tracking.palmsAbs == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
             {
                 Power = TheForce.lift;
+                //forceFX.Play();
+            }
+            else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+            {
+                Power = TheForce.pull;
                 //forceFX.Play();
             }
             else
