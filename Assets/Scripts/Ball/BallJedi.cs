@@ -38,7 +38,7 @@ namespace LW.Ball
         public bool Held { get; set; }
         public bool Frozen { get; set; }
         public bool Recall { get; set; }
-        public Hands Fists = Hands.none;
+        public HandPose ControlPose = HandPose.none;
         public TheForce Power = TheForce.idle;
 
         bool frozenTriggered, lassoReady;
@@ -63,23 +63,23 @@ namespace LW.Ball
             rigidbody.useGravity = !Held && !Frozen;
 
             #region HOLDING & FISTS
-            if (tracking.palms == Formation.together && origins.PalmsDist < holdDistance)
+            if (tracking.palmsRel == Formation.together)
             {
                 Held = true;
 
-                if (tracking.rightPose != HandPose.fist && tracking.leftPose == HandPose.fist)
+                if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
                 {
-                    Fists = Hands.left;
+                    ControlPose = HandPose.pointer;
                 }
 
-                if (tracking.rightPose == HandPose.fist && tracking.leftPose != HandPose.fist)
+                if (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace)
                 {
-                    Fists = Hands.right;
+                    ControlPose = HandPose.peace;
                 }
 
                 if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
-                    Fists = Hands.both;
+                    ControlPose = HandPose.fist;
                 }
 
                 if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
@@ -108,7 +108,7 @@ namespace LW.Ball
             #endregion
 
             #region RETRIEVE
-            if (tracking.rightPose == HandPose.fist && tracking.rightPalm == Direction.palmOut)
+            if (tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
             {
                 if (!lassoReady)
                 {
@@ -121,7 +121,7 @@ namespace LW.Ball
                 lassoReady = false;
             }
 
-            if (lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalm == Direction.palmOut)
+            if (lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
             {
                 Recall = true;
             }
@@ -129,24 +129,24 @@ namespace LW.Ball
             //{
             //    Recall = false;
             //}
-            if (tracking.rightPose != HandPose.fist)
+            if (tracking.rightPose != HandPose.flat)
             {
                 Recall = false;
             }
             #endregion
 
             #region FORCES
-            if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+            if (tracking.palmsRel == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
                 Power = TheForce.push;
                 //forceFX.Play();
             }
-            else if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+            else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
                 Power = TheForce.pull;
                 //forceFX.Play();
             }
-            else if (tracking.palms == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
+            else if (tracking.palmsAbs == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
             {
                 Power = TheForce.lift;
                 //forceFX.Play();

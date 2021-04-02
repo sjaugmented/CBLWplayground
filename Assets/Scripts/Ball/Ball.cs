@@ -7,6 +7,7 @@ namespace LW.Ball{
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
+        [SerializeField] float perimeter = 0.5f;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] AudioClip bounceFX;
@@ -20,6 +21,7 @@ namespace LW.Ball{
         [SerializeField] float bounce = 10;
         [SerializeField] float recallDistance = 0.3f;
 
+        public bool WithinRange { get; set; }
         public int TouchLevel { get; set; }
         public float Hue { get; set; }
         public bool CoreActive { get; set; }
@@ -60,6 +62,8 @@ namespace LW.Ball{
         {
             touchTimer += Time.deltaTime;
             float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
+            float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
+            WithinRange = distanceToPlayer < perimeter;
 
             if (jedi.Power == TheForce.push)
             {
@@ -90,6 +94,16 @@ namespace LW.Ball{
                     rigidbody.AddForce((transform.forward * jedi.RecallForce));
                 }
                 //jedi.Recall = false;
+            }
+
+            if (jedi.Held && ((tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace) || (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)))
+            {
+                GetComponent<Collider>().enabled = false;
+            }
+            else
+            {
+                GetComponent<Collider>().enabled = true;
+
             }
         }
 

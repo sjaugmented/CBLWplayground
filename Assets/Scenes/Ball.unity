@@ -1575,9 +1575,12 @@ MonoBehaviour:
   strictMargin: 20
   printAngles: 0
   handedness: 3
-  palms: 5
-  rightPalm: 5
-  leftPalm: 5
+  palmsRel: 5
+  rightPalmRel: 5
+  leftPalmRel: 5
+  palmsAbs: 5
+  rightPalmAbs: 4
+  leftPalmAbs: 4
   rightPose: 7
   leftPose: 7
 --- !u!4 &733917317

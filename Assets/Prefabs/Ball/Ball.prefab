@@ -5262,6 +5262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc5a83f1a537c04da8045d8fe8bbbf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  perimeter: 1
   conjureFX: {fileID: 8300000, guid: 38de37df5a00e9e49afa785483afba2a, type: 3}
   destroyFX: {fileID: 8300000, guid: 576650110d307a142a2305b17193c441, type: 3}
   bounceFX: {fileID: 8300000, guid: d29443f41001c3a45b959b79b6a8722b, type: 3}
@@ -5292,7 +5293,7 @@ MonoBehaviour:
   liftMultiplier: 3
   recallMultiplier: 10
   holdDistance: 0.5
-  Fists: 3
+  ControlPose: 8
   Power: 4
 --- !u!114 &5145626739213686484
 MonoBehaviour:
@@ -5306,6 +5307,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c2d7e6e1b870642a18bb4e9a2fd5f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLifetime: 3
+  maxSize: 0.5
+  maxSpeed: 1
 --- !u!114 &2454764655673570708
 MonoBehaviour:
   m_ObjectHideFlags: 0

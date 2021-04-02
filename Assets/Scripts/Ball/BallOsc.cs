@@ -8,7 +8,6 @@ public class BallOsc : MonoBehaviour
 {
     [SerializeField] string killCode;
     [SerializeField] string glitterCode;
-    [SerializeField] float perimeter = 0.5f;
 
     NewTracking tracking;
     CastOrigins origins;
@@ -43,10 +42,6 @@ public class BallOsc : MonoBehaviour
 
     void Update()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
-        withinRange = distanceToPlayer < perimeter;
-
-
         if (jedi.Held)
         {
             if (!holdOSC)
@@ -81,68 +76,68 @@ public class BallOsc : MonoBehaviour
             frozenOSC = false;
         }
 
-        if (jedi.Fists == Hands.left)
+        if (jedi.ControlPose == HandPose.pointer)
         {
             if (!leftFisted)
             {
-                Send("leftFistOn");
+                Send("pointerControlOn");
                 leftFisted = true;
             }
-            if (withinRange)
+            if (ball.WithinRange)
             {
-                Send("leftProximityAngle", 1 - tracking.StaffUp / 180);
-                Send("leftProximityDistance", origins.PalmsDist / jedi.HoldDistance);
+                Send("pointerControlAngle", 1 - tracking.StaffUp / 180);
+                Send("pointerControlDistance", origins.PalmsDist / jedi.HoldDistance);
             }
         }
         else
         {
             if (leftFisted)
             {
-                Send("leftFistOff");
+                Send("pointerControlOff");
             }
             leftFisted = false;
         }
 
-        if (jedi.Fists == Hands.right)
+        if (jedi.ControlPose == HandPose.peace)
         {
             if (!rightFisted)
             {
-                Send("rightFistOn");
+                Send("peaceControlOn");
                 rightFisted = true;
             }
-            if (withinRange)
+            if (ball.WithinRange)
             {
-                Send("rightProximityAngle", 1 - tracking.StaffUp / 180);
-                Send("rightProximityDistance", origins.PalmsDist / jedi.HoldDistance);
+                Send("peaceControlAngle", 1 - tracking.StaffUp / 180);
+                Send("peaceControlDistance", origins.PalmsDist / jedi.HoldDistance);
             }
         } 
         else
         {
             if (rightFisted)
             {
-                Send("rightFistOff");
+                Send("peaceControlOff");
             }
             rightFisted = false;
         }
 
-        if (jedi.Fists == Hands.both)
+        if (jedi.ControlPose == HandPose.fist)
         {
             if (!dualFisted)
             {
-                Send("dualFistOn");
+                Send("fistControlOn");
                 dualFisted = true;
             }
-            if (withinRange)
+            if (ball.WithinRange)
             {
-                Send("proximityAngle", 1 - tracking.StaffUp / 180);
-                Send("proximityDistance", origins.PalmsDist / jedi.HoldDistance);
+                Send("fistControlAngle", 1 - tracking.StaffUp / 180);
+                Send("fistControlDistance", origins.PalmsDist / jedi.HoldDistance);
             }
         } 
         else
         {
             if (dualFisted)
             {
-                Send("dualFistOff");
+                Send("fistControlOff");
             }
             dualFisted = false;
         }

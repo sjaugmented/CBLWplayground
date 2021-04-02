@@ -48,7 +48,7 @@ namespace LW.Ball
 
             if (!BallInPlay)
             {
-                if (tracking.rightPose == HandPose.fist && tracking.rightPalm == Direction.up)
+                if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
                 {
                     if (!conjureReady)
                     {
@@ -70,7 +70,7 @@ namespace LW.Ball
             {
                 if (!ballInstance) { return; }
 
-                if (tracking.rightPose == HandPose.flat && tracking.rightPalm == Direction.palmIn)
+                if (tracking.rightPose == HandPose.flat && (tracking.rightPalmRel == Direction.palmIn || tracking.rightPalmRel == Direction.palmIn))
                 {
                     if (!destroyReady)
                     {
