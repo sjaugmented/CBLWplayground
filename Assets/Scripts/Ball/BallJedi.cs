@@ -107,7 +107,7 @@ namespace LW.Ball
             }
             #endregion
 
-            #region RETRIEVE
+            #region RECALL
             if (tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
             {
                 if (!lassoReady)
