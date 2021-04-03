@@ -17,7 +17,7 @@ public class BallOsc : MonoBehaviour
     Ball ball;
     BallParticleController particles;
 
-    bool holdOSC, frozenOSC, leftFisted, rightFisted, dualFisted, withinRange;
+    bool holdToggle, activeToggle, stillToggle, pointerToggle, rightFisted, dualFisted, withinRange;
 
     private void Awake()
     {
@@ -44,44 +44,44 @@ public class BallOsc : MonoBehaviour
     {
         if (jedi.Held)
         {
-            if (!holdOSC)
+            if (!holdToggle)
             {
                 Send("holdingOn");
-                holdOSC = true;
+                holdToggle = true;
             }
         }
         else
         {
-            if (holdOSC)
+            if (holdToggle)
             {
                 Send("holdingOff");
+                holdToggle = false;
             }
-            holdOSC = false;
         }
 
-        if (jedi.Frozen)
+        if (ball.State == BallState.Active)
         {
-            if (!frozenOSC)
+            if (!activeToggle)
             {
-                Send("frozenOn");
-                frozenOSC = true;
+                Send("activeMode");
+                activeToggle = true;
             }
         } 
         else
         {
-            if (frozenOSC)
+            if (activeToggle)
             {
-                Send("frozenOff");
+                Send("stillMode");
+                activeToggle = false;
             }
-            frozenOSC = false;
         }
 
         if (jedi.ControlPose == HandPose.pointer)
         {
-            if (!leftFisted)
+            if (!pointerToggle)
             {
                 Send("pointerControlOn");
-                leftFisted = true;
+                pointerToggle = true;
             }
             if (ball.WithinRange)
             {
@@ -91,33 +91,11 @@ public class BallOsc : MonoBehaviour
         }
         else
         {
-            if (leftFisted)
+            if (pointerToggle)
             {
                 Send("pointerControlOff");
+                pointerToggle = false;
             }
-            leftFisted = false;
-        }
-
-        if (jedi.ControlPose == HandPose.peace)
-        {
-            if (!rightFisted)
-            {
-                Send("peaceControlOn");
-                rightFisted = true;
-            }
-            if (ball.WithinRange)
-            {
-                Send("peaceControlAngle", 1 - tracking.StaffUp / 180);
-                Send("peaceControlDistance", origins.PalmsDist / jedi.HoldDistance);
-            }
-        } 
-        else
-        {
-            if (rightFisted)
-            {
-                Send("peaceControlOff");
-            }
-            rightFisted = false;
         }
 
         if (jedi.ControlPose == HandPose.fist)
@@ -138,8 +116,8 @@ public class BallOsc : MonoBehaviour
             if (dualFisted)
             {
                 Send("fistControlOff");
+                dualFisted = false;
             }
-            dualFisted = false;
         }
 
         if (jedi.Power == TheForce.push)
@@ -161,7 +139,7 @@ public class BallOsc : MonoBehaviour
     public void Send(string address = "default", float val = 1)
     {
         OscMessage message = new OscMessage();
-        message.address = caster.WorldLevel + "/" + address + "/";
+        message.address = caster.WorldLevel + "/" + ball.State + "/" + address + "/";
         message.values.Add(val);
         osc.Send(message);
     }

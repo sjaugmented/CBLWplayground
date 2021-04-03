@@ -8,8 +8,8 @@ namespace LW.Ball
     public enum TheForce { push, pull, lift, idle}
     public class BallJedi : MonoBehaviour
     {
-        [SerializeField] AudioClip freezeFX;
-        [SerializeField] AudioClip unFreezeFX;
+        //[SerializeField] AudioClip freezeFX;
+        //[SerializeField] AudioClip unFreezeFX;
         [SerializeField] float pushMultiplier = 5;
         [SerializeField] float pullMultiplier = 5;
         [SerializeField] float liftMultiplier = 3;
@@ -36,7 +36,6 @@ namespace LW.Ball
             get { return recallMultiplier; }
         }
         public bool Held { get; set; }
-        public bool Frozen { get; set; }
         public bool Recall { get; set; }
         public HandPose ControlPose = HandPose.none;
         public TheForce Power = TheForce.idle;
@@ -47,20 +46,24 @@ namespace LW.Ball
         NewTracking tracking;
         CastOrigins origins;
         Rigidbody rigidbody;
+        Ball ball;
 
         void Start()
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             rigidbody = GetComponent<Rigidbody>();
+            ball = GetComponent<Ball>();
         }
 
         void Update()
         {
             lassoTimer += Time.deltaTime;
 
-            GetComponent<ConstantForce>().enabled = !Held && !Frozen;
-            rigidbody.useGravity = !Held && !Frozen;
+            GetComponent<ConstantForce>().enabled = !Held && ball.State == BallState.Active;
+            rigidbody.useGravity = !Held && ball.State == BallState.Active;
+
+            //ball.CoreActive = Power != TheForce.idle && Recall == false;
 
             #region Held / ControlPoses
             if (tracking.palmsRel == Formation.together)
@@ -84,29 +87,29 @@ namespace LW.Ball
                     ControlPose = HandPose.none;
                 }
 
-                if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
-                {
-                    if (!frozenTriggered)
-                    {
-                        Frozen = !Frozen;
+                //if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
+                //{
+                //    if (!frozenTriggered)
+                //    {
+                //        ball.Frozen = !ball.Frozen;
 
-                        if (!Frozen && !GetComponent<AudioSource>().isPlaying)
-                        {
-                            GetComponent<AudioSource>().PlayOneShot(freezeFX);
-                        }
+                //        if (!ball.Frozen && !GetComponent<AudioSource>().isPlaying)
+                //        {
+                //            GetComponent<AudioSource>().PlayOneShot(freezeFX);
+                //        }
 
-                        if (Frozen && !GetComponent<AudioSource>().isPlaying)
-                        {
-                            GetComponent<AudioSource>().PlayOneShot(unFreezeFX);
-                        }
+                //        if (ball.Frozen && !GetComponent<AudioSource>().isPlaying)
+                //        {
+                //            GetComponent<AudioSource>().PlayOneShot(unFreezeFX);
+                //        }
 
-                        frozenTriggered = true;
-                    }
-                }
-                if (tracking.rightPose != HandPose.thumbsUp && tracking.leftPose != HandPose.thumbsUp)
-                {
-                    frozenTriggered = false;
-                }
+                //        frozenTriggered = true;
+                //    }
+                //}
+                //if (tracking.rightPose != HandPose.thumbsUp && tracking.leftPose != HandPose.thumbsUp)
+                //{
+                //    frozenTriggered = false;
+                //}
             }
             else
             {

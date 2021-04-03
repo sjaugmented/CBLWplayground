@@ -20,7 +20,7 @@ namespace LW.Ball
         }
         public bool BallInPlay { get; set; }
 
-        bool conjureReady, destroyReady;
+        bool conjureReady, destroyReady, hasReset;
         float conjureTimer, destroyTimer = Mathf.Infinity;
 
         NewTracking tracking;
@@ -48,7 +48,7 @@ namespace LW.Ball
             conjureTimer += Time.deltaTime;
             destroyTimer += Time.deltaTime;
 
-            if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
+            if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
             {
                 if (!conjureReady)
                 {
@@ -61,7 +61,7 @@ namespace LW.Ball
                 conjureReady = false;
             }
 
-            if (conjureTimer < 3 && tracking.rightPose == HandPose.flat)
+            if (conjureTimer < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
             {
                 ConjureBall();
             }
@@ -108,6 +108,11 @@ namespace LW.Ball
                     DestroyBall();
                 }
             }
+
+            if (ballInstance)
+            {
+                handColliders.SetActive(!ballInstance.GetComponent<Ball>().InteractingWithParticles);
+            }
         }
 
         private void ConjureBall()
@@ -122,12 +127,15 @@ namespace LW.Ball
             }
             else
             {
-                Debug.Log("resetting");
-                ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
-                ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
-                if (!GetComponent<AudioSource>().isPlaying)
+                if (!hasReset)
                 {
-                    GetComponent<AudioSource>().PlayOneShot(resetFX);
+                    ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
+                    ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
+                    if (!GetComponent<AudioSource>().isPlaying)
+                    {
+                        GetComponent<AudioSource>().PlayOneShot(resetFX);
+                    }
+                    hasReset = true;
                 }
             }
             

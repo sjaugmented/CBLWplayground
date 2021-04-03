@@ -122,8 +122,6 @@ namespace LW.Core {
             ltPalmInRel = Vector3.Angle(ltPalm.Up, cam.right * -1); // inverted for symmetry
             ltLauncher = Vector3.Angle(ltPalm.Right, cam.up);
 
-            // TODO fix cross talk for the below poses, -- setup a second enum for absolute poses
-
             if (!foundRtPalm) {
                 rightPalmRel = Direction.none;
                 rightPalmAbs = Direction.none;
@@ -165,10 +163,12 @@ namespace LW.Core {
             if (IsPosed(rtPalmInRel, 0))
             {
                 rightPalmRel = Direction.side;
+                rightPalmAbs = Direction.none;
             }
             if (IsPosed(ltPalmInRel, 0))
             {
                 leftPalmRel = Direction.side;
+                leftPalmAbs = Direction.none;
             }
             #endregion
 

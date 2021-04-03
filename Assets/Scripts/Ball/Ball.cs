@@ -3,14 +3,19 @@ using UnityEngine;
 using LW.Core;
 
 namespace LW.Ball{
+    public enum BallState { Active, Still };
+
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
+        [SerializeField] GameObject containmentSphere; // on off based on frozen
         [SerializeField] float perimeter = 0.5f;
         [SerializeField] AudioClip conjureFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] AudioClip bounceFX;
+        [SerializeField] AudioClip stillFX;
+        [SerializeField] AudioClip activeFX;
         [SerializeField] float explosionDelay = 0.5f;
         [SerializeField] float destroyDelay = 0.5f;
         [SerializeField] float bounceForce = 1;
@@ -21,14 +26,16 @@ namespace LW.Ball{
         [SerializeField] float bounce = 10;
         [SerializeField] float recallDistance = 0.3f;
 
+        public BallState State = BallState.Active;
         public bool WithinRange { get; set; }
         public int TouchLevel { get; set; }
         public float Hue { get; set; }
         public bool CoreActive { get; set; }
+        bool touched = false;
         public bool InteractingWithParticles { get; set; }
 
         float touchTimer;
-        bool touchToggled;
+        bool touchToggle;
         Vector3 lassoOrigin;
 
         NewTracking tracking;
@@ -66,7 +73,20 @@ namespace LW.Ball{
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
             GetComponent<Collider>().enabled = !InteractingWithParticles;
+            containmentSphere.SetActive(State == BallState.Still);
 
+            CoreActive = touched || jedi.Power != TheForce.idle || jedi.Recall == true;
+
+            if (jedi.Held && ((tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace) || (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)))
+            {
+                InteractingWithParticles = true;
+            }
+            else
+            {
+                InteractingWithParticles = false;
+            }
+
+            //Debug.Log("Interacting???" + InteractingWithParticles);
 
             if (jedi.Power == TheForce.push)
             {
@@ -89,29 +109,17 @@ namespace LW.Ball{
             if (jedi.Recall)
             {
                 lassoOrigin = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>().GetRtPalm.Position;
-                //transform.position = lassoOrigin;
                 transform.LookAt(lassoOrigin);
 
                 if (distToOrigin > recallDistance)
                 {
                     rigidbody.AddForce((transform.forward * jedi.RecallForce));
                 }
-                //jedi.Recall = false;
-            }
-
-            if (jedi.Held && ((tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace) || (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)))
-            {
-                InteractingWithParticles = true;
-            }
-            else
-            {
-                InteractingWithParticles = false;
-
             }
         }
 
         private void OnCollisionEnter(Collision other) {
-            if (jedi.Frozen || InteractingWithParticles) { return; }
+            if (InteractingWithParticles) { return; }
 
             Vector3 dir = other.contacts[0].point - transform.position;
             dir = -dir.normalized;
@@ -130,45 +138,102 @@ namespace LW.Ball{
 
             if (other.gameObject.CompareTag("Player"))
             {
-                if (!touchToggled)
-                {
-                    touchTimer = 0;
-                    touchToggled = true;
-                }
-
-                if (touchTimer > touchFrequency)
-                {
-                    TouchResponse();
-                    touchToggled = false;
-                }
+                DetermineTouchResponse();
             }
-            //else
+            else
+            {
+                osc.Send("bounced", TouchLevel);
+                Debug.Log("bounced");
+            }
+        }
+
+        private void DetermineTouchResponse()
+        {
+            if (tracking.rightPose == HandPose.fist || tracking.leftPose == HandPose.fist)
+            {
+                if (State != BallState.Still)
+                {
+                    GetComponent<AudioSource>().PlayOneShot(stillFX);
+                }
+                State = BallState.Still;
+            }
+
+            if (tracking.rightPose == HandPose.flat || tracking.leftPose == HandPose.flat)
+            {
+                if (State != BallState.Active)
+                {
+                    GetComponent<AudioSource>().PlayOneShot(activeFX);
+                }
+                State = BallState.Active;
+            }
+
+            if (State == BallState.Active)
+            {
+                touched = true;
+            }
+
+            if (!touchToggle)
+            {
+                //touchTimer = 0;
+                //touchToggled = true;
+                TouchLevel += 1;
+                TouchOSC();
+                touchToggle = true;
+            }
+
+            //if (touchTimer > touchFrequency)
             //{
-            //    osc.Send("bounced", TouchLevel);
+            //TouchLevel += 1;
+            //TouchOSC();
+            //touchToggled = false;
             //}
         }
 
-        private void TouchResponse()
+        private void OnCollisionExit(Collision collision)
         {
-            TouchLevel += 1;
+            if (State == BallState.Active)
+            {
+                touched = false;
+            }
+            touchToggle = false;
+        }
 
-            if (tracking.rightPose == HandPose.pointer || tracking.leftPose == HandPose.pointer)
+        private void TouchOSC()
+        {
+            if (tracking.rightPose == HandPose.fist)
             {
-                CoreActive = true;
-                osc.Send("touched/primary", TouchLevel);
+                osc.Send("rightFist", TouchLevel);
             }
-            if (tracking.rightPose == HandPose.peace || tracking.leftPose == HandPose.peace)
+            else
             {
-                CoreActive = false;
-                osc.Send("touched/secondary", TouchLevel);
+                osc.Send("rightOpen", TouchLevel);
             }
-            
+
+            if (tracking.leftPose == HandPose.fist)
+            {
+                osc.Send("leftFist", TouchLevel);
+            }
+            else
+            {
+                osc.Send("leftOpen", TouchLevel);
+            }
+
+            //if (tracking.rightPose == HandPose.fist || tracking.leftPose == HandPose.fist)
+            //{
+            //    Frozen = true;
+            //    osc.Send("touched/primary", TouchLevel);
+            //}
+            //if (tracking.rightPose == HandPose.peace || tracking.leftPose == HandPose.peace)
+            //{
+            //    CoreActive = false;
+            //    osc.Send("touched/secondary", TouchLevel);
+            //}
+
             //Hue += 0.1388f; // five colors: 1/5 of 360
             //if (Hue > 1)
             //{
             //    Hue -= 1;
             //}
-
         }
 
         public void KillBall(OscMessage message)
