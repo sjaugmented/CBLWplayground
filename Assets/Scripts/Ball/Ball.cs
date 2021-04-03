@@ -25,6 +25,7 @@ namespace LW.Ball{
         public int TouchLevel { get; set; }
         public float Hue { get; set; }
         public bool CoreActive { get; set; }
+        public bool InteractingWithParticles { get; set; }
 
         float touchTimer;
         bool touchToggled;
@@ -64,6 +65,8 @@ namespace LW.Ball{
             float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
+            GetComponent<Collider>().enabled = !InteractingWithParticles;
+
 
             if (jedi.Power == TheForce.push)
             {
@@ -98,17 +101,17 @@ namespace LW.Ball{
 
             if (jedi.Held && ((tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace) || (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)))
             {
-                GetComponent<Collider>().enabled = false;
+                InteractingWithParticles = true;
             }
             else
             {
-                GetComponent<Collider>().enabled = true;
+                InteractingWithParticles = false;
 
             }
         }
 
         private void OnCollisionEnter(Collision other) {
-            if (jedi.Frozen) { return; }
+            if (jedi.Frozen || InteractingWithParticles) { return; }
 
             Vector3 dir = other.contacts[0].point - transform.position;
             dir = -dir.normalized;
@@ -139,10 +142,10 @@ namespace LW.Ball{
                     touchToggled = false;
                 }
             }
-            else
-            {
-                osc.Send("bounced", TouchLevel);
-            }
+            //else
+            //{
+            //    osc.Send("bounced", TouchLevel);
+            //}
         }
 
         private void TouchResponse()
@@ -160,11 +163,11 @@ namespace LW.Ball{
                 osc.Send("touched/secondary", TouchLevel);
             }
             
-            Hue += 0.1388f; // five colors: 1/5 of 360
-            if (Hue > 1)
-            {
-                Hue -= 1;
-            }
+            //Hue += 0.1388f; // five colors: 1/5 of 360
+            //if (Hue > 1)
+            //{
+            //    Hue -= 1;
+            //}
 
         }
 
@@ -199,6 +202,11 @@ namespace LW.Ball{
             caster.BallInPlay = false;
             osc.Send("iDead");
             Destroy(gameObject); 
+        }
+
+        public void IsGazedAt()
+        {
+            // something
         }
 
     }

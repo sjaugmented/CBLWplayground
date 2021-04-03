@@ -8,8 +8,8 @@ namespace LW.Ball
     public enum TheForce { push, pull, lift, idle}
     public class BallJedi : MonoBehaviour
     {
-        //[SerializeField] AudioSource forceFX;
         [SerializeField] AudioClip freezeFX;
+        [SerializeField] AudioClip unFreezeFX;
         [SerializeField] float pushMultiplier = 5;
         [SerializeField] float pullMultiplier = 5;
         [SerializeField] float liftMultiplier = 3;
@@ -62,7 +62,7 @@ namespace LW.Ball
             GetComponent<ConstantForce>().enabled = !Held && !Frozen;
             rigidbody.useGravity = !Held && !Frozen;
 
-            #region HOLDING & FISTS
+            #region Held / ControlPoses
             if (tracking.palmsRel == Formation.together)
             {
                 Held = true;
@@ -71,15 +71,17 @@ namespace LW.Ball
                 {
                     ControlPose = HandPose.pointer;
                 }
-
-                if (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace)
+                else if (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace)
                 {
                     ControlPose = HandPose.peace;
                 }
-
-                if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
                     ControlPose = HandPose.fist;
+                }
+                else
+                {
+                    ControlPose = HandPose.none;
                 }
 
                 if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
@@ -91,6 +93,11 @@ namespace LW.Ball
                         if (!Frozen && !GetComponent<AudioSource>().isPlaying)
                         {
                             GetComponent<AudioSource>().PlayOneShot(freezeFX);
+                        }
+
+                        if (Frozen && !GetComponent<AudioSource>().isPlaying)
+                        {
+                            GetComponent<AudioSource>().PlayOneShot(unFreezeFX);
                         }
 
                         frozenTriggered = true;
@@ -139,22 +146,18 @@ namespace LW.Ball
             if (tracking.palmsRel == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
                 Power = TheForce.push;
-                //forceFX.Play();
             }
             else if (tracking.palmsAbs == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
             {
                 Power = TheForce.lift;
-                //forceFX.Play();
             }
             else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
                 Power = TheForce.pull;
-                //forceFX.Play();
             }
             else
             {
                 Power = TheForce.idle;
-                //forceFX.Stop();
             }
             #endregion
         }

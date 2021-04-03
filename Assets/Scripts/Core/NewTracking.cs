@@ -9,6 +9,7 @@ namespace LW.Core {
     public enum Formation {palmsIn, palmsOut, together, palmsUp, palmsDown, none}
     public enum HandPose {pointer, peace, flat, fist, gun, thumbsUp, rockOn, any, none}
 
+    [RequireComponent(typeof(CastOrigins))]
     public class NewTracking : MonoBehaviour
     {
         [SerializeField] float strictMargin = 20;
@@ -16,10 +17,10 @@ namespace LW.Core {
 
         public Hands handedness = Hands.none;
         public Formation palmsRel = Formation.none;
-        public Direction rightPalmRel = Direction.none;
-        public Direction leftPalmRel = Direction.none;
         public Formation palmsAbs = Formation.none;
+        public Direction rightPalmRel = Direction.none;
         public Direction rightPalmAbs = Direction.none;
+        public Direction leftPalmRel = Direction.none;
         public Direction leftPalmAbs = Direction.none;
         public HandPose rightPose = HandPose.none;
         public HandPose leftPose = HandPose.none;
@@ -229,10 +230,12 @@ namespace LW.Core {
             if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalmRel == Direction.up && leftPalmRel == Direction.down) || (rightPalmRel == Direction.down && leftPalmRel == Direction.up))))
             {
                 palmsRel = Formation.none;
+                palmsAbs = Formation.none;
             }
 
             else if (IsPosed(palmToPalm, 180)) {
                 palmsRel = Formation.together;
+                palmsAbs = Formation.together;
             }
 
             #region RELATIVES
@@ -318,7 +321,7 @@ namespace LW.Core {
             }
             else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && IsPosed(rtPinkyForward, 0))
             {
-                //rightPose = HandPose.rockOn;                          
+                rightPose = HandPose.rockOn;
             }
             else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.pointer;
@@ -341,7 +344,7 @@ namespace LW.Core {
             }
             else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0) || IsPosed(ltMidForward, 180)) && IsPosed(ltPinkyForward, 0))
             {
-                //leftPose = HandPose.rockOn;
+                leftPose = HandPose.rockOn;
             }
             else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.pointer;

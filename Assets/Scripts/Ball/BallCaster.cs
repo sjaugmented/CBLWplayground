@@ -8,6 +8,8 @@ namespace LW.Ball
 {
     public class BallCaster : MonoBehaviour
     {
+        [SerializeField] AudioClip resetFX;
+        [SerializeField] GameObject handColliders;
         [SerializeField] GameObject uniBall;
         [SerializeField] GameObject multiBall;
         [SerializeField] float zOffset = 0.1f;
@@ -46,31 +48,49 @@ namespace LW.Ball
             conjureTimer += Time.deltaTime;
             destroyTimer += Time.deltaTime;
 
+            if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
+            {
+                if (!conjureReady)
+                {
+                    conjureTimer = 0;
+                    conjureReady = true;
+                }
+            }
+            else
+            {
+                conjureReady = false;
+            }
+
+            if (conjureTimer < 3 && tracking.rightPose == HandPose.flat)
+            {
+                ConjureBall();
+            }
+
             if (!BallInPlay)
             {
-                if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
-                {
-                    if (!conjureReady)
-                    {
-                        conjureTimer = 0;
-                        conjureReady = true;
-                    }
-                }
-                else
-                {
-                    conjureReady = false;
-                }
+                //if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
+                //{
+                //    if (!conjureReady)
+                //    {
+                //        conjureTimer = 0;
+                //        conjureReady = true;
+                //    }
+                //}
+                //else
+                //{
+                //    conjureReady = false;
+                //}
 
-                if (conjureTimer < 3 && tracking.rightPose == HandPose.flat)
-                {
-                    ConjureBall();
-                }
+                //if (conjureTimer < 3 && tracking.rightPose == HandPose.flat)
+                //{
+                //    ConjureBall();
+                //}
             }
             else
             {
                 if (!ballInstance) { return; }
 
-                if (tracking.rightPose == HandPose.flat && (tracking.rightPalmRel == Direction.palmIn || tracking.rightPalmRel == Direction.palmIn))
+                if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
                 {
                     if (!destroyReady)
                     {
@@ -92,10 +112,25 @@ namespace LW.Ball
 
         private void ConjureBall()
         {
-            BallInPlay = true;
             Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
+            
+            if (!BallInPlay)
+            {
+                BallInPlay = true;
 
-            ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+                ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+            }
+            else
+            {
+                Debug.Log("resetting");
+                ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
+                ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
+                if (!GetComponent<AudioSource>().isPlaying)
+                {
+                    GetComponent<AudioSource>().PlayOneShot(resetFX);
+                }
+            }
+            
 
             //if (WorldLevel == 1)
             //{
@@ -113,6 +148,16 @@ namespace LW.Ball
             {
                 ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
             }
+        }
+
+        public void DisableHandColliders()
+        {
+            handColliders.SetActive(false);
+        }
+
+        public void EnableHandColliders()
+        {
+            handColliders.SetActive(true);
         }
     }
 }
