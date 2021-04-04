@@ -20,7 +20,8 @@ namespace LW.Ball
         }
         public bool BallInPlay { get; set; }
 
-        bool conjureReady, destroyReady, hasReset;
+        public bool hasReset = false;
+        bool conjureReady, destroyReady; /*hasReset = false;*/
         float conjureTimer, destroyTimer = Mathf.Infinity;
 
         NewTracking tracking;
@@ -39,6 +40,8 @@ namespace LW.Ball
             {
                 BallInPlay = false;
             }
+
+            Debug.Log("Ball in Play: " + BallInPlay);
 
             WorldLevel = 1;
         }
@@ -65,28 +68,32 @@ namespace LW.Ball
             {
                 ConjureBall();
             }
-
-            if (!BallInPlay)
-            {
-                //if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
-                //{
-                //    if (!conjureReady)
-                //    {
-                //        conjureTimer = 0;
-                //        conjureReady = true;
-                //    }
-                //}
-                //else
-                //{
-                //    conjureReady = false;
-                //}
-
-                //if (conjureTimer < 3 && tracking.rightPose == HandPose.flat)
-                //{
-                //    ConjureBall();
-                //}
-            }
             else
+            {
+                hasReset = false;
+            }
+
+            //if (!BallInPlay)
+            //{
+            //    //if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
+            //    //{
+            //    //    if (!conjureReady)
+            //    //    {
+            //    //        conjureTimer = 0;
+            //    //        conjureReady = true;
+            //    //    }
+            //    //}
+            //    //else
+            //    //{
+            //    //    conjureReady = false;
+            //    //}
+
+            //    //if (conjureTimer < 3 && tracking.rightPose == HandPose.flat)
+            //    //{
+            //    //    ConjureBall();
+            //    //}
+            //}
+            if (BallInPlay)
             {
                 if (!ballInstance) { return; }
 
@@ -117,18 +124,20 @@ namespace LW.Ball
 
         private void ConjureBall()
         {
+            Debug.Log("Conjure/Reset");
             Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
             
             if (!BallInPlay)
             {
                 BallInPlay = true;
-
                 ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
             }
             else
             {
+                Debug.Log("Ball is in play");
                 if (!hasReset)
                 {
+                    Debug.Log("RESET");
                     ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
                     ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
                     if (!GetComponent<AudioSource>().isPlaying)

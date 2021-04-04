@@ -7,14 +7,16 @@ namespace LW.Ball
 {
     public class BallParticleController : MonoBehaviour
     {
-        [SerializeField] float maxLifetime = 3;
-        [SerializeField] float maxSize = 0.5f;
+        [SerializeField] float maxLifetime = 2;
+        [SerializeField] float maxSize = 0.25f;
         [SerializeField] float maxSpeed = 1;
 
-        public float CoreDensity { get; set; }
-        public float CoreIntensity { get; set; }
+        public float CoreSize { get; set; }
+        public float CoreLifetime { get; set; }
+        public float CoreSpeed { get; set; }
         public float CoreHue { get; set; }
         public float CoreSat { get; set; }
+        public float CoreVal { get; set; }
 
         Ball ball;
         ParticleSystem innerParticles;
@@ -31,10 +33,12 @@ namespace LW.Ball
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             light = GetComponentInChildren<Light>();
 
-            CoreDensity = 0.5f;
-            CoreIntensity = 0.5f;
-            CoreHue = 0.5f;
-            CoreSat = 0.5f;
+            CoreSize = 0.5f;
+            CoreLifetime = 0.5f;
+            CoreSpeed = 0.5f;
+            CoreHue = 1f;
+            CoreSat = 1f;
+            CoreVal = 1;
         }
 
         void Update()
@@ -44,16 +48,36 @@ namespace LW.Ball
 
             if (ball.WithinRange)
             {
-                
-                if (jedi.ControlPose == HandPose.pointer)
+                if (ball.State == BallState.Still)
                 {
-                    CoreHue = origins.PalmsDist / jedi.HoldDistance;
-                    CoreSat = tracking.StaffUp / 180;
+                    if (jedi.ControlPose == HandPose.pointer)
+                    {
+                        CoreHue = origins.PalmsDist / jedi.HoldDistance;
+                    }
+                    if (jedi.ControlPose == HandPose.fist)
+                    {
+                        CoreSat = origins.PalmsDist / jedi.HoldDistance;
+                        CoreLifetime = origins.PalmsDist / jedi.HoldDistance;
+                    }
+                    if (jedi.ControlPose == HandPose.thumbsUp)
+                    {
+                        CoreVal = origins.PalmsDist / jedi.HoldDistance;
+                    }
                 }
-                if (jedi.ControlPose == HandPose.fist)
+                else
                 {
-                    CoreDensity = origins.PalmsDist / jedi.HoldDistance;
-                    CoreIntensity = tracking.StaffUp / 180;
+                    if (jedi.ControlPose == HandPose.pointer)
+                    {
+                        CoreHue = origins.PalmsDist / jedi.HoldDistance;
+                    }
+                    if (jedi.ControlPose == HandPose.fist)
+                    {
+                        CoreSat = origins.PalmsDist / jedi.HoldDistance;
+                    }
+                    if (jedi.ControlPose == HandPose.thumbsUp)
+                    {
+                        CoreVal = origins.PalmsDist / jedi.HoldDistance;
+                    }
                 }
             }
 
@@ -62,12 +86,12 @@ namespace LW.Ball
 
             main.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
 
-            main.startSize = CoreDensity * maxSize;
+            main.startSize = ball.State == BallState.Active ? 0.1f : CoreSize * maxSize;
 
-            main.startSpeed = ball.State == BallState.Still ? 0.26f : CoreIntensity * maxSpeed;
-            main.startLifetime = ball.State == BallState.Still ? 1.5f : CoreIntensity * maxLifetime;
+            main.startSpeed = ball.State == BallState.Still ? 0.26f : CoreSpeed * maxSpeed;
+            main.startLifetime = ball.State == BallState.Still ? 1.5f : CoreLifetime * maxLifetime;
             main.startColor = Color.HSVToRGB(CoreHue, CoreSat, 1);
-            light.color = Color.HSVToRGB(CoreHue, 1, CoreSat);
+            light.color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
         }
 
         public void GlitterBall(OscMessage message)

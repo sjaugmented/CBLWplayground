@@ -1,15 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using LW.Core;
 using UnityEngine;
-using LW.Core;
 
 namespace LW.Ball
 {
-    public enum TheForce { push, pull, lift, idle}
+    public enum TheForce { push, pull, lift, down, idle}
     public class BallJedi : MonoBehaviour
     {
-        //[SerializeField] AudioClip freezeFX;
-        //[SerializeField] AudioClip unFreezeFX;
         [SerializeField] float pushMultiplier = 5;
         [SerializeField] float pullMultiplier = 5;
         [SerializeField] float liftMultiplier = 3;
@@ -40,18 +36,16 @@ namespace LW.Ball
         public HandPose ControlPose = HandPose.none;
         public TheForce Power = TheForce.idle;
 
-        bool frozenTriggered, lassoReady;
+        bool lassoReady;
         float lassoTimer = Mathf.Infinity;
 
         NewTracking tracking;
-        CastOrigins origins;
         Rigidbody rigidbody;
         Ball ball;
 
         void Start()
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             rigidbody = GetComponent<Rigidbody>();
             ball = GetComponent<Ball>();
         }
@@ -60,11 +54,9 @@ namespace LW.Ball
         {
             lassoTimer += Time.deltaTime;
 
-            GetComponent<ConstantForce>().enabled = !Held && ball.State == BallState.Active;
-            rigidbody.useGravity = !Held && ball.State == BallState.Active;
-
-            //ball.CoreActive = Power != TheForce.idle && Recall == false;
-
+            rigidbody.useGravity = !Held && ball.State == BallState.Active && Power == TheForce.idle;
+            GetComponent<ConstantForce>().enabled = !Held && ball.State == BallState.Active && Power == TheForce.idle;
+            
             #region Held / ControlPoses
             if (tracking.palmsRel == Formation.together)
             {
@@ -74,42 +66,18 @@ namespace LW.Ball
                 {
                     ControlPose = HandPose.pointer;
                 }
-                else if (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace)
-                {
-                    ControlPose = HandPose.peace;
-                }
                 else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
                     ControlPose = HandPose.fist;
+                }
+                else if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
+                {
+                    ControlPose = HandPose.thumbsUp;
                 }
                 else
                 {
                     ControlPose = HandPose.none;
                 }
-
-                //if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
-                //{
-                //    if (!frozenTriggered)
-                //    {
-                //        ball.Frozen = !ball.Frozen;
-
-                //        if (!ball.Frozen && !GetComponent<AudioSource>().isPlaying)
-                //        {
-                //            GetComponent<AudioSource>().PlayOneShot(freezeFX);
-                //        }
-
-                //        if (ball.Frozen && !GetComponent<AudioSource>().isPlaying)
-                //        {
-                //            GetComponent<AudioSource>().PlayOneShot(unFreezeFX);
-                //        }
-
-                //        frozenTriggered = true;
-                //    }
-                //}
-                //if (tracking.rightPose != HandPose.thumbsUp && tracking.leftPose != HandPose.thumbsUp)
-                //{
-                //    frozenTriggered = false;
-                //}
             }
             else
             {
@@ -135,10 +103,7 @@ namespace LW.Ball
             {
                 Recall = true;
             }
-            //else
-            //{
-            //    Recall = false;
-            //}
+
             if (tracking.rightPose != HandPose.flat)
             {
                 Recall = false;
@@ -157,6 +122,10 @@ namespace LW.Ball
             else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
                 Power = TheForce.pull;
+            }
+            else if (tracking.palmsAbs == Formation.palmsDown && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
+            {
+                Power = TheForce.down;
             }
             else
             {

@@ -25,6 +25,7 @@ namespace LW.Ball{
         [SerializeField] bool hasBounce = true;
         [SerializeField] float bounce = 10;
         [SerializeField] float recallDistance = 0.3f;
+        [SerializeField] float antiGrav = 0.7f;
 
         public BallState State = BallState.Active;
         public bool WithinRange { get; set; }
@@ -77,21 +78,23 @@ namespace LW.Ball{
 
             CoreActive = touched || jedi.Power != TheForce.idle || jedi.Recall == true;
 
-            if (jedi.Held && ((tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace) || (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)))
-            {
-                InteractingWithParticles = true;
-            }
-            else
-            {
-                InteractingWithParticles = false;
-            }
+            //if (jedi.Held && ((tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace) || (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)))
+            //{
+            //    InteractingWithParticles = true;
+            //}
+            //else
+            //{
+            //    InteractingWithParticles = false;
+            //}
+
+            InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
             //Debug.Log("Interacting???" + InteractingWithParticles);
 
             if (jedi.Power == TheForce.push)
             {
                 transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * jedi.PushForce));
+                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * jedi.PushForce) + new Vector3(0, antiGrav, 0));
             }
 
             if (jedi.Power == TheForce.pull)
@@ -104,6 +107,12 @@ namespace LW.Ball{
             {
                 transform.rotation = new Quaternion(0, 0, 0, 0);
                 rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * jedi.LiftForce));
+            }
+
+            if (jedi.Power == TheForce.down)
+            {
+                transform.rotation = new Quaternion(0, 0, 0, 0);
+                rigidbody.AddForce(transform.up * -(origins.PalmsDist / jedi.HoldDistance * jedi.LiftForce));
             }
 
             if (jedi.Recall)
