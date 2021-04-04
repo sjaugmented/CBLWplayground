@@ -17,7 +17,7 @@ public class BallOsc : MonoBehaviour
     Ball ball;
     BallParticleController particles;
 
-    bool holdToggle, activeToggle, stillToggle, pointerToggle, rightFisted, dualFisted, withinRange;
+    bool holdToggle, activeToggle, stillToggle, pointerToggle, rightFisted, dualFisted, thumbsUpped, withinRange;
 
     private void Awake()
     {
@@ -86,7 +86,7 @@ public class BallOsc : MonoBehaviour
             if (ball.WithinRange)
             {
                 Send("pointerControlAngle", 1 - tracking.StaffUp / 180);
-                Send("pointerControlDistance", origins.PalmsDist / jedi.HoldDistance);
+                Send("pointerControlDistance", jedi.RelativeHandDist);
             }
         }
         else
@@ -108,7 +108,7 @@ public class BallOsc : MonoBehaviour
             if (ball.WithinRange)
             {
                 Send("fistControlAngle", 1 - tracking.StaffUp / 180);
-                Send("fistControlDistance", origins.PalmsDist / jedi.HoldDistance);
+                Send("fistControlDistance", jedi.RelativeHandDist);
             }
         } 
         else
@@ -117,6 +117,28 @@ public class BallOsc : MonoBehaviour
             {
                 Send("fistControlOff");
                 dualFisted = false;
+            }
+        }
+
+        if (jedi.ControlPose == HandPose.thumbsUp)
+        {
+            if (!thumbsUpped)
+            {
+                Send("thumbsUpControlOn");
+                thumbsUpped = true;
+            }
+            if (ball.WithinRange)
+            {
+                Send("thumbsUpControlAngle", 1 - tracking.StaffUp / 180);
+                Send("thumbsUpControlDistance", jedi.RelativeHandDist);
+            }
+        }
+        else
+        {
+            if (thumbsUpped)
+            {
+                Send("fistControlOff");
+                thumbsUpped = false;
             }
         }
 

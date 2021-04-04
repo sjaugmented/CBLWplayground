@@ -41,8 +41,6 @@ namespace LW.Ball
                 BallInPlay = false;
             }
 
-            Debug.Log("Ball in Play: " + BallInPlay);
-
             WorldLevel = 1;
         }
 
@@ -124,7 +122,6 @@ namespace LW.Ball
 
         private void ConjureBall()
         {
-            Debug.Log("Conjure/Reset");
             Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
             
             if (!BallInPlay)
@@ -134,10 +131,8 @@ namespace LW.Ball
             }
             else
             {
-                Debug.Log("Ball is in play");
                 if (!hasReset)
                 {
-                    Debug.Log("RESET");
                     ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
                     ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
                     if (!GetComponent<AudioSource>().isPlaying)

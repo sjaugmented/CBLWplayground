@@ -5340,6 +5340,7 @@ MonoBehaviour:
   hasBounce: 1
   bounce: 5
   recallDistance: 0.2
+  antiGrav: 0.7
   State: 0
 --- !u!114 &7484735728138884248
 MonoBehaviour:
@@ -5357,9 +5358,8 @@ MonoBehaviour:
   pullMultiplier: 3
   liftMultiplier: 3
   recallMultiplier: 10
-  holdDistance: 0.5
-  upwardForce: 9.3
-  antiGrav: 0.5
+  holdDistance: 0.7
+  minDistance: 0.3
   ControlPose: 8
   Power: 3
 --- !u!114 &5145626739213686484
@@ -5374,9 +5374,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c2d7e6e1b870642a18bb4e9a2fd5f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxLifetime: 2
-  maxSize: 0.25
-  maxSpeed: 2
+  maxLifetime: 5
+  maxSize: 0.5
+  maxSpeed: 5
 --- !u!114 &2454764655673570708
 MonoBehaviour:
   m_ObjectHideFlags: 0

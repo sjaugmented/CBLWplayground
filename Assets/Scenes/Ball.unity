@@ -345,7 +345,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &191077220
 Transform:
   m_ObjectHideFlags: 0
@@ -1300,7 +1300,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.07, y: 0.001, z: 0.07}
+  m_Size: {x: 0.07, y: 0.001, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &688426547
 GameObject:
@@ -1709,7 +1709,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &735232356
 Transform:
   m_ObjectHideFlags: 0
@@ -1804,7 +1804,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &735359469
 Transform:
   m_ObjectHideFlags: 0
@@ -1992,7 +1992,7 @@ MonoBehaviour:
   inPort: 7000
   outIP: 255.255.255.255
   outPort: 8000
-  logOSC: 0
+  logOSC: 1
 --- !u!4 &851767835
 Transform:
   m_ObjectHideFlags: 0
@@ -2179,7 +2179,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.07, y: 0.001, z: 0.07}
+  m_Size: {x: 0.07, y: 0.001, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &960666292
 Transform:
@@ -6988,7 +6988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &991714861
 Transform:
   m_ObjectHideFlags: 0
@@ -7259,7 +7259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1283424462
 Transform:
   m_ObjectHideFlags: 0
@@ -7354,7 +7354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1293587418
 Transform:
   m_ObjectHideFlags: 0
@@ -7949,7 +7949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1797129290
 Transform:
   m_ObjectHideFlags: 0
@@ -8123,7 +8123,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1813538963
 Transform:
   m_ObjectHideFlags: 0

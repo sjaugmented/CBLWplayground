@@ -10,7 +10,7 @@ namespace LW.Ball
         [SerializeField] float maxLifetime = 2;
         [SerializeField] float maxSize = 0.25f;
         [SerializeField] float maxSpeed = 1;
-
+        
         public float CoreSize { get; set; }
         public float CoreLifetime { get; set; }
         public float CoreSpeed { get; set; }
@@ -52,31 +52,33 @@ namespace LW.Ball
                 {
                     if (jedi.ControlPose == HandPose.pointer)
                     {
-                        CoreHue = origins.PalmsDist / jedi.HoldDistance;
+                        CoreHue = jedi.RelativeHandDist;
                     }
                     if (jedi.ControlPose == HandPose.fist)
                     {
-                        CoreSat = origins.PalmsDist / jedi.HoldDistance;
-                        CoreLifetime = origins.PalmsDist / jedi.HoldDistance;
+                        CoreSat = jedi.RelativeHandDist;
+                        CoreSize = jedi.RelativeHandDist;
                     }
                     if (jedi.ControlPose == HandPose.thumbsUp)
                     {
-                        CoreVal = origins.PalmsDist / jedi.HoldDistance;
+                        CoreVal = jedi.RelativeHandDist;
                     }
                 }
                 else
                 {
                     if (jedi.ControlPose == HandPose.pointer)
                     {
-                        CoreHue = origins.PalmsDist / jedi.HoldDistance;
+                        CoreHue = jedi.RelativeHandDist;
                     }
                     if (jedi.ControlPose == HandPose.fist)
                     {
-                        CoreSat = origins.PalmsDist / jedi.HoldDistance;
+                        CoreSat = jedi.RelativeHandDist;
+                        CoreLifetime = jedi.RelativeHandDist;
                     }
                     if (jedi.ControlPose == HandPose.thumbsUp)
                     {
-                        CoreVal = origins.PalmsDist / jedi.HoldDistance;
+                        CoreVal = jedi.RelativeHandDist;
+                        CoreSpeed = jedi.RelativeHandDist;
                     }
                 }
             }
@@ -87,11 +89,12 @@ namespace LW.Ball
             main.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
 
             main.startSize = ball.State == BallState.Active ? 0.1f : CoreSize * maxSize;
-
             main.startSpeed = ball.State == BallState.Still ? 0.26f : CoreSpeed * maxSpeed;
             main.startLifetime = ball.State == BallState.Still ? 1.5f : CoreLifetime * maxLifetime;
-            main.startColor = Color.HSVToRGB(CoreHue, CoreSat, 1);
-            light.color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
+
+            Color color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
+            main.startColor = color;
+            light.color = color;
         }
 
         public void GlitterBall(OscMessage message)

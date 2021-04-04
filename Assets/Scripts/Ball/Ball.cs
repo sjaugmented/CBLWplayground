@@ -147,7 +147,7 @@ namespace LW.Ball{
 
             if (other.gameObject.CompareTag("Player"))
             {
-                DetermineTouchResponse();
+                DetermineTouchResponse(other);
             }
             else
             {
@@ -156,7 +156,7 @@ namespace LW.Ball{
             }
         }
 
-        private void DetermineTouchResponse()
+        private void DetermineTouchResponse(Collision other)
         {
             if (tracking.rightPose == HandPose.fist || tracking.leftPose == HandPose.fist)
             {
@@ -186,7 +186,7 @@ namespace LW.Ball{
                 //touchTimer = 0;
                 //touchToggled = true;
                 TouchLevel += 1;
-                TouchOSC();
+                TouchOSC(other);
                 touchToggle = true;
             }
 
@@ -207,7 +207,7 @@ namespace LW.Ball{
             touchToggle = false;
         }
 
-        private void TouchOSC()
+        private void TouchOSC(Collision other)
         {
             if (tracking.rightPose == HandPose.fist)
             {
@@ -215,7 +215,15 @@ namespace LW.Ball{
             }
             else
             {
-                osc.Send("rightOpen", TouchLevel);
+                if (other.gameObject.name == "Backhand")
+                {
+                    osc.Send("rightOpen/backhand", TouchLevel);
+                }
+                else
+                {
+                    Debug.Log(other.gameObject.name);
+                    osc.Send("rightOpen/forehand", TouchLevel);
+                }
             }
 
             if (tracking.leftPose == HandPose.fist)
@@ -224,7 +232,14 @@ namespace LW.Ball{
             }
             else
             {
-                osc.Send("leftOpen", TouchLevel);
+                if (other.gameObject.name == "Backhand")
+                {
+                    osc.Send("leftOpen/backhand", TouchLevel);
+                }
+                else
+                {
+                    osc.Send("leftOpen/forehand", TouchLevel);
+                }
             }
 
             //if (tracking.rightPose == HandPose.fist || tracking.leftPose == HandPose.fist)

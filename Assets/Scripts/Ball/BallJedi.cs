@@ -11,9 +11,14 @@ namespace LW.Ball
         [SerializeField] float liftMultiplier = 3;
         [SerializeField] float recallMultiplier = 10;
         [SerializeField] float holdDistance = 0.5f;
+        [SerializeField] float minDistance = 0.2f;
         public float HoldDistance
         {
             get { return holdDistance; }
+        }
+        public float MinDistance
+        {
+            get { return minDistance; }
         }
         public float PushForce
         {
@@ -31,6 +36,7 @@ namespace LW.Ball
         {
             get { return recallMultiplier; }
         }
+        public float RelativeHandDist { get; set; }
         public bool Held { get; set; }
         public bool Recall { get; set; }
         public HandPose ControlPose = HandPose.none;
@@ -40,18 +46,22 @@ namespace LW.Ball
         float lassoTimer = Mathf.Infinity;
 
         NewTracking tracking;
+        CastOrigins origins;
         Rigidbody rigidbody;
         Ball ball;
 
         void Start()
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             rigidbody = GetComponent<Rigidbody>();
             ball = GetComponent<Ball>();
         }
 
         void Update()
         {
+            RelativeHandDist = Mathf.Clamp((origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x), 0, 1);
+
             lassoTimer += Time.deltaTime;
 
             rigidbody.useGravity = !Held && ball.State == BallState.Active && Power == TheForce.idle;
