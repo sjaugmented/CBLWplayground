@@ -4,6 +4,7 @@ using LW.Core;
 
 namespace LW.Ball{
     public enum BallState { Active, Still };
+    public enum Notes { rFore, rBack, rFist, rPointer, rPeace, lFore, lBack, lFist, lPointer, lPeace, none}
 
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Rigidbody))]
@@ -28,6 +29,7 @@ namespace LW.Ball{
         [SerializeField] float antiGrav = 0.7f;
 
         public BallState State = BallState.Active;
+        public Notes Note = Notes.none;
         public bool WithinRange { get; set; }
         public int TouchLevel { get; set; }
         public float Hue { get; set; }
@@ -114,7 +116,7 @@ namespace LW.Ball{
         }
 
         private void OnCollisionEnter(Collision other) {
-            if (InteractingWithParticles) { return; }
+            if (InteractingWithParticles || State == BallState.Still) { return; }
 
             Vector3 dir = other.contacts[0].point - transform.position;
             dir = -dir.normalized;
@@ -144,32 +146,65 @@ namespace LW.Ball{
 
         private void DetermineTouchResponse(Collision other)
         {
+            if (InteractingWithParticles) { return; }
+            
             if (jedi.LevelUpTimer < 2)
             {
                 if (tracking.rightPose == HandPose.fist)
                 {
                     osc.Send("LevelUp!");
                     caster.WorldLevel += 1;
-                    DestroySelf();
+                    StartCoroutine("DestroySelf");
                 }
             }
             
-            if (tracking.rightPose == HandPose.fist || tracking.leftPose == HandPose.fist)
+            if (tracking.rightPose == HandPose.fist)
             {
-                if (State != BallState.Still)
+                Note = Notes.rFist;
+                Hue = 0;
+            }
+            else
+            {
+                if (tracking.rightPose == HandPose.pointer)
                 {
-                    GetComponent<AudioSource>().PlayOneShot(stillFX);
+                    Note = Notes.rPointer;
                 }
-                State = BallState.Still;
+                else if (tracking.rightPose == HandPose.peace)
+                {
+                    Note = Notes.rPeace;
+                }
+                else if (other.gameObject.name == "Backhand")
+                {
+                    Note = Notes.rBack;
+                }
+                else
+                {
+                    Note = Notes.rFore;
+                }
             }
 
-            if (tracking.rightPose == HandPose.flat || tracking.leftPose == HandPose.flat)
+            if (tracking.leftPose == HandPose.fist)
             {
-                if (State != BallState.Active)
+                Note = Notes.lFist;
+            }
+            else
+            {
+                if (tracking.leftPose == HandPose.pointer)
                 {
-                    GetComponent<AudioSource>().PlayOneShot(activeFX);
+                    Note = Notes.lPointer;
                 }
-                State = BallState.Active;
+                else if (tracking.leftPose == HandPose.peace)
+                {
+                    Note = Notes.lPeace;
+                }
+                else if (other.gameObject.name == "Backhand")
+                {
+                    Note = Notes.lBack;
+                }
+                else
+                {
+                    Note = Notes.lFore;
+                }
             }
 
             if (State == BallState.Active)
@@ -180,53 +215,53 @@ namespace LW.Ball{
             if (!touchToggle)
             {
                 TouchLevel += 1;
-                TouchOSC(other);
+                //TouchOSC(other);
+                osc.Send(Note.ToString(), TouchLevel);
                 touchToggle = true;
             }
-
         }
 
-        private void TouchOSC(Collision other)
-        {
-            if (tracking.rightPose == HandPose.fist)
-            {
-                osc.Send("rightFist", TouchLevel);
-            }
-            else
-            {
-                if (other.gameObject.name == "Backhand")
-                {
-                    osc.Send("rightOpen/backhand", TouchLevel);
-                }
-                else
-                {
-                    Debug.Log(other.gameObject.name);
-                    osc.Send("rightOpen/forehand", TouchLevel);
-                }
-            }
+        //private void TouchOSC(Collision other)
+        //{
+        //    if (tracking.rightPose == HandPose.fist)
+        //    {
+        //        osc.Send("rightFist", TouchLevel);
+        //    }
+        //    else
+        //    {
+        //        if (other.gameObject.name == "Backhand")
+        //        {
+        //            osc.Send("rightOpen/backhand", TouchLevel);
+        //        }
+        //        else
+        //        {
+        //            Debug.Log(other.gameObject.name);
+        //            osc.Send("rightOpen/forehand", TouchLevel);
+        //        }
+        //    }
 
-            if (tracking.leftPose == HandPose.fist)
-            {
-                osc.Send("leftFist", TouchLevel);
-            }
-            else
-            {
-                if (other.gameObject.name == "Backhand")
-                {
-                    osc.Send("leftOpen/backhand", TouchLevel);
-                }
-                else
-                {
-                    osc.Send("leftOpen/forehand", TouchLevel);
-                }
-            }
+        //    if (tracking.leftPose == HandPose.fist)
+        //    {
+        //        osc.Send("leftFist", TouchLevel);
+        //    }
+        //    else
+        //    {
+        //        if (other.gameObject.name == "Backhand")
+        //        {
+        //            osc.Send("leftOpen/backhand", TouchLevel);
+        //        }
+        //        else
+        //        {
+        //            osc.Send("leftOpen/forehand", TouchLevel);
+        //        }
+        //    }
 
-            //Hue += 0.1388f; // five colors: 1/5 of 360
-            //if (Hue > 1)
-            //{
-            //    Hue -= 1;
-            //}
-        }
+        //    //Hue += 0.1388f; // five colors: 1/5 of 360
+        //    //if (Hue > 1)
+        //    //{
+        //    //    Hue -= 1;
+        //    //}
+        //}
 
         private void OnCollisionExit(Collision collision)
         {
@@ -284,12 +319,12 @@ namespace LW.Ball{
         // play with recall more - punch it on recall and the shell explodes
         // 
         // STILL
-        // new transitional gesture into still
+        // new transitional gesture into still ++
         // pointer X or dorsal tap or peace smash
         // Two floats - distance only - CoreHue and CoreDensity ++
         // Ten touches - adding pointer and peace back 
         // immovable except by jedi ++
-        // touch responses - ring colors (default back to no color in action mode)
+        // touch responses - ring colors (default back to no color in action mode ++)
 
     }
 }

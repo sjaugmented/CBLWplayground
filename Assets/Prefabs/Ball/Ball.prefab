@@ -5339,10 +5339,11 @@ MonoBehaviour:
   forceMult: 100000
   killForce: 0.0001
   hasBounce: 1
-  bounce: 5
+  bounce: 10
   recallDistance: 0.2
   antiGrav: 0.7
   State: 0
+  Note: 10
 --- !u!114 &7484735728138884248
 MonoBehaviour:
   m_ObjectHideFlags: 0

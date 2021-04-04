@@ -12,9 +12,11 @@ namespace LW.Ball
     {
         [SerializeField] AudioClip singleTap;
         [SerializeField] AudioClip doubleTap;
+        [SerializeField] AudioClip stillFX;
+        [SerializeField] AudioClip activeFX;
 
         [SerializeField] bool leftHand = false;
-        bool triggered = false;
+        bool triggered, inactive;
 
         NewTracking tracking;
         BallDirector director;
@@ -26,15 +28,21 @@ namespace LW.Ball
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            
+        }
+
+        private void Update()
+        {
             if (GameObject.FindGameObjectWithTag("Ball"))
             {
                 ball = GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>();
+                inactive = ball.InteractingWithParticles;
             }
         }
 
         private void OnTriggerEnter(Collider collider)
         {
+            if (inactive) { return; }
+
             if (leftHand)
             {
                 if (tracking.leftPose != HandPose.flat)
@@ -44,6 +52,15 @@ namespace LW.Ball
                         //SpawnPortal();
                         if (ball == null) { return; }
                         ball.State = ball.State == BallState.Active ? BallState.Still : BallState.Active;
+                        
+                        if (ball.State != BallState.Still)
+                        {
+                            GetComponent<AudioSource>().PlayOneShot(stillFX);
+                        }
+                        else
+                        {
+                            GetComponent<AudioSource>().PlayOneShot(activeFX);
+                        }
                     }
                 }
                 else
@@ -76,7 +93,17 @@ namespace LW.Ball
                 {
                     if (collider.CompareTag("Left Pointer"))
                     {
-                        ToggleGaze();
+                        if (ball == null) { return; }
+                        ball.State = ball.State == BallState.Active ? BallState.Still : BallState.Active;
+                        
+                        if (ball.State != BallState.Still)
+                        {
+                            GetComponent<AudioSource>().PlayOneShot(stillFX);
+                        }
+                        else
+                        {
+                            GetComponent<AudioSource>().PlayOneShot(activeFX);
+                        }
                     }
                 }
                 else

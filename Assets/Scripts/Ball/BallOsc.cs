@@ -158,7 +158,7 @@ public class BallOsc : MonoBehaviour
         }
     }
 
-    public void Send(string address = "default", float val = 1)
+    public void Send(string address = "", float val = 1)
     {
         OscMessage message = new OscMessage();
         message.address = caster.WorldLevel + "/" + ball.State + "/" + address + "/";
