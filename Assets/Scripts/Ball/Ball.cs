@@ -158,6 +158,16 @@ namespace LW.Ball{
 
         private void DetermineTouchResponse(Collision other)
         {
+            if (jedi.PunchTimer < 2)
+            {
+                if (tracking.rightPose == HandPose.fist)
+                {
+                    osc.Send("LevelUp!");
+                    caster.WorldLevel += 1;
+                    DestroySelf();
+                }
+            }
+            
             if (tracking.rightPose == HandPose.fist || tracking.leftPose == HandPose.fist)
             {
                 if (State != BallState.Still)
@@ -303,10 +313,16 @@ namespace LW.Ball{
         // no floats
         // each touch has a unique color
         // forehand backhand and fist
+        // more bounce
+        // play with recall more - punch it on recall and the shell explodes
         // 
         // STILL
         // new transitional gesture into still
         // pointer X or dorsal tap or peace smash
+        // Two floats - distance only - CoreHue and CoreDensity
+        // Ten touches - adding pointer and peace back 
+        // immovable except by jedi
+        // touch responses - ring colors (default back to no color in action mode)
 
     }
 }

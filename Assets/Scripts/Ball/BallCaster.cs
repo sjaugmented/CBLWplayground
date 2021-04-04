@@ -23,6 +23,7 @@ namespace LW.Ball
         public bool hasReset = false;
         bool conjureReady, destroyReady; /*hasReset = false;*/
         float conjureTimer, destroyTimer = Mathf.Infinity;
+        Vector3 offset;
 
         NewTracking tracking;
         GameObject ballInstance;
@@ -46,6 +47,7 @@ namespace LW.Ball
 
         void Update()
         {
+            offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
             conjureTimer += Time.deltaTime;
             destroyTimer += Time.deltaTime;
 
@@ -64,38 +66,25 @@ namespace LW.Ball
 
             if (conjureTimer < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
             {
-                ConjureBall();
+                if (BallInPlay)
+                {
+                    ConjureBall();
+                }
+                else
+                {
+                    ResetBall();
+                }
             }
             else
             {
                 hasReset = false;
             }
 
-            //if (!BallInPlay)
-            //{
-            //    //if (tracking.rightPose == HandPose.fist && (tracking.rightPalmRel == Direction.up || tracking.rightPalmRel == Direction.up))
-            //    //{
-            //    //    if (!conjureReady)
-            //    //    {
-            //    //        conjureTimer = 0;
-            //    //        conjureReady = true;
-            //    //    }
-            //    //}
-            //    //else
-            //    //{
-            //    //    conjureReady = false;
-            //    //}
-
-            //    //if (conjureTimer < 3 && tracking.rightPose == HandPose.flat)
-            //    //{
-            //    //    ConjureBall();
-            //    //}
-            //}
             if (BallInPlay)
             {
                 if (!ballInstance) { return; }
 
-                if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
+                if (tracking.rightPose == HandPose.rockOn/* && tracking.rightPalmRel == Direction.palmIn*/)
                 {
                     if (!destroyReady)
                     {
@@ -122,27 +111,9 @@ namespace LW.Ball
 
         private void ConjureBall()
         {
-            Vector3 offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
-            
-            if (!BallInPlay)
-            {
-                BallInPlay = true;
-                ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
-            }
-            else
-            {
-                if (!hasReset)
-                {
-                    ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
-                    ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
-                    if (!GetComponent<AudioSource>().isPlaying)
-                    {
-                        GetComponent<AudioSource>().PlayOneShot(resetFX);
-                    }
-                    hasReset = true;
-                }
-            }
-            
+            BallInPlay = true;
+            ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+
 
             //if (WorldLevel == 1)
             //{
@@ -152,6 +123,23 @@ namespace LW.Ball
             //{
             //    ballInstance = Instantiate(multiBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
             //}
+        }
+
+        private void ResetBall()
+        {
+            if (!hasReset)
+            {
+                ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
+                ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
+                ballInstance.GetComponent<BallOsc>().Send("recalled");
+
+                if (!GetComponent<AudioSource>().isPlaying)
+                {
+                    GetComponent<AudioSource>().PlayOneShot(resetFX);
+                }
+
+                hasReset = true;
+            }
         }
 
         public void DestroyBall()

@@ -39,11 +39,15 @@ namespace LW.Ball
         public float RelativeHandDist { get; set; }
         public bool Held { get; set; }
         public bool Recall { get; set; }
+        public float PunchTimer
+        {
+            get { return recallPunchTimer; }
+        }
         public HandPose ControlPose = HandPose.none;
         public TheForce Power = TheForce.idle;
 
         bool lassoReady;
-        float lassoTimer = Mathf.Infinity;
+        float lassoTimer, recallPunchTimer = Mathf.Infinity;
 
         NewTracking tracking;
         CastOrigins origins;
@@ -63,6 +67,7 @@ namespace LW.Ball
             RelativeHandDist = Mathf.Clamp((origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x), 0, 1);
 
             lassoTimer += Time.deltaTime;
+            recallPunchTimer += Time.deltaTime;
 
             rigidbody.useGravity = !Held && ball.State == BallState.Active && Power == TheForce.idle;
             GetComponent<ConstantForce>().enabled = !Held && ball.State == BallState.Active && Power == TheForce.idle;
@@ -112,6 +117,7 @@ namespace LW.Ball
             if (lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
             {
                 Recall = true;
+                recallPunchTimer = 0;
             }
 
             if (tracking.rightPose != HandPose.flat)

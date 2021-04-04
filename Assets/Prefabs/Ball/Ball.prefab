@@ -87,8 +87,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2717629391965333470, guid: 499c0839b9c5e0042bd154839ff96681, type: 3}
-  - {fileID: -905690159841262435, guid: 499c0839b9c5e0042bd154839ff96681, type: 3}
+  - {fileID: 2100000, guid: 1a617f95876c3ca429b42f0c5b206919, type: 2}
+  - {fileID: 2100000, guid: 1a617f95876c3ca429b42f0c5b206919, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5026,6 +5026,7 @@ GameObject:
   - component: {fileID: 7484735728138884248}
   - component: {fileID: 5145626739213686484}
   - component: {fileID: 2454764655673570708}
+  - component: {fileID: 863079449121654146}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -5391,6 +5392,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killCode: kill
   glitterCode: glitter
+--- !u!114 &863079449121654146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309183216341837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cc8b079f3c4fe242847158c669e98e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rings:
+  - {fileID: 6222737119637812561}
+  - {fileID: 6179722345948086096}
+  - {fileID: 4692596856355441701}
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0
