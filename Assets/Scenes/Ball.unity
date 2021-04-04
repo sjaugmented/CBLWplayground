@@ -1286,7 +1286,7 @@ MonoBehaviour:
   trackedHandness: 2
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0.01, y: 0, z: 0}
+  additionalOffset: {x: 0.01, y: -0.02, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!65 &603768595
@@ -1529,7 +1529,7 @@ MonoBehaviour:
   trackedHandness: 1
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0.01, y: 0, z: 0}
+  additionalOffset: {x: 0.01, y: -0.01, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!65 &698528549
@@ -1543,7 +1543,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.001, z: 0.3}
+  m_Size: {x: 0.1, y: 0.001, z: 0.17}
   m_Center: {x: -0.01, y: 0.04, z: 0}
 --- !u!1 &733917315
 GameObject:
@@ -1992,7 +1992,7 @@ MonoBehaviour:
   inPort: 7000
   outIP: 255.255.255.255
   outPort: 8000
-  logOSC: 0
+  logOSC: 1
 --- !u!4 &851767835
 Transform:
   m_ObjectHideFlags: 0
@@ -2165,7 +2165,7 @@ MonoBehaviour:
   trackedHandness: 1
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0.01, y: 0, z: 0}
+  additionalOffset: {x: 0.01, y: -0.02, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!65 &958489417
@@ -8467,7 +8467,7 @@ MonoBehaviour:
   trackedHandness: 2
   trackedHandJoint: 2
   transformOverride: {fileID: 0}
-  additionalOffset: {x: 0.01, y: 0, z: 0}
+  additionalOffset: {x: 0.01, y: -0.01, z: 0}
   additionalRotation: {x: 0, y: 0, z: 0}
   updateSolvers: 1
 --- !u!65 &1866485406
@@ -8481,7 +8481,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.001, z: 0.3}
+  m_Size: {x: 0.1, y: 0.001, z: 0.17}
   m_Center: {x: -0.01, y: 0.04, z: 0}
 --- !u!1 &1913278202
 GameObject:

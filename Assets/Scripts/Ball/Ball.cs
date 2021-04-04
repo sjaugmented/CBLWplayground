@@ -133,7 +133,7 @@ namespace LW.Ball{
         }
 
         private void OnCollisionEnter(Collision other) {
-            if (InteractingWithParticles || State == BallState.Still) { return; }
+            if (InteractingWithParticles) { return; }
 
             Vector3 dir = other.contacts[0].point - transform.position;
             dir = -dir.normalized;
@@ -170,7 +170,7 @@ namespace LW.Ball{
                 if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
                 {
                     osc.Send("LevelUp!");
-                    caster.WorldLevel += 1;
+                    caster.WorldLevel = caster.WorldLevel == 1 ? 2 : 1;
                     StartCoroutine("DestroySelf");
                 }
 
@@ -249,7 +249,6 @@ namespace LW.Ball{
                 TouchLevel += 1;
                 //TouchOSC(other);
                 osc.Send(Note.ToString(), TouchLevel);
-                Debug.Log(Note.ToString());
                 touchToggle = true;
             }
         }
