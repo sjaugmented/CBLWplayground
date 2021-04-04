@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
@@ -19,17 +18,16 @@ namespace LW.Ball
             {
                 foreach(GameObject ring in rings)
                 {
-                    ringMats.Add(ring.GetComponent<Material>());
+                    ringMats.Add(ring.GetComponent<Renderer>().material);
                 }
             }
         }
 
         void Update()
         {
-
             foreach(Material mat in ringMats)
             {
-                mat.color = ball.State == BallState.Still ? ball.NoteColor : Color.HSVToRGB(0, 0, 1);
+                mat.color = ball.State == BallState.Active ? Color.HSVToRGB(0, 0, 1) : ball.NoteColor;
             }
         }
     }

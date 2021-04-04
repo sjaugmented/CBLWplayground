@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 191077221}
   m_Layer: 0
   m_Name: Fingers
-  m_TagString: Player
+  m_TagString: LeftHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1221,7 +1221,7 @@ GameObject:
   - component: {fileID: 603768593}
   m_Layer: 0
   m_Name: Palm
-  m_TagString: Player
+  m_TagString: RightHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1464,7 +1464,7 @@ GameObject:
   - component: {fileID: 698528547}
   m_Layer: 0
   m_Name: Backhand
-  m_TagString: Player
+  m_TagString: LeftHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1705,7 +1705,7 @@ GameObject:
   - component: {fileID: 735232357}
   m_Layer: 0
   m_Name: Thumb
-  m_TagString: Player
+  m_TagString: LeftHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1800,7 +1800,7 @@ GameObject:
   - component: {fileID: 735359470}
   m_Layer: 0
   m_Name: Pinky
-  m_TagString: Player
+  m_TagString: LeftHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1992,7 +1992,7 @@ MonoBehaviour:
   inPort: 7000
   outIP: 255.255.255.255
   outPort: 8000
-  logOSC: 1
+  logOSC: 0
 --- !u!4 &851767835
 Transform:
   m_ObjectHideFlags: 0
@@ -2100,7 +2100,7 @@ GameObject:
   - component: {fileID: 958489415}
   m_Layer: 0
   m_Name: Palm
-  m_TagString: Player
+  m_TagString: LeftHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6984,7 +6984,7 @@ GameObject:
   - component: {fileID: 991714862}
   m_Layer: 0
   m_Name: Fingers
-  m_TagString: Player
+  m_TagString: RightHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7255,7 +7255,7 @@ GameObject:
   - component: {fileID: 1283424463}
   m_Layer: 0
   m_Name: Pinky
-  m_TagString: Player
+  m_TagString: RightHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7350,7 +7350,7 @@ GameObject:
   - component: {fileID: 1293587419}
   m_Layer: 0
   m_Name: Wrist
-  m_TagString: Player
+  m_TagString: RightHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7945,7 +7945,7 @@ GameObject:
   - component: {fileID: 1797129291}
   m_Layer: 0
   m_Name: Wrist
-  m_TagString: Player
+  m_TagString: LeftHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8119,7 +8119,7 @@ GameObject:
   - component: {fileID: 1813538964}
   m_Layer: 0
   m_Name: Thumb
-  m_TagString: Player
+  m_TagString: RightHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8402,7 +8402,7 @@ GameObject:
   - component: {fileID: 1866485404}
   m_Layer: 0
   m_Name: Backhand
-  m_TagString: Player
+  m_TagString: RightHand
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14349,6 +14349,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   singleTap: {fileID: 8300000, guid: 99ff603621215044b9df5e6a56a17421, type: 3}
   doubleTap: {fileID: 8300000, guid: 0b4fe8eb131b7024f97a7d835b64898e, type: 3}
+  stillFX: {fileID: 0}
+  activeFX: {fileID: 0}
   leftHand: 1
 --- !u!4 &2452266860485975424
 Transform:
@@ -14478,6 +14480,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   singleTap: {fileID: 8300000, guid: 99ff603621215044b9df5e6a56a17421, type: 3}
   doubleTap: {fileID: 8300000, guid: 0b4fe8eb131b7024f97a7d835b64898e, type: 3}
+  stillFX: {fileID: 0}
+  activeFX: {fileID: 0}
   leftHand: 0
 --- !u!4 &2452266860748762229
 Transform:

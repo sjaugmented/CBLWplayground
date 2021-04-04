@@ -87,9 +87,9 @@ namespace LW.Ball
 
             main.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
 
-            main.startSize = ball.State == BallState.Active ? 0.1f : CoreSize * maxSize;
-            main.startSpeed = ball.State == BallState.Still ? 0.26f : CoreSpeed * maxSpeed;
-            main.startLifetime = ball.State == BallState.Still ? 1.5f : CoreLifetime * maxLifetime;
+            main.startSize = ball.State == BallState.Active ? 0.2f : CoreSize * maxSize;
+            main.startSpeed = 0.26f;
+            main.startLifetime = 1.5f;
 
             Color color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
             main.startColor = ball.State == BallState.Active ? ball.NoteColor : color;

@@ -51,6 +51,11 @@ namespace LW.Ball
             conjureTimer += Time.deltaTime;
             destroyTimer += Time.deltaTime;
 
+            if (ballInstance)
+            {
+                handColliders.SetActive(!ballInstance.GetComponent<Ball>().InteractingWithParticles);
+            }
+
             if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
             {
                 if (!conjureReady)
@@ -68,11 +73,11 @@ namespace LW.Ball
             {
                 if (BallInPlay)
                 {
-                    ConjureBall();
+                    ResetBall();
                 }
                 else
                 {
-                    ResetBall();
+                    ConjureBall();
                 }
             }
             else
@@ -84,7 +89,7 @@ namespace LW.Ball
             {
                 if (!ballInstance) { return; }
 
-                if (tracking.rightPose == HandPose.rockOn/* && tracking.rightPalmRel == Direction.palmIn*/)
+                if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
                 {
                     if (!destroyReady)
                     {
@@ -101,11 +106,6 @@ namespace LW.Ball
                 {
                     DestroyBall();
                 }
-            }
-
-            if (ballInstance)
-            {
-                handColliders.SetActive(!ballInstance.GetComponent<Ball>().InteractingWithParticles);
             }
         }
 

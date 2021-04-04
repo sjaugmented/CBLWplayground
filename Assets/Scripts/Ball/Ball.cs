@@ -75,10 +75,26 @@ namespace LW.Ball{
             float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
-            GetComponent<Collider>().enabled = !InteractingWithParticles && State == BallState.Active;
+            GetComponent<Collider>().enabled = !InteractingWithParticles;
             containmentSphere.SetActive(State == BallState.Still);
             CoreActive = touched || jedi.Power != TheForce.idle || jedi.Recall == true;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
+
+
+            if (State == BallState.Still || InteractingWithParticles)
+            {
+                GameObject[] rHandColliders = GameObject.FindGameObjectsWithTag("RightHand");
+                foreach(GameObject collider in rHandColliders)
+                {
+                    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
+                }
+
+                GameObject[] lHandColliders = GameObject.FindGameObjectsWithTag("LeftHand");
+                foreach (GameObject collider in lHandColliders)
+                {
+                    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
+                }
+            }
 
             if (jedi.Power == TheForce.push)
             {
@@ -134,93 +150,95 @@ namespace LW.Ball{
                 }
             }
 
-            if (other.gameObject.CompareTag("Player"))
+            if (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
             {
                 DetermineTouchResponse(other);
             }
-            else
-            {
-                osc.Send("bounced", TouchLevel);
-                Debug.Log("bounced");
-            }
+            //else
+            //{
+            //    osc.Send("bounced", TouchLevel);
+            //    Debug.Log("bounced");
+            //}
         }
 
         private void DetermineTouchResponse(Collision other)
         {
             if (InteractingWithParticles) { return; }
             
-            if (jedi.LevelUpTimer < 2)
+            if (other.collider.CompareTag("RightHand"))
             {
-                if (tracking.rightPose == HandPose.fist)
+                if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
                 {
                     osc.Send("LevelUp!");
                     caster.WorldLevel += 1;
                     StartCoroutine("DestroySelf");
                 }
+
+                if (tracking.rightPose == HandPose.fist)
+                {
+                    Note = Notes.rFist;
+                    NoteColor = Color.HSVToRGB(0, 1, 0.8f); // red
+                }
+                else if (tracking.rightPose != HandPose.fist)
+                {
+                    if (tracking.rightPose == HandPose.pointer)
+                    {
+                        Note = Notes.rPointer;
+                        NoteColor = Color.HSVToRGB(0.66f, 0.58f, 0.8f); // baby blue
+
+                    }
+                    else if (tracking.rightPose == HandPose.peace)
+                    {
+                        Note = Notes.rPeace;
+                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
+
+                    }
+                    else if (other.gameObject.name == "Backhand")
+                    {
+                        Note = Notes.rBack;
+                        NoteColor = Color.HSVToRGB(0.29f, 1, 0.8f); // green
+                    }
+                    else
+                    {
+                        Note = Notes.rFore;
+                        NoteColor = Color.HSVToRGB(0.66f, 1, 0.8f); // blue
+                    }
+                }
+            }
+            else
+            {
+                if (tracking.leftPose == HandPose.fist)
+                {
+                    Note = Notes.lFist;
+                    NoteColor = Color.HSVToRGB(0.15f, 1, 0.8f); // yellow
+                }
+                else if (tracking.leftPose != HandPose.fist)
+                {
+                    if (tracking.leftPose == HandPose.pointer)
+                    {
+                        Note = Notes.lPointer;
+                        NoteColor = Color.HSVToRGB(0, 0.58f, 1); // light red
+
+                    }
+                    else if (tracking.leftPose == HandPose.peace)
+                    {
+                        Note = Notes.lPeace;
+                        NoteColor = Color.HSVToRGB(0.86f, 0.58f, 1); // pink
+
+                    }
+                    else if (other.gameObject.name == "Backhand")
+                    {
+                        Note = Notes.lBack;
+                        NoteColor = Color.HSVToRGB(0.89f, 1, 0.8f); // magenta
+                    }
+                    else
+                    {
+                        Note = Notes.lFore;
+                        NoteColor = Color.HSVToRGB(0.5f, 1, 0.8f); // cyan
+                    }
+                }
             }
             
-            if (tracking.rightPose == HandPose.fist)
-            {
-                Note = Notes.rFist;
-                NoteColor = Color.HSVToRGB(0, 1, 0.8f); // red
-            }
-            else
-            {
-                if (tracking.rightPose == HandPose.pointer)
-                {
-                    Note = Notes.rPointer;
-                    NoteColor = Color.HSVToRGB(0.66f, 0.58f, 0.8f); // baby blue
-
-                }
-                else if (tracking.rightPose == HandPose.peace)
-                {
-                    Note = Notes.rPeace;
-                    NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
-
-                }
-                else if (other.gameObject.name == "Backhand")
-                {
-                    Note = Notes.rBack;
-                    NoteColor = Color.HSVToRGB(0.29f, 1, 0.8f); // green
-                }
-                else
-                {
-                    Note = Notes.rFore;
-                    NoteColor = Color.HSVToRGB(0.66f, 1, 0.8f); // blue
-                }
-            }
-
-            if (tracking.leftPose == HandPose.fist)
-            {
-                Note = Notes.lFist;
-                NoteColor = Color.HSVToRGB(0.15f, 1, 0.8f); // yellow
-            }
-            else
-            {
-                if (tracking.leftPose == HandPose.pointer)
-                {
-                    Note = Notes.lPointer;
-                    NoteColor = Color.HSVToRGB(0, 0.58f, 1); // light red
-
-                }
-                else if (tracking.leftPose == HandPose.peace)
-                {
-                    Note = Notes.lPeace;
-                    NoteColor = Color.HSVToRGB(0.86f, 0.58f, 1); // pink
-
-                }
-                else if (other.gameObject.name == "Backhand")
-                {
-                    Note = Notes.lBack;
-                    NoteColor = Color.HSVToRGB(0.89f, 1, 0.8f); // magenta
-                }
-                else
-                {
-                    Note = Notes.lFore;
-                    NoteColor = Color.HSVToRGB(0.5f, 1, 0.8f); // cyan
-                }
-            }
-
             if (State == BallState.Active)
             {
                 touched = true;
@@ -231,6 +249,7 @@ namespace LW.Ball{
                 TouchLevel += 1;
                 //TouchOSC(other);
                 osc.Send(Note.ToString(), TouchLevel);
+                Debug.Log(Note.ToString());
                 touchToggle = true;
             }
         }
@@ -326,11 +345,11 @@ namespace LW.Ball{
 
         // NOTES
         // Action Mode
-        // no floats ++
+        // no floats ++++
         // each touch has a unique color
         // forehand backhand and fist
-        // more bounce
-        // play with recall more - punch it on recall and the shell explodes
+        // more bounce ++++
+        // play with recall more - punch it on recall and the shell explodes ++++
         // 
         // STILL
         // new transitional gesture into still ++
