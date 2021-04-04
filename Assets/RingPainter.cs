@@ -11,8 +11,11 @@ namespace LW.Ball
 
         List<Material> ringMats = new List<Material>();
 
+        Ball ball;
+
         void Start()
         {
+            ball = GetComponent<Ball>();
             if (rings.Count > 0)
             {
                 foreach(GameObject ring in rings)
@@ -21,14 +24,14 @@ namespace LW.Ball
                 }
             }
 
-            RingColor = Color.HSVToRGB(0, 1, 0.8f);
+            RingColor = Color.HSVToRGB(0, 0, 1);
         }
 
         void Update()
         {
             foreach(Material mat in ringMats)
             {
-                mat.color = RingColor;
+                mat.color = ball.State == BallState.Still ? RingColor : Color.HSVToRGB(0, 0, 1);
             }
         }
     }

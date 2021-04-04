@@ -39,7 +39,7 @@ namespace LW.Ball
         public float RelativeHandDist { get; set; }
         public bool Held { get; set; }
         public bool Recall { get; set; }
-        public float PunchTimer
+        public float LevelUpTimer
         {
             get { return recallPunchTimer; }
         }

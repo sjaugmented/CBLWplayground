@@ -72,7 +72,7 @@ namespace LW.Ball{
             float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
-            GetComponent<Collider>().enabled = !InteractingWithParticles;
+            GetComponent<Collider>().enabled = !InteractingWithParticles && State == BallState.Active;
             containmentSphere.SetActive(State == BallState.Still);
             CoreActive = touched || jedi.Power != TheForce.idle || jedi.Recall == true;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
@@ -144,7 +144,7 @@ namespace LW.Ball{
 
         private void DetermineTouchResponse(Collision other)
         {
-            if (jedi.PunchTimer < 2)
+            if (jedi.LevelUpTimer < 2)
             {
                 if (tracking.rightPose == HandPose.fist)
                 {
@@ -179,28 +179,11 @@ namespace LW.Ball{
 
             if (!touchToggle)
             {
-                //touchTimer = 0;
-                //touchToggled = true;
                 TouchLevel += 1;
                 TouchOSC(other);
                 touchToggle = true;
             }
 
-            //if (touchTimer > touchFrequency)
-            //{
-            //TouchLevel += 1;
-            //TouchOSC();
-            //touchToggled = false;
-            //}
-        }
-
-        private void OnCollisionExit(Collision collision)
-        {
-            if (State == BallState.Active)
-            {
-                touched = false;
-            }
-            touchToggle = false;
         }
 
         private void TouchOSC(Collision other)
@@ -245,6 +228,15 @@ namespace LW.Ball{
             //}
         }
 
+        private void OnCollisionExit(Collision collision)
+        {
+            if (State == BallState.Active)
+            {
+                touched = false;
+            }
+            touchToggle = false;
+        }
+
         public void KillBall(OscMessage message)
         {
             StartCoroutine("DestroySelf");
@@ -285,7 +277,7 @@ namespace LW.Ball{
 
         // NOTES
         // Action Mode
-        // no floats
+        // no floats ++
         // each touch has a unique color
         // forehand backhand and fist
         // more bounce
@@ -294,9 +286,9 @@ namespace LW.Ball{
         // STILL
         // new transitional gesture into still
         // pointer X or dorsal tap or peace smash
-        // Two floats - distance only - CoreHue and CoreDensity
+        // Two floats - distance only - CoreHue and CoreDensity ++
         // Ten touches - adding pointer and peace back 
-        // immovable except by jedi
+        // immovable except by jedi ++
         // touch responses - ring colors (default back to no color in action mode)
 
     }
