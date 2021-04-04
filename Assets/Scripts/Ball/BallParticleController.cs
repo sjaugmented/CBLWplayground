@@ -92,8 +92,8 @@ namespace LW.Ball
             main.startLifetime = ball.State == BallState.Still ? 1.5f : CoreLifetime * maxLifetime;
 
             Color color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
-            main.startColor = color;
-            light.color = color;
+            main.startColor = ball.State == BallState.Active ? ball.NoteColor : color;
+            light.color = ball.State == BallState.Active ? ball.NoteColor : color;
         }
 
         public void GlitterBall(OscMessage message)

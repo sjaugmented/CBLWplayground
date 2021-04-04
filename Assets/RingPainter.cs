@@ -7,7 +7,6 @@ namespace LW.Ball
     public class RingPainter : MonoBehaviour
     {
         [SerializeField] List<GameObject> rings;
-        public Color RingColor { get; set; }
 
         List<Material> ringMats = new List<Material>();
 
@@ -23,15 +22,14 @@ namespace LW.Ball
                     ringMats.Add(ring.GetComponent<Material>());
                 }
             }
-
-            RingColor = Color.HSVToRGB(0, 0, 1);
         }
 
         void Update()
         {
+
             foreach(Material mat in ringMats)
             {
-                mat.color = ball.State == BallState.Still ? RingColor : Color.HSVToRGB(0, 0, 1);
+                mat.color = ball.State == BallState.Still ? ball.NoteColor : Color.HSVToRGB(0, 0, 1);
             }
         }
     }
