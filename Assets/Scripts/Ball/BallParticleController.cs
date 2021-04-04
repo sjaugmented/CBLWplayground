@@ -17,6 +17,7 @@ namespace LW.Ball
         public float CoreHue { get; set; }
         public float CoreSat { get; set; }
         public float CoreVal { get; set; }
+        public float CoreEmission { get; set; }
 
         Ball ball;
         ParticleSystem innerParticles;
@@ -39,6 +40,7 @@ namespace LW.Ball
             CoreHue = 1f;
             CoreSat = 1f;
             CoreVal = 1;
+            CoreEmission = 1;
         }
 
         void Update()
@@ -60,7 +62,7 @@ namespace LW.Ball
                     }
                     if (jedi.ControlPose == HandPose.thumbsUp)
                     {
-                        emission.rateOverTime = jedi.RelativeHandDist * 500;
+                        CoreEmission = jedi.RelativeHandDist;
                     }
                 }
                 //else
@@ -83,11 +85,12 @@ namespace LW.Ball
             }
 
             emission.enabled = ball.State == BallState.Still || ball.CoreActive;
+            emission.rateOverTime = ball.State == BallState.Active ? 600 : CoreEmission * 400;
             light.enabled = ball.State == BallState.Active;
 
             main.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
 
-            main.startSize = ball.State == BallState.Active ? 0.2f : CoreSize * maxSize;
+            main.startSize = ball.State == BallState.Active ? 0.5f : CoreSize * maxSize;
             main.startSpeed = 0.26f;
             main.startLifetime = 1.5f;
 
