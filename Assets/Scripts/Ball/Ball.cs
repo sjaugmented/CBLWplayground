@@ -298,6 +298,16 @@ namespace LW.Ball{
             // something
         }
 
+        // NOTES
+        // Action Mode
+        // no floats
+        // each touch has a unique color
+        // forehand backhand and fist
+        // 
+        // STILL
+        // new transitional gesture into still
+        // pointer X or dorsal tap or peace smash
+
     }
 }
 
