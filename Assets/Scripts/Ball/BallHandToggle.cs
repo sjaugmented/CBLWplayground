@@ -19,12 +19,18 @@ namespace LW.Ball
         NewTracking tracking;
         BallDirector director;
         OSC osc;
+        Ball ball;
 
         void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+            
+            if (GameObject.FindGameObjectWithTag("Ball"))
+            {
+                ball = GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>();
+            }
         }
 
         private void OnTriggerEnter(Collider collider)
@@ -35,7 +41,9 @@ namespace LW.Ball
                 {
                     if (collider.CompareTag("Right Pointer"))
                     {
-                        SpawnPortal();
+                        //SpawnPortal();
+                        if (ball == null) { return; }
+                        ball.State = ball.State == BallState.Active ? BallState.Still : BallState.Active;
                     }
                 }
                 else
