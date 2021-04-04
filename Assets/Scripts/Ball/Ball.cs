@@ -35,7 +35,7 @@ namespace LW.Ball{
         bool touched = false;
         public bool InteractingWithParticles { get; set; }
 
-        float touchTimer;
+        float touchTimer = Mathf.Infinity;
         bool touchToggle;
         Vector3 lassoOrigin;
 
@@ -61,7 +61,6 @@ namespace LW.Ball{
 
             TouchLevel = 0;
             Hue = 0;
-            touchTimer = Mathf.Infinity;
             CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
@@ -75,21 +74,8 @@ namespace LW.Ball{
             WithinRange = distanceToPlayer < perimeter;
             GetComponent<Collider>().enabled = !InteractingWithParticles;
             containmentSphere.SetActive(State == BallState.Still);
-
             CoreActive = touched || jedi.Power != TheForce.idle || jedi.Recall == true;
-
-            //if (jedi.Held && ((tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace) || (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)))
-            //{
-            //    InteractingWithParticles = true;
-            //}
-            //else
-            //{
-            //    InteractingWithParticles = false;
-            //}
-
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
-
-            //Debug.Log("Interacting???" + InteractingWithParticles);
 
             if (jedi.Power == TheForce.push)
             {
@@ -251,17 +237,6 @@ namespace LW.Ball{
                     osc.Send("leftOpen/forehand", TouchLevel);
                 }
             }
-
-            //if (tracking.rightPose == HandPose.fist || tracking.leftPose == HandPose.fist)
-            //{
-            //    Frozen = true;
-            //    osc.Send("touched/primary", TouchLevel);
-            //}
-            //if (tracking.rightPose == HandPose.peace || tracking.leftPose == HandPose.peace)
-            //{
-            //    CoreActive = false;
-            //    osc.Send("touched/secondary", TouchLevel);
-            //}
 
             //Hue += 0.1388f; // five colors: 1/5 of 360
             //if (Hue > 1)

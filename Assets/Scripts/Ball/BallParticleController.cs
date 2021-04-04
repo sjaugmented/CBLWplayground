@@ -56,31 +56,30 @@ namespace LW.Ball
                     }
                     if (jedi.ControlPose == HandPose.fist)
                     {
-                        CoreSat = jedi.RelativeHandDist;
                         CoreSize = jedi.RelativeHandDist;
                     }
                     if (jedi.ControlPose == HandPose.thumbsUp)
                     {
-                        CoreVal = jedi.RelativeHandDist;
+                        emission.rateOverTime = jedi.RelativeHandDist * 500;
                     }
                 }
-                else
-                {
-                    if (jedi.ControlPose == HandPose.pointer)
-                    {
-                        CoreHue = jedi.RelativeHandDist;
-                    }
-                    if (jedi.ControlPose == HandPose.fist)
-                    {
-                        CoreSat = jedi.RelativeHandDist;
-                        CoreLifetime = jedi.RelativeHandDist;
-                    }
-                    if (jedi.ControlPose == HandPose.thumbsUp)
-                    {
-                        CoreVal = jedi.RelativeHandDist;
-                        CoreSpeed = jedi.RelativeHandDist;
-                    }
-                }
+                //else
+                //{
+                //    if (jedi.ControlPose == HandPose.pointer)
+                //    {
+                //        CoreHue = jedi.RelativeHandDist;
+                //    }
+                //    if (jedi.ControlPose == HandPose.fist)
+                //    {
+                //        CoreSat = jedi.RelativeHandDist;
+                //        CoreLifetime = jedi.RelativeHandDist;
+                //    }
+                //    if (jedi.ControlPose == HandPose.thumbsUp)
+                //    {
+                //        CoreVal = jedi.RelativeHandDist;
+                //        CoreSpeed = jedi.RelativeHandDist;
+                //    }
+                //}
             }
 
             emission.enabled = ball.State == BallState.Still || ball.CoreActive;
