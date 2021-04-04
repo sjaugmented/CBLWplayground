@@ -36,6 +36,7 @@ namespace LW.Ball{
         public bool CoreActive { get; set; }
         bool touched = false;
         public bool InteractingWithParticles { get; set; }
+        public Color NoteColor { get; set; }
 
         float touchTimer = Mathf.Infinity;
         bool touchToggle;
@@ -161,49 +162,62 @@ namespace LW.Ball{
             if (tracking.rightPose == HandPose.fist)
             {
                 Note = Notes.rFist;
-                Hue = 0;
+                NoteColor = Color.HSVToRGB(0, 1, 0.8f); // red
             }
             else
             {
                 if (tracking.rightPose == HandPose.pointer)
                 {
                     Note = Notes.rPointer;
+                    NoteColor = Color.HSVToRGB(0.66f, 0.58f, 0.8f); // baby blue
+
                 }
                 else if (tracking.rightPose == HandPose.peace)
                 {
                     Note = Notes.rPeace;
+                    NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
+
                 }
                 else if (other.gameObject.name == "Backhand")
                 {
                     Note = Notes.rBack;
+                    NoteColor = Color.HSVToRGB(0.29f, 1, 0.8f); // green
                 }
                 else
                 {
                     Note = Notes.rFore;
+                    NoteColor = Color.HSVToRGB(0.66f, 1, 0.8f); // blue
                 }
             }
 
             if (tracking.leftPose == HandPose.fist)
             {
                 Note = Notes.lFist;
+                NoteColor = Color.HSVToRGB(0.15f, 1, 0.8f); // yellow
             }
             else
             {
                 if (tracking.leftPose == HandPose.pointer)
                 {
                     Note = Notes.lPointer;
+                    NoteColor = Color.HSVToRGB(0, 0.58f, 1); // light red
+
                 }
                 else if (tracking.leftPose == HandPose.peace)
                 {
                     Note = Notes.lPeace;
+                    NoteColor = Color.HSVToRGB(0.86f, 0.58f, 1); // pink
+
                 }
                 else if (other.gameObject.name == "Backhand")
                 {
                     Note = Notes.lBack;
+                    NoteColor = Color.HSVToRGB(0.89f, 1, 0.8f); // magenta
                 }
                 else
                 {
                     Note = Notes.lFore;
+                    NoteColor = Color.HSVToRGB(0.5f, 1, 0.8f); // cyan
                 }
             }
 

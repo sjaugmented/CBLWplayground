@@ -38,13 +38,14 @@ namespace LW.Ball
 }
 
 // color values
-// red = 0
-// yellow = .15
-// green = .29
-// cyan = .5
-// blue = .66, .58, 1
-// baby blue = .66, 
+// red = 0 //
+// light red = 0, .58, 1
+// yellow = .15 //
+// green = .29 //
+// cyan = .5 //
+// blue = .66 //
+// baby blue = .66, .58, 1//
 // purple = .78
-// pink = 0.86, 0.58, 1
-// magneta = .89
+// pink = 0.86, 0.58, 1//
+// magneta = .89 //
 
