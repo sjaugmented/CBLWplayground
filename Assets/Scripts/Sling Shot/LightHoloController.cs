@@ -31,12 +31,12 @@ namespace LW.SlingShot
 	    {
 		    //currentPos = transform.position;
 		    
-		    if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat && !holoOut)
+		    if (tracking.palmsRel == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat && !holoOut)
 		    {
 			    ThrowHolo();
 		    }
 
-		    if (tracking.palms == Formation.palmsIn && tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
+		    if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
 		    {
 			    lassoPrimed = true;
 		    }

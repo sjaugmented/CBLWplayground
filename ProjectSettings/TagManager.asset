@@ -32,6 +32,8 @@ TagManager:
   - DMX
   - Ball
   - ForceField
+  - RightHand
+  - LeftHand
   layers:
   - Default
   - TransparentFX

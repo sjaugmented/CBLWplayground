@@ -108,7 +108,7 @@ namespace LW.Runic
             if (proximitySensor > 0.1f && !Manipulating)
 			{
                 ////// Set Rune Type
-                if (tracking.palms == Formation.together && tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                if (tracking.palmsRel == Formation.together && tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
                     masterRune.SetActive(true);
                     SelectRuneType();
@@ -116,7 +116,7 @@ namespace LW.Runic
                 else masterRune.SetActive(false);
 
                 ////// Casting
-                if (tracking.palms == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                if (tracking.palmsRel == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
                     CastRune();
                 }
@@ -149,7 +149,7 @@ namespace LW.Runic
             }
 
             ////// Reset Interface
-            if (tracking.palms == Formation.palmsIn && tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+            if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
             {
                 Reset();
                 //director.currentMode = RunicDirector.Mode.Build;
