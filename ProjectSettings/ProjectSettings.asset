@@ -124,7 +124,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 2
+  bundleVersion: 2.2.5
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -605,13 +605,13 @@ PlayerSettings:
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: Ball
-  metroPackageVersion: 2.0.0.0
+  metroPackageVersion: 2.2.5.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Circus Bounce
   metroCertificateIssuer: Circus Bounce
   metroCertificateNotAfter: 803eb9afef46d701
-  metroApplicationDescription: Sling Shot Color Picker
+  metroApplicationDescription: Ball Is Love
   wsaImages: {}
   metroTileShortName: CB floor level
   metroTileShowName: 0

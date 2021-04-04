@@ -5,19 +5,23 @@ using UnityEngine;
 namespace LW.Core {
     
     public enum Hands {right, left, both, none}
-    public enum Direction {up, down, palmOut, palmIn, side, none};
+    public enum Direction {up, down, palmOut, palmIn, side, none };
     public enum Formation {palmsIn, palmsOut, together, palmsUp, palmsDown, none}
     public enum HandPose {pointer, peace, flat, fist, gun, thumbsUp, rockOn, any, none}
 
+    [RequireComponent(typeof(CastOrigins))]
     public class NewTracking : MonoBehaviour
     {
         [SerializeField] float strictMargin = 20;
         [SerializeField] bool printAngles = true;
 
         public Hands handedness = Hands.none;
-        public Formation palms = Formation.none;
-        public Direction rightPalm = Direction.none;
-        public Direction leftPalm = Direction.none;
+        public Formation palmsRel = Formation.none;
+        public Formation palmsAbs = Formation.none;
+        public Direction rightPalmRel = Direction.none;
+        public Direction rightPalmAbs = Direction.none;
+        public Direction leftPalmRel = Direction.none;
+        public Direction leftPalmAbs = Direction.none;
         public HandPose rightPose = HandPose.none;
         public HandPose leftPose = HandPose.none;
         
@@ -29,7 +33,7 @@ namespace LW.Core {
         
         Vector3 staff;
         float staffForward, staffUp, staffRight, staffFloorUp, staffFloorForward;
-        float rtPalmForward, rtPalmUpRelative, rtPalmUpAbsolute, rtPalmIn, rtLauncher, ltPalmForward, ltPalmUpRelative, ltPalmUpAbsolute, ltPalmIn, ltLauncher;
+        float rtPalmForwardRel, rtPalmForwardAbs, rtPalmUpRel, rtPalmUpAbs, rtPalmInRel, rtLauncher, ltPalmForwardRel,ltPalmForwardAbs, ltPalmUpRel, ltPalmUpAbs, ltPalmInRel, ltLauncher;
         
         #region Getters
         public MixedRealityPose GetRtPalm { get { return rtPalm; } }
@@ -84,8 +88,6 @@ namespace LW.Core {
             foundLtThumb = HandJointUtils.TryGetJointPose(TrackedHandJoint.ThumbTip, Handedness.Left, out ltThumb);
             foundLtPinky = HandJointUtils.TryGetJointPose(TrackedHandJoint.PinkyTip, Handedness.Left, out ltPinky);
             foundLtPalm = HandJointUtils.TryGetJointPose(TrackedHandJoint.Palm, Handedness.Left, out ltPalm);
-
-            // TODO create test, if any of the above are ever false, trigger a HUD element
         }
 
         private void FindHands()
@@ -106,60 +108,107 @@ namespace LW.Core {
 
         private void WatchPalmDirections() 
         {
-            rtPalmForward = Vector3.Angle(rtPalm.Up, cam.forward);
-            rtPalmUpRelative = Vector3.Angle(rtPalm.Up, cam.up);
-            rtPalmUpAbsolute = Vector3.Angle(rtPalm.Up, floor.up);
-            rtPalmIn = Vector3.Angle(rtPalm.Up, cam.right);
+            rtPalmForwardRel = Vector3.Angle(rtPalm.Up, cam.forward);
+            rtPalmForwardAbs = Vector3.Angle(rtPalm.Up, floor.forward);
+            rtPalmUpRel = Vector3.Angle(rtPalm.Up, cam.up);
+            rtPalmUpAbs = Vector3.Angle(rtPalm.Up, floor.up);
+            rtPalmInRel = Vector3.Angle(rtPalm.Up, cam.right);
             rtLauncher = Vector3.Angle(rtPalm.Right, cam.up); // TODO move launchers off of NewTracker
 
-            ltPalmForward = Vector3.Angle(ltPalm.Up, cam.forward);
-            ltPalmUpRelative = Vector3.Angle(ltPalm.Up, cam.up);
-            ltPalmUpAbsolute = Vector3.Angle(ltPalm.Up, floor.up);
-            ltPalmIn = Vector3.Angle(ltPalm.Up, cam.right * -1); // inverted for symmetry
+            ltPalmForwardRel = Vector3.Angle(ltPalm.Up, cam.forward);
+            ltPalmForwardAbs = Vector3.Angle(ltPalm.Up, floor.forward);
+            ltPalmUpRel = Vector3.Angle(ltPalm.Up, cam.up);
+            ltPalmUpAbs = Vector3.Angle(ltPalm.Up, floor.up);
+            ltPalmInRel = Vector3.Angle(ltPalm.Up, cam.right * -1); // inverted for symmetry
             ltLauncher = Vector3.Angle(ltPalm.Right, cam.up);
 
             if (!foundRtPalm) {
-                rightPalm = Direction.none;
+                rightPalmRel = Direction.none;
+                rightPalmAbs = Direction.none;
             }
             if (!foundLtPalm) {
-                leftPalm = Direction.none;
+                leftPalmRel = Direction.none;
+                leftPalmAbs = Direction.none;
             }
 
-            if (IsPosed(rtPalmForward, 20)) {
-                rightPalm = Direction.palmIn;
+            #region RELATIVES
+            if (IsPosed(rtPalmForwardRel, 20)) {
+                rightPalmRel = Direction.palmIn;
             }
-            if (IsPosed(ltPalmForward, 20)) {
-                leftPalm = Direction.palmIn;
-            }
-
-            if (IsPosed(rtPalmForward, 150)) {
-                rightPalm = Direction.palmOut;
-            }
-            if (IsPosed(ltPalmForward, 150)) {
-                leftPalm = Direction.palmOut;
-            }
-            
-
-            if (IsPosed(rtPalmUpRelative, 0)) {
-                rightPalm = Direction.down;
-            }
-            if (IsPosed(ltPalmUpRelative, 0)) {
-                leftPalm = Direction.down;
-            }
-            
-            if (IsPosed(rtPalmUpRelative, 180)) {
-                rightPalm = Direction.up;
-            }
-            if (IsPosed(ltPalmUpRelative, 180)) {
-                leftPalm = Direction.up;
+            if (IsPosed(ltPalmForwardRel, 20)) {
+                leftPalmRel = Direction.palmIn;
             }
 
-            if (IsPosed(rtPalmIn, 0)) {
-                rightPalm = Direction.side;
+            if (IsPosed(rtPalmForwardRel, 150)) {
+                rightPalmRel = Direction.palmOut;
             }
-            if (IsPosed(ltPalmIn, 0)) {
-                leftPalm = Direction.side;
+            if (IsPosed(ltPalmForwardRel, 150)) {
+                leftPalmRel = Direction.palmOut;
             }
+
+            if (IsPosed(rtPalmUpRel, 0)) {
+                rightPalmRel = Direction.down;
+            }
+            if (IsPosed(ltPalmUpRel, 0)) {
+                leftPalmRel = Direction.down;
+            }
+
+            if (IsPosed(rtPalmUpRel, 180)) {
+                rightPalmRel = Direction.up;
+            }
+            if (IsPosed(ltPalmUpRel, 180)) {
+                leftPalmRel = Direction.up;
+            }
+
+            if (IsPosed(rtPalmInRel, 0))
+            {
+                rightPalmRel = Direction.side;
+                rightPalmAbs = Direction.none;
+            }
+            if (IsPosed(ltPalmInRel, 0))
+            {
+                leftPalmRel = Direction.side;
+                leftPalmAbs = Direction.none;
+            }
+            #endregion
+
+            #region ABSOLUTES
+            if (IsPosed(rtPalmForwardAbs, 20))
+            {
+                rightPalmAbs = Direction.palmIn;
+            }
+            if (IsPosed(ltPalmForwardAbs, 20))
+            {
+                leftPalmAbs = Direction.palmIn;
+            }
+
+            if (IsPosed(rtPalmForwardAbs, 150))
+            {
+                rightPalmAbs = Direction.palmOut;
+            }
+            if (IsPosed(ltPalmForwardAbs, 150))
+            {
+                leftPalmAbs = Direction.palmOut;
+            }
+
+            if (IsPosed(rtPalmUpAbs, 0))
+            {
+                rightPalmAbs = Direction.down;
+            }
+            if (IsPosed(ltPalmUpAbs, 0))
+            {
+                leftPalmAbs = Direction.down;
+            }
+
+            if (IsPosed(rtPalmUpAbs, 180))
+            {
+                rightPalmAbs = Direction.up;
+            }
+            if (IsPosed(ltPalmUpAbs, 180))
+            {
+                leftPalmAbs = Direction.up;
+            }
+            #endregion
         }
 
         private void WatchStaff() 
@@ -178,35 +227,66 @@ namespace LW.Core {
         {
             float palmToPalm = Vector3.Angle(rtPalm.Up, ltPalm.Up);
 
-            if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalm == Direction.up && leftPalm == Direction.down) || (rightPalm == Direction.down && leftPalm == Direction.up))))
+            if (!foundRtPalm || !foundLtPalm || ((IsPosed(staffUp, 90) || IsPosed(staffRight, 0)) && ((rightPalmRel == Direction.up && leftPalmRel == Direction.down) || (rightPalmRel == Direction.down && leftPalmRel == Direction.up))))
             {
-                palms = Formation.none;
+                palmsRel = Formation.none;
+                palmsAbs = Formation.none;
             }
 
             else if (IsPosed(palmToPalm, 180)) {
-                palms = Formation.together;
+                palmsRel = Formation.together;
+                palmsAbs = Formation.together;
             }
 
-            else if (rightPalm == Direction.palmOut && leftPalm == Direction.palmOut) {
-                palms = Formation.palmsOut;
+            #region RELATIVES
+            else if (rightPalmRel == Direction.palmOut && leftPalmRel == Direction.palmOut) {
+                palmsRel = Formation.palmsOut;
             }
 
-            else if (rightPalm == Direction.palmIn && leftPalm == Direction.palmIn) {
-                palms = Formation.palmsIn;
+            else if (rightPalmRel == Direction.palmIn && leftPalmRel == Direction.palmIn) {
+                palmsRel = Formation.palmsIn;
             }
 
-            else if (rightPalm == Direction.up && leftPalm == Direction.up) {
-                palms = Formation.palmsUp;
+            else if (rightPalmRel == Direction.up && leftPalmRel == Direction.up) {
+                palmsRel = Formation.palmsUp;
             }
 
-            else if (rightPalm == Direction.down && leftPalm == Direction.down) {
-                palms = Formation.palmsDown;
+            else if (rightPalmRel == Direction.down && leftPalmRel == Direction.down) {
+                palmsRel = Formation.palmsDown;
             }
-
             else
             {
-                palms = Formation.none;
+                palmsRel = Formation.none;
             }
+            #endregion
+
+            #region ABSOLUTES
+            if (rightPalmAbs == Direction.palmOut && leftPalmAbs == Direction.palmOut)
+            {
+                palmsAbs = Formation.palmsOut;
+            }
+
+            else if (rightPalmAbs == Direction.palmIn && leftPalmAbs == Direction.palmIn)
+            {
+                palmsAbs = Formation.palmsIn;
+            }
+
+            else if (rightPalmAbs == Direction.up && leftPalmAbs == Direction.up)
+            {
+                palmsAbs = Formation.palmsUp;
+            }
+
+            else if (rightPalmAbs == Direction.down && leftPalmAbs == Direction.down)
+            {
+                palmsAbs = Formation.palmsDown;
+            }
+            else
+            {
+                palmsAbs = Formation.none;
+            }
+            #endregion
+
+
         }
 
         private void WatchPoses()
@@ -241,7 +321,7 @@ namespace LW.Core {
             }
             else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && IsPosed(rtPinkyForward, 0))
             {
-                //rightPose = HandPose.rockOn;                          
+                rightPose = HandPose.rockOn;
             }
             else if (IsPosed(rtIndForward, 0) && (!IsPosed(rtMidForward, 0) || IsPosed(rtMidForward, 180)) && (IsPosed(rtPinkyForward, 180) || !IsPosed(rtPinkyForward, 0)) && (IsPosed(rtThumbOut, 150) || IsPosed(rtThumbOut, 130))) {
                 rightPose = HandPose.pointer;
@@ -264,7 +344,7 @@ namespace LW.Core {
             }
             else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0) || IsPosed(ltMidForward, 180)) && IsPosed(ltPinkyForward, 0))
             {
-                //leftPose = HandPose.rockOn;
+                leftPose = HandPose.rockOn;
             }
             else if (IsPosed(ltIndForward, 0) && (!IsPosed(ltMidForward, 0)) && (IsPosed(ltPinkyForward, 180) || !IsPosed(ltPinkyForward, 0)) && (IsPosed(ltThumbOut, 150) || IsPosed(ltThumbOut, 130))) {
                 leftPose = HandPose.pointer;

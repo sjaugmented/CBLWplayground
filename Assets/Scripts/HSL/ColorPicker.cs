@@ -80,7 +80,7 @@ namespace LW.HSL
                     return; 
                 }
 
-                if (tracking.palms == Formation.together)
+                if (tracking.palmsRel == Formation.together)
                 {
                     hslOrb.gameObject.SetActive(true);
 
