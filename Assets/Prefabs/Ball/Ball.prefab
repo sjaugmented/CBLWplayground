@@ -5339,7 +5339,7 @@ MonoBehaviour:
   forceMult: 100000
   killForce: 0.0001
   hasBounce: 1
-  bounce: 10
+  bounce: 30
   recallDistance: 0.2
   antiGrav: 0.7
   State: 0
@@ -5359,7 +5359,7 @@ MonoBehaviour:
   pushMultiplier: 10
   pullMultiplier: 3
   liftMultiplier: 3
-  recallMultiplier: 10
+  recallMultiplier: 6
   holdDistance: 0.7
   minDistance: 0.3
   ControlPose: 8

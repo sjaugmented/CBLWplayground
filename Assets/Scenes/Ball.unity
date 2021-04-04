@@ -1992,7 +1992,7 @@ MonoBehaviour:
   inPort: 7000
   outIP: 255.255.255.255
   outPort: 8000
-  logOSC: 1
+  logOSC: 0
 --- !u!4 &851767835
 Transform:
   m_ObjectHideFlags: 0

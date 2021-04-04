@@ -49,17 +49,19 @@ namespace LW.Ball
                 {
                     if (collider.CompareTag("Right Pointer"))
                     {
-                        //SpawnPortal();
                         if (ball == null) { return; }
-                        ball.State = ball.State == BallState.Active ? BallState.Still : BallState.Active;
                         
                         if (ball.State != BallState.Still)
                         {
-                            GetComponent<AudioSource>().PlayOneShot(stillFX);
+                            ball.State = BallState.Still;
+                            Debug.Log("locking at: " + ball.transform.position);
+                            ball.LockPos = ball.transform.position;
+                            ball.PlayStillFx();
                         }
                         else
                         {
-                            GetComponent<AudioSource>().PlayOneShot(activeFX);
+                            ball.State = BallState.Active;
+                            ball.PlayActionFx();
                         }
                     }
                 }
@@ -94,15 +96,18 @@ namespace LW.Ball
                     if (collider.CompareTag("Left Pointer"))
                     {
                         if (ball == null) { return; }
-                        ball.State = ball.State == BallState.Active ? BallState.Still : BallState.Active;
-                        
+
                         if (ball.State != BallState.Still)
                         {
-                            GetComponent<AudioSource>().PlayOneShot(stillFX);
+                            ball.State = BallState.Still;
+                            Debug.Log("locking at: " + ball.transform.position);
+                            ball.LockPos = ball.transform.position;
+                            ball.PlayStillFx();
                         }
                         else
                         {
-                            GetComponent<AudioSource>().PlayOneShot(activeFX);
+                            ball.State = BallState.Active;
+                            ball.PlayActionFx();
                         }
                     }
                 }

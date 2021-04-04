@@ -37,9 +37,10 @@ namespace LW.Ball{
         bool touched = false;
         public bool InteractingWithParticles { get; set; }
         public Color NoteColor { get; set; }
+        public Vector3 LockPos { get; set; }
 
         float touchTimer = Mathf.Infinity;
-        bool touchToggle;
+        bool touchResponseLimiter;
         Vector3 lassoOrigin;
 
         NewTracking tracking;
@@ -80,20 +81,29 @@ namespace LW.Ball{
             CoreActive = touched || jedi.Power != TheForce.idle || jedi.Recall == true;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
-
             if (State == BallState.Still || InteractingWithParticles)
             {
-                GameObject[] rHandColliders = GameObject.FindGameObjectsWithTag("RightHand");
-                foreach(GameObject collider in rHandColliders)
+                if (jedi.Power == TheForce.idle)
                 {
-                    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
+                    transform.position = LockPos;
                 }
+                else
+                {
+                    LockPos = transform.position;
+                }
+                
+                // I don't think any of this is doing shit...
+                //GameObject[] rHandColliders = GameObject.FindGameObjectsWithTag("RightHand");
+                //foreach(GameObject collider in rHandColliders)
+                //{
+                //    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
+                //}
 
-                GameObject[] lHandColliders = GameObject.FindGameObjectsWithTag("LeftHand");
-                foreach (GameObject collider in lHandColliders)
-                {
-                    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
-                }
+                //GameObject[] lHandColliders = GameObject.FindGameObjectsWithTag("LeftHand");
+                //foreach (GameObject collider in lHandColliders)
+                //{
+                //    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
+                //}
             }
 
             if (jedi.Power == TheForce.push)
@@ -140,7 +150,7 @@ namespace LW.Ball{
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
 
-            if (hasBounce)
+            if (hasBounce && State == BallState.Active && (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand")))
             {
                 rigidbody.AddForce(dir * force * bounce);
 
@@ -152,13 +162,19 @@ namespace LW.Ball{
 
             if (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
             {
-                DetermineTouchResponse(other);
+                if (!touchResponseLimiter)
+                {
+                    TouchLevel += 1;
+                    DetermineTouchResponse(other);
+                    osc.Send(Note.ToString(), TouchLevel);
+                    touchResponseLimiter = true;
+                }
+                
+                if (State == BallState.Active)
+                {
+                    touched = true;
+                }
             }
-            //else
-            //{
-            //    osc.Send("bounced", TouchLevel);
-            //    Debug.Log("bounced");
-            //}
         }
 
         private void DetermineTouchResponse(Collision other)
@@ -238,62 +254,7 @@ namespace LW.Ball{
                     }
                 }
             }
-            
-            if (State == BallState.Active)
-            {
-                touched = true;
-            }
-
-            if (!touchToggle)
-            {
-                TouchLevel += 1;
-                //TouchOSC(other);
-                osc.Send(Note.ToString(), TouchLevel);
-                touchToggle = true;
-            }
         }
-
-        //private void TouchOSC(Collision other)
-        //{
-        //    if (tracking.rightPose == HandPose.fist)
-        //    {
-        //        osc.Send("rightFist", TouchLevel);
-        //    }
-        //    else
-        //    {
-        //        if (other.gameObject.name == "Backhand")
-        //        {
-        //            osc.Send("rightOpen/backhand", TouchLevel);
-        //        }
-        //        else
-        //        {
-        //            Debug.Log(other.gameObject.name);
-        //            osc.Send("rightOpen/forehand", TouchLevel);
-        //        }
-        //    }
-
-        //    if (tracking.leftPose == HandPose.fist)
-        //    {
-        //        osc.Send("leftFist", TouchLevel);
-        //    }
-        //    else
-        //    {
-        //        if (other.gameObject.name == "Backhand")
-        //        {
-        //            osc.Send("leftOpen/backhand", TouchLevel);
-        //        }
-        //        else
-        //        {
-        //            osc.Send("leftOpen/forehand", TouchLevel);
-        //        }
-        //    }
-
-        //    //Hue += 0.1388f; // five colors: 1/5 of 360
-        //    //if (Hue > 1)
-        //    //{
-        //    //    Hue -= 1;
-        //    //}
-        //}
 
         private void OnCollisionExit(Collision collision)
         {
@@ -301,7 +262,7 @@ namespace LW.Ball{
             {
                 touched = false;
             }
-            touchToggle = false;
+            touchResponseLimiter = false;
         }
 
         public void KillBall(OscMessage message)
@@ -342,22 +303,15 @@ namespace LW.Ball{
             // something
         }
 
-        // NOTES
-        // Action Mode
-        // no floats ++++
-        // each touch has a unique color
-        // forehand backhand and fist
-        // more bounce ++++
-        // play with recall more - punch it on recall and the shell explodes ++++
-        // 
-        // STILL
-        // new transitional gesture into still ++
-        // pointer X or dorsal tap or peace smash
-        // Two floats - distance only - CoreHue and CoreDensity ++
-        // Ten touches - adding pointer and peace back 
-        // immovable except by jedi ++
-        // touch responses - ring colors (default back to no color in action mode ++)
+        public void PlayStillFx()
+        {
+            GetComponent<AudioSource>().PlayOneShot(stillFX);
+        }
 
+        public void PlayActionFx()
+        {
+            GetComponent<AudioSource>().PlayOneShot(activeFX);
+        }
     }
 }
 
