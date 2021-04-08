@@ -27,6 +27,7 @@ namespace LW.Ball{
         [SerializeField] float bounce = 10;
         [SerializeField] float recallDistance = 0.3f;
         [SerializeField] float antiGrav = 0.7f;
+        [SerializeField] float maxRotation = 1;
 
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
@@ -38,11 +39,14 @@ namespace LW.Ball{
         public bool InteractingWithParticles { get; set; }
         public Color NoteColor { get; set; }
         public Vector3 LockPos { get; set; }
+        public bool Manipulating { get; set; }
+        public bool BroadcastSafe { get; set; }
 
         float touchTimer = Mathf.Infinity;
         bool touchResponseLimiter;
         Vector3 lassoOrigin;
 
+        BallDirector director;
         NewTracking tracking;
         CastOrigins origins;
         BallCaster caster;
@@ -57,6 +61,7 @@ namespace LW.Ball{
 
         void Start()
         {
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
@@ -68,66 +73,63 @@ namespace LW.Ball{
             CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
+            StartCoroutine("BeginBroadcasting");
         }
 
         void Update()
         {
+            State = director.Still ? BallState.Still : BallState.Active;
+
             touchTimer += Time.deltaTime;
             float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
             GetComponent<Collider>().enabled = !InteractingWithParticles;
             containmentSphere.SetActive(State == BallState.Still);
-            CoreActive = touched || jedi.Power != TheForce.idle || jedi.Recall == true;
+            CoreActive = touched || jedi.Power == TheForce.push || jedi.Power == TheForce.pull || jedi.Recall == true;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
-            if (State == BallState.Still || InteractingWithParticles)
+            if (State == BallState.Still && jedi.Power == TheForce.idle && !Manipulating && !jedi.Recall)
             {
-                if (jedi.Power == TheForce.idle)
-                {
-                    transform.position = LockPos;
-                }
-                else
-                {
-                    LockPos = transform.position;
-                }
-                
-                // I don't think any of this is doing shit...
-                //GameObject[] rHandColliders = GameObject.FindGameObjectsWithTag("RightHand");
-                //foreach(GameObject collider in rHandColliders)
-                //{
-                //    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
-                //}
-
-                //GameObject[] lHandColliders = GameObject.FindGameObjectsWithTag("LeftHand");
-                //foreach (GameObject collider in lHandColliders)
-                //{
-                //    Physics.IgnoreCollision(GetComponent<Collider>(), collider.GetComponent<Collider>());
-                //}
+                transform.position = LockPos;
+            }
+            else
+            {
+                LockPos = transform.position;
             }
 
             if (jedi.Power == TheForce.push)
             {
+                var force = State == BallState.Active ? jedi.PushForce : jedi.PushForce;
                 transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * jedi.PushForce) + new Vector3(0, antiGrav, 0));
+                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * force) + new Vector3(0, antiGrav, 0));
             }
 
             if (jedi.Power == TheForce.pull)
             {
+                var force = State == BallState.Active ? jedi.PullForce : jedi.PullForce;
                 transform.LookAt(Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * jedi.PullForce));
+                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * force));
             }
 
             if (jedi.Power == TheForce.lift)
             {
+
+                var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
                 transform.rotation = new Quaternion(0, 0, 0, 0);
-                rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * jedi.LiftForce));
+                rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * force));
             }
 
             if (jedi.Power == TheForce.down)
             {
-                transform.rotation = new Quaternion(0, 0, 0, 0);
-                rigidbody.AddForce(transform.up * -(origins.PalmsDist / jedi.HoldDistance * jedi.LiftForce));
+                var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
+                transform.rotation = new Quaternion(180, 0, 0, 0);
+                rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * force));
+            }
+
+            if (jedi.Power == TheForce.spin)
+            {
+                transform.Rotate(0, jedi.RelativeHandDist * maxRotation, 0);
             }
 
             if (jedi.Recall)
@@ -137,12 +139,13 @@ namespace LW.Ball{
 
                 if (distToOrigin > recallDistance)
                 {
-                    rigidbody.AddForce((transform.forward * jedi.RecallForce));
+                    rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
                 }
             }
         }
 
-        private void OnCollisionEnter(Collision other) {
+        private void OnCollisionEnter(Collision other)
+        {
             if (InteractingWithParticles) { return; }
 
             Vector3 dir = other.contacts[0].point - transform.position;
@@ -166,10 +169,13 @@ namespace LW.Ball{
                 {
                     TouchLevel += 1;
                     DetermineTouchResponse(other);
-                    osc.Send(Note.ToString(), TouchLevel);
+                    if (BroadcastSafe)
+                    {
+                        osc.Send(Note.ToString(), TouchLevel);
+                    }
                     touchResponseLimiter = true;
                 }
-                
+
                 if (State == BallState.Active)
                 {
                     touched = true;
@@ -180,7 +186,7 @@ namespace LW.Ball{
         private void DetermineTouchResponse(Collision other)
         {
             if (InteractingWithParticles) { return; }
-            
+
             if (other.collider.CompareTag("RightHand"))
             {
                 if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
@@ -270,8 +276,10 @@ namespace LW.Ball{
             StartCoroutine("DestroySelf");
         }
 
-        IEnumerator DestroySelf() 
+        IEnumerator DestroySelf()
         {
+            BroadcastSafe = false;
+
             if (GetComponentInChildren<DeathParticlesId>())
             {
                 var deathParticles = GetComponentInChildren<DeathParticlesId>().GetComponent<ParticleSystem>();
@@ -290,12 +298,19 @@ namespace LW.Ball{
             {
                 GetComponent<AudioSource>().PlayOneShot(destroyFX);
             }
-            
+
             yield return new WaitForSeconds(destroyDelay);
 
             caster.BallInPlay = false;
             osc.Send("iDead");
-            Destroy(gameObject); 
+            Destroy(gameObject);
+        }
+
+        IEnumerator BeginBroadcasting()
+        {
+            BroadcastSafe = false;
+            yield return new WaitForSeconds(1);
+            BroadcastSafe = true;
         }
 
         public void IsGazedAt()

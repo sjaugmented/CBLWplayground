@@ -10,7 +10,8 @@ namespace LW.Ball
         [SerializeField] float maxLifetime = 2;
         [SerializeField] float maxSize = 0.25f;
         [SerializeField] float maxSpeed = 1;
-        
+        [SerializeField] float maxParticles = 500;
+
         public float CoreSize { get; set; }
         public float CoreLifetime { get; set; }
         public float CoreSpeed { get; set; }
@@ -20,15 +21,18 @@ namespace LW.Ball
         public float CoreEmission { get; set; }
 
         Ball ball;
-        ParticleSystem innerParticles;
         BallJedi jedi;
         NewTracking tracking;
         CastOrigins origins;
+        ParticleSystem innerParticles;
+        ParticleSystem pushParticles;
+        ParticleSystem forceParticles;
         Light light;
         void Start()
         {
             ball = GetComponent<Ball>();
-            innerParticles = GetComponentInChildren<ParticleSystem>();
+            innerParticles = GetComponentInChildren<CoreParticlesID>().transform.GetComponent<ParticleSystem>();
+            forceParticles = GetComponentInChildren<ForceParticlesID>().transform.GetComponent<ParticleSystem>();
             jedi = GetComponentInParent<BallJedi>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
@@ -45,8 +49,10 @@ namespace LW.Ball
 
         void Update()
         {
-            var main = innerParticles.main;
-            var emission = innerParticles.emission;
+            var innerMain = innerParticles.main;
+            var forceMain = forceParticles.main;
+            var innerEmission = innerParticles.emission;
+            var forceEmission = forceParticles.emission;
 
             if (ball.WithinRange)
             {
@@ -58,12 +64,14 @@ namespace LW.Ball
                     }
                     if (jedi.ControlPose == HandPose.fist)
                     {
-                        CoreSize = jedi.RelativeHandDist;
+                        CoreSize = 1 - jedi.RelativeHandDist;
+                        CoreSpeed = jedi.RelativeHandDist;
+                        CoreLifetime = jedi.RelativeHandDist;
                     }
-                    if (jedi.ControlPose == HandPose.thumbsUp)
-                    {
-                        CoreEmission = jedi.RelativeHandDist;
-                    }
+                    //if (jedi.ControlPose == HandPose.thumbsUp)
+                    //{
+                    //    CoreEmission = jedi.RelativeHandDist;
+                    //}
                 }
                 //else
                 //{
@@ -84,19 +92,21 @@ namespace LW.Ball
                 //}
             }
 
-            emission.enabled = ball.State == BallState.Still || ball.CoreActive;
-            emission.rateOverTime = ball.State == BallState.Active ? 600 : CoreEmission * 400;
-            light.enabled = ball.State == BallState.Active;
+            //innerMain.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
 
-            main.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
+            innerEmission.enabled = ball.State == BallState.Still || ball.CoreActive;
+            forceEmission.enabled = jedi.Power != TheForce.idle;
+            innerEmission.rateOverTime = ball.State == BallState.Active ? maxParticles : CoreEmission * maxParticles;
 
-            main.startSize = ball.State == BallState.Active ? 0.5f : CoreSize * maxSize;
-            main.startSpeed = 0.26f;
-            main.startLifetime = 1.5f;
+            innerMain.startSize = ball.State == BallState.Active ? maxSize : CoreSize * maxSize;
+            innerMain.startSpeed = ball.State == BallState.Active ? maxSpeed : CoreSpeed * maxSpeed;
+            innerMain.startLifetime = ball.State == BallState.Active ? maxLifetime : CoreLifetime * maxLifetime;
 
             Color color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
-            main.startColor = ball.State == BallState.Active ? ball.NoteColor : color;
-            light.color = ball.State == BallState.Active ? ball.NoteColor : color;
+            innerMain.startColor = ball.State == BallState.Active ? ball.NoteColor : color;
+
+            light.enabled = ball.CoreActive; ;
+            light.color = ball.NoteColor;
         }
 
         public void GlitterBall(OscMessage message)

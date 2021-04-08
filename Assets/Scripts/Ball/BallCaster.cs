@@ -14,7 +14,8 @@ namespace LW.Ball
         [SerializeField] GameObject multiBall;
         [SerializeField] float zOffset = 0.1f;
         [SerializeField] int worldLvl = 0;
-        public int WorldLevel {
+        public int WorldLevel
+        {
             get { return worldLvl; }
             set { worldLvl = value; }
         }
@@ -27,7 +28,7 @@ namespace LW.Ball
 
         NewTracking tracking;
         GameObject ballInstance;
-        
+
         void Start()
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
@@ -89,22 +90,25 @@ namespace LW.Ball
             {
                 if (!ballInstance) { return; }
 
-                if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
+                if (ballInstance.GetComponent<Ball>().State == BallState.Still)
                 {
-                    if (!destroyReady)
+                    if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
                     {
-                        destroyTimer = 0;
-                        destroyReady = true;
+                        if (!destroyReady)
+                        {
+                            destroyTimer = 0;
+                            destroyReady = true;
+                        }
                     }
-                }
-                else
-                {
-                    destroyReady = false;
-                }
+                    else
+                    {
+                        destroyReady = false;
+                    }
 
-                if (destroyTimer < 1 && conjureTimer > 3 && tracking.rightPose == HandPose.fist)
-                {
-                    DestroyBall();
+                    if (destroyTimer < 1 && conjureTimer > 3 && tracking.rightPose == HandPose.fist)
+                    {
+                        DestroyBall();
+                    }
                 }
             }
         }
@@ -113,7 +117,6 @@ namespace LW.Ball
         {
             BallInPlay = true;
             ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
-
 
             //if (WorldLevel == 1)
             //{
@@ -131,7 +134,10 @@ namespace LW.Ball
             {
                 ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
                 ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
-                ballInstance.GetComponent<BallOsc>().Send("recalled");
+                if (ballInstance.GetComponent<Ball>().BroadcastSafe)
+                {
+                    ballInstance.GetComponent<BallOsc>().Send("recalled");
+                }
 
                 if (!GetComponent<AudioSource>().isPlaying)
                 {

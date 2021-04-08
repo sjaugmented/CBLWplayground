@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LW.Ball
 {
-    public enum TheForce { push, pull, lift, down, idle}
+    public enum TheForce { push, pull, lift, down, spin, idle }
     public class BallJedi : MonoBehaviour
     {
         [SerializeField] float pushMultiplier = 5;
@@ -71,7 +71,7 @@ namespace LW.Ball
 
             rigidbody.useGravity = !Held && ball.State == BallState.Active && Power == TheForce.idle;
             GetComponent<ConstantForce>().enabled = !Held && ball.State == BallState.Active && Power == TheForce.idle;
-            
+
             #region Held / ControlPoses
             if (tracking.palmsRel == Formation.together)
             {
@@ -84,10 +84,6 @@ namespace LW.Ball
                 else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
                 {
                     ControlPose = HandPose.fist;
-                }
-                else if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
-                {
-                    ControlPose = HandPose.thumbsUp;
                 }
                 else
                 {
@@ -142,6 +138,10 @@ namespace LW.Ball
             else if (tracking.palmsAbs == Formation.palmsDown && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
             {
                 Power = TheForce.down;
+            }
+            else if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
+            {
+                Power = TheForce.spin;
             }
             else
             {
