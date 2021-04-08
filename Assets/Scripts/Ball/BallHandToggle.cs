@@ -37,7 +37,7 @@ namespace LW.Ball
             {
                 if (tracking.leftPose != HandPose.flat)
                 {
-                    if (collider.CompareTag("Right Pointer"))
+                    if (collider.CompareTag("Right Pointer") && !director.Still)
                     {
                         director.Still = true;
                         SendOSC("still/");
@@ -72,7 +72,7 @@ namespace LW.Ball
             {
                 if (tracking.rightPose != HandPose.flat)
                 {
-                    if (collider.CompareTag("Left Pointer"))
+                    if (collider.CompareTag("Left Pointer") && director.Still)
                     {
                         director.Still = false;
                         SendOSC("active/");

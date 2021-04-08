@@ -86,7 +86,7 @@ namespace LW.Ball{
             WithinRange = distanceToPlayer < perimeter;
             GetComponent<Collider>().enabled = !InteractingWithParticles;
             containmentSphere.SetActive(State == BallState.Still);
-            CoreActive = touched || jedi.Power == TheForce.push || jedi.Power == TheForce.pull || jedi.Recall == true;
+            CoreActive = touched;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
             if (State == BallState.Still && jedi.Power == TheForce.idle && !Manipulating && !jedi.Recall)
@@ -129,7 +129,7 @@ namespace LW.Ball{
 
             if (jedi.Power == TheForce.spin)
             {
-                transform.Rotate(0, jedi.RelativeHandDist * maxRotation, 0);
+                transform.Rotate(0, jedi.RelativeHandDist * maxRotation, jedi.RelativeHandDist * maxRotation / 4);
             }
 
             if (jedi.Recall)

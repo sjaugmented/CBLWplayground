@@ -160,6 +160,11 @@ namespace LW.Ball
             {
                 Send("lifting");
             }
+
+            if (jedi.Power == TheForce.spin)
+            {
+                Send("spinning");
+            }
         }
 
         public void Send(string address = "", float val = 1)
