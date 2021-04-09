@@ -10204,7 +10204,7 @@ GameObject:
   - component: {fileID: 5601265617212390397}
   - component: {fileID: 28587033041716699}
   - component: {fileID: 6702197957629044614}
-  - component: {fileID: 8278865272743882496}
+  - component: {fileID: 6451240688396706698}
   m_Layer: 0
   m_Name: Spin Particles
   m_TagString: Ball
@@ -10219,13 +10219,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3456582816631418966}
-  m_LocalRotation: {x: -0.50000006, y: -0.49999994, z: 0.4999985, w: 0.50000155}
+  m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: -0.5}
   m_LocalPosition: {x: 0.038, y: 0, z: 0.0085}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 2193309183216341836}
   m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 90.00001}
+  m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 270}
 --- !u!198 &28587033041716699
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -10940,7 +10940,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.21
+      value: 0.46
       mode: 0
       spread: 0
       speed:
@@ -11059,7 +11059,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 100
+      scalar: 200
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -14947,7 +14947,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &8278865272743882496
+--- !u!114 &6451240688396706698
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14956,7 +14956,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3456582816631418966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae22781021386f441abd25d36b6e292b, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ceeb5c74991157428776ae819f7c300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7428379026398809593
@@ -15715,10 +15715,10 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 66.48
+    angle: 90
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -15801,7 +15801,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.0001
+      value: 0.51
       mode: 0
       spread: 0
       speed:
@@ -25528,10 +25528,10 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 66.48
+    angle: 90
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 1
+    radiusThickness: 0
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -25614,7 +25614,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.0001
+      value: 0.51
       mode: 0
       spread: 0
       speed:
@@ -30055,7 +30055,7 @@ PrefabInstance:
     - target: {fileID: 5422289304851335540, guid: de7304a2e43e76c41b94d77c71eda0e0,
         type: 3}
       propertyPath: m_Range
-      value: 10.26
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5422289304851335540, guid: de7304a2e43e76c41b94d77c71eda0e0,
         type: 3}
@@ -30066,6 +30066,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Intensity
       value: 17.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422289304851335540, guid: de7304a2e43e76c41b94d77c71eda0e0,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422289304851335540, guid: de7304a2e43e76c41b94d77c71eda0e0,
+        type: 3}
+      propertyPath: m_Lightmapping
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5422289304851335540, guid: de7304a2e43e76c41b94d77c71eda0e0,
         type: 3}

@@ -35,26 +35,25 @@ namespace LW.Ball
             innerParticles = GetComponentInChildren<CoreParticlesID>().transform.GetComponent<ParticleSystem>();
             forceParticles = GetComponentInChildren<ForceParticlesID>().transform.GetComponent<ParticleSystem>();
             liftParticles = GetComponentInChildren<LiftParticlesID>().transform.GetComponent<ParticleSystem>();
-            //spinParticles = GetComponentInChildren<SpinParticlesID>().transform.GetComponent<ParticleSystem>();
+            spinParticles = GetComponentInChildren<SpinParticlesID>().transform.GetComponent<ParticleSystem>();
             jedi = GetComponentInParent<BallJedi>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             light = GetComponentInChildren<Light>();
 
-            CoreSize = 0.5f;
-            CoreLifetime = 0.5f;
-            CoreSpeed = 0.5f;
+            CoreSize = 0.9f;
+            CoreLifetime = 0.1f;
+            CoreSpeed = 0.1f;
             CoreHue = 1f;
             CoreSat = 1f;
             CoreVal = 1;
-            CoreEmission = 1;
+            CoreEmission = 1f;
         }
 
         void Update()
         {
             var innerMain = innerParticles.main;
             var innerEmission = innerParticles.emission;
-            var forceMain = forceParticles.main;
             var forceEmission = forceParticles.emission;
             var liftEmission = liftParticles.emission;
             var spinEmission = spinParticles.emission;
@@ -100,10 +99,10 @@ namespace LW.Ball
             //innerMain.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
 
             innerEmission.enabled = ball.State == BallState.Still || ball.CoreActive;
-            innerEmission.rateOverTime = ball.State == BallState.Active ? maxParticles : CoreEmission * maxParticles;
-            innerMain.startSize = ball.State == BallState.Active ? maxSize : CoreSize * maxSize;
-            innerMain.startSpeed = ball.State == BallState.Active ? maxSpeed : CoreSpeed * maxSpeed;
-            innerMain.startLifetime = ball.State == BallState.Active ? maxLifetime : CoreLifetime * maxLifetime;
+            innerEmission.rateOverTime = ball.State == BallState.Active ? maxParticles / 2 : CoreEmission * maxParticles;
+            innerMain.startSize = ball.State == BallState.Active ? maxSize / 2 : CoreSize * maxSize;
+            innerMain.startSpeed = ball.State == BallState.Active ? maxSpeed / 2 : CoreSpeed * maxSpeed;
+            innerMain.startLifetime = ball.State == BallState.Active ? maxLifetime / 2 : CoreLifetime * maxLifetime;
             
             Color color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
             innerMain.startColor = ball.State == BallState.Active ? ball.NoteColor : color;

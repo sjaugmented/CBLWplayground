@@ -97,7 +97,7 @@ namespace LW.Ball
             #endregion
 
             #region RECALL
-            if (tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
+            if (ball.HasSpawned && tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
             {
                 if (!lassoReady)
                 {
@@ -110,7 +110,7 @@ namespace LW.Ball
                 lassoReady = false;
             }
 
-            if (lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
+            if (ball.HasSpawned && lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
             {
                 Recall = true;
                 recallPunchTimer = 0;

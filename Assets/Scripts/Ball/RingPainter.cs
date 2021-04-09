@@ -28,6 +28,7 @@ namespace LW.Ball
             foreach(Material mat in ringMats)
             {
                 mat.color = ball.State == BallState.Active ? Color.HSVToRGB(0, 0, 1) : ball.NoteColor;
+                mat.SetColor("_EmissionColor", ball.NoteColor);
             }
         }
     }

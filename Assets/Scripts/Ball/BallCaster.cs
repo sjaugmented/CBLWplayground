@@ -134,7 +134,7 @@ namespace LW.Ball
             {
                 ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
                 ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
-                if (ballInstance.GetComponent<Ball>().BroadcastSafe)
+                if (ballInstance.GetComponent<Ball>().HasSpawned)
                 {
                     ballInstance.GetComponent<BallOsc>().Send("recalled");
                 }

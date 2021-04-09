@@ -44,7 +44,7 @@ namespace LW.Ball
 
         void Update()
         {
-            if (!ball.BroadcastSafe) { return; }
+            if (!ball.HasSpawned) { return; }
 
             if (jedi.Held)
             {

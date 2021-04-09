@@ -40,7 +40,7 @@ namespace LW.Ball{
         public Color NoteColor { get; set; }
         public Vector3 LockPos { get; set; }
         public bool Manipulating { get; set; }
-        public bool BroadcastSafe { get; set; }
+        public bool HasSpawned { get; set; }
 
         float touchTimer = Mathf.Infinity;
         bool touchResponseLimiter;
@@ -169,7 +169,7 @@ namespace LW.Ball{
                 {
                     TouchLevel += 1;
                     DetermineTouchResponse(other);
-                    if (BroadcastSafe)
+                    if (HasSpawned)
                     {
                         osc.Send(Note.ToString(), TouchLevel);
                     }
@@ -278,7 +278,7 @@ namespace LW.Ball{
 
         IEnumerator DestroySelf()
         {
-            BroadcastSafe = false;
+            HasSpawned = false;
 
             if (GetComponentInChildren<DeathParticlesId>())
             {
@@ -308,9 +308,9 @@ namespace LW.Ball{
 
         IEnumerator BeginBroadcasting()
         {
-            BroadcastSafe = false;
+            HasSpawned = false;
             yield return new WaitForSeconds(1);
-            BroadcastSafe = true;
+            HasSpawned = true;
         }
 
         public void IsGazedAt()
