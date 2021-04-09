@@ -64,13 +64,13 @@ namespace LW.Ball
                 {
                     if (jedi.ControlPose == HandPose.pointer)
                     {
-                        CoreHue = jedi.RelativeHandDist;
+                        CoreHue = Mathf.Clamp(jedi.RelativeHandDist, 0, 0.9f);
                     }
                     if (jedi.ControlPose == HandPose.fist)
                     {
-                        CoreSize = 1 - jedi.RelativeHandDist;
-                        CoreSpeed = jedi.RelativeHandDist;
-                        CoreLifetime = jedi.RelativeHandDist;
+                        CoreSize = Mathf.Clamp(1 - jedi.RelativeHandDist, 0.05f, 1);
+                        CoreSpeed = Mathf.Clamp(jedi.RelativeHandDist, 0.05f, 0);
+                        CoreLifetime = Mathf.Clamp(jedi.RelativeHandDist, 0.05f, 1);
                     }
                     //if (jedi.ControlPose == HandPose.thumbsUp)
                     //{
@@ -111,7 +111,7 @@ namespace LW.Ball
             liftEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.lift || jedi.Power == TheForce.down);
             spinEmission.enabled = jedi.Power == TheForce.spin;
 
-            light.enabled = ball.CoreActive; ;
+            light.enabled = ball.CoreActive;
             light.color = ball.NoteColor;
         }
 

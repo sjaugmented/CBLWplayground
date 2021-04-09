@@ -27,7 +27,8 @@ namespace LW.Ball{
         [SerializeField] float bounce = 10;
         [SerializeField] float recallDistance = 0.3f;
         [SerializeField] float antiGrav = 0.7f;
-        [SerializeField] float maxRotation = 1;
+        [SerializeField] float maxSpinY = 30;
+        [SerializeField] float maxSpinZ = 20;
 
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
@@ -73,7 +74,7 @@ namespace LW.Ball{
             CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
-            StartCoroutine("BeginBroadcasting");
+            StartCoroutine("Spawning");
         }
 
         void Update()
@@ -129,7 +130,7 @@ namespace LW.Ball{
 
             if (jedi.Power == TheForce.spin)
             {
-                transform.Rotate(0, jedi.RelativeHandDist * maxRotation, jedi.RelativeHandDist * maxRotation / 4);
+                transform.Rotate(0, (1 - jedi.RelativeHandDist) * maxSpinY, tracking.StaffUp / 180 * maxSpinZ);
             }
 
             if (jedi.Recall)
@@ -163,7 +164,7 @@ namespace LW.Ball{
                 }
             }
 
-            if (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
+            if (HasSpawned && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
             {
                 if (!touchResponseLimiter)
                 {
@@ -306,7 +307,7 @@ namespace LW.Ball{
             Destroy(gameObject);
         }
 
-        IEnumerator BeginBroadcasting()
+        IEnumerator Spawning()
         {
             HasSpawned = false;
             yield return new WaitForSeconds(1);
