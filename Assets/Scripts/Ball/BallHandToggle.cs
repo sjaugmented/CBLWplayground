@@ -12,8 +12,8 @@ namespace LW.Ball
     {
         [SerializeField] AudioClip singleTap;
         [SerializeField] AudioClip doubleTap;
-        [SerializeField] AudioClip stillFX;
         [SerializeField] AudioClip activeFX;
+        [SerializeField] AudioClip stillFX;
 
         [SerializeField] bool leftHand = false;
         bool triggered, inactive;
@@ -21,22 +21,12 @@ namespace LW.Ball
         NewTracking tracking;
         BallDirector director;
         OSC osc;
-        Ball ball;
 
         void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-        }
-
-        private void Update()
-        {
-            if (GameObject.FindGameObjectWithTag("Ball"))
-            {
-                ball = GameObject.FindGameObjectWithTag("Ball").GetComponent<Ball>();
-                inactive = ball.InteractingWithParticles;
-            }
         }
 
         private void OnTriggerEnter(Collider collider)
@@ -47,22 +37,11 @@ namespace LW.Ball
             {
                 if (tracking.leftPose != HandPose.flat)
                 {
-                    if (collider.CompareTag("Right Pointer"))
+                    if (collider.CompareTag("Right Pointer") && !director.Still)
                     {
-                        if (ball == null) { return; }
-                        
-                        if (ball.State != BallState.Still)
-                        {
-                            ball.State = BallState.Still;
-                            Debug.Log("locking at: " + ball.transform.position);
-                            ball.LockPos = ball.transform.position;
-                            ball.PlayStillFx();
-                        }
-                        else
-                        {
-                            ball.State = BallState.Active;
-                            ball.PlayActionFx();
-                        }
+                        director.Still = true;
+                        SendOSC("still/");
+                        GetComponent<AudioSource>().PlayOneShot(stillFX);
                     }
                 }
                 else
@@ -93,22 +72,11 @@ namespace LW.Ball
             {
                 if (tracking.rightPose != HandPose.flat)
                 {
-                    if (collider.CompareTag("Left Pointer"))
+                    if (collider.CompareTag("Left Pointer") && director.Still)
                     {
-                        if (ball == null) { return; }
-
-                        if (ball.State != BallState.Still)
-                        {
-                            ball.State = BallState.Still;
-                            Debug.Log("locking at: " + ball.transform.position);
-                            ball.LockPos = ball.transform.position;
-                            ball.PlayStillFx();
-                        }
-                        else
-                        {
-                            ball.State = BallState.Active;
-                            ball.PlayActionFx();
-                        }
+                        director.Still = false;
+                        SendOSC("active/");
+                        GetComponent<AudioSource>().PlayOneShot(activeFX);
                     }
                 }
                 else

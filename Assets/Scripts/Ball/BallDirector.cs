@@ -12,17 +12,18 @@ namespace LW.Ball
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
-		[SerializeField] GameObject rightPointer, leftPointer, rightToggle, leftToggle, rightDorsal, leftDorsal;
+		[SerializeField] GameObject rightPointer, leftPointer, rightToggle, leftToggle;
 
 		List<GameObject> rightHand = new List<GameObject>();
 		List<GameObject> leftHand = new List<GameObject>();
 
 		public bool Portal = false;
+		public bool Still { get; set; }
 
 		public void TogglePortalBool()
-        {
+		{
 			Portal = !Portal;
-        }
+		}
 		//public bool Portal { get; set; }
 		public bool Gaze { get; set; }
 
@@ -36,10 +37,8 @@ namespace LW.Ball
 
 			rightHand.Add(rightPointer);
 			rightHand.Add(rightToggle);
-			rightHand.Add(rightDorsal);
 			leftHand.Add(leftPointer);
 			leftHand.Add(leftToggle);
-			leftHand.Add(leftDorsal);
 
 			SetRightHand(false);
 			SetLeftHand(false);
@@ -88,18 +87,18 @@ namespace LW.Ball
 		public void TogglePortal()
 		{
 			if (!Portal)
-            {
-                Portal = true;
-                Transform player = Camera.main.transform;
+			{
+				Portal = true;
+				Transform player = Camera.main.transform;
 				portal = Instantiate(portalPrefab, player.position + player.forward * portalSpawnDistance, player.rotation);
 				//portal.transform.LookAt(player.position);
-            }
+			}
 			else
-            {
+			{
 				portal.GetComponent<PortalController>().SelfDestruct();
-                Portal = false;
-            }
-			
+				Portal = false;
+			}
+
 		}
 
 		public void ToggleGaze()
