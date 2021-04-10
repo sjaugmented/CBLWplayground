@@ -52,6 +52,10 @@ namespace LW.Ball
 
         void Update()
         {
+            //Debug.Log(CoreSize);
+            //Debug.Log(CoreSpeed);
+            //Debug.Log(CoreLifetime);
+            
             var innerMain = innerParticles.main;
             var innerEmission = innerParticles.emission;
             var forceEmission = forceParticles.emission;
@@ -68,9 +72,9 @@ namespace LW.Ball
                     }
                     if (jedi.ControlPose == HandPose.fist)
                     {
-                        CoreSize = Mathf.Clamp(1 - jedi.RelativeHandDist, 0.05f, 1);
-                        CoreSpeed = Mathf.Clamp(jedi.RelativeHandDist, 0.05f, 0);
-                        CoreLifetime = Mathf.Clamp(jedi.RelativeHandDist, 0.05f, 1);
+                        CoreSize = Mathf.Clamp(1 - jedi.RelativeHandDist, 0.1f, 1);
+                        CoreSpeed = Mathf.Clamp(jedi.RelativeHandDist, 0.1f, 1);
+                        CoreLifetime = Mathf.Clamp(jedi.RelativeHandDist, 0.1f, 1);
                     }
                     //if (jedi.ControlPose == HandPose.thumbsUp)
                     //{

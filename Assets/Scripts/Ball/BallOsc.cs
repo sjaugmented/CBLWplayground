@@ -191,8 +191,8 @@ namespace LW.Ball
             {
                 if (!spun)
                 {
-                    Send("spinning", 1 - jedi.RelativeHandDist);
-                    Send("spinning", tracking.StaffUp / 180);
+                    Send("spinningDist", 1 - jedi.RelativeHandDist);
+                    Send("spinningAngle", tracking.StaffRight / 90);
                     spun = true;
                 }
             }
@@ -201,12 +201,19 @@ namespace LW.Ball
                 spun = false;
             }
 
-            if (ball.State == BallState.Active)
+            if (jedi.Recall)
             {
-
+                if (!recalled)
+                {
+                    Send("recalled");
+                    recalled = true;
+                }
+            }
+            else
+            {
+                recalled = false;
             }
 
-            
         }
 
         public void Send(string address = "", float val = 1)

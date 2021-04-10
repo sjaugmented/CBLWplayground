@@ -103,14 +103,14 @@ namespace LW.Ball{
             {
                 var force = State == BallState.Active ? jedi.PushForce : jedi.PushForce;
                 transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * force) + new Vector3(0, antiGrav, 0));
+                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1) + new Vector3(0, antiGrav, 0));
             }
 
             if (jedi.Power == TheForce.pull)
             {
                 var force = State == BallState.Active ? jedi.PullForce : jedi.PullForce;
                 transform.LookAt(Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * force));
+                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
             }
 
             if (jedi.Power == TheForce.lift)
@@ -118,19 +118,19 @@ namespace LW.Ball{
 
                 var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
                 transform.rotation = new Quaternion(0, 0, 0, 0);
-                rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * force));
+                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
             }
 
             if (jedi.Power == TheForce.down)
             {
                 var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
                 transform.rotation = new Quaternion(180, 0, 0, 0);
-                rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * force));
+                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
             }
 
             if (jedi.Power == TheForce.spin)
             {
-                transform.Rotate(0, (1 - jedi.RelativeHandDist) * maxSpinY, tracking.StaffUp / 180 * maxSpinZ);
+                transform.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
             }
 
             if (jedi.Recall)
