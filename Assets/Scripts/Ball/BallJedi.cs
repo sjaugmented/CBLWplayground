@@ -64,7 +64,7 @@ namespace LW.Ball
 
         void Update()
         {
-            RelativeHandDist = Mathf.Clamp((origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x), 0, 1);
+            RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
 
             lassoTimer += Time.deltaTime;
             recallPunchTimer += Time.deltaTime;

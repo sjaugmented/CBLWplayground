@@ -48,6 +48,7 @@ namespace LW.Core {
         public bool FoundLeftHand { get { return foundLtPalm; } }
         public float StaffUp { get { return staffUp; } }
         public float StaffForward { get { return staffForward; } }
+        public float StaffRight { get { return staffRight; } }
         public float RtLauncher { get { return rtLauncher; } }
         public float LtLauncher { get { return ltLauncher; } }
         #endregion

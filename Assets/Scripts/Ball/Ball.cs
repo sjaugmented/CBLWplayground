@@ -27,7 +27,8 @@ namespace LW.Ball{
         [SerializeField] float bounce = 10;
         [SerializeField] float recallDistance = 0.3f;
         [SerializeField] float antiGrav = 0.7f;
-        [SerializeField] float maxRotation = 1;
+        [SerializeField] float maxSpinY = 30;
+        [SerializeField] float maxSpinZ = 20;
 
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
@@ -73,7 +74,7 @@ namespace LW.Ball{
             CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
-            StartCoroutine("BeginBroadcasting");
+            StartCoroutine("Spawning");
         }
 
         void Update()
@@ -102,14 +103,14 @@ namespace LW.Ball{
             {
                 var force = State == BallState.Active ? jedi.PushForce : jedi.PushForce;
                 transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * force) + new Vector3(0, antiGrav, 0));
+                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1) + new Vector3(0, antiGrav, 0));
             }
 
             if (jedi.Power == TheForce.pull)
             {
                 var force = State == BallState.Active ? jedi.PullForce : jedi.PullForce;
                 transform.LookAt(Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * (origins.PalmsDist / jedi.HoldDistance * force));
+                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
             }
 
             if (jedi.Power == TheForce.lift)
@@ -117,19 +118,19 @@ namespace LW.Ball{
 
                 var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
                 transform.rotation = new Quaternion(0, 0, 0, 0);
-                rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * force));
+                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
             }
 
             if (jedi.Power == TheForce.down)
             {
                 var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
                 transform.rotation = new Quaternion(180, 0, 0, 0);
-                rigidbody.AddForce(transform.up * (origins.PalmsDist / jedi.HoldDistance * force));
+                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
             }
 
             if (jedi.Power == TheForce.spin)
             {
-                transform.Rotate(0, jedi.RelativeHandDist * maxRotation, jedi.RelativeHandDist * maxRotation / 4);
+                transform.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
             }
 
             if (jedi.Recall)
@@ -163,7 +164,7 @@ namespace LW.Ball{
                 }
             }
 
-            if (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
+            if (HasSpawned && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
             {
                 if (!touchResponseLimiter)
                 {
@@ -306,7 +307,7 @@ namespace LW.Ball{
             Destroy(gameObject);
         }
 
-        IEnumerator BeginBroadcasting()
+        IEnumerator Spawning()
         {
             HasSpawned = false;
             yield return new WaitForSeconds(1);

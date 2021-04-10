@@ -136,7 +136,7 @@ namespace LW.Ball
                 ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
                 if (ballInstance.GetComponent<Ball>().HasSpawned)
                 {
-                    ballInstance.GetComponent<BallOsc>().Send("recalled");
+                    ballInstance.GetComponent<BallOsc>().Send("reset");
                 }
 
                 if (!GetComponent<AudioSource>().isPlaying)

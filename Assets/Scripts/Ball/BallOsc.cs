@@ -19,7 +19,7 @@ namespace LW.Ball
         Ball ball;
         BallParticleController particles;
 
-        bool holdToggle, activeToggle, stillToggle, pointerToggle, rightFisted, dualFisted, thumbsUpped, withinRange;
+        bool holdToggle, activeToggle, stillToggle, pointerToggle, rightFisted, dualFisted, thumbsUpped, withinRange, pushed, pulled, lifted, lowered, spun, recalled;
 
         private void Awake()
         {
@@ -63,7 +63,7 @@ namespace LW.Ball
                 }
             }
 
-            if (ball.State == BallState.Active)
+            if (ball.State == BallState.Active) // ACTIVE
             {
                 if (!activeToggle)
                 {
@@ -71,100 +71,149 @@ namespace LW.Ball
                     activeToggle = true;
                 }
             }
-            else
+            else // STILL
             {
                 if (activeToggle)
                 {
                     Send("stillMode");
                     activeToggle = false;
                 }
-            }
 
-            if (jedi.ControlPose == HandPose.pointer)
-            {
-                if (!pointerToggle)
+                if (jedi.ControlPose == HandPose.pointer)
                 {
-                    Send("pointerControlOn");
-                    pointerToggle = true;
+                    if (!pointerToggle)
+                    {
+                        Send("pointerControlOn");
+                        pointerToggle = true;
+                    }
+                    if (ball.WithinRange)
+                    {
+                        //Send("pointerControlAngle", 1 - tracking.StaffUp / 180);
+                        Send("pointerControlDistance", jedi.RelativeHandDist);
+                    }
                 }
-                if (ball.WithinRange)
+                else
                 {
-                    Send("pointerControlAngle", 1 - tracking.StaffUp / 180);
-                    Send("pointerControlDistance", jedi.RelativeHandDist);
+                    if (pointerToggle)
+                    {
+                        Send("pointerControlOff");
+                        pointerToggle = false;
+                    }
                 }
-            }
-            else
-            {
-                if (pointerToggle)
-                {
-                    Send("pointerControlOff");
-                    pointerToggle = false;
-                }
-            }
 
-            if (jedi.ControlPose == HandPose.fist)
-            {
-                if (!dualFisted)
+                if (jedi.ControlPose == HandPose.fist)
                 {
-                    Send("fistControlOn");
-                    dualFisted = true;
+                    if (!dualFisted)
+                    {
+                        Send("fistControlOn");
+                        dualFisted = true;
+                    }
+                    if (ball.WithinRange)
+                    {
+                        //Send("fistControlAngle", 1 - tracking.StaffUp / 180);
+                        Send("fistControlDistance", jedi.RelativeHandDist);
+                    }
                 }
-                if (ball.WithinRange)
+                else
                 {
-                    Send("fistControlAngle", 1 - tracking.StaffUp / 180);
-                    Send("fistControlDistance", jedi.RelativeHandDist);
+                    if (dualFisted)
+                    {
+                        Send("fistControlOff");
+                        dualFisted = false;
+                    }
                 }
-            }
-            else
-            {
-                if (dualFisted)
-                {
-                    Send("fistControlOff");
-                    dualFisted = false;
-                }
-            }
 
-            if (jedi.ControlPose == HandPose.thumbsUp)
-            {
-                if (!thumbsUpped)
+                if (jedi.ControlPose == HandPose.thumbsUp)
                 {
-                    Send("thumbsUpControlOn");
-                    thumbsUpped = true;
+                    if (!thumbsUpped)
+                    {
+                        Send("thumbsUpControlOn");
+                        thumbsUpped = true;
+                    }
+                    if (ball.WithinRange)
+                    {
+                        //Send("thumbsUpControlAngle", 1 - tracking.StaffUp / 180);
+                        Send("thumbsUpControlDistance", jedi.RelativeHandDist);
+                    }
                 }
-                if (ball.WithinRange)
+                else
                 {
-                    Send("thumbsUpControlAngle", 1 - tracking.StaffUp / 180);
-                    Send("thumbsUpControlDistance", jedi.RelativeHandDist);
+                    if (thumbsUpped)
+                    {
+                        Send("fistControlOff");
+                        thumbsUpped = false;
+                    }
                 }
             }
-            else
-            {
-                if (thumbsUpped)
-                {
-                    Send("fistControlOff");
-                    thumbsUpped = false;
-                }
-            }
+            
 
             if (jedi.Power == TheForce.push)
             {
-                Send("pushing");
+                if (!pushed)
+                {
+                    Send("pushing");
+                    pushed = true;
+                }
             }
+            else
+            {
+                pushed = false;
+            }
+            
 
             if (jedi.Power == TheForce.pull)
             {
-                Send("pulling");
+                if (!pulled)
+                {
+                    Send("pulling");
+                    pulled = true;
+                }
+            }
+            else
+            {
+                pulled = false;
             }
 
             if (jedi.Power == TheForce.lift)
             {
-                Send("lifting");
+                if (!lifted)
+                {
+                    Send("lifting");
+                    lifted = true;
+                }
+            }
+            else
+            {
+                lifted = false;
             }
 
             if (jedi.Power == TheForce.spin)
             {
-                Send("spinning");
+                if (!spun)
+                {
+                    Send("spinningDist", 1 - jedi.RelativeHandDist);
+                    Send("spinningAngle", tracking.StaffRight / 90);
+                    spun = true;
+                }
             }
+            else
+            {
+                spun = false;
+            }
+
+            if (jedi.Recall)
+            {
+                if (!recalled)
+                {
+                    Send("recalled");
+                    recalled = true;
+                }
+            }
+            else
+            {
+                recalled = false;
+            }
+
         }
 
         public void Send(string address = "", float val = 1)

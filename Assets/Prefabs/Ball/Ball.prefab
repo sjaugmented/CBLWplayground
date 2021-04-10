@@ -5358,7 +5358,8 @@ MonoBehaviour:
   bounce: 30
   recallDistance: 0.2
   antiGrav: 0.7
-  maxRotation: 10
+  maxSpinY: 20
+  maxSpinZ: 10
   State: 0
   Note: 10
 --- !u!114 &7484735728138884248
@@ -5374,8 +5375,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushMultiplier: 10
-  pullMultiplier: 3
-  liftMultiplier: 3
+  pullMultiplier: 6
+  liftMultiplier: 5
   recallMultiplier: 6
   holdDistance: 0.7
   minDistance: 0.3
