@@ -101,9 +101,10 @@ namespace LW.Ball{
 
             if (jedi.Power == TheForce.push)
             {
-                var force = State == BallState.Active ? jedi.PushForce : jedi.PushForce;
+                float force = Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * jedi.PushForce), 0, 1);
+                float lift = State == BallState.Active ? antiGrav : 0;
                 transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1) + new Vector3(0, antiGrav, 0));
+                rigidbody.AddForce(transform.forward * force + new Vector3(0, lift, 0));
             }
 
             if (jedi.Power == TheForce.pull)
