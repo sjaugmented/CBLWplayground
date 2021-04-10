@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LW.Ball
 {
-    public class RingPainter : MonoBehaviour
+    public class BallPainter : MonoBehaviour
     {
         [SerializeField] List<GameObject> shells, rings;
 
