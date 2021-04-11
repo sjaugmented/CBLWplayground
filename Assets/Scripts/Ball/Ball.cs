@@ -29,6 +29,9 @@ namespace LW.Ball{
         [SerializeField] float antiGrav = 0.7f;
         [SerializeField] float maxSpinY = 30;
         [SerializeField] float maxSpinZ = 20;
+        [SerializeField] float deadZone = 40;
+        [SerializeField] Vector3 outOffset;
+        [SerializeField] Vector3 inOffset;
 
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
@@ -42,6 +45,7 @@ namespace LW.Ball{
         public Vector3 LockPos { get; set; }
         public bool Manipulating { get; set; }
         public bool HasSpawned { get; set; }
+        public bool Stasis { get; set; }
 
         float touchTimer = Mathf.Infinity;
         bool touchResponseLimiter;
@@ -54,6 +58,7 @@ namespace LW.Ball{
         BallJedi jedi;
         BallOsc osc;
         Rigidbody rigidbody;
+        MultiAxis multiAxis;
 
         private void Awake()
         {
@@ -68,6 +73,7 @@ namespace LW.Ball{
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
+            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxis>();
 
             TouchLevel = 0;
             Hue = 0;
@@ -99,35 +105,113 @@ namespace LW.Ball{
                 LockPos = transform.position;
             }
 
-            if (jedi.Power == TheForce.push)
-            {
-                float force = Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * jedi.PushForce), 0, 1);
-                float lift = State == BallState.Active ? antiGrav : 0;
-                transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * force + new Vector3(0, lift, 0));
-            }
+            //if (jedi.Power == TheForce.push)
+            //{
+            //    float force = Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * jedi.PushForce), 0, 1);
+            //    float lift = State == BallState.Active ? antiGrav : 0;
+            //    transform.LookAt(2 * transform.position - Camera.main.transform.position);
+            //    rigidbody.AddForce(transform.forward * force + new Vector3(0, lift, 0));
+            //}
 
-            if (jedi.Power == TheForce.pull)
-            {
-                var force = State == BallState.Active ? jedi.PullForce : jedi.PullForce;
-                transform.LookAt(Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
-            }
+            //if (jedi.Power == TheForce.pull)
+            //{
+            //    var force = State == BallState.Active ? jedi.PullForce : jedi.PullForce;
+            //    transform.LookAt(Camera.main.transform.position);
+            //    rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
+            //}
 
-            if (jedi.Power == TheForce.lift)
-            {
+            //if (jedi.Power == TheForce.lift)
+            //{
 
-                var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
-                transform.rotation = new Quaternion(0, 0, 0, 0);
-                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
-            }
+            //    var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
+            //    transform.rotation = new Quaternion(0, 0, 0, 0);
+            //    rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
+            //}
 
-            if (jedi.Power == TheForce.down)
+            //if (jedi.Power == TheForce.down)
+            //{
+            //    var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
+            //    transform.rotation = new Quaternion(180, 0, 0, 0);
+            //    rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
+            //}
+
+
+            if (tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
             {
-                var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
-                transform.rotation = new Quaternion(180, 0, 0, 0);
-                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
+                Stasis = true;
+                
+                var YAxis = multiAxis.YStick;
+                var ZAxis = multiAxis.ZStick;
+                var fAngle = multiAxis.StaffAngle;
+                //Debug.Log("fAngle:" + fAngle);
+                
+                Quaternion handRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
+                Quaternion dirOut = handRotation * Quaternion.Euler(outOffset);
+                Quaternion dirIn = Quaternion.Inverse(handRotation * Quaternion.Euler(outOffset));
+                //Debug.DrawLine(origins.PalmsMidpoint, origins.PalmsMidpoint + (dirOut * Vector3.forward), Color.red, 1);
+
+
+                if (fAngle > (90 + deadZone))
+                {
+                    jedi.Power = TheForce.push;
+                    var forceFloat = Mathf.Clamp((fAngle - (90 + deadZone)) / (90 - deadZone), 0, 1);
+                    transform.rotation = handRotation * Quaternion.Euler(inOffset);
+                    rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+                }
+                else if (fAngle < (90 - deadZone)) 
+                {
+                    jedi.Power = TheForce.push;
+                    var forceFloat = Mathf.Clamp(1 - (fAngle / (90 - deadZone)), 0, 1);
+                    transform.rotation = handRotation * Quaternion.Euler(outOffset);
+                    rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+
+                } 
+                else if (fAngle >= (90 - deadZone) && fAngle <= (90 + deadZone))
+                {
+                    jedi.Power = TheForce.idle;
+                }
+
+                //if (ZAxis < deadZone)
+                //{
+                //    float force = Mathf.Clamp((1 - ZAxis / deadZone) * jedi.PushForce, 0, 1);
+                //    Debug.Log(1 - ZAxis / deadZone);
+                //    float lift = State == BallState.Active ? antiGrav : 0;
+                //    transform.LookAt(2 * transform.position - Camera.main.transform.position);
+                //    rigidbody.AddForce(transform.forward * force + new Vector3(0, lift, 0));
+                //}
+                //if (ZAxis > (180 - deadZone))
+                //{
+                //    float force = Mathf.Clamp((1 - (ZAxis - (180 - deadZone)) / deadZone) * jedi.PullForce, 0, 1);
+                //    Debug.Log(1 - (ZAxis - (180 - deadZone)) / deadZone);
+                //    float lift = State == BallState.Active ? antiGrav : 0;
+                //    transform.LookAt(Camera.main.transform.position);
+                //    rigidbody.AddForce(transform.forward * force);
+                //}
+                //if (YAxis < deadZone)
+                //{
+                //    var force = Mathf.Clamp((1 - YAxis / deadZone) * jedi.LiftForce, 0, 1);
+                //    transform.rotation = new Quaternion(0, 0, 0, 0);
+                //    rigidbody.AddForce(transform.up * force);
+                //}
+                //if (YAxis > (180 - deadZone))
+                //{
+                //    var force = Mathf.Clamp((1 - (YAxis - (180 - deadZone)) / deadZone) * jedi.LiftForce, 0, 1);
+                //    transform.rotation = new Quaternion(180, 0, 0, 0);
+                //    rigidbody.AddForce(transform.up * force);
+                //}
+
             }
+            else 
+            { 
+                Stasis = false;
+                jedi.Power = TheForce.idle;
+            }
+            
+
+            //if (YAxis < 50 && YAxis > 10)
+            //{
+
+            //}
 
             if (jedi.Power == TheForce.spin)
             {

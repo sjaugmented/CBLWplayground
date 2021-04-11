@@ -6,12 +6,14 @@ namespace LW.Ball
     public enum TheForce { push, pull, lift, down, spin, idle }
     public class BallJedi : MonoBehaviour
     {
+        [SerializeField] float masterForce = 20;
         [SerializeField] float pushMultiplier = 5;
         [SerializeField] float pullMultiplier = 5;
         [SerializeField] float liftMultiplier = 3;
         [SerializeField] float recallMultiplier = 10;
         [SerializeField] float holdDistance = 0.5f;
         [SerializeField] float minDistance = 0.2f;
+        
         public float HoldDistance
         {
             get { return holdDistance; }
@@ -20,6 +22,7 @@ namespace LW.Ball
         {
             get { return minDistance; }
         }
+        public float MasterForce { get { return masterForce; } }
         public float PushForce
         {
             get { return pushMultiplier; }
@@ -69,8 +72,10 @@ namespace LW.Ball
             lassoTimer += Time.deltaTime;
             recallPunchTimer += Time.deltaTime;
 
-            rigidbody.useGravity = !Held && ball.State == BallState.Active && Power == TheForce.idle;
-            GetComponent<ConstantForce>().enabled = !Held && ball.State == BallState.Active && Power == TheForce.idle;
+            bool gravityCondition = !Held && !ball.Stasis && ball.State == BallState.Active && Power == TheForce.idle;
+
+            rigidbody.useGravity = gravityCondition;
+            GetComponent<ConstantForce>().enabled = gravityCondition;
 
             #region Held / ControlPoses
             if (tracking.palmsRel == Formation.together)
@@ -123,30 +128,30 @@ namespace LW.Ball
             #endregion
 
             #region FORCES
-            if (tracking.palmsRel == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-            {
-                Power = TheForce.push;
-            }
-            else if (tracking.palmsAbs == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
-            {
-                Power = TheForce.lift;
-            }
-            else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-            {
-                Power = TheForce.pull;
-            }
-            else if (tracking.palmsAbs == Formation.palmsDown && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
-            {
-                Power = TheForce.down;
-            }
-            else if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
-            {
-                Power = TheForce.spin;
-            }
-            else
-            {
-                Power = TheForce.idle;
-            }
+            //if (tracking.palmsRel == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+            //{
+            //    Power = TheForce.push;
+            //}
+            //else if (tracking.palmsAbs == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
+            //{
+            //    Power = TheForce.lift;
+            //}
+            //else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+            //{
+            //    Power = TheForce.pull;
+            //}
+            //else if (tracking.palmsAbs == Formation.palmsDown && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
+            //{
+            //    Power = TheForce.down;
+            //}
+            //if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
+            //{
+            //    Power = TheForce.spin;
+            //}
+            //else
+            //{
+            //    Power = TheForce.idle;
+            //}
             #endregion
         }
     }

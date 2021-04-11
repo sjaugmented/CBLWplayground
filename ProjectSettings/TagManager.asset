@@ -34,6 +34,7 @@ TagManager:
   - ForceField
   - RightHand
   - LeftHand
+  - Floor
   layers:
   - Default
   - TransparentFX

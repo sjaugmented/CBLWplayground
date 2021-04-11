@@ -26,7 +26,7 @@ namespace LW.Ball
         CastOrigins origins;
         ParticleSystem innerParticles;
         ParticleSystem forceParticles;
-        ParticleSystem liftParticles;
+        //ParticleSystem liftParticles;
         ParticleSystem spinParticles;
         Light light;
         void Start()
@@ -34,7 +34,7 @@ namespace LW.Ball
             ball = GetComponent<Ball>();
             innerParticles = GetComponentInChildren<CoreParticlesID>().transform.GetComponent<ParticleSystem>();
             forceParticles = GetComponentInChildren<ForceParticlesID>().transform.GetComponent<ParticleSystem>();
-            liftParticles = GetComponentInChildren<LiftParticlesID>().transform.GetComponent<ParticleSystem>();
+            //liftParticles = GetComponentInChildren<LiftParticlesID>().transform.GetComponent<ParticleSystem>();
             spinParticles = GetComponentInChildren<SpinParticlesID>().transform.GetComponent<ParticleSystem>();
             jedi = GetComponentInParent<BallJedi>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
@@ -59,7 +59,7 @@ namespace LW.Ball
             var innerMain = innerParticles.main;
             var innerEmission = innerParticles.emission;
             var forceEmission = forceParticles.emission;
-            var liftEmission = liftParticles.emission;
+            //var liftEmission = liftParticles.emission;
             var spinEmission = spinParticles.emission;
 
             if (ball.WithinRange)
@@ -112,7 +112,7 @@ namespace LW.Ball
             innerMain.startColor = ball.State == BallState.Active ? ball.NoteColor : color;
 
             forceEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.push || jedi.Power == TheForce.pull);
-            liftEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.lift || jedi.Power == TheForce.down);
+            //liftEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.lift || jedi.Power == TheForce.down);
             spinEmission.enabled = jedi.Power == TheForce.spin;
 
             light.enabled = ball.CoreActive;

@@ -5357,9 +5357,12 @@ MonoBehaviour:
   hasBounce: 1
   bounce: 30
   recallDistance: 0.2
-  antiGrav: 0.7
+  antiGrav: 0.5
   maxSpinY: 20
   maxSpinZ: 10
+  deadZone: 30
+  outOffset: {x: 65, y: 0, z: 0}
+  inOffset: {x: 80, y: 0, z: 0}
   State: 0
   Note: 10
 --- !u!114 &7484735728138884248
@@ -5374,14 +5377,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c522e9bf096e46bdbdd801d8096c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushMultiplier: 10
-  pullMultiplier: 6
+  masterForce: 5
+  pushMultiplier: 20
+  pullMultiplier: 20
   liftMultiplier: 5
   recallMultiplier: 6
   holdDistance: 0.7
   minDistance: 0.3
   ControlPose: 8
-  Power: 3
+  Power: 5
 --- !u!114 &5145626739213686484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5424,12 +5428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc8b079f3c4fe242847158c669e98e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shells:
-  - {fileID: 1023815655490042180}
-  rings:
-  - {fileID: 6222737119637812561}
-  - {fileID: 6179722345948086096}
-  - {fileID: 4692596856355441701}
+  shells: []
+  rings: []
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0
@@ -15084,7 +15084,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5379702898570425307}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0422}
+  m_LocalPosition: {x: 0, y: 0, z: 0.004}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 2193309183216341836}
@@ -24888,7 +24888,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4481853769726061063
 Transform:
   m_ObjectHideFlags: 0
