@@ -5361,8 +5361,8 @@ MonoBehaviour:
   maxSpinY: 20
   maxSpinZ: 10
   deadZone: 30
-  outOffset: {x: 65, y: 0, z: 0}
-  inOffset: {x: 80, y: 0, z: 0}
+  outOffset: {x: 60, y: 0, z: 0}
+  inOffset: {x: 110, y: 0, z: 0}
   State: 0
   Note: 10
 --- !u!114 &7484735728138884248
@@ -5377,7 +5377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c522e9bf096e46bdbdd801d8096c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterForce: 5
+  masterForce: 3
   pushMultiplier: 20
   pullMultiplier: 20
   liftMultiplier: 5
