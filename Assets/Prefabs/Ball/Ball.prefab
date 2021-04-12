@@ -5360,9 +5360,6 @@ MonoBehaviour:
   antiGrav: 0.5
   maxSpinY: 20
   maxSpinZ: 10
-  deadZone: 30
-  outOffset: {x: 60, y: 0, z: 0}
-  inOffset: {x: 110, y: 0, z: 0}
   State: 0
   Note: 10
 --- !u!114 &7484735728138884248
@@ -5428,8 +5425,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc8b079f3c4fe242847158c669e98e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shells: []
-  rings: []
+  shells:
+  - {fileID: 1023815655490042180}
+  rings:
+  - {fileID: 6222737119637812561}
+  - {fileID: 6179722345948086096}
+  - {fileID: 4692596856355441701}
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0

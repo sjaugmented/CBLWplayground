@@ -24,14 +24,12 @@ namespace LW.Ball{
         [SerializeField] float forceMult = 10000;
         [SerializeField] float killForce = 1000;
         [SerializeField] bool hasBounce = true;
-        [SerializeField] float bounce = 10;
+        [SerializeField] float bounce = 30;
         [SerializeField] float recallDistance = 0.3f;
-        [SerializeField] float antiGrav = 0.7f;
+        [SerializeField] float antiGrav = 0.5f;
         [SerializeField] float maxSpinY = 30;
         [SerializeField] float maxSpinZ = 20;
-        [SerializeField] float deadZone = 40;
-        [SerializeField] Vector3 outOffset;
-        [SerializeField] Vector3 inOffset;
+        
 
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
@@ -96,7 +94,7 @@ namespace LW.Ball{
             CoreActive = touched;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
-            if (State == BallState.Still && jedi.Power == TheForce.idle && !Manipulating && !jedi.Recall)
+            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall)
             {
                 transform.position = LockPos;
             }
@@ -105,115 +103,39 @@ namespace LW.Ball{
                 LockPos = transform.position;
             }
 
-            //if (jedi.Power == TheForce.push)
-            //{
-            //    float force = Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * jedi.PushForce), 0, 1);
-            //    float lift = State == BallState.Active ? antiGrav : 0;
-            //    transform.LookAt(2 * transform.position - Camera.main.transform.position);
-            //    rigidbody.AddForce(transform.forward * force + new Vector3(0, lift, 0));
-            //}
+            Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
+            float totalPrimaryRange = 90 - multiAxis.DeadZone;
+            float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
 
-            //if (jedi.Power == TheForce.pull)
-            //{
-            //    var force = State == BallState.Active ? jedi.PullForce : jedi.PullForce;
-            //    transform.LookAt(Camera.main.transform.position);
-            //    rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
-            //}
-
-            //if (jedi.Power == TheForce.lift)
-            //{
-
-            //    var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
-            //    transform.rotation = new Quaternion(0, 0, 0, 0);
-            //    rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
-            //}
-
-            //if (jedi.Power == TheForce.down)
-            //{
-            //    var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
-            //    transform.rotation = new Quaternion(180, 0, 0, 0);
-            //    rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
-            //}
-
-
-            if (tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+            if (jedi.Primary == Force.pull)
             {
-                Stasis = true;
-                
-                var YAxis = multiAxis.YStick;
-                var ZAxis = multiAxis.ZStick;
-                var fAngle = multiAxis.StaffAngle;
-                //Debug.Log("fAngle:" + fAngle);
-                
-                Quaternion handRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
-                Quaternion dirOut = handRotation * Quaternion.Euler(outOffset);
-                Quaternion dirIn = Quaternion.Inverse(handRotation * Quaternion.Euler(outOffset));
-                //Debug.DrawLine(origins.PalmsMidpoint, origins.PalmsMidpoint + (dirOut * Vector3.forward), Color.red, 1);
-
-
-                if (fAngle > (90 + deadZone))
-                {
-                    jedi.Power = TheForce.push;
-                    var forceFloat = Mathf.Clamp((fAngle - (90 + deadZone)) / (90 - deadZone), 0, 1);
-                    transform.rotation = handRotation * Quaternion.Euler(inOffset);
-                    rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
-                }
-                else if (fAngle < (90 - deadZone)) 
-                {
-                    jedi.Power = TheForce.push;
-                    var forceFloat = Mathf.Clamp(1 - (fAngle / (90 - deadZone)), 0, 1);
-                    transform.rotation = handRotation * Quaternion.Euler(outOffset);
-                    rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
-
-                } 
-                else if (fAngle >= (90 - deadZone) && fAngle <= (90 + deadZone))
-                {
-                    jedi.Power = TheForce.idle;
-                }
-
-                //if (ZAxis < deadZone)
-                //{
-                //    float force = Mathf.Clamp((1 - ZAxis / deadZone) * jedi.PushForce, 0, 1);
-                //    Debug.Log(1 - ZAxis / deadZone);
-                //    float lift = State == BallState.Active ? antiGrav : 0;
-                //    transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                //    rigidbody.AddForce(transform.forward * force + new Vector3(0, lift, 0));
-                //}
-                //if (ZAxis > (180 - deadZone))
-                //{
-                //    float force = Mathf.Clamp((1 - (ZAxis - (180 - deadZone)) / deadZone) * jedi.PullForce, 0, 1);
-                //    Debug.Log(1 - (ZAxis - (180 - deadZone)) / deadZone);
-                //    float lift = State == BallState.Active ? antiGrav : 0;
-                //    transform.LookAt(Camera.main.transform.position);
-                //    rigidbody.AddForce(transform.forward * force);
-                //}
-                //if (YAxis < deadZone)
-                //{
-                //    var force = Mathf.Clamp((1 - YAxis / deadZone) * jedi.LiftForce, 0, 1);
-                //    transform.rotation = new Quaternion(0, 0, 0, 0);
-                //    rigidbody.AddForce(transform.up * force);
-                //}
-                //if (YAxis > (180 - deadZone))
-                //{
-                //    var force = Mathf.Clamp((1 - (YAxis - (180 - deadZone)) / deadZone) * jedi.LiftForce, 0, 1);
-                //    transform.rotation = new Quaternion(180, 0, 0, 0);
-                //    rigidbody.AddForce(transform.up * force);
-                //}
-
-            }
-            else 
-            { 
-                Stasis = false;
-                jedi.Power = TheForce.idle;
+                float pullCorrection = 90 + multiAxis.DeadZone;
+                float forceFloat = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0, 1);
+                transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
+                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
             }
             
+            if (jedi.Primary == Force.push)
+            {
+                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0, 1);
+                transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
+                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+            }
 
-            //if (YAxis < 50 && YAxis > 10)
-            //{
+            if (jedi.Secondary == Force.right)
+            {
+                float rightCorrection = 90 + multiAxis.DeadZone / 2;
+                float forceFloat = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0, 1);
+                rigidbody.AddForce(transform.right * forceFloat * jedi.MasterForce);
+            }
 
-            //}
+            if (jedi.Secondary == Force.left)
+            {
+                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0, 1);
+                rigidbody.AddForce(transform.right * -forceFloat * jedi.MasterForce);
+            }
 
-            if (jedi.Power == TheForce.spin)
+            if (jedi.Spin)
             {
                 transform.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
             }

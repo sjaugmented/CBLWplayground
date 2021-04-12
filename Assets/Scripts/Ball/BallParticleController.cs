@@ -111,9 +111,9 @@ namespace LW.Ball
             Color color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
             innerMain.startColor = ball.State == BallState.Active ? ball.NoteColor : color;
 
-            forceEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.push || jedi.Power == TheForce.pull);
+            forceEmission.enabled = ball.State == BallState.Active && (jedi.Primary == Force.push || jedi.Primary == Force.pull);
             //liftEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.lift || jedi.Power == TheForce.down);
-            spinEmission.enabled = jedi.Power == TheForce.spin;
+            spinEmission.enabled = jedi.Spin;
 
             light.enabled = ball.CoreActive;
             light.color = ball.NoteColor;

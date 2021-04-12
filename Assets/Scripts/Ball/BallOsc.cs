@@ -147,7 +147,7 @@ namespace LW.Ball
             }
             
 
-            if (jedi.Power == TheForce.push)
+            if (jedi.Primary == Force.push)
             {
                 if (!pushed)
                 {
@@ -161,7 +161,7 @@ namespace LW.Ball
             }
             
 
-            if (jedi.Power == TheForce.pull)
+            if (jedi.Primary == Force.pull)
             {
                 if (!pulled)
                 {
@@ -174,20 +174,20 @@ namespace LW.Ball
                 pulled = false;
             }
 
-            if (jedi.Power == TheForce.lift)
-            {
-                if (!lifted)
-                {
-                    Send("lifting");
-                    lifted = true;
-                }
-            }
-            else
-            {
-                lifted = false;
-            }
+            //if (jedi.Power == TheForce.lift)
+            //{
+            //    if (!lifted)
+            //    {
+            //        Send("lifting");
+            //        lifted = true;
+            //    }
+            //}
+            //else
+            //{
+            //    lifted = false;
+            //}
 
-            if (jedi.Power == TheForce.spin)
+            if (jedi.Spin)
             {
                 if (!spun)
                 {
