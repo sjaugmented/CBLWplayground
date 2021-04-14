@@ -5040,6 +5040,7 @@ GameObject:
   - component: {fileID: 5145626739213686484}
   - component: {fileID: 2454764655673570708}
   - component: {fileID: 863079449121654146}
+  - component: {fileID: 3646315328873643937}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -5375,14 +5376,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   masterForce: 3
-  pushMultiplier: 20
-  pullMultiplier: 20
-  liftMultiplier: 5
   recallMultiplier: 6
-  holdDistance: 0.7
-  minDistance: 0.3
   ControlPose: 8
-  Power: 5
+  Primary: 4
+  Secondary: 4
 --- !u!114 &5145626739213686484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5431,6 +5428,29 @@ MonoBehaviour:
   - {fileID: 6222737119637812561}
   - {fileID: 6179722345948086096}
   - {fileID: 4692596856355441701}
+--- !u!114 &3646315328873643937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309183216341837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe99f2d00313e7499f8462d7c2d3cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notes:
+  - {fileID: 8300000, guid: 58efc431d83601a4b9e06e8874cefb66, type: 3}
+  - {fileID: 8300000, guid: 57ed92e7593c70e4cb6b26e5b69466a3, type: 3}
+  - {fileID: 8300000, guid: 0e2f7018ec422ae41ab1b999802f9416, type: 3}
+  - {fileID: 8300000, guid: 33d9ef800b18352418bc09365c97eedb, type: 3}
+  - {fileID: 8300000, guid: d6acaaaf949c12d4491343a8122ee6ae, type: 3}
+  - {fileID: 8300000, guid: dc6e0c269392f7946a8ffdeeac03e00e, type: 3}
+  - {fileID: 8300000, guid: 2118b8b0d19e61644b211cb54cbbaa02, type: 3}
+  - {fileID: 8300000, guid: 103f3e286c4342e42a156d9b22c87cb0, type: 3}
+  - {fileID: 8300000, guid: 9e9bdc57acb6f7949a260e334e7973d3, type: 3}
+  - {fileID: 8300000, guid: 569f0ed12ff9ed94cb61d0741943d240, type: 3}
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,6 +57,7 @@ namespace LW.Ball{
         BallOsc osc;
         Rigidbody rigidbody;
         MultiAxis multiAxis;
+        NotePlayer notePlayer;
 
         private void Awake()
         {
@@ -72,6 +73,7 @@ namespace LW.Ball{
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
             multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxis>();
+            notePlayer = GetComponent<NotePlayer>();
 
             TouchLevel = 0;
             Hue = 0;
@@ -161,14 +163,16 @@ namespace LW.Ball{
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
 
+ 
+
             if (hasBounce && State == BallState.Active && (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand")))
             {
                 rigidbody.AddForce(dir * force * bounce);
 
-                if (!GetComponent<AudioSource>().isPlaying)
-                {
-                    GetComponent<AudioSource>().PlayOneShot(bounceFX);
-                }
+                //if (!GetComponent<AudioSource>().isPlaying)
+                //{
+                //    GetComponent<AudioSource>().PlayOneShot(bounceFX);
+                //}
             }
 
             if (HasSpawned && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
@@ -208,6 +212,7 @@ namespace LW.Ball{
                 {
                     Note = Notes.rFist;
                     NoteColor = Color.HSVToRGB(0, 1, 0.8f); // red
+                    notePlayer.PlayNote(0);
                 }
                 else if (tracking.rightPose != HandPose.fist)
                 {
@@ -215,23 +220,29 @@ namespace LW.Ball{
                     {
                         Note = Notes.rPointer;
                         NoteColor = Color.HSVToRGB(0.66f, 0.58f, 0.8f); // baby blue
+                        notePlayer.PlayNote(1);
 
                     }
                     else if (tracking.rightPose == HandPose.peace)
                     {
                         Note = Notes.rPeace;
                         NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
+                        notePlayer.PlayNote(2);
 
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
                         Note = Notes.rBack;
                         NoteColor = Color.HSVToRGB(0.29f, 1, 0.8f); // green
+                        notePlayer.PlayNote(3);
+
                     }
                     else
                     {
                         Note = Notes.rFore;
                         NoteColor = Color.HSVToRGB(0.66f, 1, 0.8f); // blue
+                        notePlayer.PlayNote(4);
+
                     }
                 }
             }
@@ -241,6 +252,8 @@ namespace LW.Ball{
                 {
                     Note = Notes.lFist;
                     NoteColor = Color.HSVToRGB(0.15f, 1, 0.8f); // yellow
+                    notePlayer.PlayNote(5);
+
                 }
                 else if (tracking.leftPose != HandPose.fist)
                 {
@@ -248,23 +261,29 @@ namespace LW.Ball{
                     {
                         Note = Notes.lPointer;
                         NoteColor = Color.HSVToRGB(0, 0.58f, 1); // light red
+                        notePlayer.PlayNote(6);
 
                     }
                     else if (tracking.leftPose == HandPose.peace)
                     {
                         Note = Notes.lPeace;
                         NoteColor = Color.HSVToRGB(0.86f, 0.58f, 1); // pink
+                        notePlayer.PlayNote(7);
 
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
                         Note = Notes.lBack;
                         NoteColor = Color.HSVToRGB(0.89f, 1, 0.8f); // magenta
+                        notePlayer.PlayNote(8);
+
                     }
                     else
                     {
                         Note = Notes.lFore;
                         NoteColor = Color.HSVToRGB(0.5f, 1, 0.8f); // cyan
+                        notePlayer.PlayNote(9);
+
                     }
                 }
             }

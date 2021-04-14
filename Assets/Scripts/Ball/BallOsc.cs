@@ -48,19 +48,19 @@ namespace LW.Ball
 
             if (jedi.Held)
             {
-                if (!holdToggle)
-                {
-                    Send("holdingOn");
-                    holdToggle = true;
-                }
+                //if (!holdToggle)
+                //{
+                //    Send("holdingOn");
+                //    holdToggle = true;
+                //}
             }
             else
             {
-                if (holdToggle)
-                {
-                    Send("holdingOff");
-                    holdToggle = false;
-                }
+                //if (holdToggle)
+                //{
+                //    Send("holdingOff");
+                //    holdToggle = false;
+                //}
             }
 
             if (ball.State == BallState.Active) // ACTIVE
