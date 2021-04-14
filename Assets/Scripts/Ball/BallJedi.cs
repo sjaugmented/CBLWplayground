@@ -43,6 +43,7 @@ namespace LW.Ball
         }
         public float RelativeHandDist { get; set; }
         public bool Held { get; set; }
+        public bool Moving { get; set; }
         public bool Recall { get; set; }
         public float LevelUpTimer
         {
@@ -107,6 +108,8 @@ namespace LW.Ball
                 Held = false;
             }
             #endregion
+
+            Moving = Primary != Force.idle;
 
             #region Forces
             if (forceTimer < 1)

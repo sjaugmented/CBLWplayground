@@ -24,9 +24,8 @@ namespace LW.Ball
 
         public void PlayNote(int index)
         {
-            if (audio.isPlaying) { return; }
+            //if (audio.isPlaying) { return; }
 
-            //Debug.Log(notes[index]);
             audio.PlayOneShot(notes[index]);
         }
     }

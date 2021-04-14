@@ -85,6 +85,8 @@ namespace LW.Ball{
 
         void Update()
         {
+            
+            
             State = director.Still ? BallState.Still : BallState.Active;
 
             touchTimer += Time.deltaTime;

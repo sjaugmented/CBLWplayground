@@ -45,6 +45,7 @@ namespace LW.Ball
         void Update()
         {
             if (!ball.HasSpawned) { return; }
+            var playerDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
 
             if (jedi.Held)
             {
@@ -61,6 +62,11 @@ namespace LW.Ball
                 //    Send("holdingOff");
                 //    holdToggle = false;
                 //}
+            }
+
+            if (jedi.Moving)
+            {
+                Send("moving", playerDistance);
             }
 
             if (ball.State == BallState.Active) // ACTIVE
