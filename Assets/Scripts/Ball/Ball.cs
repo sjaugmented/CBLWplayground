@@ -24,11 +24,12 @@ namespace LW.Ball{
         [SerializeField] float forceMult = 10000;
         [SerializeField] float killForce = 1000;
         [SerializeField] bool hasBounce = true;
-        [SerializeField] float bounce = 10;
+        [SerializeField] float bounce = 30;
         [SerializeField] float recallDistance = 0.3f;
-        [SerializeField] float antiGrav = 0.7f;
+        [SerializeField] float antiGrav = 0.5f;
         [SerializeField] float maxSpinY = 30;
         [SerializeField] float maxSpinZ = 20;
+        
 
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
@@ -42,6 +43,7 @@ namespace LW.Ball{
         public Vector3 LockPos { get; set; }
         public bool Manipulating { get; set; }
         public bool HasSpawned { get; set; }
+        public bool Stasis { get; set; }
 
         float touchTimer = Mathf.Infinity;
         bool touchResponseLimiter;
@@ -54,6 +56,8 @@ namespace LW.Ball{
         BallJedi jedi;
         BallOsc osc;
         Rigidbody rigidbody;
+        MultiAxis multiAxis;
+        NotePlayer notePlayer;
 
         private void Awake()
         {
@@ -68,6 +72,8 @@ namespace LW.Ball{
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
+            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxis>();
+            notePlayer = GetComponent<NotePlayer>();
 
             TouchLevel = 0;
             Hue = 0;
@@ -79,6 +85,8 @@ namespace LW.Ball{
 
         void Update()
         {
+            
+            
             State = director.Still ? BallState.Still : BallState.Active;
 
             touchTimer += Time.deltaTime;
@@ -90,7 +98,7 @@ namespace LW.Ball{
             CoreActive = touched;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
-            if (State == BallState.Still && jedi.Power == TheForce.idle && !Manipulating && !jedi.Recall)
+            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall)
             {
                 transform.position = LockPos;
             }
@@ -99,36 +107,39 @@ namespace LW.Ball{
                 LockPos = transform.position;
             }
 
-            if (jedi.Power == TheForce.push)
+            Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
+            float totalPrimaryRange = 90 - multiAxis.DeadZone;
+            float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
+
+            if (jedi.Primary == Force.pull)
             {
-                var force = State == BallState.Active ? jedi.PushForce : jedi.PushForce;
-                transform.LookAt(2 * transform.position - Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1) + new Vector3(0, antiGrav, 0));
+                float pullCorrection = 90 + multiAxis.DeadZone;
+                float forceFloat = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0, 1);
+                transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
+                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+            }
+            
+            if (jedi.Primary == Force.push)
+            {
+                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0, 1);
+                transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
+                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
             }
 
-            if (jedi.Power == TheForce.pull)
+            if (jedi.Secondary == Force.right)
             {
-                var force = State == BallState.Active ? jedi.PullForce : jedi.PullForce;
-                transform.LookAt(Camera.main.transform.position);
-                rigidbody.AddForce(transform.forward * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
+                float rightCorrection = 90 + multiAxis.DeadZone / 2;
+                float forceFloat = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0, 1);
+                rigidbody.AddForce(transform.right * forceFloat * jedi.MasterForce);
             }
 
-            if (jedi.Power == TheForce.lift)
+            if (jedi.Secondary == Force.left)
             {
-
-                var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
-                transform.rotation = new Quaternion(0, 0, 0, 0);
-                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
+                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0, 1);
+                rigidbody.AddForce(transform.right * -forceFloat * jedi.MasterForce);
             }
 
-            if (jedi.Power == TheForce.down)
-            {
-                var force = State == BallState.Active ? jedi.LiftForce : jedi.LiftForce;
-                transform.rotation = new Quaternion(180, 0, 0, 0);
-                rigidbody.AddForce(transform.up * Mathf.Clamp((origins.PalmsDist / jedi.HoldDistance * force), 0, 1));
-            }
-
-            if (jedi.Power == TheForce.spin)
+            if (jedi.Spin)
             {
                 transform.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
             }
@@ -154,14 +165,16 @@ namespace LW.Ball{
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
 
+ 
+
             if (hasBounce && State == BallState.Active && (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand")))
             {
                 rigidbody.AddForce(dir * force * bounce);
 
-                if (!GetComponent<AudioSource>().isPlaying)
-                {
-                    GetComponent<AudioSource>().PlayOneShot(bounceFX);
-                }
+                //if (!GetComponent<AudioSource>().isPlaying)
+                //{
+                //    GetComponent<AudioSource>().PlayOneShot(bounceFX);
+                //}
             }
 
             if (HasSpawned && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
@@ -201,6 +214,7 @@ namespace LW.Ball{
                 {
                     Note = Notes.rFist;
                     NoteColor = Color.HSVToRGB(0, 1, 0.8f); // red
+                    notePlayer.PlayNote(0);
                 }
                 else if (tracking.rightPose != HandPose.fist)
                 {
@@ -208,23 +222,29 @@ namespace LW.Ball{
                     {
                         Note = Notes.rPointer;
                         NoteColor = Color.HSVToRGB(0.66f, 0.58f, 0.8f); // baby blue
+                        notePlayer.PlayNote(1);
 
                     }
                     else if (tracking.rightPose == HandPose.peace)
                     {
                         Note = Notes.rPeace;
                         NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
+                        notePlayer.PlayNote(2);
 
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
                         Note = Notes.rBack;
                         NoteColor = Color.HSVToRGB(0.29f, 1, 0.8f); // green
+                        notePlayer.PlayNote(3);
+
                     }
                     else
                     {
                         Note = Notes.rFore;
                         NoteColor = Color.HSVToRGB(0.66f, 1, 0.8f); // blue
+                        notePlayer.PlayNote(4);
+
                     }
                 }
             }
@@ -234,6 +254,8 @@ namespace LW.Ball{
                 {
                     Note = Notes.lFist;
                     NoteColor = Color.HSVToRGB(0.15f, 1, 0.8f); // yellow
+                    notePlayer.PlayNote(5);
+
                 }
                 else if (tracking.leftPose != HandPose.fist)
                 {
@@ -241,23 +263,29 @@ namespace LW.Ball{
                     {
                         Note = Notes.lPointer;
                         NoteColor = Color.HSVToRGB(0, 0.58f, 1); // light red
+                        notePlayer.PlayNote(6);
 
                     }
                     else if (tracking.leftPose == HandPose.peace)
                     {
                         Note = Notes.lPeace;
                         NoteColor = Color.HSVToRGB(0.86f, 0.58f, 1); // pink
+                        notePlayer.PlayNote(7);
 
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
                         Note = Notes.lBack;
                         NoteColor = Color.HSVToRGB(0.89f, 1, 0.8f); // magenta
+                        notePlayer.PlayNote(8);
+
                     }
                     else
                     {
                         Note = Notes.lFore;
                         NoteColor = Color.HSVToRGB(0.5f, 1, 0.8f); // cyan
+                        notePlayer.PlayNote(9);
+
                     }
                 }
             }

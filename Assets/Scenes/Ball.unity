@@ -1556,6 +1556,7 @@ GameObject:
   - component: {fileID: 733917317}
   - component: {fileID: 733917316}
   - component: {fileID: 733917318}
+  - component: {fileID: 733917319}
   m_Layer: 0
   m_Name: HandTracking
   m_TagString: HandTracking
@@ -1577,6 +1578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strictMargin: 20
   printAngles: 0
+  showStaff: 0
   handedness: 3
   palmsRel: 5
   palmsAbs: 5
@@ -1612,6 +1614,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53999eeae34e05f429f4a16149d4eb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &733917319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733917315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0cabe22a5481d84e8e7d95d98eaa1d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deadZone: 40
+  outOffset: {x: 60, y: 0, z: 0}
+  inOffset: {x: 120, y: 0, z: 0}
+  forwardStick: 0
+  upStick: 0
+  rightAgainstStaffForward: 0
+  crossAngle: 0
 --- !u!1 &734231680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,7 +2013,7 @@ MonoBehaviour:
   inPort: 7000
   outIP: 255.255.255.255
   outPort: 8000
-  logOSC: 1
+  logOSC: 0
 --- !u!4 &851767835
 Transform:
   m_ObjectHideFlags: 0
@@ -7763,7 +7784,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1549413470
 Light:
   m_ObjectHideFlags: 0
@@ -8215,7 +8236,7 @@ GameObject:
   - component: {fileID: 1822961035}
   m_Layer: 0
   m_Name: Cube Level
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

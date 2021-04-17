@@ -86,31 +86,31 @@ namespace LW.Ball
                 hasReset = false;
             }
 
-            if (BallInPlay)
-            {
-                if (!ballInstance) { return; }
+            //if (BallInPlay)
+            //{
+            //    if (!ballInstance) { return; }
 
-                if (ballInstance.GetComponent<Ball>().State == BallState.Still)
-                {
-                    if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
-                    {
-                        if (!destroyReady)
-                        {
-                            destroyTimer = 0;
-                            destroyReady = true;
-                        }
-                    }
-                    else
-                    {
-                        destroyReady = false;
-                    }
+            //    if (ballInstance.GetComponent<Ball>().State == BallState.Still)
+            //    {
+            //        if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
+            //        {
+            //            if (!destroyReady)
+            //            {
+            //                destroyTimer = 0;
+            //                destroyReady = true;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            destroyReady = false;
+            //        }
 
-                    if (destroyTimer < 1 && conjureTimer > 3 && tracking.rightPose == HandPose.fist)
-                    {
-                        DestroyBall();
-                    }
-                }
-            }
+            //        if (destroyTimer < 1 && conjureTimer > 3 && tracking.rightPose == HandPose.fist)
+            //        {
+            //            DestroyBall();
+            //        }
+            //    }
+            //}
         }
 
         private void ConjureBall()

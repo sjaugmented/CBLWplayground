@@ -45,22 +45,28 @@ namespace LW.Ball
         void Update()
         {
             if (!ball.HasSpawned) { return; }
+            var playerDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
 
             if (jedi.Held)
             {
-                if (!holdToggle)
-                {
-                    Send("holdingOn");
-                    holdToggle = true;
-                }
+                //if (!holdToggle)
+                //{
+                //    Send("holdingOn");
+                //    holdToggle = true;
+                //}
             }
             else
             {
-                if (holdToggle)
-                {
-                    Send("holdingOff");
-                    holdToggle = false;
-                }
+                //if (holdToggle)
+                //{
+                //    Send("holdingOff");
+                //    holdToggle = false;
+                //}
+            }
+
+            if (jedi.Moving)
+            {
+                Send("moving", playerDistance);
             }
 
             if (ball.State == BallState.Active) // ACTIVE
@@ -147,7 +153,7 @@ namespace LW.Ball
             }
             
 
-            if (jedi.Power == TheForce.push)
+            if (jedi.Primary == Force.push)
             {
                 if (!pushed)
                 {
@@ -161,7 +167,7 @@ namespace LW.Ball
             }
             
 
-            if (jedi.Power == TheForce.pull)
+            if (jedi.Primary == Force.pull)
             {
                 if (!pulled)
                 {
@@ -174,20 +180,20 @@ namespace LW.Ball
                 pulled = false;
             }
 
-            if (jedi.Power == TheForce.lift)
-            {
-                if (!lifted)
-                {
-                    Send("lifting");
-                    lifted = true;
-                }
-            }
-            else
-            {
-                lifted = false;
-            }
+            //if (jedi.Power == TheForce.lift)
+            //{
+            //    if (!lifted)
+            //    {
+            //        Send("lifting");
+            //        lifted = true;
+            //    }
+            //}
+            //else
+            //{
+            //    lifted = false;
+            //}
 
-            if (jedi.Power == TheForce.spin)
+            if (jedi.Spin)
             {
                 if (!spun)
                 {

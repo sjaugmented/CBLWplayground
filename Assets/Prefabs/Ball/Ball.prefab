@@ -357,7 +357,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -735,7 +735,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 2000
     size3D: 0
     rotation3D: 1
     gravityModifier:
@@ -5040,6 +5040,7 @@ GameObject:
   - component: {fileID: 5145626739213686484}
   - component: {fileID: 2454764655673570708}
   - component: {fileID: 863079449121654146}
+  - component: {fileID: 3646315328873643937}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Ball
@@ -5357,7 +5358,7 @@ MonoBehaviour:
   hasBounce: 1
   bounce: 30
   recallDistance: 0.2
-  antiGrav: 0.7
+  antiGrav: 0.5
   maxSpinY: 20
   maxSpinZ: 10
   State: 0
@@ -5374,14 +5375,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c522e9bf096e46bdbdd801d8096c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushMultiplier: 10
-  pullMultiplier: 6
-  liftMultiplier: 5
+  masterForce: 3
   recallMultiplier: 6
-  holdDistance: 0.7
-  minDistance: 0.3
   ControlPose: 8
-  Power: 3
+  Primary: 4
+  Secondary: 4
 --- !u!114 &5145626739213686484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5424,10 +5422,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc8b079f3c4fe242847158c669e98e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shells:
+  - {fileID: 1023815655490042180}
   rings:
   - {fileID: 6222737119637812561}
   - {fileID: 6179722345948086096}
   - {fileID: 4692596856355441701}
+--- !u!114 &3646315328873643937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309183216341837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fe99f2d00313e7499f8462d7c2d3cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notes:
+  - {fileID: 8300000, guid: 58efc431d83601a4b9e06e8874cefb66, type: 3}
+  - {fileID: 8300000, guid: 57ed92e7593c70e4cb6b26e5b69466a3, type: 3}
+  - {fileID: 8300000, guid: 0e2f7018ec422ae41ab1b999802f9416, type: 3}
+  - {fileID: 8300000, guid: 33d9ef800b18352418bc09365c97eedb, type: 3}
+  - {fileID: 8300000, guid: d6acaaaf949c12d4491343a8122ee6ae, type: 3}
+  - {fileID: 8300000, guid: dc6e0c269392f7946a8ffdeeac03e00e, type: 3}
+  - {fileID: 8300000, guid: 2118b8b0d19e61644b211cb54cbbaa02, type: 3}
+  - {fileID: 8300000, guid: 103f3e286c4342e42a156d9b22c87cb0, type: 3}
+  - {fileID: 8300000, guid: 9e9bdc57acb6f7949a260e334e7973d3, type: 3}
+  - {fileID: 8300000, guid: 569f0ed12ff9ed94cb61d0741943d240, type: 3}
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0
@@ -10795,7 +10818,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 2000
     size3D: 0
     rotation3D: 1
     gravityModifier:
@@ -11060,7 +11083,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 200
+      scalar: 400
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -14904,7 +14927,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 776677ab3818fb249adaca05f4e04545, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15082,7 +15105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5379702898570425307}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0422}
+  m_LocalPosition: {x: 0, y: 0, z: 0.004}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 2193309183216341836}
@@ -19765,7 +19788,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 776677ab3818fb249adaca05f4e04545, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24886,7 +24909,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4481853769726061063
 Transform:
   m_ObjectHideFlags: 0
@@ -29578,7 +29601,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10308, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 776677ab3818fb249adaca05f4e04545, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
