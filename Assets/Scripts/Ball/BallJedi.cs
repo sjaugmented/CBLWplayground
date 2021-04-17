@@ -12,7 +12,7 @@ namespace LW.Ball
         //[SerializeField] float pullMultiplier = 5;
         //[SerializeField] float liftMultiplier = 3;
         [SerializeField] float recallMultiplier = 6;
-        float holdDistance = 0.7f;
+        [SerializeField] float holdDistance = 0.5f;
         float minDistance = 0.3f;
 
         public bool Spin { get; set; }
@@ -86,28 +86,28 @@ namespace LW.Ball
             rigidbody.useGravity = gravityCondition;
             GetComponent<ConstantForce>().enabled = gravityCondition;
 
-            #region ControlPoses
+            #region ControlPoses //
             if (tracking.palmsRel == Formation.together)
             {
-                Held = true;
+                //Held = true;
                 forceTimer = 0;
 
-                if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
-                {
-                    ControlPose = HandPose.pointer;
-                }
-                else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
-                {
-                    ControlPose = HandPose.fist;
-                }
-                else
-                {
-                    ControlPose = HandPose.none;
-                }
+                //if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
+                //{
+                //    ControlPose = HandPose.pointer;
+                //}
+                //else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                //{
+                //    ControlPose = HandPose.fist;
+                //}
+                //else
+                //{
+                //    ControlPose = HandPose.none;
+                //}
             }
             else
             {
-                Held = false;
+                //Held = false;
             }
             #endregion
 
@@ -160,7 +160,7 @@ namespace LW.Ball
                 Secondary = Force.idle;
             }
 
-            Spin = tracking.handedness == Hands.both && tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace;
+            Spin = ball.State == BallState.Still && tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace);
             #endregion
 
             #region Recall

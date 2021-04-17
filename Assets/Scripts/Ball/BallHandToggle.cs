@@ -40,7 +40,7 @@ namespace LW.Ball
                     if (collider.CompareTag("Right Pointer") && !director.Still)
                     {
                         director.Still = true;
-                        SendOSC("still/");
+                        //SendOSC("still/");
                         GetComponent<AudioSource>().PlayOneShot(stillFX);
                     }
                 }
@@ -75,7 +75,7 @@ namespace LW.Ball
                     if (collider.CompareTag("Left Pointer") && director.Still)
                     {
                         director.Still = false;
-                        SendOSC("active/");
+                        //SendOSC("active/");
                         GetComponent<AudioSource>().PlayOneShot(activeFX);
                     }
                 }

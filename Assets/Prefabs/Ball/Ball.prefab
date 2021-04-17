@@ -5361,7 +5361,9 @@ MonoBehaviour:
   recallDistance: 0.2
   antiGrav: 0.5
   maxSpinY: 20
-  maxSpinZ: 10
+  maxSpinZ: 20
+  masterThrottle: 0.5
+  unClampedLerp: 2
   State: 0
   Note: 10
 --- !u!114 &7484735728138884248
@@ -5376,8 +5378,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c522e9bf096e46bdbdd801d8096c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterForce: 3
+  masterForce: 6
   recallMultiplier: 6
+  holdDistance: 0.5
   ControlPose: 8
   Primary: 4
   Secondary: 4
@@ -5397,6 +5400,7 @@ MonoBehaviour:
   maxSize: 0.5
   maxSpeed: 2
   maxParticles: 500
+  maxSpinParticlesSpeed: 10
 --- !u!114 &2454764655673570708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11084,7 +11088,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 400
+      scalar: 600
       minScalar: 10
       maxCurve:
         serializedVersion: 2

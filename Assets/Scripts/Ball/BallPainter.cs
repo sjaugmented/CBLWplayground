@@ -7,15 +7,19 @@ namespace LW.Ball
     public class BallPainter : MonoBehaviour
     {
         [SerializeField] List<GameObject> shells, rings;
+        float h, s, v;
 
         List<Material> shellMats = new List<Material>();
         List<Material> ringMats = new List<Material>();
 
         Ball ball;
+        Light light;
 
         void Start()
         {
             ball = GetComponent<Ball>();
+            light = GetComponentInChildren<Light>();
+
             if (shells.Count > 0)
             {
                 foreach (GameObject shell in shells)
@@ -35,7 +39,10 @@ namespace LW.Ball
 
         void Update()
         {
-            Color.RGBToHSV(ball.NoteColor, out float h, out float s, out float v);
+            if (ball.CoreActive)
+            {
+                SetColor();
+            }
 
             if (s > 0)
             {
@@ -44,25 +51,40 @@ namespace LW.Ball
             
             if (v > 0)
             {
-                v -= 0.001f;
+                v -= 0.01f;
+            }
+
+            if (light.intensity > 0)
+            {
+                light.intensity -= 0.1f;
             }
 
             foreach (Material mat in shellMats)
             {
                 mat.color = ball.State == BallState.Still ? Color.HSVToRGB(h, s, 0.2f) : Color.HSVToRGB(h, s, 1);
-                //mat.color = Color.HSVToRGB(h, 0.2f, 0.2f);
             }
 
             foreach (Material mat in ringMats)
             {
-                mat.color = ball.State == BallState.Still ? Color.HSVToRGB(h, 0.2f, v) : ball.NoteColor;
-                //mat.color = ball.NoteColor;
-                if (ball.State == BallState.Active)
-                {
-                    mat.EnableKeyword("_EMISSION");
-                    mat.SetColor("_EmissionColor", ball.NoteColor);
-                }
+                //mat.color = Color.HSVToRGB(h, s, v);
+                //mat.EnableKeyword("_EMISSION");
+                mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
+                mat.color = ball.NoteColor;
+                //if (ball.State == BallState.Active)
+                //{
+                //    mat.EnableKeyword("_EMISSION");
+                //    mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
+                //}
             }
+
+            light.enabled = true;
+            light.color = Color.HSVToRGB(h, s, 1);
+        }
+
+        public void SetColor()
+        {
+            Color.RGBToHSV(ball.NoteColor, out h, out s, out v);
+            light.intensity = 10;
         }
 
     }

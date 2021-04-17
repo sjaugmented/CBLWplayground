@@ -1332,12 +1332,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b68f2f2e2551884c9b0a7b61e02f96e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resetFX: {fileID: 8300000, guid: ffc69f3863596a448a66d9775595277f, type: 3}
   handColliders: {fileID: 7633091808637125529}
   uniBall: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
   multiBall: {fileID: 2193309183216341837, guid: 0e2773d268d0e2246a7dc0b18767d165,
     type: 3}
-  zOffset: 0.03
   worldLvl: 1
   hasReset: 0
 --- !u!4 &688426549
@@ -1626,13 +1624,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0cabe22a5481d84e8e7d95d98eaa1d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadZone: 40
+  deadZone: 25
   outOffset: {x: 60, y: 0, z: 0}
-  inOffset: {x: 120, y: 0, z: 0}
-  forwardStick: 0
-  upStick: 0
-  rightAgainstStaffForward: 0
-  crossAngle: 0
+  inOffset: {x: 110, y: 0, z: 0}
+  palmRightAgainstStaffForward: 0
+  staffAgainstCamForward: 0
 --- !u!1 &734231680
 GameObject:
   m_ObjectHideFlags: 0

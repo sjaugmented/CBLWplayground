@@ -30,7 +30,8 @@ namespace LW.Ball{
         [SerializeField] float antiGrav = 0.5f;
         [SerializeField] float maxSpinY = 30;
         [SerializeField] float maxSpinZ = 20;
-        
+        [SerializeField] float masterThrottle = 0.5f;
+        [SerializeField] float unClampedLerp = 2f;
 
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
@@ -114,33 +115,36 @@ namespace LW.Ball{
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
             float totalPrimaryRange = 90 - multiAxis.DeadZone;
             float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
+            float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * masterThrottle;
 
             if (jedi.Primary == Force.pull)
             {
                 float pullCorrection = 90 + multiAxis.DeadZone;
-                float forceFloat = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0, 1);
+                float palmForce = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
-                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+                //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, handsRotation * Quaternion.Euler(multiAxis.InOffset), unClampedLerp);
+                rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
             
             if (jedi.Primary == Force.push)
             {
-                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
-                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+                //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, handsRotation * Quaternion.Euler(multiAxis.InOffset), unClampedLerp);
+                rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
 
             if (jedi.Secondary == Force.right)
             {
                 float rightCorrection = 90 + multiAxis.DeadZone / 2;
-                float forceFloat = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0, 1);
-                rigidbody.AddForce(transform.right * forceFloat * jedi.MasterForce);
+                float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0, 1);
+                rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
             }
 
             if (jedi.Secondary == Force.left)
             {
-                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0, 1);
-                rigidbody.AddForce(transform.right * -forceFloat * jedi.MasterForce);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0, 1);
+                rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
             }
 
             if (jedi.Spin)
@@ -203,9 +207,11 @@ namespace LW.Ball{
 
             if (IsNotQuiet && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
             {
+                touched = true;
+
                 if (!touchResponseLimiter)
                 {
-                    touched = true;
+                    //touched = true;
                     TouchLevel += 1;
                     DetermineTouchResponse(other);
                     osc.Send(Note.ToString(), TouchLevel);

@@ -11,6 +11,7 @@ namespace LW.Ball
         [SerializeField] float maxSize = 0.25f;
         [SerializeField] float maxSpeed = 1;
         [SerializeField] float maxParticles = 500;
+        [SerializeField] float maxSpinParticlesSpeed = 10;
 
         public float CoreSize { get; set; }
         public float CoreLifetime { get; set; }
@@ -26,20 +27,16 @@ namespace LW.Ball
         CastOrigins origins;
         ParticleSystem innerParticles;
         ParticleSystem forceParticles;
-        //ParticleSystem liftParticles;
         ParticleSystem spinParticles;
-        Light light;
         void Start()
         {
             ball = GetComponent<Ball>();
             innerParticles = GetComponentInChildren<CoreParticlesID>().transform.GetComponent<ParticleSystem>();
             forceParticles = GetComponentInChildren<ForceParticlesID>().transform.GetComponent<ParticleSystem>();
-            //liftParticles = GetComponentInChildren<LiftParticlesID>().transform.GetComponent<ParticleSystem>();
             spinParticles = GetComponentInChildren<SpinParticlesID>().transform.GetComponent<ParticleSystem>();
             jedi = GetComponentInParent<BallJedi>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            light = GetComponentInChildren<Light>();
 
             CoreSize = 0.9f;
             CoreLifetime = 0.1f;
@@ -52,15 +49,11 @@ namespace LW.Ball
 
         void Update()
         {
-            //Debug.Log(CoreSize);
-            //Debug.Log(CoreSpeed);
-            //Debug.Log(CoreLifetime);
-            
             var innerMain = innerParticles.main;
-            var innerEmission = innerParticles.emission;
+            var coreEmission = innerParticles.emission;
             var forceEmission = forceParticles.emission;
-            //var liftEmission = liftParticles.emission;
             var spinEmission = spinParticles.emission;
+            var spinMain = spinParticles.main;
 
             //if (ball.WithinRange)
             //{
@@ -79,9 +72,9 @@ namespace LW.Ball
             //    }
             //}
 
-            innerEmission.enabled = ball.CoreActive;
+            coreEmission.enabled = ball.State == BallState.Active && ball.CoreActive;
             //innerEmission.rateOverTime = ball.State == BallState.Active ? maxParticles / 2 : CoreEmission * maxParticles;
-            innerEmission.rateOverTime = maxParticles;
+            coreEmission.rateOverTime = maxParticles;
             //innerMain.startSize = ball.State == BallState.Active ? maxSize / 2 : CoreSize * maxSize;
             innerMain.startSize = maxSize;
             //innerMain.startSpeed = ball.State == BallState.Active ? maxSpeed / 2 : CoreSpeed * maxSpeed;
@@ -96,9 +89,7 @@ namespace LW.Ball
             forceEmission.enabled = jedi.Primary == Force.push || jedi.Primary == Force.pull;
             //liftEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.lift || jedi.Power == TheForce.down);
             spinEmission.enabled = jedi.Spin;
-
-            light.enabled = ball.CoreActive;
-            light.color = ball.NoteColor;
+            spinMain.startSpeed = new ParticleSystem.MinMaxCurve(2f, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinParticlesSpeed);
         }
 
         public void GlitterBall(OscMessage message)
