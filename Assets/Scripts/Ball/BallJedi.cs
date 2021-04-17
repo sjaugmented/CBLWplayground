@@ -45,6 +45,7 @@ namespace LW.Ball
         public bool Held { get; set; }
         public bool Moving { get; set; }
         public bool Recall { get; set; }
+        public bool Reset { get; set; }
         public float LevelUpTimer
         {
             get { return recallPunchTimer; }
@@ -53,8 +54,8 @@ namespace LW.Ball
         public Force Primary = Force.idle;
         public Force Secondary = Force.idle;
 
-        bool lassoReady;
-        float lassoTimer, recallPunchTimer, forceTimer = Mathf.Infinity;
+        bool lassoReady, resetReady;
+        float lassoTimer, resetTimer, recallPunchTimer, forceTimer = Mathf.Infinity;
 
         NewTracking tracking;
         CastOrigins origins;
@@ -76,6 +77,7 @@ namespace LW.Ball
             RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
 
             lassoTimer += Time.deltaTime;
+            resetTimer += Time.deltaTime;
             recallPunchTimer += Time.deltaTime;
             forceTimer = Time.deltaTime;
 
@@ -109,12 +111,12 @@ namespace LW.Ball
             }
             #endregion
 
-            Moving = Primary != Force.idle;
+            Moving = Primary != Force.idle || Recall;
 
             #region Forces
-            if (forceTimer < 1)
+            if (forceTimer < 3)
             {
-                if (tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                if (tracking.handedness == Hands.both && tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
                 {
                     if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
                     {
@@ -158,11 +160,11 @@ namespace LW.Ball
                 Secondary = Force.idle;
             }
 
-            Spin = tracking.handedness == Hands.both && tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp;
+            Spin = tracking.handedness == Hands.both && tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace;
             #endregion
 
             #region Recall
-            if (ball.HasSpawned && tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
+            if (ball.IsNotQuiet && tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
             {
                 if (!lassoReady)
                 {
@@ -175,7 +177,7 @@ namespace LW.Ball
                 lassoReady = false;
             }
 
-            if (ball.HasSpawned && lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
+            if (ball.IsNotQuiet && lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
             {
                 Recall = true;
                 recallPunchTimer = 0;
@@ -185,6 +187,32 @@ namespace LW.Ball
             {
                 Recall = false;
             }
+            #endregion
+
+            #region Reset
+            if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
+            {
+                //if (!resetReady)
+                //{
+                //    resetTimer = 0;
+                //    resetReady = true;
+                //}
+                resetTimer = 0;
+            }
+            else
+            {
+                resetReady = false;
+            }
+
+            if (resetTimer < 0.5 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
+            {
+                Reset = true;
+            }
+            else
+            {
+                Reset = false;
+            }
+
             #endregion
 
             #region Forces (old)

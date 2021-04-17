@@ -62,56 +62,38 @@ namespace LW.Ball
             //var liftEmission = liftParticles.emission;
             var spinEmission = spinParticles.emission;
 
-            if (ball.WithinRange)
-            {
-                if (ball.State == BallState.Still)
-                {
-                    if (jedi.ControlPose == HandPose.pointer)
-                    {
-                        CoreHue = Mathf.Clamp(jedi.RelativeHandDist, 0, 0.9f);
-                    }
-                    if (jedi.ControlPose == HandPose.fist)
-                    {
-                        CoreSize = Mathf.Clamp(1 - jedi.RelativeHandDist, 0.1f, 1);
-                        CoreSpeed = Mathf.Clamp(jedi.RelativeHandDist, 0.1f, 1);
-                        CoreLifetime = Mathf.Clamp(jedi.RelativeHandDist, 0.1f, 1);
-                    }
-                    //if (jedi.ControlPose == HandPose.thumbsUp)
-                    //{
-                    //    CoreEmission = jedi.RelativeHandDist;
-                    //}
-                }
-                //else
-                //{
-                //    if (jedi.ControlPose == HandPose.pointer)
-                //    {
-                //        CoreHue = jedi.RelativeHandDist;
-                //    }
-                //    if (jedi.ControlPose == HandPose.fist)
-                //    {
-                //        CoreSat = jedi.RelativeHandDist;
-                //        CoreLifetime = jedi.RelativeHandDist;
-                //    }
-                //    if (jedi.ControlPose == HandPose.thumbsUp)
-                //    {
-                //        CoreVal = jedi.RelativeHandDist;
-                //        CoreSpeed = jedi.RelativeHandDist;
-                //    }
-                //}
-            }
+            //if (ball.WithinRange)
+            //{
+            //    if (ball.State == BallState.Still)
+            //    {
+            //        if (jedi.ControlPose == HandPose.pointer)
+            //        {
+            //            CoreHue = Mathf.Clamp(jedi.RelativeHandDist, 0, 0.9f);
+            //        }
+            //        if (jedi.ControlPose == HandPose.fist)
+            //        {
+            //            CoreSize = Mathf.Clamp(1 - jedi.RelativeHandDist, 0.1f, 1);
+            //            CoreSpeed = Mathf.Clamp(jedi.RelativeHandDist, 0.1f, 1);
+            //            CoreLifetime = Mathf.Clamp(jedi.RelativeHandDist, 0.1f, 1);
+            //        }
+            //    }
+            //}
 
-            //innerMain.simulationSpace = ball.State == BallState.Active ? ParticleSystemSimulationSpace.World : ParticleSystemSimulationSpace.Local;
-
-            innerEmission.enabled = ball.State == BallState.Still || ball.CoreActive;
-            innerEmission.rateOverTime = ball.State == BallState.Active ? maxParticles / 2 : CoreEmission * maxParticles;
-            innerMain.startSize = ball.State == BallState.Active ? maxSize / 2 : CoreSize * maxSize;
-            innerMain.startSpeed = ball.State == BallState.Active ? maxSpeed / 2 : CoreSpeed * maxSpeed;
-            innerMain.startLifetime = ball.State == BallState.Active ? maxLifetime / 2 : CoreLifetime * maxLifetime;
+            innerEmission.enabled = ball.CoreActive;
+            //innerEmission.rateOverTime = ball.State == BallState.Active ? maxParticles / 2 : CoreEmission * maxParticles;
+            innerEmission.rateOverTime = maxParticles;
+            //innerMain.startSize = ball.State == BallState.Active ? maxSize / 2 : CoreSize * maxSize;
+            innerMain.startSize = maxSize;
+            //innerMain.startSpeed = ball.State == BallState.Active ? maxSpeed / 2 : CoreSpeed * maxSpeed;
+            innerMain.startSpeed = maxSpeed;
+            //innerMain.startLifetime = ball.State == BallState.Active ? maxLifetime / 2 : CoreLifetime * maxLifetime;
+            innerMain.startLifetime = maxLifetime;
             
             Color color = Color.HSVToRGB(CoreHue, CoreSat, CoreVal);
             innerMain.startColor = ball.State == BallState.Active ? ball.NoteColor : color;
 
-            forceEmission.enabled = ball.State == BallState.Active && (jedi.Primary == Force.push || jedi.Primary == Force.pull);
+            //forceEmission.enabled = ball.State == BallState.Active && (jedi.Primary == Force.push || jedi.Primary == Force.pull);
+            forceEmission.enabled = jedi.Primary == Force.push || jedi.Primary == Force.pull;
             //liftEmission.enabled = ball.State == BallState.Active && (jedi.Power == TheForce.lift || jedi.Power == TheForce.down);
             spinEmission.enabled = jedi.Spin;
 

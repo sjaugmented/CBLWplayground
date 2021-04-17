@@ -37,12 +37,14 @@ namespace LW.Ball
             foreach (Material mat in shellMats)
             {
                 Color.RGBToHSV(ball.NoteColor, out float h, out _, out float v);
-                mat.color = Color.HSVToRGB(h, 0.2f, 0.2f);
+                //mat.color = Color.HSVToRGB(h, 0.2f, 0.2f);
+                mat.color = ball.State == BallState.Active ? Color.HSVToRGB(h, 0.2f, 0.2f) : Color.HSVToRGB(0, 0, 1);
             }
 
             foreach (Material mat in ringMats)
             {
-                mat.color = ball.State == BallState.Active ? Color.HSVToRGB(0, 0, 1) : ball.NoteColor;
+                //mat.color = ball.State == BallState.Active ? Color.HSVToRGB(0, 0, 1) : ball.NoteColor;
+                mat.color = ball.NoteColor;
                 mat.SetColor("_EmissionColor", ball.NoteColor);
             }
         }

@@ -13,6 +13,7 @@ namespace LW.Ball{
         [SerializeField] GameObject containmentSphere; // on off based on frozen
         [SerializeField] float perimeter = 0.5f;
         [SerializeField] AudioClip conjureFX;
+        [SerializeField] AudioClip resetFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] AudioClip bounceFX;
         [SerializeField] AudioClip stillFX;
@@ -42,11 +43,11 @@ namespace LW.Ball{
         public Color NoteColor { get; set; }
         public Vector3 LockPos { get; set; }
         public bool Manipulating { get; set; }
-        public bool HasSpawned { get; set; }
+        public bool IsNotQuiet { get; set; }
         public bool Stasis { get; set; }
 
-        float touchTimer = Mathf.Infinity;
-        bool touchResponseLimiter;
+        //float touchTimer = Mathf.Infinity;
+        bool touchResponseLimiter, hasReset;
         Vector3 lassoOrigin;
 
         BallDirector director;
@@ -80,25 +81,25 @@ namespace LW.Ball{
             CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
-            StartCoroutine("Spawning");
+            StartCoroutine("QuietBall");
         }
 
         void Update()
         {
-            
-            
             State = director.Still ? BallState.Still : BallState.Active;
 
-            touchTimer += Time.deltaTime;
+            //touchTimer += Time.deltaTime;
+
             float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
+
             GetComponent<Collider>().enabled = !InteractingWithParticles;
             containmentSphere.SetActive(State == BallState.Still);
             CoreActive = touched;
             InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
-            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall)
+            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall && !jedi.Reset)
             {
                 transform.position = LockPos;
             }
@@ -141,7 +142,8 @@ namespace LW.Ball{
 
             if (jedi.Spin)
             {
-                transform.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
+                var shell = GetComponentInChildren<SpinParticlesID>().transform.parent.transform;
+                shell.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
             }
 
             if (jedi.Recall)
@@ -154,6 +156,37 @@ namespace LW.Ball{
                     rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
                 }
             }
+
+            if (jedi.Reset)
+            {
+                ResetBall();
+            }
+            else
+            {
+                hasReset = false;
+            }
+        }
+
+        private void ResetBall()
+        {
+            if (!hasReset)
+            {
+                transform.position = tracking.GetRtPalm.Position + caster.SpawnOffset;
+                transform.rotation = tracking.GetRtPalm.Rotation;
+                
+                if (IsNotQuiet)
+                {
+                    GetComponent<BallOsc>().Send("reset");
+                }
+
+                if (!GetComponent<AudioSource>().isPlaying)
+                {
+                    GetComponent<AudioSource>().PlayOneShot(resetFX);
+                }
+
+                StartCoroutine("QuietBall");
+                hasReset = true;
+            }
         }
 
         private void OnCollisionEnter(Collision other)
@@ -165,35 +198,31 @@ namespace LW.Ball{
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
 
- 
-
-            if (hasBounce && State == BallState.Active && (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand")))
-            {
-                rigidbody.AddForce(dir * force * bounce);
-
-                //if (!GetComponent<AudioSource>().isPlaying)
-                //{
-                //    GetComponent<AudioSource>().PlayOneShot(bounceFX);
-                //}
-            }
-
-            if (HasSpawned && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
+            if (IsNotQuiet && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
             {
                 if (!touchResponseLimiter)
                 {
+                    touched = true;
                     TouchLevel += 1;
                     DetermineTouchResponse(other);
-                    if (HasSpawned)
-                    {
-                        osc.Send(Note.ToString(), TouchLevel);
-                    }
+                    osc.Send(Note.ToString(), TouchLevel);
                     touchResponseLimiter = true;
                 }
 
-                if (State == BallState.Active)
+                if (hasBounce && State == BallState.Active)
                 {
-                    touched = true;
+                    rigidbody.AddForce(dir * force * bounce);
+
+                    //if (!GetComponent<AudioSource>().isPlaying)
+                    //{
+                    //    GetComponent<AudioSource>().PlayOneShot(bounceFX);
+                    //}
                 }
+
+                //if (State == BallState.Active)
+                //{
+                //    touched = true;
+                //}
             }
         }
 
@@ -293,10 +322,11 @@ namespace LW.Ball{
 
         private void OnCollisionExit(Collision collision)
         {
-            if (State == BallState.Active)
-            {
-                touched = false;
-            }
+            //if (State == BallState.Active)
+            //{
+            //    touched = false;
+            //}
+            touched = false;
             touchResponseLimiter = false;
         }
 
@@ -307,7 +337,7 @@ namespace LW.Ball{
 
         IEnumerator DestroySelf()
         {
-            HasSpawned = false;
+            IsNotQuiet = false;
 
             if (GetComponentInChildren<DeathParticlesId>())
             {
@@ -335,11 +365,11 @@ namespace LW.Ball{
             Destroy(gameObject);
         }
 
-        IEnumerator Spawning()
+        IEnumerator QuietBall()
         {
-            HasSpawned = false;
+            IsNotQuiet = false;
             yield return new WaitForSeconds(1);
-            HasSpawned = true;
+            IsNotQuiet = true;
         }
 
         public void IsGazedAt()

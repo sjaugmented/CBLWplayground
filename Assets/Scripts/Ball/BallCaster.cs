@@ -8,11 +8,9 @@ namespace LW.Ball
 {
     public class BallCaster : MonoBehaviour
     {
-        [SerializeField] AudioClip resetFX;
         [SerializeField] GameObject handColliders;
         [SerializeField] GameObject uniBall;
         [SerializeField] GameObject multiBall;
-        [SerializeField] float zOffset = 0.1f;
         [SerializeField] int worldLvl = 0;
         public int WorldLevel
         {
@@ -24,7 +22,8 @@ namespace LW.Ball
         public bool hasReset = false;
         bool conjureReady, destroyReady; /*hasReset = false;*/
         float conjureTimer, destroyTimer = Mathf.Infinity;
-        Vector3 offset;
+
+        public Vector3 SpawnOffset { get; set; }
 
         NewTracking tracking;
         GameObject ballInstance;
@@ -48,7 +47,7 @@ namespace LW.Ball
 
         void Update()
         {
-            offset = Camera.main.transform.InverseTransformDirection(0, 0, zOffset);
+            SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
             conjureTimer += Time.deltaTime;
             destroyTimer += Time.deltaTime;
 
@@ -72,18 +71,10 @@ namespace LW.Ball
 
             if (conjureTimer < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
             {
-                if (BallInPlay)
-                {
-                    ResetBall();
-                }
-                else
+                if (!BallInPlay)
                 {
                     ConjureBall();
                 }
-            }
-            else
-            {
-                hasReset = false;
             }
 
             //if (BallInPlay)
@@ -116,7 +107,7 @@ namespace LW.Ball
         private void ConjureBall()
         {
             BallInPlay = true;
-            ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
+            ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
 
             //if (WorldLevel == 1)
             //{
@@ -128,25 +119,25 @@ namespace LW.Ball
             //}
         }
 
-        private void ResetBall()
-        {
-            if (!hasReset)
-            {
-                ballInstance.transform.position = tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset;
-                ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
-                if (ballInstance.GetComponent<Ball>().HasSpawned)
-                {
-                    ballInstance.GetComponent<BallOsc>().Send("reset");
-                }
+        //private void ResetBall()
+        //{
+        //    if (!hasReset)
+        //    {
+        //        ballInstance.transform.position = tracking.GetRtPalm.Position + SpawnOffset;
+        //        ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
+        //        if (ballInstance.GetComponent<Ball>().HasSpawned)
+        //        {
+        //            ballInstance.GetComponent<BallOsc>().Send("reset");
+        //        }
 
-                if (!GetComponent<AudioSource>().isPlaying)
-                {
-                    GetComponent<AudioSource>().PlayOneShot(resetFX);
-                }
+        //        if (!GetComponent<AudioSource>().isPlaying)
+        //        {
+        //            GetComponent<AudioSource>().PlayOneShot(resetFX);
+        //        }
 
-                hasReset = true;
-            }
-        }
+        //        hasReset = true;
+        //    }
+        //}
 
         public void DestroyBall()
         {
