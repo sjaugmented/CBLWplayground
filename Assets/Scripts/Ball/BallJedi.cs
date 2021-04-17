@@ -116,7 +116,7 @@ namespace LW.Ball
             #region Forces
             if (forceTimer < 3)
             {
-                if (tracking.handedness == Hands.both && tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
+                if (tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace))
                 {
                     if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
                     {

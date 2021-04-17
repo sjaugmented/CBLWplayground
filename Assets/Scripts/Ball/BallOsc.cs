@@ -39,13 +39,14 @@ namespace LW.Ball
             //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(glitterCode, GlitterBall);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(particles.GlitterBall);
 
-            Send("iAM!");
+            //Send("iAM!");
         }
 
         void Update()
         {
-            if (!ball.IsNotQuiet) { return; }
             var playerDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
+            
+            if (!ball.IsNotQuiet) { return; }
 
             if (jedi.Held)
             {
@@ -71,19 +72,19 @@ namespace LW.Ball
 
             if (ball.State == BallState.Active) // ACTIVE
             {
-                if (!activeToggle)
-                {
-                    Send("activeMode");
-                    activeToggle = true;
-                }
+                //if (!activeToggle)
+                //{
+                //    Send("activeMode");
+                //    activeToggle = true;
+                //}
             }
             else // STILL
             {
-                if (activeToggle)
-                {
-                    Send("stillMode");
-                    activeToggle = false;
-                }
+                //if (activeToggle)
+                //{
+                //    Send("stillMode");
+                //    activeToggle = false;
+                //}
 
                 //if (jedi.ControlPose == HandPose.pointer)
                 //{
@@ -218,6 +219,11 @@ namespace LW.Ball
             else
             {
                 recalled = false;
+            }
+
+            if (ball.State == BallState.Dead)
+            {
+                //Send("iDead");
             }
 
         }

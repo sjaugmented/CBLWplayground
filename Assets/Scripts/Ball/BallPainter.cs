@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
@@ -34,20 +35,36 @@ namespace LW.Ball
 
         void Update()
         {
+            Color.RGBToHSV(ball.NoteColor, out float h, out float s, out float v);
+
+            if (s > 0)
+            {
+                s -= 0.01f;
+            }
+            
+            if (v > 0)
+            {
+                v -= 0.001f;
+            }
+
             foreach (Material mat in shellMats)
             {
-                Color.RGBToHSV(ball.NoteColor, out float h, out _, out float v);
+                mat.color = ball.State == BallState.Still ? Color.HSVToRGB(h, s, 0.2f) : Color.HSVToRGB(h, s, 1);
                 //mat.color = Color.HSVToRGB(h, 0.2f, 0.2f);
-                mat.color = ball.State == BallState.Active ? Color.HSVToRGB(h, 0.2f, 0.2f) : Color.HSVToRGB(0, 0, 1);
             }
 
             foreach (Material mat in ringMats)
             {
-                //mat.color = ball.State == BallState.Active ? Color.HSVToRGB(0, 0, 1) : ball.NoteColor;
-                mat.color = ball.NoteColor;
-                mat.SetColor("_EmissionColor", ball.NoteColor);
+                mat.color = ball.State == BallState.Still ? Color.HSVToRGB(h, 0.2f, v) : ball.NoteColor;
+                //mat.color = ball.NoteColor;
+                if (ball.State == BallState.Active)
+                {
+                    mat.EnableKeyword("_EMISSION");
+                    mat.SetColor("_EmissionColor", ball.NoteColor);
+                }
             }
         }
+
     }
 }
 

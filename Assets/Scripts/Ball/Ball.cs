@@ -3,7 +3,7 @@ using UnityEngine;
 using LW.Core;
 
 namespace LW.Ball{
-    public enum BallState { Active, Still };
+    public enum BallState { Active, Still, Dead };
     public enum Notes { rFore, rBack, rFist, rPointer, rPeace, lFore, lBack, lFist, lPointer, lPeace, none}
 
     [RequireComponent(typeof(AudioSource))]
@@ -59,6 +59,7 @@ namespace LW.Ball{
         Rigidbody rigidbody;
         MultiAxis multiAxis;
         NotePlayer notePlayer;
+        IEnumerator quietBall, destroySelf;
 
         private void Awake()
         {
@@ -81,7 +82,9 @@ namespace LW.Ball{
             CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
-            StartCoroutine("QuietBall");
+            quietBall = QuietBall();
+            destroySelf = DestroySelf();
+            StartCoroutine(quietBall);
         }
 
         void Update()
@@ -184,7 +187,7 @@ namespace LW.Ball{
                     GetComponent<AudioSource>().PlayOneShot(resetFX);
                 }
 
-                StartCoroutine("QuietBall");
+                StartCoroutine(quietBall);
                 hasReset = true;
             }
         }
@@ -236,7 +239,7 @@ namespace LW.Ball{
                 {
                     osc.Send("LevelUp!");
                     caster.WorldLevel = caster.WorldLevel == 1 ? 2 : 1;
-                    StartCoroutine("DestroySelf");
+                    StartCoroutine(destroySelf);
                 }
 
                 if (tracking.rightPose == HandPose.fist)
@@ -332,11 +335,12 @@ namespace LW.Ball{
 
         public void KillBall(OscMessage message)
         {
-            StartCoroutine("DestroySelf");
+            StartCoroutine(destroySelf);
         }
 
         IEnumerator DestroySelf()
         {
+            State = BallState.Dead;
             IsNotQuiet = false;
 
             if (GetComponentInChildren<DeathParticlesId>())
@@ -361,7 +365,6 @@ namespace LW.Ball{
             yield return new WaitForSeconds(destroyDelay);
 
             caster.BallInPlay = false;
-            osc.Send("iDead");
             Destroy(gameObject);
         }
 
