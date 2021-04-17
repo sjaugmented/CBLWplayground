@@ -13,7 +13,8 @@ namespace LW.Core {
     public class NewTracking : MonoBehaviour
     {
         [SerializeField] float strictMargin = 20;
-        [SerializeField] bool printAngles = true;
+        [SerializeField] bool printAngles = false;
+        [SerializeField] bool showStaff = false;
 
         public Hands handedness = Hands.none;
         public Formation palmsRel = Formation.none;
@@ -51,6 +52,7 @@ namespace LW.Core {
         public float StaffRight { get { return staffRight; } }
         public float RtLauncher { get { return rtLauncher; } }
         public float LtLauncher { get { return ltLauncher; } }
+        public Vector3 Staff { get { return staff; } }
         #endregion
 
         Transform cam;
@@ -59,7 +61,7 @@ namespace LW.Core {
         void Start()
         {
             cam = Camera.main.transform;
-            floor = FindObjectOfType<LevelObject>().transform;
+            floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
         }
 
 
@@ -216,7 +218,11 @@ namespace LW.Core {
         {
             if (handedness != Hands.both) { return; }
             
-            staff = rtPalm.Position - ltPalm.Position;
+            staff = (rtPalm.Position - ltPalm.Position).normalized;
+            if (showStaff)
+            {
+                Debug.DrawLine(ltPalm.Position, ltPalm.Position + staff * 2, Color.red, Mathf.Infinity);
+            }
             staffUp = Vector3.Angle(staff, cam.up);
             staffForward = Vector3.Angle(staff, cam.forward);
             staffRight = Vector3.Angle(staff, cam.right);
