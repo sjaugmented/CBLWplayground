@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LW.Core
 {
-    public class MultiAxis : MonoBehaviour
+    public class MultiAxisController : MonoBehaviour
     {
         [SerializeField] float deadZone = 40;
         [SerializeField] Vector3 outOffset;

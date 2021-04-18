@@ -13,7 +13,11 @@ namespace LW.Ball
         //[SerializeField] float liftMultiplier = 3;
         [SerializeField] float recallMultiplier = 6;
         [SerializeField] float holdDistance = 0.5f;
+        [SerializeField] float gingerLift = 1.2f;
+
         float minDistance = 0.3f;
+
+        public float GingerLift { get { return gingerLift; } }
 
         public bool Spin { get; set; }
         public float HoldDistance
@@ -61,7 +65,7 @@ namespace LW.Ball
         CastOrigins origins;
         Rigidbody rigidbody;
         Ball ball;
-        MultiAxis multiAxis;
+        MultiAxisController multiAxis;
 
         void Start()
         {
@@ -69,7 +73,7 @@ namespace LW.Ball
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             rigidbody = GetComponent<Rigidbody>();
             ball = GetComponent<Ball>();
-            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxis>();
+            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
         }
 
         void Update()
@@ -81,43 +85,38 @@ namespace LW.Ball
             recallPunchTimer += Time.deltaTime;
             forceTimer = Time.deltaTime;
 
-            bool gravityCondition = !Held && ball.State == BallState.Active && Primary == Force.idle;
+            bool gravityCondition = !Held && ball.State == BallState.Active;
 
             rigidbody.useGravity = gravityCondition;
             GetComponent<ConstantForce>().enabled = gravityCondition;
 
-            #region ControlPoses //
-            if (tracking.palmsRel == Formation.together)
+            #region Multi Axis Control
+            
+            if (tracking.handedness == Hands.both)
             {
-                //Held = true;
-                forceTimer = 0;
-
-                //if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
-                //{
-                //    ControlPose = HandPose.pointer;
-                //}
-                //else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
-                //{
-                //    ControlPose = HandPose.fist;
-                //}
-                //else
-                //{
-                //    ControlPose = HandPose.none;
-                //}
-            }
-            else
-            {
-                //Held = false;
-            }
-            #endregion
-
-            Moving = Primary != Force.idle || Recall;
-
-            #region Forces
-            if (forceTimer < 3)
-            {
-                if (tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace))
+                if (tracking.palmsRel == Formation.together)
                 {
+                    Held = true;
+                    forceTimer = 0;
+
+                    #region Control Poses
+                    //if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
+                    //{
+                    //    ControlPose = HandPose.pointer;
+                    //}
+                    //else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
+                    //{
+                    //    ControlPose = HandPose.fist;
+                    //}
+                    //else
+                    //{
+                    //    ControlPose = HandPose.none;
+                    //}
+                    #endregion
+                }
+                else if (tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
+                {
+                    #region Jedi
                     if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
                     {
                         Secondary = Force.right;
@@ -126,9 +125,10 @@ namespace LW.Ball
                     {
                         Secondary = Force.left;
                     }
-                    else/* if (multiAxis.StaffForward >= (90 - multiAxis.DeadZone) && multiAxis.StaffForward <= (90 + multiAxis.DeadZone))*/
+                    else
                     {
                         Secondary = Force.idle;
+                        Held = true;
                     }
 
                     if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
@@ -139,28 +139,73 @@ namespace LW.Ball
                     {
                         Primary = Force.push;
                     }
-                    else/* if (multiAxis.StaffRight >= (90 - multiAxis.DeadZone) && multiAxis.StaffRight <= (90 + multiAxis.DeadZone))*/
+                    else
                     {
                         Primary = Force.idle;
+                        Held = true;
                     }
+                    #endregion
                 }
-                //else if (tracking.handedness == Hands.both && tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
-                //{
-                //    Primary = PrimaryForce.spin;
-                //}
                 else
                 {
-                    Primary = Force.idle;
-                    Secondary = Force.idle;
+                    Held = false;
                 }
             }
             else
             {
-                Primary = Force.idle;
-                Secondary = Force.idle;
+                Held = false;
             }
 
             Spin = ball.State == BallState.Still && tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace);
+
+            Moving = Primary != Force.idle || Recall;
+            #endregion
+
+
+            #region Forces
+            //if (forceTimer < 3)
+            //{
+            //    if (tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace))
+            //    {
+            //        if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
+            //        {
+            //            Secondary = Force.right;
+            //        }
+            //        else if (multiAxis.StaffForward < (90 - multiAxis.DeadZone / 2))
+            //        {
+            //            Secondary = Force.left;
+            //        }
+            //        else/* if (multiAxis.StaffForward >= (90 - multiAxis.DeadZone) && multiAxis.StaffForward <= (90 + multiAxis.DeadZone))*/
+            //        {
+            //            Secondary = Force.idle;
+            //        }
+
+            //        if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
+            //        {
+            //            Primary = Force.pull;
+            //        }
+            //        else if (multiAxis.StaffRight < (90 - multiAxis.DeadZone))
+            //        {
+            //            Primary = Force.push;
+            //        }
+            //        else/* if (multiAxis.StaffRight >= (90 - multiAxis.DeadZone) && multiAxis.StaffRight <= (90 + multiAxis.DeadZone))*/
+            //        {
+            //            Primary = Force.idle;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        Primary = Force.idle;
+            //        Secondary = Force.idle;
+            //    }
+            //}
+            //else
+            //{
+            //    Primary = Force.idle;
+            //    Secondary = Force.idle;
+            //}
+
+            //Spin = ball.State == BallState.Still && tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace);
             #endregion
 
             #region Recall

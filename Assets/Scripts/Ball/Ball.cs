@@ -58,7 +58,7 @@ namespace LW.Ball{
         BallJedi jedi;
         BallOsc osc;
         Rigidbody rigidbody;
-        MultiAxis multiAxis;
+        MultiAxisController multiAxis;
         NotePlayer notePlayer;
         IEnumerator quietBall, destroySelf;
 
@@ -75,7 +75,7 @@ namespace LW.Ball{
             caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
-            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxis>();
+            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
             notePlayer = GetComponent<NotePlayer>();
 
             TouchLevel = 0;
@@ -110,6 +110,11 @@ namespace LW.Ball{
             else
             {
                 LockPos = transform.position;
+            }
+
+            if (jedi.Held)
+            {
+                rigidbody.AddForce(transform.up * jedi.GingerLift);
             }
 
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
