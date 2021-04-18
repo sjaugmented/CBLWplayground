@@ -150,7 +150,7 @@ namespace LW.Ball{
             if (jedi.Spin)
             {
                 var shell = GetComponentInChildren<SpinParticlesID>().transform.parent.transform;
-                shell.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
+                shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, 0);
             }
 
             if (jedi.Recall)
@@ -244,7 +244,7 @@ namespace LW.Ball{
                 if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
                 {
                     osc.Send("LevelUp!");
-                    caster.WorldLevel = caster.WorldLevel == 1 ? 2 : 1;
+                    caster.NextWorldLevel();
                     StartCoroutine(destroySelf);
                 }
 

@@ -139,6 +139,11 @@ namespace LW.Ball
         //    }
         //}
 
+        public void NextWorldLevel()
+        {
+            worldLvl = worldLvl < 4 ? worldLvl + 1 : 1;
+        }
+
         public void DestroyBall()
         {
             if (ballInstance)
