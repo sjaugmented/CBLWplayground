@@ -114,48 +114,46 @@ namespace LW.Ball{
 
             if (jedi.Held)
             {
-                rigidbody.AddForce(transform.up * jedi.GingerLift);
+                rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
             }
 
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
             float totalPrimaryRange = 90 - multiAxis.DeadZone;
             float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
-            float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * masterThrottle;
+            float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * masterThrottle;
 
             if (jedi.Primary == Force.pull)
             {
                 float pullCorrection = 90 + multiAxis.DeadZone;
-                float palmForce = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0, 1);
+                float palmForce = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0.01f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
-                //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, handsRotation * Quaternion.Euler(multiAxis.InOffset), unClampedLerp);
                 rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
             
             if (jedi.Primary == Force.push)
             {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0.01f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
-                //transform.rotation = Quaternion.LerpUnclamped(transform.rotation, handsRotation * Quaternion.Euler(multiAxis.InOffset), unClampedLerp);
                 rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
 
             if (jedi.Secondary == Force.right)
             {
                 float rightCorrection = 90 + multiAxis.DeadZone / 2;
-                float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0, 1);
+                float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0.01f, 1);
                 rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
             }
 
             if (jedi.Secondary == Force.left)
             {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0.01f, 1);
                 rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
             }
 
             if (jedi.Spin)
             {
                 var shell = GetComponentInChildren<SpinParticlesID>().transform.parent.transform;
-                shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, 0);
+                shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY, 0);
             }
 
             if (jedi.Recall)
@@ -226,17 +224,7 @@ namespace LW.Ball{
                 if (hasBounce && State == BallState.Active)
                 {
                     rigidbody.AddForce(dir * force * bounce);
-
-                    //if (!GetComponent<AudioSource>().isPlaying)
-                    //{
-                    //    GetComponent<AudioSource>().PlayOneShot(bounceFX);
-                    //}
                 }
-
-                //if (State == BallState.Active)
-                //{
-                //    touched = true;
-                //}
             }
         }
 
@@ -375,7 +363,7 @@ namespace LW.Ball{
 
             yield return new WaitForSeconds(destroyDelay);
 
-            caster.BallInPlay = false;
+            caster.RightBallInPlay = false;
             Destroy(gameObject);
         }
 

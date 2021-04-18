@@ -17,16 +17,15 @@ namespace LW.Ball
             get { return worldLvl; }
             set { worldLvl = value; }
         }
-        public bool BallInPlay { get; set; }
+        public bool RightBallInPlay { get; set; }
 
-        public bool hasReset = false;
-        bool conjureReady, destroyReady; /*hasReset = false;*/
-        float conjureTimer, destroyTimer = Mathf.Infinity;
+        bool conjureReady, hasReset;
+        float conjureTimer = Mathf.Infinity;
 
         public Vector3 SpawnOffset { get; set; }
 
         NewTracking tracking;
-        GameObject ballInstance;
+        GameObject rightBall;
 
         void Start()
         {
@@ -34,12 +33,12 @@ namespace LW.Ball
 
             if (GameObject.FindGameObjectWithTag("Ball"))
             {
-                BallInPlay = true;
-                ballInstance = GameObject.FindGameObjectWithTag("Ball");
+                RightBallInPlay = true;
+                rightBall = GameObject.FindGameObjectWithTag("Ball");
             }
             else
             {
-                BallInPlay = false;
+                RightBallInPlay = false;
             }
 
             WorldLevel = 1;
@@ -49,11 +48,10 @@ namespace LW.Ball
         {
             SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
             conjureTimer += Time.deltaTime;
-            destroyTimer += Time.deltaTime;
 
-            if (ballInstance)
+            if (rightBall)
             {
-                handColliders.SetActive(!ballInstance.GetComponent<Ball>().InteractingWithParticles);
+                handColliders.SetActive(!rightBall.GetComponent<Ball>().InteractingWithParticles);
             }
 
             if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
@@ -71,73 +69,18 @@ namespace LW.Ball
 
             if (conjureTimer < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
             {
-                if (!BallInPlay)
+                if (!RightBallInPlay)
                 {
                     ConjureBall();
                 }
             }
-
-            //if (BallInPlay)
-            //{
-            //    if (!ballInstance) { return; }
-
-            //    if (ballInstance.GetComponent<Ball>().State == BallState.Still)
-            //    {
-            //        if (tracking.rightPose == HandPose.rockOn && tracking.rightPalmRel == Direction.palmIn)
-            //        {
-            //            if (!destroyReady)
-            //            {
-            //                destroyTimer = 0;
-            //                destroyReady = true;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            destroyReady = false;
-            //        }
-
-            //        if (destroyTimer < 1 && conjureTimer > 3 && tracking.rightPose == HandPose.fist)
-            //        {
-            //            DestroyBall();
-            //        }
-            //    }
-            //}
         }
 
         private void ConjureBall()
         {
-            BallInPlay = true;
-            ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
-
-            //if (WorldLevel == 1)
-            //{
-            //    ballInstance = Instantiate(uniBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
-            //}
-            //else
-            //{
-            //    ballInstance = Instantiate(multiBall, tracking.GetRtPalm.Position + new Vector3(0, 0.1f, 0) + offset, tracking.GetRtPalm.Rotation);
-            //}
+            RightBallInPlay = true;
+            rightBall = Instantiate(uniBall, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
         }
-
-        //private void ResetBall()
-        //{
-        //    if (!hasReset)
-        //    {
-        //        ballInstance.transform.position = tracking.GetRtPalm.Position + SpawnOffset;
-        //        ballInstance.transform.rotation = tracking.GetRtPalm.Rotation;
-        //        if (ballInstance.GetComponent<Ball>().HasSpawned)
-        //        {
-        //            ballInstance.GetComponent<BallOsc>().Send("reset");
-        //        }
-
-        //        if (!GetComponent<AudioSource>().isPlaying)
-        //        {
-        //            GetComponent<AudioSource>().PlayOneShot(resetFX);
-        //        }
-
-        //        hasReset = true;
-        //    }
-        //}
 
         public void NextWorldLevel()
         {
@@ -146,9 +89,9 @@ namespace LW.Ball
 
         public void DestroyBall()
         {
-            if (ballInstance)
+            if (rightBall)
             {
-                ballInstance.GetComponent<Ball>().StartCoroutine("DestroySelf");
+                rightBall.GetComponent<Ball>().StartCoroutine("DestroySelf");
             }
         }
 

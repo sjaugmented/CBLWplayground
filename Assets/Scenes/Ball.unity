@@ -1624,7 +1624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0cabe22a5481d84e8e7d95d98eaa1d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadZone: 10
+  deadZone: 15
   outOffset: {x: 60, y: 0, z: 0}
   inOffset: {x: 120, y: 0, z: 0}
   palmRightAgainstStaffForward: 0

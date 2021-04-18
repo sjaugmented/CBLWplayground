@@ -7,29 +7,38 @@ namespace LW.Ball
 	public class BallDirector : MonoBehaviour
 	{
 		[SerializeField] GameObject portalPrefab;
+		[SerializeField] GameObject uniBall;
 		[SerializeField] float portalSpawnDistance = 1;
-		[SerializeField] GameObject gazeHud;
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
 		[SerializeField] GameObject rightPointer, leftPointer, rightToggle, leftToggle;
+		[SerializeField] GameObject handColliders;
 
 		List<GameObject> rightHand = new List<GameObject>();
 		List<GameObject> leftHand = new List<GameObject>();
+		[SerializeField] int worldLvl = 0;
 
-		public bool Portal = false;
+		public int WorldLevel
+		{
+			get { return worldLvl; }
+			set { worldLvl = value; }
+		}
+
 		public bool Still { get; set; }
 
-		public void TogglePortalBool()
-		{
-			Portal = !Portal;
-		}
-		//public bool Portal { get; set; }
-		public bool Gaze { get; set; }
+		public bool RightBallInPlay { get; set; }
+		public bool LeftBallInPlay { get; set; }
 
-		GameObject portal;
+		bool conjureReady, hasReset;
+		float conjureTimer = Mathf.Infinity;
+
+		public Vector3 SpawnOffset { get; set; }
 
 		NewTracking tracking;
+		GameObject rightBall;
+		GameObject leftBall;
+
 
 		void Start()
 		{
@@ -42,6 +51,8 @@ namespace LW.Ball
 
 			SetRightHand(false);
 			SetLeftHand(false);
+
+			WorldLevel = 1;
 		}
 
 		private void SetRightHand(bool set)
@@ -67,9 +78,6 @@ namespace LW.Ball
 
 			if (tracking.FoundLeftHand) SetLeftHand(true);
 			else SetLeftHand(false);
-
-			if (Gaze) gazeHud.SetActive(true);
-			else gazeHud.SetActive(false);
 
 			///// DEV CONTROLS
 			if (Input.GetKeyDown(KeyCode.N))

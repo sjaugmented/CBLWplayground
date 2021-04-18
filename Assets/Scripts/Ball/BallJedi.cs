@@ -96,7 +96,6 @@ namespace LW.Ball
             {
                 if (tracking.palmsRel == Formation.together)
                 {
-                    Held = true;
                     forceTimer = 0;
 
                     #region Control Poses
@@ -114,7 +113,7 @@ namespace LW.Ball
                     //}
                     #endregion
                 }
-                else if (tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist)
+                else if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                 {
                     #region Jedi
                     if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
@@ -128,7 +127,6 @@ namespace LW.Ball
                     else
                     {
                         Secondary = Force.idle;
-                        Held = true;
                     }
 
                     if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
@@ -142,23 +140,24 @@ namespace LW.Ball
                     else
                     {
                         Primary = Force.idle;
-                        Held = true;
                     }
                     #endregion
                 }
                 else
                 {
-                    Held = false;
+                    Primary = Force.idle;
+                    Secondary = Force.idle;
                 }
             }
             else
             {
-                Held = false;
+                Primary = Force.idle;
+                Secondary = Force.idle;
             }
 
-            Spin = ball.State == BallState.Active && tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace);
-
             Moving = Primary != Force.idle || Recall;
+            Spin = ball.State == BallState.Active && tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat;
+            Held = !Moving && Primary == Force.idle && tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat;
             #endregion
 
 

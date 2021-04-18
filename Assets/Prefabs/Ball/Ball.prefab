@@ -5381,6 +5381,7 @@ MonoBehaviour:
   masterForce: 6
   recallMultiplier: 6
   holdDistance: 0.5
+  gingerLift: 0.0025
   ControlPose: 8
   Primary: 4
   Secondary: 4
