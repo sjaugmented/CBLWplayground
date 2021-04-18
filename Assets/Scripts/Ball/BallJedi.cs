@@ -156,7 +156,7 @@ namespace LW.Ball
                 Held = false;
             }
 
-            Spin = ball.State == BallState.Still && tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace);
+            Spin = ball.State == BallState.Active && tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace);
 
             Moving = Primary != Force.idle || Recall;
             #endregion
