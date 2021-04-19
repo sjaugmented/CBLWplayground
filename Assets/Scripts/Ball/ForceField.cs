@@ -8,11 +8,11 @@ namespace LW.Ball
     {
         public bool Caught { get; set; }
 
-        BallCaster caster;
+        BallDirector director;
 
         private void Start()
         {
-            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
         }
 
         //private void Update()

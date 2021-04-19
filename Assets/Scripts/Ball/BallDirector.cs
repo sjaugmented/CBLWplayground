@@ -6,9 +6,7 @@ namespace LW.Ball
 {
 	public class BallDirector : MonoBehaviour
 	{
-		[SerializeField] GameObject portalPrefab;
-		[SerializeField] GameObject uniBall;
-		[SerializeField] float portalSpawnDistance = 1;
+		[SerializeField] GameObject ballPrefab;
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
@@ -17,12 +15,12 @@ namespace LW.Ball
 
 		List<GameObject> rightHand = new List<GameObject>();
 		List<GameObject> leftHand = new List<GameObject>();
-		[SerializeField] int worldLvl = 0;
+		[SerializeField] int worldLevel = 1;
 
 		public int WorldLevel
 		{
-			get { return worldLvl; }
-			set { worldLvl = value; }
+			get { return worldLevel; }
+			set { worldLevel = value; }
 		}
 
 		public bool Still { get; set; }
@@ -39,7 +37,6 @@ namespace LW.Ball
 		GameObject rightBall;
 		GameObject leftBall;
 
-
 		void Start()
 		{
 			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
@@ -52,7 +49,95 @@ namespace LW.Ball
 			SetRightHand(false);
 			SetLeftHand(false);
 
-			WorldLevel = 1;
+			worldLevel = worldLevel <= 1 ? 1 : worldLevel;
+		}
+
+		
+
+		void Update()
+		{
+			SetRightHand(tracking.FoundRightHand);
+			SetLeftHand(tracking.FoundLeftHand);
+
+			if (rightBall)
+			{
+				handColliders.SetActive(!rightBall.GetComponent<Ball>().InteractingWithParticles);
+				if (rightBall.GetComponent<Ball>().State == BallState.Dead)
+                {
+					RightBallInPlay = false;
+                }
+			}
+			if (leftBall)
+			{
+				handColliders.SetActive(!leftBall.GetComponent<Ball>().InteractingWithParticles);
+				if (leftBall.GetComponent<Ball>().State == BallState.Dead)
+				{
+					LeftBallInPlay = false;
+				}
+			}
+
+			SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
+			conjureTimer += Time.deltaTime;
+
+			// Spawning
+			if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
+			{
+				if (!conjureReady)
+				{
+					conjureTimer = 0;
+					conjureReady = true;
+				}
+			}
+			else
+			{
+				conjureReady = false;
+			}
+
+			if (conjureTimer < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
+			{
+				if (!RightBallInPlay)
+				{
+					SpawnBall("right");
+				}
+			}
+
+			if (tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.fist)
+			{
+				if (!conjureReady)
+				{
+					conjureTimer = 0;
+					conjureReady = true;
+				}
+			}
+			else
+			{
+				conjureReady = false;
+			}
+
+			if (conjureTimer < 1 && tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.flat)
+			{
+				if (!LeftBallInPlay)
+				{
+					SpawnBall("left");
+				}
+			}
+
+        }
+
+		private void SpawnBall(string side)
+		{
+			if (side == "right")
+            {
+				RightBallInPlay = true;
+				rightBall = Instantiate(ballPrefab, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
+				rightBall.GetComponent<Ball>().Handedness = Hands.right;
+			}
+			else
+            {
+				LeftBallInPlay = true;
+				leftBall = Instantiate(ballPrefab, tracking.GetLtPalm.Position + SpawnOffset, tracking.GetLtPalm.Rotation);
+				leftBall.GetComponent<Ball>().Handedness = Hands.left;
+			}
 		}
 
 		private void SetRightHand(bool set)
@@ -71,62 +156,20 @@ namespace LW.Ball
 			}
 		}
 
-		void Update()
+		public void NextWorldLevel()
 		{
-			if (tracking.FoundRightHand) SetRightHand(true);
-			else SetRightHand(false);
-
-			if (tracking.FoundLeftHand) SetLeftHand(true);
-			else SetLeftHand(false);
-
-			///// DEV CONTROLS
-			if (Input.GetKeyDown(KeyCode.N))
-			{
-				TogglePortal();
-			}
-
-			if (Input.GetKeyDown(KeyCode.M))
-			{
-				ToggleGaze();
-			}
-
+			Debug.Log("NEXT WORLD");
+			worldLevel = worldLevel < 4 ? worldLevel + 1 : 1;
 		}
 
-		public void TogglePortal()
+		public void DisableHandColliders()
 		{
-			if (!Portal)
-			{
-				Portal = true;
-				Transform player = Camera.main.transform;
-				portal = Instantiate(portalPrefab, player.position + player.forward * portalSpawnDistance, player.rotation);
-				//portal.transform.LookAt(player.position);
-			}
-			else
-			{
-				portal.GetComponent<PortalController>().SelfDestruct();
-				Portal = false;
-			}
-
+			handColliders.SetActive(false);
 		}
 
-		public void ToggleGaze()
+		public void EnableHandColliders()
 		{
-			//if (Gaze && Node)
-			//{
-			//	Gaze = false;
-			//	GetComponent<AudioSource>().PlayOneShot(gazeTap);
-			//}
-			//else if (!Gaze && Node)
-			//{
-			//	Gaze = true;
-			//	GetComponent<AudioSource>().PlayOneShot(gazeTap);
-			//}
-			//else if (!Gaze && !Node)
-			//{
-			//	Gaze = true;
-			//	Node = true;
-			//	GetComponent<AudioSource>().PlayOneShot(nodeTap);
-			//}
+			handColliders.SetActive(true);
 		}
 	}
 }

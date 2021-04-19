@@ -5364,6 +5364,7 @@ MonoBehaviour:
   maxSpinZ: 20
   masterThrottle: 0.5
   unClampedLerp: 2
+  Handedness: 3
   State: 0
   Note: 10
 --- !u!114 &7484735728138884248
@@ -29884,17 +29885,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a6a941d172dfd184c9db0f4a7b6fc273,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 4.2208
+      value: 4.677912
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6a941d172dfd184c9db0f4a7b6fc273,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 4.2208
+      value: 4.677912
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6a941d172dfd184c9db0f4a7b6fc273,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 4.2208
+      value: 4.677912
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a6a941d172dfd184c9db0f4a7b6fc273,
         type: 3}

@@ -1337,7 +1337,6 @@ MonoBehaviour:
   multiBall: {fileID: 2193309183216341837, guid: 0e2773d268d0e2246a7dc0b18767d165,
     type: 3}
   worldLvl: 1
-  hasReset: 0
 --- !u!4 &688426549
 Transform:
   m_ObjectHideFlags: 0
@@ -14434,17 +14433,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b746267a791aa954fbaad58498b6c655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  portalPrefab: {fileID: 5888753813319515515, guid: 240535ec37025694aa97202cde47eea1,
+  ballPrefab: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a,
     type: 3}
-  portalSpawnDistance: 2
-  gazeHud: {fileID: 434274824}
   nodeTap: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
   gazeTap: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}
   rightPointer: {fileID: 488989924158406829}
   leftPointer: {fileID: 2660138270524263421}
   rightToggle: {fileID: 2452266860485975430}
   leftToggle: {fileID: 2452266860407818043}
-  Portal: 0
+  handColliders: {fileID: 7633091808637125529}
+  worldLevel: 1
 --- !u!4 &2452266861773551491
 Transform:
   m_ObjectHideFlags: 0

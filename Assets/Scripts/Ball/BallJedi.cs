@@ -234,7 +234,7 @@ namespace LW.Ball
             #endregion
 
             #region Reset
-            if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
+            if (ball.DominantDir == Direction.up && ball.DominantPose == HandPose.fist)
             {
                 //if (!resetReady)
                 //{
@@ -248,7 +248,7 @@ namespace LW.Ball
                 resetReady = false;
             }
 
-            if (resetTimer < 0.5 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
+            if (resetTimer < 0.5 && ball.DominantDir == Direction.up && ball.DominantPose == HandPose.flat)
             {
                 Reset = true;
             }

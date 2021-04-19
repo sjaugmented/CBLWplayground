@@ -112,26 +112,6 @@ namespace LW.Ball
             osc.Send(message);
         }
 
-        private void SpawnPortal()
-        {
-            if (!triggered)
-            {
-                director.TogglePortal();
-                triggered = true;
-                StartCoroutine("ToggleDelay");
-            }
-        }
-
-        private void ToggleGaze()
-        {
-            if (!triggered)
-            {
-                director.ToggleGaze();
-                triggered = true;
-                StartCoroutine("ToggleDelay");
-
-            }
-        }
 
         IEnumerator ToggleDelay()
         {

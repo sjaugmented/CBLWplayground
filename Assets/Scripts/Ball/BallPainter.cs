@@ -61,7 +61,15 @@ namespace LW.Ball
 
             foreach (Material mat in shellMats)
             {
-                mat.color = ball.State == BallState.Still ? Color.HSVToRGB(h, s, 0.2f) : Color.HSVToRGB(h, s, 1);
+                if (ball.Handedness == Core.Hands.right)
+                {
+                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0, 1, 0.2f) : Color.HSVToRGB(0, 1, 1);
+                } 
+                else
+                {
+                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0.5f, 1, 0.2f) : Color.HSVToRGB(0.5f, 1, 1);
+
+                }
             }
 
             foreach (Material mat in ringMats)

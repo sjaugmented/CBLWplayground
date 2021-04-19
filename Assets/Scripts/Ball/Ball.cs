@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using LW.Core;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace LW.Ball{
     public enum BallState { Active, Still, Dead };
@@ -33,6 +34,7 @@ namespace LW.Ball{
         [SerializeField] float masterThrottle = 0.5f;
         [SerializeField] float unClampedLerp = 2f;
 
+        public Hands Handedness = Hands.none;
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
         public bool WithinRange { get; set; }
@@ -50,11 +52,15 @@ namespace LW.Ball{
         //float touchTimer = Mathf.Infinity;
         bool touchResponseLimiter, hasReset;
         Vector3 lassoOrigin;
+        public MixedRealityPose DominantHand { get; set; }
+        public HandPose DominantPose { get; set; }
+        public Direction DominantDir { get; set; }
+
 
         BallDirector director;
         NewTracking tracking;
         CastOrigins origins;
-        BallCaster caster;
+        //BallCaster caster;
         BallJedi jedi;
         BallOsc osc;
         Rigidbody rigidbody;
@@ -72,7 +78,6 @@ namespace LW.Ball{
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
             multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
@@ -91,6 +96,10 @@ namespace LW.Ball{
         void Update()
         {
             State = director.Still ? BallState.Still : BallState.Active;
+            
+            DominantHand = Handedness == Hands.right ? tracking.GetRtPalm : tracking.GetLtPalm;
+            DominantPose = Handedness == Hands.right ? tracking.rightPose : tracking.leftPose;
+            DominantDir = Handedness == Hands.right ? tracking.rightPalmAbs : tracking.leftPalmAbs;
 
             //touchTimer += Time.deltaTime;
 
@@ -181,8 +190,8 @@ namespace LW.Ball{
         {
             if (!hasReset)
             {
-                transform.position = tracking.GetRtPalm.Position + caster.SpawnOffset;
-                transform.rotation = tracking.GetRtPalm.Rotation;
+                transform.position = DominantHand.Position + director.SpawnOffset;
+                transform.rotation = DominantHand.Rotation;
                 
                 if (IsNotQuiet)
                 {
@@ -237,7 +246,7 @@ namespace LW.Ball{
                 if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
                 {
                     osc.Send("LevelUp!");
-                    caster.NextWorldLevel();
+                    director.NextWorldLevel();
                     StartCoroutine(destroySelf);
                 }
 
@@ -363,7 +372,6 @@ namespace LW.Ball{
 
             yield return new WaitForSeconds(destroyDelay);
 
-            caster.RightBallInPlay = false;
             Destroy(gameObject);
         }
 

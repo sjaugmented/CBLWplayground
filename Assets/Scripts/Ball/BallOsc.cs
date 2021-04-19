@@ -14,9 +14,9 @@ namespace LW.Ball
         NewTracking tracking;
         CastOrigins origins;
         OSC osc;
-        BallCaster caster;
-        BallJedi jedi;
+        BallDirector director;
         Ball ball;
+        BallJedi jedi;
         BallParticleController particles;
 
         bool holdToggle, activeToggle, stillToggle, pointerToggle, rightFisted, dualFisted, thumbsUpped, withinRange, pushed, pulled, lifted, lowered, spun, recalled;
@@ -30,9 +30,9 @@ namespace LW.Ball
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
-            jedi = GetComponent<BallJedi>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             ball = GetComponent<Ball>();
+            jedi = GetComponent<BallJedi>();
             particles = GetComponent<BallParticleController>();
 
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(killCode, ball.KillBall);
@@ -232,7 +232,7 @@ namespace LW.Ball
         public void Send(string address = "", float val = 1)
         {
             OscMessage message = new OscMessage();
-            message.address = caster.WorldLevel + "/" + address + "/";
+            message.address = director.WorldLevel + "/" + ball.Handedness + "/" + address + "/";
             message.values.Add(val);
             osc.Send(message);
         }
