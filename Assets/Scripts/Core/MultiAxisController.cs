@@ -29,9 +29,9 @@ namespace LW.Core
         void Update()
         {
             var rightPalm = tracking.GetRtPalm;
-            var rightRight = rightPalm.Right.normalized;
+            var rightPalmRight = rightPalm.Right.normalized;
 
-            palmRightAgainstStaffForward = Vector3.Angle(rightRight, tracking.Staff);
+            palmRightAgainstStaffForward = Vector3.Angle(rightPalmRight, tracking.Staff);
             staffAgainstCamForward = Vector3.Angle(tracking.Staff, Camera.main.transform.forward);
         }
     }

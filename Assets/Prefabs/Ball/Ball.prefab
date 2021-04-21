@@ -5379,10 +5379,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c522e9bf096e46bdbdd801d8096c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterForce: 6
-  recallMultiplier: 6
+  masterForce: 10
+  recallMultiplier: 10
   holdDistance: 0.5
-  gingerLift: 0.0025
+  gingerLift: 0.1
   ControlPose: 8
   Primary: 4
   Secondary: 4

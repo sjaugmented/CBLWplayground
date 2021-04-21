@@ -121,10 +121,10 @@ namespace LW.Ball{
                 LockPos = transform.position;
             }
 
-            if (jedi.Held)
-            {
-                rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
-            }
+            //if (jedi.Held)
+            //{
+            //    rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
+            //}
 
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
             float totalPrimaryRange = 90 - multiAxis.DeadZone;
@@ -150,13 +150,15 @@ namespace LW.Ball{
             {
                 float rightCorrection = 90 + multiAxis.DeadZone / 2;
                 float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0.01f, 1);
-                rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
+                //rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
+                rigidbody.velocity = rigidbody.velocity + new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Secondary == Force.left)
             {
                 float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0.01f, 1);
-                rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
+                //rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
+                rigidbody.velocity = rigidbody.velocity + new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Spin)

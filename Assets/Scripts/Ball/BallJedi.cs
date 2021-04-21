@@ -13,11 +13,11 @@ namespace LW.Ball
         //[SerializeField] float liftMultiplier = 3;
         [SerializeField] float recallMultiplier = 6;
         [SerializeField] float holdDistance = 0.5f;
-        [SerializeField] float gingerLift = 1.2f;
+        //[SerializeField] float gingerLift = 1.2f;
 
         float minDistance = 0.3f;
 
-        public float GingerLift { get { return gingerLift; } }
+        //public float GingerLift { get { return gingerLift; } }
 
         public bool Spin { get; set; }
         public float HoldDistance
