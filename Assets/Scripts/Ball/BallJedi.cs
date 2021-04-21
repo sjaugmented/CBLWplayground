@@ -8,9 +8,6 @@ namespace LW.Ball
     public class BallJedi : MonoBehaviour
     {
         [SerializeField] float masterForce = 3;
-        //[SerializeField] float pushMultiplier = 5;
-        //[SerializeField] float pullMultiplier = 5;
-        //[SerializeField] float liftMultiplier = 3;
         [SerializeField] float recallMultiplier = 6;
         [SerializeField] float holdDistance = 0.5f;
         //[SerializeField] float gingerLift = 1.2f;
@@ -29,18 +26,6 @@ namespace LW.Ball
             get { return minDistance; }
         }
         public float MasterForce { get { return masterForce; } }
-        //public float PushForce
-        //{
-        //    get { return pushMultiplier; }
-        //}
-        //public float PullForce
-        //{
-        //    get { return pullMultiplier; }
-        //}
-        //public float LiftForce
-        //{
-        //    get { return liftMultiplier; }
-        //}
         public float RecallForce
         {
             get { return recallMultiplier; }
@@ -50,6 +35,7 @@ namespace LW.Ball
         public bool Moving { get; set; }
         public bool Recall { get; set; }
         public bool Reset { get; set; }
+        public bool NoJedi { get; set; }
         public float LevelUpTimer
         {
             get { return recallPunchTimer; }
@@ -78,6 +64,8 @@ namespace LW.Ball
 
         void Update()
         {
+            //Debug.Log(NoJedi);
+            
             RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
 
             lassoTimer += Time.deltaTime;
@@ -90,8 +78,9 @@ namespace LW.Ball
             rigidbody.useGravity = gravityCondition;
             GetComponent<ConstantForce>().enabled = gravityCondition;
 
+            if (NoJedi){ return; }
+
             #region Multi Axis Control
-            
             if (tracking.handedness == Hands.both)
             {
                 if (tracking.palmsRel == Formation.together)
@@ -159,6 +148,7 @@ namespace LW.Ball
             Spin = ball.State == BallState.Active && tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat;
             Held = !Moving && Primary == Force.idle && tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat;
             #endregion
+
 
 
             #region Forces
@@ -236,11 +226,6 @@ namespace LW.Ball
             #region Reset
             if (ball.DominantDir == Direction.up && ball.DominantPose == HandPose.fist)
             {
-                //if (!resetReady)
-                //{
-                //    resetTimer = 0;
-                //    resetReady = true;
-                //}
                 resetTimer = 0;
             }
             else

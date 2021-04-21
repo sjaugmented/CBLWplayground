@@ -28,12 +28,14 @@ namespace LW.Ball
         ParticleSystem innerParticles;
         ParticleSystem forceParticles;
         ParticleSystem spinParticles;
+        ParticleSystem collisionParticles;
         void Start()
         {
             ball = GetComponent<Ball>();
             innerParticles = GetComponentInChildren<CoreParticlesID>().transform.GetComponent<ParticleSystem>();
             forceParticles = GetComponentInChildren<ForceParticlesID>().transform.GetComponent<ParticleSystem>();
             spinParticles = GetComponentInChildren<SpinParticlesID>().transform.GetComponent<ParticleSystem>();
+            collisionParticles = GetComponentInChildren<CollisionParticlesID>().transform.GetComponent<ParticleSystem>();
             jedi = GetComponentInParent<BallJedi>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
@@ -49,11 +51,17 @@ namespace LW.Ball
 
         void Update()
         {
+            
+            
             var innerMain = innerParticles.main;
             var coreEmission = innerParticles.emission;
             var forceEmission = forceParticles.emission;
             var spinEmission = spinParticles.emission;
             var spinMain = spinParticles.main;
+            var colEmission = collisionParticles.emission;
+
+            colEmission.enabled = ball.State == BallState.Active && ball.BallCollision;
+
 
             //if (ball.WithinRange)
             //{

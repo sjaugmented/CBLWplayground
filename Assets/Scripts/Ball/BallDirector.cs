@@ -10,15 +10,17 @@ namespace LW.Ball
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
-		[SerializeField] GameObject rightPointer, leftPointer, rightToggle, leftToggle;
+		[SerializeField] GameObject rightHandTouch, leftHandTouch, rightToggle, leftToggle;
 		[SerializeField] GameObject handColliders;
 
 		List<GameObject> rightHand = new List<GameObject>();
 		List<GameObject> leftHand = new List<GameObject>();
 		[SerializeField] int worldLevel = 1;
 
+		public bool Viewfinder { get; set; }
+
 		public int WorldLevel
-		{
+		{	
 			get { return worldLevel; }
 			set { worldLevel = value; }
 		}
@@ -34,16 +36,19 @@ namespace LW.Ball
 		public Vector3 SpawnOffset { get; set; }
 
 		NewTracking tracking;
+		ThumbTrigger rThumbTrigger, lThumbTrigger;
 		GameObject rightBall;
 		GameObject leftBall;
 
 		void Start()
 		{
 			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
+			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
 
-			rightHand.Add(rightPointer);
+			rightHand.Add(rightHandTouch);
 			rightHand.Add(rightToggle);
-			leftHand.Add(leftPointer);
+			leftHand.Add(leftHandTouch);
 			leftHand.Add(leftToggle);
 
 			SetRightHand(false);
@@ -56,6 +61,38 @@ namespace LW.Ball
 
 		void Update()
 		{
+			List<Ball> balls = new List<Ball>();
+			if (RightBallInPlay)
+            {
+				balls.Add(rightBall.GetComponent<Ball>());
+            }
+			if (LeftBallInPlay)
+            {
+				balls.Add(leftBall.GetComponent<Ball>());
+            }
+
+			if (RightBallInPlay && LeftBallInPlay)
+            {
+				if (balls[0].State == BallState.Active && balls[1].State == BallState.Still)
+                {
+					balls[0].GetComponent<BallJedi>().NoJedi = false;
+					balls[1].GetComponent<BallJedi>().NoJedi = true;
+                }
+				else if (balls[0].State == BallState.Still && balls[1].State == BallState.Active)
+                {
+					balls[0].GetComponent<BallJedi>().NoJedi = true;
+					balls[1].GetComponent<BallJedi>().NoJedi = false;
+                }
+				else
+                {
+					balls[0].GetComponent<BallJedi>().NoJedi = false;
+					balls[1].GetComponent<BallJedi>().NoJedi = false;
+				}
+            }
+			
+			Viewfinder = rThumbTrigger.Triggered && lThumbTrigger.Triggered;
+			//if (Viewfinder) { Debug.Log("VIEWFINDER"); }
+			
 			SetRightHand(tracking.FoundRightHand);
 			SetLeftHand(tracking.FoundLeftHand);
 
@@ -171,5 +208,33 @@ namespace LW.Ball
 		{
 			handColliders.SetActive(true);
 		}
+
+		public void SetGlobalStill(bool val)
+        {
+			List<Ball> balls = new List<Ball>();
+
+			if (RightBallInPlay && LeftBallInPlay)
+            {
+				balls.Add(rightBall.GetComponent<Ball>());
+				balls.Add(leftBall.GetComponent<Ball>());
+
+				foreach(Ball ball in balls)
+                {
+					ball.Still = val;
+                }
+            }
+			else if (RightBallInPlay && !LeftBallInPlay)
+            {
+				rightBall.GetComponent<Ball>().Still = val;
+			}
+			else if (!RightBallInPlay && LeftBallInPlay)
+            {
+				leftBall.GetComponent<Ball>().Still = val;
+            }
+			else
+            {
+				return;
+            }
+        }
 	}
 }

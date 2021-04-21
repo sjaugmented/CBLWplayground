@@ -35,6 +35,10 @@ TagManager:
   - RightHand
   - LeftHand
   - Floor
+  - Right Thumb
+  - Left Thumb
+  - Right Index
+  - Left Index
   layers:
   - Default
   - TransparentFX

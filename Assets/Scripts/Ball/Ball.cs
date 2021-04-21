@@ -33,6 +33,7 @@ namespace LW.Ball{
         [SerializeField] float maxSpinZ = 20;
         [SerializeField] float masterThrottle = 0.5f;
         [SerializeField] float unClampedLerp = 2f;
+        [SerializeField] float modeToggleSpacer = 1;
 
         public Hands Handedness = Hands.none;
         public BallState State = BallState.Active;
@@ -47,7 +48,9 @@ namespace LW.Ball{
         public Vector3 LockPos { get; set; }
         public bool Manipulating { get; set; }
         public bool IsNotQuiet { get; set; }
-        public bool Stasis { get; set; }
+        public bool Still { get; set; }
+        public bool ModeToggled { get; set; }
+        public bool BallCollision { get; set; }
 
         //float touchTimer = Mathf.Infinity;
         bool touchResponseLimiter, hasReset;
@@ -55,7 +58,8 @@ namespace LW.Ball{
         public MixedRealityPose DominantHand { get; set; }
         public HandPose DominantPose { get; set; }
         public Direction DominantDir { get; set; }
-
+        public float Distance { get; set; }
+        public float ModeToggleTimer { get; set; }
 
         BallDirector director;
         NewTracking tracking;
@@ -85,17 +89,35 @@ namespace LW.Ball{
 
             TouchLevel = 0;
             Hue = 0;
-            CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
             quietBall = QuietBall();
             destroySelf = DestroySelf();
             StartCoroutine(quietBall);
+
+            ModeToggleTimer = Mathf.Infinity;
         }
 
         void Update()
         {
-            State = director.Still ? BallState.Still : BallState.Active;
+            //State = director.Still ? BallState.Still : BallState.Active;
+            Distance = Vector3.Distance(transform.position, Camera.main.transform.position);
+
+            GetComponent<SphereCollider>().radius = Distance <= 1f ? 0.05f : 0.05f * Distance;
+
+            State = Still ? BallState.Still : BallState.Active;
+
+            ModeToggleTimer += Time.deltaTime;
+
+            //if (director.Viewfinder && ModeToggleTimer > 1)
+            //{
+            //    ModeToggled = true;
+            //}
+
+            //if (!director.Viewfinder && ModeToggleTimer > 1)
+            //{
+            //    ModeToggled = false;
+            //}
             
             DominantHand = Handedness == Hands.right ? tracking.GetRtPalm : tracking.GetLtPalm;
             DominantPose = Handedness == Hands.right ? tracking.rightPose : tracking.leftPose;
@@ -151,14 +173,14 @@ namespace LW.Ball{
                 float rightCorrection = 90 + multiAxis.DeadZone / 2;
                 float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0.01f, 1);
                 //rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
-                rigidbody.velocity = rigidbody.velocity + new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
+                rigidbody.velocity += new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Secondary == Force.left)
             {
                 float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0.01f, 1);
                 //rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
-                rigidbody.velocity = rigidbody.velocity + new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
+                rigidbody.velocity += new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Spin)
@@ -219,24 +241,34 @@ namespace LW.Ball{
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
 
-            if (IsNotQuiet && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
+            if (IsNotQuiet)
             {
-                touched = true;
-
-                if (!touchResponseLimiter)
+                if (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
                 {
-                    //touched = true;
-                    TouchLevel += 1;
-                    DetermineTouchResponse(other);
-                    osc.Send(Note.ToString(), TouchLevel);
-                    touchResponseLimiter = true;
+                    touched = true;
+
+                    if (!touchResponseLimiter)
+                    {
+                        //touched = true;
+                        TouchLevel += 1;
+                        DetermineTouchResponse(other);
+                        osc.Send(Note.ToString(), TouchLevel);
+                        touchResponseLimiter = true;
+                    }
+
+                    if (hasBounce && State == BallState.Active)
+                    {
+                        rigidbody.AddForce(dir * force * bounce);
+                    }
                 }
 
-                if (hasBounce && State == BallState.Active)
+                if (other.gameObject.CompareTag("Ball"))
                 {
-                    rigidbody.AddForce(dir * force * bounce);
+                    Debug.Log("ballCollision!");
+                    BallCollision = true;
                 }
             }
+            
         }
 
         private void DetermineTouchResponse(Collision other)
@@ -341,6 +373,7 @@ namespace LW.Ball{
             //}
             touched = false;
             touchResponseLimiter = false;
+            BallCollision = false;
         }
 
         public void KillBall(OscMessage message)
@@ -386,7 +419,17 @@ namespace LW.Ball{
 
         public void IsGazedAt()
         {
-            // something
+            if (director.Viewfinder && ModeToggleTimer > modeToggleSpacer)
+            {
+                Still = !Still;
+                ModeToggleTimer = 0;
+                ModeToggled = true;
+            }
+        }
+
+        public void NotGazedAt()
+        {
+            //ModeToggled = false;
         }
 
         public void PlayStillFx()

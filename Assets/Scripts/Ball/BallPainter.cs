@@ -63,11 +63,11 @@ namespace LW.Ball
             {
                 if (ball.Handedness == Core.Hands.right)
                 {
-                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0, 1, 0.2f) : Color.HSVToRGB(0, 1, 1);
+                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0, 0.5f, 0.2f) : Color.HSVToRGB(0, 0.5f, 1);
                 } 
                 else
                 {
-                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0.5f, 1, 0.2f) : Color.HSVToRGB(0.5f, 1, 1);
+                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0.5f, 0.5f, 0.2f) : Color.HSVToRGB(0.5f, 0.5f, 1);
 
                 }
             }
