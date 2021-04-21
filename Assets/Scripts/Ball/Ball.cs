@@ -264,7 +264,6 @@ namespace LW.Ball{
 
                 if (other.gameObject.CompareTag("Ball"))
                 {
-                    Debug.Log("ballCollision!");
                     BallCollision = true;
                 }
             }
