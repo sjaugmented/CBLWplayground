@@ -1320,18 +1320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b68f2f2e2551884c9b0a7b61e02f96e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handColliders: {fileID: 7633091808637125529}
-  uniBall: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
-  multiBall: {fileID: 2193309183216341837, guid: 0e2773d268d0e2246a7dc0b18767d165,
-    type: 3}
-  worldLvl: 1
-  <RightBallInPlay>k__BackingField: 0
-  conjureReady: 0
-  hasReset: 0
-  conjureTimer: 0
-  <SpawnOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  tracking: {fileID: 0}
-  rightBall: {fileID: 0}
 --- !u!4 &688426549
 Transform:
   m_ObjectHideFlags: 0
@@ -24191,7 +24179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b746267a791aa954fbaad58498b6c655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballPrefab: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+  rightHandBallPrefab: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+    type: 3}
+  leftHandBallPrefab: {fileID: 1349769195282819603, guid: 61f9397ea815b8b43aea668eaaac369d,
     type: 3}
   nodeTap: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
   gazeTap: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}

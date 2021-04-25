@@ -6,7 +6,8 @@ namespace LW.Ball
 {
 	public class BallDirector : MonoBehaviour
 	{
-		[SerializeField] GameObject ballPrefab;
+		[SerializeField] GameObject rightHandBallPrefab;
+		[SerializeField] GameObject leftHandBallPrefab;
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
@@ -166,13 +167,13 @@ namespace LW.Ball
 			if (side == "right")
             {
 				RightBallInPlay = true;
-				rightBall = Instantiate(ballPrefab, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
+				rightBall = Instantiate(rightHandBallPrefab, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
 				rightBall.GetComponent<Ball>().Handedness = Hands.right;
 			}
 			else
             {
 				LeftBallInPlay = true;
-				leftBall = Instantiate(ballPrefab, tracking.GetLtPalm.Position + SpawnOffset, tracking.GetLtPalm.Rotation);
+				leftBall = Instantiate(leftHandBallPrefab, tracking.GetLtPalm.Position + SpawnOffset, tracking.GetLtPalm.Rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
 			}
 		}

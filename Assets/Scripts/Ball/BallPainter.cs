@@ -18,7 +18,11 @@ namespace LW.Ball
         void Start()
         {
             ball = GetComponent<Ball>();
-            light = GetComponentInChildren<Light>();
+
+            if (GetComponentInChildren<Light>())
+            {
+                light = GetComponentInChildren<Light>();
+            }
 
             if (shells.Count > 0)
             {
@@ -54,39 +58,50 @@ namespace LW.Ball
                 v -= 0.01f;
             }
 
-            if (light.intensity > 0)
+            if (light != null)
             {
-                light.intensity -= 0.1f;
+                if (light.intensity > 0)
+                {
+                    light.intensity -= 0.1f;
+                }
+
+                light.enabled = true;
+                light.color = Color.HSVToRGB(h, s, 1);
             }
 
-            foreach (Material mat in shellMats)
+            if (shellMats.Count > 0)
             {
-                if (ball.Handedness == Core.Hands.right)
+                foreach (Material mat in shellMats)
                 {
-                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0, 0.5f, 0.2f) : Color.HSVToRGB(0, 0.5f, 1);
-                } 
-                else
-                {
-                    mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0.5f, 0.5f, 0.2f) : Color.HSVToRGB(0.5f, 0.5f, 1);
+                    if (ball.Handedness == Core.Hands.right)
+                    {
+                        mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0, 0.5f, 0.2f) : Color.HSVToRGB(0, 0.5f, 1);
+                    } 
+                    else
+                    {
+                        mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0.5f, 0.5f, 0.2f) : Color.HSVToRGB(0.5f, 0.5f, 1);
 
+                    }
                 }
             }
 
-            foreach (Material mat in ringMats)
+            if (ringMats.Count > 0)
             {
-                //mat.color = Color.HSVToRGB(h, s, v);
-                //mat.EnableKeyword("_EMISSION");
-                mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
-                mat.color = ball.NoteColor;
-                //if (ball.State == BallState.Active)
-                //{
-                //    mat.EnableKeyword("_EMISSION");
-                //    mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
-                //}
+                foreach (Material mat in ringMats)
+                {
+                    //mat.color = Color.HSVToRGB(h, s, v);
+                    //mat.EnableKeyword("_EMISSION");
+                    mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
+                    mat.color = ball.NoteColor;
+                    //if (ball.State == BallState.Active)
+                    //{
+                    //    mat.EnableKeyword("_EMISSION");
+                    //    mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
+                    //}
+                }
             }
 
-            light.enabled = true;
-            light.color = Color.HSVToRGB(h, s, 1);
+            
         }
 
         public void SetColor()

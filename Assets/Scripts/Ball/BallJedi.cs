@@ -10,11 +10,11 @@ namespace LW.Ball
         [SerializeField] float masterForce = 3;
         [SerializeField] float recallMultiplier = 6;
         [SerializeField] float holdDistance = 0.5f;
-        //[SerializeField] float gingerLift = 1.2f;
+        [SerializeField] float gingerLift = 0.001f;
 
         float minDistance = 0.3f;
 
-        //public float GingerLift { get { return gingerLift; } }
+        public float GingerLift { get { return gingerLift; } }
 
         public bool Spin { get; set; }
         public float HoldDistance
@@ -40,7 +40,7 @@ namespace LW.Ball
         {
             get { return recallPunchTimer; }
         }
-        public HandPose ControlPose = HandPose.none;
+        public HandPose HoldPose = HandPose.none;
         public Force Primary = Force.idle;
         public Force Secondary = Force.idle;
 
@@ -87,19 +87,27 @@ namespace LW.Ball
                 {
                     forceTimer = 0;
 
-                    #region Control Poses
-                    //if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
-                    //{
-                    //    ControlPose = HandPose.pointer;
-                    //}
-                    //else if (tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist)
-                    //{
-                    //    ControlPose = HandPose.fist;
-                    //}
-                    //else
-                    //{
-                    //    ControlPose = HandPose.none;
-                    //}
+                    #region Hold Poses
+                    if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                    {
+                        HoldPose = HandPose.flat;
+                    }
+                    else if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
+                    {
+                        HoldPose = HandPose.pointer;
+                    }
+                    else if (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace)
+                    {
+                        HoldPose = HandPose.peace;
+                    }
+                    else if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
+                    {
+                        HoldPose = HandPose.thumbsUp;
+                    }
+                    else
+                    {
+                        HoldPose = HandPose.none;
+                    }
                     #endregion
                 }
                 else if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
@@ -146,7 +154,7 @@ namespace LW.Ball
 
             Moving = Primary != Force.idle || Recall;
             Spin = ball.State == BallState.Active && tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat;
-            Held = !Moving && Primary == Force.idle && tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat;
+            Held = !Moving && Primary == Force.idle && tracking.handedness == Hands.both && tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist;
             #endregion
 
 

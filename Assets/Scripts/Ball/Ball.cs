@@ -5,12 +5,13 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace LW.Ball{
     public enum BallState { Active, Still, Dead };
-    public enum Notes { rFore, rBack, rFist, rPointer, rPeace, lFore, lBack, lFist, lPointer, lPeace, none}
+    public enum Notes { rFore, rBack, rFist, rPointer, rPeace, rThumbsUp, lFore, lBack, lFist, lPointer, lPeace, lThumbsUp, none}
 
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
+        [SerializeField] bool toggleContainmentSphere = true;
         [SerializeField] GameObject containmentSphere; // on off based on frozen
         [SerializeField] float perimeter = 0.5f;
         [SerializeField] AudioClip conjureFX;
@@ -64,7 +65,6 @@ namespace LW.Ball{
         BallDirector director;
         NewTracking tracking;
         CastOrigins origins;
-        //BallCaster caster;
         BallJedi jedi;
         BallOsc osc;
         Rigidbody rigidbody;
@@ -100,25 +100,11 @@ namespace LW.Ball{
 
         void Update()
         {
-            //State = director.Still ? BallState.Still : BallState.Active;
-            Distance = Vector3.Distance(transform.position, Camera.main.transform.position);
-
-            GetComponent<SphereCollider>().radius = Distance <= 1f ? 0.05f : 0.05f * Distance;
-
             State = Still ? BallState.Still : BallState.Active;
+            Distance = Vector3.Distance(transform.position, Camera.main.transform.position);
 
             ModeToggleTimer += Time.deltaTime;
 
-            //if (director.Viewfinder && ModeToggleTimer > 1)
-            //{
-            //    ModeToggled = true;
-            //}
-
-            //if (!director.Viewfinder && ModeToggleTimer > 1)
-            //{
-            //    ModeToggled = false;
-            //}
-            
             DominantHand = Handedness == Hands.right ? tracking.GetRtPalm : tracking.GetLtPalm;
             DominantPose = Handedness == Hands.right ? tracking.rightPose : tracking.leftPose;
             DominantDir = Handedness == Hands.right ? tracking.rightPalmAbs : tracking.leftPalmAbs;
@@ -129,10 +115,10 @@ namespace LW.Ball{
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
 
-            GetComponent<Collider>().enabled = !InteractingWithParticles;
-            containmentSphere.SetActive(State == BallState.Still);
+            GetComponent<SphereCollider>().enabled = !InteractingWithParticles;
+            containmentSphere.SetActive(!toggleContainmentSphere || State == BallState.Still);
             CoreActive = touched;
-            InteractingWithParticles = jedi.ControlPose != HandPose.none;
+            InteractingWithParticles = jedi.HoldPose != HandPose.none;
 
             if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall && !jedi.Reset)
             {
@@ -143,10 +129,10 @@ namespace LW.Ball{
                 LockPos = transform.position;
             }
 
-            //if (jedi.Held)
-            //{
-            //    rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
-            //}
+            if (jedi.Held && State == BallState.Active)
+            {
+                rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
+            }
 
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
             float totalPrimaryRange = 90 - multiAxis.DeadZone;
@@ -301,9 +287,15 @@ namespace LW.Ball{
                     else if (tracking.rightPose == HandPose.peace)
                     {
                         Note = Notes.rPeace;
-                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
+                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 0.5f); // light green
                         notePlayer.PlayNote(2);
 
+                    }
+                    else if (tracking.rightPose == HandPose.thumbsUp)
+                    {
+                        Note = Notes.rThumbsUp;
+                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
+                        notePlayer.PlayNote(2);
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
@@ -345,6 +337,12 @@ namespace LW.Ball{
                         NoteColor = Color.HSVToRGB(0.86f, 0.58f, 1); // pink
                         notePlayer.PlayNote(7);
 
+                    }
+                    else if (tracking.leftPose == HandPose.thumbsUp)
+                    {
+                        Note = Notes.lThumbsUp;
+                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 0.5f); // light green
+                        notePlayer.PlayNote(7);
                     }
                     else if (other.gameObject.name == "Backhand")
                     {

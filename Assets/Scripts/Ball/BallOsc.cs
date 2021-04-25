@@ -48,7 +48,7 @@ namespace LW.Ball
 
             if (jedi.Held)
             {
-                Send("GingerLift", 1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1));
+                Send("HoldingWith" + jedi.HoldPose, 1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1));
                 //if (!holdToggle)
                 //{
                 //    Send("holdingOn");
