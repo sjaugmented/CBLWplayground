@@ -10113,6 +10113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killCode: kill
   glitterCode: glitter
+  sendCoordinates: 1
 --- !u!114 &863079449121654146
 MonoBehaviour:
   m_ObjectHideFlags: 0

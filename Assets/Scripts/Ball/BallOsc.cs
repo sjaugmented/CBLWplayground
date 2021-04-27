@@ -44,11 +44,19 @@ namespace LW.Ball
 
         void Update()
         {
+            if (director.SendCoordinates)
+            {
+                SendClean("WorldSpace/X/" + transform.position.x);
+                SendClean("WorldSpace/Y/" + transform.position.y);
+                SendClean("WorldSpace/Z/" + transform.position.z);
+            }
+
             if (!ball.IsNotQuiet) { return; }
 
             if (jedi.Held)
             {
-                Send("HoldingWith" + jedi.HoldPose, 1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1));
+                Send("HoldDist/" + jedi.HoldPose, 1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1));
+                Send("HoldAng/" + jedi.HoldPose, tracking.StaffUp / 90);
                 //if (!holdToggle)
                 //{
                 //    Send("holdingOn");
@@ -236,6 +244,14 @@ namespace LW.Ball
         {
             OscMessage message = new OscMessage();
             message.address = director.WorldLevel + "/" + ball.Handedness + "/" + address + "/";
+            message.values.Add(val);
+            osc.Send(message);
+        }
+        
+        public void SendClean(string address = "", float val = 1)
+        {
+            OscMessage message = new OscMessage();
+            message.address = address + "/";
             message.values.Add(val);
             osc.Send(message);
         }

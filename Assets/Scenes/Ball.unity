@@ -24179,9 +24179,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b746267a791aa954fbaad58498b6c655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightHandBallPrefab: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+  ballPrefab: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a,
     type: 3}
-  leftHandBallPrefab: {fileID: 1349769195282819603, guid: 61f9397ea815b8b43aea668eaaac369d,
+  botwPrefab: {fileID: 1349769195282819603, guid: 61f9397ea815b8b43aea668eaaac369d,
     type: 3}
   nodeTap: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
   gazeTap: {fileID: 8300000, guid: 10c1db6b369554747bf20fe275b1fff7, type: 3}
@@ -24191,6 +24191,7 @@ MonoBehaviour:
   leftToggle: {fileID: 2452266860407818043}
   handColliders: {fileID: 7633091808637125529}
   worldLevel: 1
+  sendCoordinates: 1
 --- !u!4 &2452266861773551491
 Transform:
   m_ObjectHideFlags: 0

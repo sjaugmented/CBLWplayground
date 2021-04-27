@@ -4858,6 +4858,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Prime Inverted Bomb Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 2454764655673570708, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: sendCoordinates
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3634210435180566554, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: toggleContainmentSphere
@@ -4872,6 +4877,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400339610734776289, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 4.7489777
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400339610734776289, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4.7489777
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400339610734776289, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 4.7489777
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400339610734776289, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.00000080475
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400339610734776289, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00000044009
+      objectReference: {fileID: 0}
+    - target: {fileID: 5400339610734776289, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.00000010799
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1694308200980927579, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}

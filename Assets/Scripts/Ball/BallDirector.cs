@@ -6,8 +6,8 @@ namespace LW.Ball
 {
 	public class BallDirector : MonoBehaviour
 	{
-		[SerializeField] GameObject rightHandBallPrefab;
-		[SerializeField] GameObject leftHandBallPrefab;
+		[SerializeField] GameObject ballPrefab;
+		[SerializeField] GameObject botwPrefab;
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
@@ -17,6 +17,12 @@ namespace LW.Ball
 		List<GameObject> rightHand = new List<GameObject>();
 		List<GameObject> leftHand = new List<GameObject>();
 		[SerializeField] int worldLevel = 1;
+		[SerializeField] bool sendCoordinates = false;
+
+		public bool SendCoordinates
+        {
+			get { return sendCoordinates; }
+        }
 
 		public bool Viewfinder { get; set; }
 
@@ -164,16 +170,18 @@ namespace LW.Ball
 
 		private void SpawnBall(string side)
 		{
+			GameObject spawnPrefab = worldLevel < 4 ? ballPrefab : botwPrefab;
+			
 			if (side == "right")
             {
 				RightBallInPlay = true;
-				rightBall = Instantiate(rightHandBallPrefab, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
+				rightBall = Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
 				rightBall.GetComponent<Ball>().Handedness = Hands.right;
 			}
 			else
             {
 				LeftBallInPlay = true;
-				leftBall = Instantiate(leftHandBallPrefab, tracking.GetLtPalm.Position + SpawnOffset, tracking.GetLtPalm.Rotation);
+				leftBall = Instantiate(spawnPrefab, tracking.GetLtPalm.Position + SpawnOffset, tracking.GetLtPalm.Rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
 			}
 		}

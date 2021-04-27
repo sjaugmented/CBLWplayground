@@ -129,10 +129,10 @@ namespace LW.Ball{
                 LockPos = transform.position;
             }
 
-            if (jedi.Held && State == BallState.Active)
-            {
-                rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
-            }
+            //if (jedi.Held && State == BallState.Active)
+            //{
+            //    rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
+            //}
 
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
             float totalPrimaryRange = 90 - multiAxis.DeadZone;
