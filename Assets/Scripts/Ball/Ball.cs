@@ -172,7 +172,19 @@ namespace LW.Ball{
             if (jedi.Spin)
             {
                 var shell = GetComponentInChildren<SpinParticlesID>().transform.parent.transform;
-                shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY, 0);
+                if (jedi.HoldPose == HandPose.flat)
+                {
+                    shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY, 0);
+                }
+                else if (jedi.HoldPose == HandPose.pointer)
+                {
+                    shell.Rotate(0, tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY);
+                }
+                else if (jedi.HoldPose == HandPose.thumbsUp)
+                {
+                    shell.Rotate((1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ, 0);
+                }
+                
             }
 
             if (jedi.Recall)
