@@ -154,7 +154,13 @@ namespace LW.Ball
 
             Moving = Primary != Force.idle || Recall;
             Spin = ball.State == BallState.Active && tracking.handedness == Hands.both && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat;
-            Held = !Moving && Primary == Force.idle && tracking.handedness == Hands.both && tracking.rightPose != HandPose.fist && tracking.leftPose != HandPose.fist;
+            Held = 
+                !Moving && 
+                Primary == Force.idle && 
+                tracking.handedness == Hands.both &&
+                ((tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat) || 
+                (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || 
+                (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp));
             #endregion
 
 
