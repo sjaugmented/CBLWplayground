@@ -44,11 +44,12 @@ namespace LW.Ball
 
         void Update()
         {
-            if (director.SendCoordinates)
+            string ballId = ball.DominantHand == tracking.GetRtPalm ? "rightBall" : "leftBall";
+            if (director.SendCoordinates && jedi.Moving)
             {
-                SendClean("WorldSpace/X/" + transform.position.x);
-                SendClean("WorldSpace/Y/" + transform.position.y);
-                SendClean("WorldSpace/Z/" + transform.position.z);
+                SendClean(ballId + "/WorldSpace/X/", transform.position.x);
+                SendClean(ballId + "/WorldSpace/Y/", transform.position.y);
+                SendClean(ballId + "/WorldSpace/Z/", transform.position.z);
             }
 
             if (!ball.IsNotQuiet) { return; }
