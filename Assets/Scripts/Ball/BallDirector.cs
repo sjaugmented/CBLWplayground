@@ -80,21 +80,33 @@ namespace LW.Ball
 
 			if (RightBallInPlay && LeftBallInPlay)
             {
-				if (balls[0].State == BallState.Active && balls[1].State == BallState.Still)
+				if (balls[0].State == balls[1].State)
                 {
-					balls[0].GetComponent<BallJedi>().NoJedi = false;
-					balls[1].GetComponent<BallJedi>().NoJedi = true;
-                }
-				else if (balls[0].State == BallState.Still && balls[1].State == BallState.Active)
-                {
+					Debug.Log("samesies");
 					balls[0].GetComponent<BallJedi>().NoJedi = true;
-					balls[1].GetComponent<BallJedi>().NoJedi = false;
-                }
+					balls[1].GetComponent<BallJedi>().NoJedi = true;
+				}
 				else
                 {
-					balls[0].GetComponent<BallJedi>().NoJedi = false;
-					balls[1].GetComponent<BallJedi>().NoJedi = false;
+					balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
+					balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
 				}
+				
+				//if (balls[0].State == BallState.Active && balls[1].State == BallState.Still)
+    //            {
+				//	balls[0].GetComponent<BallJedi>().NoJedi = false;
+				//	balls[1].GetComponent<BallJedi>().NoJedi = true;
+    //            }
+				//else if (balls[0].State == BallState.Still && balls[1].State == BallState.Active)
+    //            {
+				//	balls[0].GetComponent<BallJedi>().NoJedi = true;
+				//	balls[1].GetComponent<BallJedi>().NoJedi = false;
+    //            }
+				//else
+    //            {
+				//	balls[0].GetComponent<BallJedi>().NoJedi = false;
+				//	balls[1].GetComponent<BallJedi>().NoJedi = false;
+				//}
             }
 			
 			Viewfinder = rThumbTrigger.Triggered && lThumbTrigger.Triggered;

@@ -78,67 +78,73 @@ namespace LW.Ball
             rigidbody.useGravity = gravityCondition;
             GetComponent<ConstantForce>().enabled = gravityCondition;
 
-            if (NoJedi){ return; }
-
-            #region Multi Axis Control
-            if (tracking.handedness == Hands.both)
+            if (!NoJedi)
             {
-                if (tracking.palmsRel == Formation.together)
+                #region Multi Axis Control
+                if (tracking.handedness == Hands.both)
                 {
-                    forceTimer = 0;
+                    if (tracking.palmsRel == Formation.together)
+                    {
+                        forceTimer = 0;
 
-                    #region Hold Poses
-                    if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-                    {
-                        HoldPose = HandPose.flat;
+                        #region Hold Poses
+                        if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
+                        {
+                            HoldPose = HandPose.flat;
+                        }
+                        else if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
+                        {
+                            HoldPose = HandPose.pointer;
+                        }
+                        else if (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace)
+                        {
+                            HoldPose = HandPose.peace;
+                        }
+                        else if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
+                        {
+                            HoldPose = HandPose.thumbsUp;
+                        }
+                        else
+                        {
+                            HoldPose = HandPose.none;
+                        }
+                        #endregion
                     }
-                    else if (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer)
+                    else if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                     {
-                        HoldPose = HandPose.pointer;
-                    }
-                    else if (tracking.rightPose == HandPose.peace && tracking.leftPose == HandPose.peace)
-                    {
-                        HoldPose = HandPose.peace;
-                    }
-                    else if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
-                    {
-                        HoldPose = HandPose.thumbsUp;
-                    }
-                    else
-                    {
-                        HoldPose = HandPose.none;
-                    }
-                    #endregion
-                }
-                else if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-                {
-                    #region Jedi
-                    if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
-                    {
-                        Secondary = Force.right;
-                    }
-                    else if (multiAxis.StaffForward < (90 - multiAxis.DeadZone / 2))
-                    {
-                        Secondary = Force.left;
-                    }
-                    else
-                    {
-                        Secondary = Force.idle;
-                    }
+                        #region Jedi
+                        if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
+                        {
+                            Secondary = Force.right;
+                        }
+                        else if (multiAxis.StaffForward < (90 - multiAxis.DeadZone / 2))
+                        {
+                            Secondary = Force.left;
+                        }
+                        else
+                        {
+                            Secondary = Force.idle;
+                        }
 
-                    if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
-                    {
-                        Primary = Force.pull;
-                    }
-                    else if (multiAxis.StaffRight < (90 - multiAxis.DeadZone))
-                    {
-                        Primary = Force.push;
+                        if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
+                        {
+                            Primary = Force.pull;
+                        }
+                        else if (multiAxis.StaffRight < (90 - multiAxis.DeadZone))
+                        {
+                            Primary = Force.push;
+                        }
+                        else
+                        {
+                            Primary = Force.idle;
+                        }
+                        #endregion
                     }
                     else
                     {
                         Primary = Force.idle;
+                        Secondary = Force.idle;
                     }
-                    #endregion
                 }
                 else
                 {
@@ -146,11 +152,7 @@ namespace LW.Ball
                     Secondary = Force.idle;
                 }
             }
-            else
-            {
-                Primary = Force.idle;
-                Secondary = Force.idle;
-            }
+            
 
             Moving = Primary != Force.idle || Recall;
             Spin = 
