@@ -51,8 +51,6 @@ namespace LW.Ball
 
         void Update()
         {
-            
-            
             var innerMain = innerParticles.main;
             var coreEmission = innerParticles.emission;
             var forceEmission = forceParticles.emission;

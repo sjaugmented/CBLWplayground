@@ -278,6 +278,8 @@ namespace LW.Ball{
                 tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist
                 )
             {
+                osc.Send("LevelUp!");
+                director.NextWorldLevel();
                 StartCoroutine(destroySelf);
             }
 
@@ -286,8 +288,6 @@ namespace LW.Ball{
 
                 if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
                 {
-                    osc.Send("LevelUp!");
-                    director.NextWorldLevel();
                     StartCoroutine(destroySelf);
                 }
 
@@ -315,9 +315,9 @@ namespace LW.Ball{
                     }
                     else if (tracking.rightPose == HandPose.thumbsUp)
                     {
-                        Note = Notes.rThumbsUp;
-                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
-                        notePlayer.PlayNote(2);
+                        Still = !Still;
+                        ModeToggleTimer = 0;
+                        ModeToggled = true;
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
@@ -362,9 +362,9 @@ namespace LW.Ball{
                     }
                     else if (tracking.leftPose == HandPose.thumbsUp)
                     {
-                        Note = Notes.lThumbsUp;
-                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 0.5f); // light green
-                        notePlayer.PlayNote(7);
+                        Still = !Still;
+                        ModeToggleTimer = 0;
+                        ModeToggled = true;
                     }
                     else if (other.gameObject.name == "Backhand")
                     {

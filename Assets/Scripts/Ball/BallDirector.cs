@@ -6,8 +6,9 @@ namespace LW.Ball
 {
 	public class BallDirector : MonoBehaviour
 	{
-		[SerializeField] GameObject ballPrefab;
-		[SerializeField] GameObject botwPrefab;
+		[SerializeField] GameObject prefab1;
+		[SerializeField] GameObject prefab3;
+		[SerializeField] GameObject prefab4;
 		[SerializeField] AudioClip nodeTap;
 		[SerializeField] AudioClip gazeTap;
 
@@ -69,6 +70,7 @@ namespace LW.Ball
 		void Update()
 		{
 			List<Ball> balls = new List<Ball>();
+			
 			if (RightBallInPlay)
             {
 				balls.Add(rightBall.GetComponent<Ball>());
@@ -90,26 +92,9 @@ namespace LW.Ball
 					balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
 					balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
 				}
-				
-				//if (balls[0].State == BallState.Active && balls[1].State == BallState.Still)
-    //            {
-				//	balls[0].GetComponent<BallJedi>().NoJedi = false;
-				//	balls[1].GetComponent<BallJedi>().NoJedi = true;
-    //            }
-				//else if (balls[0].State == BallState.Still && balls[1].State == BallState.Active)
-    //            {
-				//	balls[0].GetComponent<BallJedi>().NoJedi = true;
-				//	balls[1].GetComponent<BallJedi>().NoJedi = false;
-    //            }
-				//else
-    //            {
-				//	balls[0].GetComponent<BallJedi>().NoJedi = false;
-				//	balls[1].GetComponent<BallJedi>().NoJedi = false;
-				//}
             }
 			
 			Viewfinder = rThumbTrigger.Triggered && lThumbTrigger.Triggered;
-			//if (Viewfinder) { Debug.Log("VIEWFINDER"); }
 			
 			SetRightHand(tracking.FoundRightHand);
 			SetLeftHand(tracking.FoundLeftHand);
@@ -181,7 +166,20 @@ namespace LW.Ball
 
 		private void SpawnBall(string side)
 		{
-			GameObject spawnPrefab = worldLevel < 4 ? ballPrefab : botwPrefab;
+			GameObject spawnPrefab;
+
+			switch (worldLevel)
+            {
+				case 3:
+					spawnPrefab = prefab3;
+					break;
+				case 4:
+					spawnPrefab = prefab4;
+					break;
+				default:
+					spawnPrefab = prefab1;
+					break;
+            }
 			
 			if (side == "right")
             {
