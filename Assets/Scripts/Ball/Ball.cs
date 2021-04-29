@@ -118,7 +118,7 @@ namespace LW.Ball{
             GetComponent<SphereCollider>().enabled = !InteractingWithParticles;
             containmentSphere.SetActive(!toggleContainmentSphere || State == BallState.Still);
             CoreActive = touched;
-            InteractingWithParticles = jedi.HoldPose != HandPose.none;
+            //InteractingWithParticles = jedi.HoldPose != HandPose.none;
 
             if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall && !jedi.Reset)
             {
