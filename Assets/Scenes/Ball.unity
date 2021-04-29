@@ -24189,7 +24189,7 @@ MonoBehaviour:
   rightToggle: {fileID: 2452266860485975430}
   leftToggle: {fileID: 2452266860407818043}
   handColliders: {fileID: 7633091808637125529}
-  worldLevel: 3
+  worldLevel: 1
   sendCoordinates: 1
 --- !u!4 &2452266861773551491
 Transform:
