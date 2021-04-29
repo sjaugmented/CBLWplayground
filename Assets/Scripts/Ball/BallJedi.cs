@@ -11,6 +11,7 @@ namespace LW.Ball
         [SerializeField] float recallMultiplier = 6;
         [SerializeField] float holdDistance = 0.5f;
         [SerializeField] float gingerLift = 0.001f;
+        public bool noJedi = false;
 
         float minDistance = 0.3f;
 
@@ -35,7 +36,11 @@ namespace LW.Ball
         public bool Moving { get; set; }
         public bool Recall { get; set; }
         public bool Reset { get; set; }
-        public bool NoJedi { get; set; }
+        public bool NoJedi 
+        { 
+            get { return noJedi; }
+            set { noJedi = value; }
+        }
         public float LevelUpTimer
         {
             get { return recallPunchTimer; }
@@ -151,23 +156,25 @@ namespace LW.Ball
                     Primary = Force.idle;
                     Secondary = Force.idle;
                 }
+
+                Spin =
+                    ball.State == BallState.Active &&
+                    tracking.handedness == Hands.both &&
+                    ((tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat) ||
+                    (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) ||
+                    (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp));
+                
+                Held =
+                    !Moving &&
+                    Primary == Force.idle &&
+                    tracking.handedness == Hands.both &&
+                    ((tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat) ||
+                    (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) ||
+                    (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp));
             }
-            
 
             Moving = Primary != Force.idle || Recall;
-            Spin = 
-                ball.State == BallState.Active && 
-                tracking.handedness == Hands.both &&
-                ((tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat) ||
-                (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) ||
-                (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp));
-            Held = 
-                !Moving && 
-                Primary == Force.idle && 
-                tracking.handedness == Hands.both &&
-                ((tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat) || 
-                (tracking.rightPose == HandPose.pointer && tracking.leftPose == HandPose.pointer) || 
-                (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp));
+            
             #endregion
 
 

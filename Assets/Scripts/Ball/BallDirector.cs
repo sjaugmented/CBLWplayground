@@ -82,7 +82,6 @@ namespace LW.Ball
             {
 				if (balls[0].State == balls[1].State)
                 {
-					Debug.Log("samesies");
 					balls[0].GetComponent<BallJedi>().NoJedi = true;
 					balls[1].GetComponent<BallJedi>().NoJedi = true;
 				}
