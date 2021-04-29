@@ -131,25 +131,25 @@ namespace LW.Ball{
 
             if (jedi.Held && State == BallState.Active)
             {
-                rigidbody.velocity = rigidbody.velocity + new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * jedi.GingerLift);
+                rigidbody.velocity += new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * jedi.GingerLift);
             }
 
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
             float totalPrimaryRange = 90 - multiAxis.DeadZone;
             float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
-            float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * masterThrottle;
+            float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * masterThrottle;
 
             if (jedi.Primary == Force.pull)
             {
                 float pullCorrection = 90 + multiAxis.DeadZone;
-                float palmForce = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0.01f, 1);
+                float palmForce = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0.001f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
                 rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
             
             if (jedi.Primary == Force.push)
             {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0.01f, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0.001f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
                 rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
@@ -157,14 +157,14 @@ namespace LW.Ball{
             if (jedi.Secondary == Force.right)
             {
                 float rightCorrection = 90 + multiAxis.DeadZone / 2;
-                float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0.01f, 1);
+                float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0.001f, 1);
                 //rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
                 rigidbody.velocity += new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Secondary == Force.left)
             {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0.01f, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0.001f, 1);
                 //rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
                 rigidbody.velocity += new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
             }
@@ -174,15 +174,15 @@ namespace LW.Ball{
                 var shell = GetComponentInChildren<SpinParticlesID>().transform.parent.transform;
                 if (jedi.HoldPose == HandPose.flat)
                 {
-                    shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY, 0);
+                    shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, 0);
                 }
                 else if (jedi.HoldPose == HandPose.pointer)
                 {
-                    shell.Rotate(0, tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY);
+                    shell.Rotate(0, tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY);
                 }
                 else if (jedi.HoldPose == HandPose.thumbsUp)
                 {
-                    shell.Rotate((1 - Mathf.Clamp(jedi.RelativeHandDist, 0.01f, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ, 0);
+                    shell.Rotate((1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ, 0);
                 }
                 
             }
@@ -213,7 +213,7 @@ namespace LW.Ball{
             if (!hasReset)
             {
                 transform.position = DominantHand.Position + director.SpawnOffset;
-                transform.rotation = DominantHand.Rotation;
+                transform.rotation = Camera.main.transform.rotation;
                 
                 if (IsNotQuiet)
                 {
@@ -272,22 +272,24 @@ namespace LW.Ball{
         {
             if (InteractingWithParticles) { return; }
 
-            if (
-                jedi.LevelUpTimer < 2 &&
-                tracking.handedness == Hands.both &&
-                tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist
-                )
-            {
-                osc.Send("LevelUp!");
-                director.NextWorldLevel();
-                StartCoroutine(destroySelf);
-            }
+            //if (
+            //    jedi.LevelUpTimer < 2 &&
+            //    tracking.handedness == Hands.both &&
+            //    tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist
+            //    )
+            //{
+            //    osc.Send("LevelUp!");
+            //    director.NextWorldLevel();
+            //    StartCoroutine(destroySelf);
+            //}
 
             if (other.collider.CompareTag("RightHand"))
             {
 
                 if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
                 {
+                    osc.Send("LevelUp!");
+                    director.NextWorldLevel();
                     StartCoroutine(destroySelf);
                 }
 
@@ -315,9 +317,12 @@ namespace LW.Ball{
                     }
                     else if (tracking.rightPose == HandPose.thumbsUp)
                     {
-                        Still = !Still;
-                        ModeToggleTimer = 0;
-                        ModeToggled = true;
+                        if (ModeToggleTimer > modeToggleSpacer)
+                        {
+                            Still = !Still;
+                            ModeToggleTimer = 0;
+                            ModeToggled = true;
+                        }
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
@@ -362,9 +367,12 @@ namespace LW.Ball{
                     }
                     else if (tracking.leftPose == HandPose.thumbsUp)
                     {
-                        Still = !Still;
-                        ModeToggleTimer = 0;
-                        ModeToggled = true;
+                        if (ModeToggleTimer > modeToggleSpacer)
+                        {
+                            Still = !Still;
+                            ModeToggleTimer = 0;
+                            ModeToggled = true;
+                        }
                     }
                     else if (other.gameObject.name == "Backhand")
                     {

@@ -71,11 +71,11 @@ namespace LW.Ball
 		{
 			List<Ball> balls = new List<Ball>();
 			
-			if (RightBallInPlay)
+			if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
             {
 				balls.Add(rightBall.GetComponent<Ball>());
             }
-			if (LeftBallInPlay)
+			if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
             {
 				balls.Add(leftBall.GetComponent<Ball>());
             }
@@ -184,13 +184,13 @@ namespace LW.Ball
 			if (side == "right")
             {
 				RightBallInPlay = true;
-				rightBall = Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation);
+				rightBall = Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 				rightBall.GetComponent<Ball>().Handedness = Hands.right;
 			}
 			else
             {
 				LeftBallInPlay = true;
-				leftBall = Instantiate(spawnPrefab, tracking.GetLtPalm.Position + SpawnOffset, tracking.GetLtPalm.Rotation);
+				leftBall = Instantiate(spawnPrefab, tracking.GetLtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
 			}
 		}
