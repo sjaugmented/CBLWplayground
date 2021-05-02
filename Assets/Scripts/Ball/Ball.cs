@@ -1,18 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
 using LW.Core;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 namespace LW.Ball{
-    public enum BallState { Active, Still };
-    public enum Notes { rFore, rBack, rFist, rPointer, rPeace, lFore, lBack, lFist, lPointer, lPeace, none}
+    public enum BallState { Active, Still, Dead };
+    public enum Notes { rFore, rBack, rFist, rPointer, rPeace, rThumbsUp, lFore, lBack, lFist, lPointer, lPeace, lThumbsUp, none}
 
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour
     {
+        [SerializeField] bool toggleContainmentSphere = true;
         [SerializeField] GameObject containmentSphere; // on off based on frozen
         [SerializeField] float perimeter = 0.5f;
         [SerializeField] AudioClip conjureFX;
+        [SerializeField] AudioClip resetFX;
         [SerializeField] AudioClip destroyFX;
         [SerializeField] AudioClip bounceFX;
         [SerializeField] AudioClip stillFX;
@@ -29,8 +32,11 @@ namespace LW.Ball{
         [SerializeField] float antiGrav = 0.5f;
         [SerializeField] float maxSpinY = 30;
         [SerializeField] float maxSpinZ = 20;
-        
+        [SerializeField] float masterThrottle = 0.5f;
+        [SerializeField] float unClampedLerp = 2f;
+        [SerializeField] float modeToggleSpacer = 1;
 
+        public Hands Handedness = Hands.none;
         public BallState State = BallState.Active;
         public Notes Note = Notes.none;
         public bool WithinRange { get; set; }
@@ -42,22 +48,29 @@ namespace LW.Ball{
         public Color NoteColor { get; set; }
         public Vector3 LockPos { get; set; }
         public bool Manipulating { get; set; }
-        public bool HasSpawned { get; set; }
-        public bool Stasis { get; set; }
+        public bool IsNotQuiet { get; set; }
+        public bool Still { get; set; }
+        public bool ModeToggled { get; set; }
+        public bool BallCollision { get; set; }
 
-        float touchTimer = Mathf.Infinity;
-        bool touchResponseLimiter;
+        //float touchTimer = Mathf.Infinity;
+        bool touchResponseLimiter, hasReset;
         Vector3 lassoOrigin;
+        public MixedRealityPose DominantHand { get; set; }
+        public HandPose DominantPose { get; set; }
+        public Direction DominantDir { get; set; }
+        public float Distance { get; set; }
+        public float ModeToggleTimer { get; set; }
 
         BallDirector director;
         NewTracking tracking;
         CastOrigins origins;
-        BallCaster caster;
         BallJedi jedi;
         BallOsc osc;
         Rigidbody rigidbody;
-        MultiAxis multiAxis;
+        MultiAxisController multiAxis;
         NotePlayer notePlayer;
+        IEnumerator quietBall, destroySelf;
 
         private void Awake()
         {
@@ -69,36 +82,45 @@ namespace LW.Ball{
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
-            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxis>();
+            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
             notePlayer = GetComponent<NotePlayer>();
 
             TouchLevel = 0;
             Hue = 0;
-            CoreActive = true;
 
             GetComponent<AudioSource>().PlayOneShot(conjureFX);
-            StartCoroutine("Spawning");
+            quietBall = QuietBall();
+            destroySelf = DestroySelf();
+            StartCoroutine(quietBall);
+
+            ModeToggleTimer = Mathf.Infinity;
         }
 
         void Update()
         {
-            
-            
-            State = director.Still ? BallState.Still : BallState.Active;
+            State = Still ? BallState.Still : BallState.Active;
+            Distance = Vector3.Distance(transform.position, Camera.main.transform.position);
 
-            touchTimer += Time.deltaTime;
+            ModeToggleTimer += Time.deltaTime;
+
+            DominantHand = Handedness == Hands.right ? tracking.GetRtPalm : tracking.GetLtPalm;
+            DominantPose = Handedness == Hands.right ? tracking.rightPose : tracking.leftPose;
+            DominantDir = Handedness == Hands.right ? tracking.rightPalmAbs : tracking.leftPalmAbs;
+
+            //touchTimer += Time.deltaTime;
+
             float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
             float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
             WithinRange = distanceToPlayer < perimeter;
-            GetComponent<Collider>().enabled = !InteractingWithParticles;
-            containmentSphere.SetActive(State == BallState.Still);
-            CoreActive = touched;
-            InteractingWithParticles = jedi.ControlPose != HandPose.none;
 
-            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall)
+            GetComponent<SphereCollider>().enabled = !InteractingWithParticles;
+            containmentSphere.SetActive(!toggleContainmentSphere || State == BallState.Still);
+            CoreActive = touched;
+            //InteractingWithParticles = jedi.HoldPose != HandPose.none;
+
+            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall && !jedi.Reset)
             {
                 transform.position = LockPos;
             }
@@ -107,41 +129,62 @@ namespace LW.Ball{
                 LockPos = transform.position;
             }
 
+            if (jedi.Held && State == BallState.Active)
+            {
+                rigidbody.velocity += new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * jedi.GingerLift);
+            }
+
             Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
             float totalPrimaryRange = 90 - multiAxis.DeadZone;
             float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
+            float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * masterThrottle;
 
             if (jedi.Primary == Force.pull)
             {
                 float pullCorrection = 90 + multiAxis.DeadZone;
-                float forceFloat = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0, 1);
+                float palmForce = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0.001f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
-                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+                rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
             
             if (jedi.Primary == Force.push)
             {
-                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0.001f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
-                rigidbody.AddForce(transform.forward * forceFloat * jedi.MasterForce);
+                rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
 
             if (jedi.Secondary == Force.right)
             {
                 float rightCorrection = 90 + multiAxis.DeadZone / 2;
-                float forceFloat = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0, 1);
-                rigidbody.AddForce(transform.right * forceFloat * jedi.MasterForce);
+                float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0.001f, 1);
+                //rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
+                rigidbody.velocity += new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Secondary == Force.left)
             {
-                float forceFloat = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0, 1);
-                rigidbody.AddForce(transform.right * -forceFloat * jedi.MasterForce);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0.001f, 1);
+                //rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
+                rigidbody.velocity += new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Spin)
             {
-                transform.Rotate(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ);
+                var shell = GetComponentInChildren<SpinParticlesID>().transform.parent.transform;
+                if (jedi.HoldPose == HandPose.flat)
+                {
+                    shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, 0);
+                }
+                else if (jedi.HoldPose == HandPose.pointer)
+                {
+                    shell.Rotate(0, tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY);
+                }
+                else if (jedi.HoldPose == HandPose.thumbsUp)
+                {
+                    shell.Rotate((1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ, 0);
+                }
+                
             }
 
             if (jedi.Recall)
@@ -154,6 +197,37 @@ namespace LW.Ball{
                     rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
                 }
             }
+
+            if (jedi.Reset)
+            {
+                ResetBall();
+            }
+            else
+            {
+                hasReset = false;
+            }
+        }
+
+        private void ResetBall()
+        {
+            if (!hasReset)
+            {
+                transform.position = DominantHand.Position + director.SpawnOffset;
+                transform.rotation = Camera.main.transform.rotation;
+                
+                if (IsNotQuiet)
+                {
+                    GetComponent<BallOsc>().Send("reset");
+                }
+
+                if (!GetComponent<AudioSource>().isPlaying)
+                {
+                    GetComponent<AudioSource>().PlayOneShot(resetFX);
+                }
+
+                StartCoroutine(quietBall);
+                hasReset = true;
+            }
         }
 
         private void OnCollisionEnter(Collision other)
@@ -165,49 +239,58 @@ namespace LW.Ball{
 
             var force = other.impulse.magnitude >= 1 ? other.impulse.magnitude : 1;
 
- 
-
-            if (hasBounce && State == BallState.Active && (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand")))
+            if (IsNotQuiet)
             {
-                rigidbody.AddForce(dir * force * bounce);
-
-                //if (!GetComponent<AudioSource>().isPlaying)
-                //{
-                //    GetComponent<AudioSource>().PlayOneShot(bounceFX);
-                //}
-            }
-
-            if (HasSpawned && other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
-            {
-                if (!touchResponseLimiter)
-                {
-                    TouchLevel += 1;
-                    DetermineTouchResponse(other);
-                    if (HasSpawned)
-                    {
-                        osc.Send(Note.ToString(), TouchLevel);
-                    }
-                    touchResponseLimiter = true;
-                }
-
-                if (State == BallState.Active)
+                if (other.gameObject.CompareTag("RightHand") || other.gameObject.CompareTag("LeftHand"))
                 {
                     touched = true;
+
+                    if (!touchResponseLimiter)
+                    {
+                        //touched = true;
+                        TouchLevel += 1;
+                        DetermineTouchResponse(other);
+                        osc.Send(Note.ToString(), TouchLevel);
+                        touchResponseLimiter = true;
+                    }
+
+                    if (hasBounce && State == BallState.Active)
+                    {
+                        rigidbody.AddForce(dir * force * bounce);
+                    }
+                }
+
+                if (other.gameObject.CompareTag("Ball"))
+                {
+                    BallCollision = true;
                 }
             }
+            
         }
 
         private void DetermineTouchResponse(Collision other)
         {
             if (InteractingWithParticles) { return; }
 
+            //if (
+            //    jedi.LevelUpTimer < 2 &&
+            //    tracking.handedness == Hands.both &&
+            //    tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist
+            //    )
+            //{
+            //    osc.Send("LevelUp!");
+            //    director.NextWorldLevel();
+            //    StartCoroutine(destroySelf);
+            //}
+
             if (other.collider.CompareTag("RightHand"))
             {
+
                 if (jedi.LevelUpTimer < 2 && tracking.rightPose == HandPose.fist)
                 {
                     osc.Send("LevelUp!");
-                    caster.WorldLevel = caster.WorldLevel == 1 ? 2 : 1;
-                    StartCoroutine("DestroySelf");
+                    director.NextWorldLevel();
+                    StartCoroutine(destroySelf);
                 }
 
                 if (tracking.rightPose == HandPose.fist)
@@ -228,9 +311,18 @@ namespace LW.Ball{
                     else if (tracking.rightPose == HandPose.peace)
                     {
                         Note = Notes.rPeace;
-                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 1f); // light green
+                        NoteColor = Color.HSVToRGB(0.29f, 0.58f, 0.5f); // light green
                         notePlayer.PlayNote(2);
 
+                    }
+                    else if (tracking.rightPose == HandPose.thumbsUp)
+                    {
+                        if (ModeToggleTimer > modeToggleSpacer)
+                        {
+                            Still = !Still;
+                            ModeToggleTimer = 0;
+                            ModeToggled = true;
+                        }
                     }
                     else if (other.gameObject.name == "Backhand")
                     {
@@ -273,6 +365,15 @@ namespace LW.Ball{
                         notePlayer.PlayNote(7);
 
                     }
+                    else if (tracking.leftPose == HandPose.thumbsUp)
+                    {
+                        if (ModeToggleTimer > modeToggleSpacer)
+                        {
+                            Still = !Still;
+                            ModeToggleTimer = 0;
+                            ModeToggled = true;
+                        }
+                    }
                     else if (other.gameObject.name == "Backhand")
                     {
                         Note = Notes.lBack;
@@ -293,21 +394,24 @@ namespace LW.Ball{
 
         private void OnCollisionExit(Collision collision)
         {
-            if (State == BallState.Active)
-            {
-                touched = false;
-            }
+            //if (State == BallState.Active)
+            //{
+            //    touched = false;
+            //}
+            touched = false;
             touchResponseLimiter = false;
+            BallCollision = false;
         }
 
         public void KillBall(OscMessage message)
         {
-            StartCoroutine("DestroySelf");
+            StartCoroutine(destroySelf);
         }
 
         IEnumerator DestroySelf()
         {
-            HasSpawned = false;
+            State = BallState.Dead;
+            IsNotQuiet = false;
 
             if (GetComponentInChildren<DeathParticlesId>())
             {
@@ -330,21 +434,29 @@ namespace LW.Ball{
 
             yield return new WaitForSeconds(destroyDelay);
 
-            caster.BallInPlay = false;
-            osc.Send("iDead");
             Destroy(gameObject);
         }
 
-        IEnumerator Spawning()
+        IEnumerator QuietBall()
         {
-            HasSpawned = false;
+            IsNotQuiet = false;
             yield return new WaitForSeconds(1);
-            HasSpawned = true;
+            IsNotQuiet = true;
         }
 
         public void IsGazedAt()
         {
-            // something
+            if (director.Viewfinder && ModeToggleTimer > modeToggleSpacer)
+            {
+                Still = !Still;
+                ModeToggleTimer = 0;
+                ModeToggled = true;
+            }
+        }
+
+        public void NotGazedAt()
+        {
+            //ModeToggled = false;
         }
 
         public void PlayStillFx()

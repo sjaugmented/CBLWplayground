@@ -10,12 +10,10 @@ namespace LW.Ball
         [SerializeField] AudioClip openFX;
 
         BallDirector director;
-        BallCaster caster;
 
         private void Start()
         {
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
-            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
             
             if (!GetComponent<AudioSource>().isPlaying)
             {
@@ -29,7 +27,7 @@ namespace LW.Ball
         {
             if (other.CompareTag("Ball"))
             {
-                caster.DestroyBall();
+                //caster.DestroyBall();
                 if (!GetComponent<AudioSource>().isPlaying)
                 {
                     GetComponent<AudioSource>().PlayOneShot(breachFX);
@@ -37,8 +35,8 @@ namespace LW.Ball
             }
             if (other.name == "Ball(Clone)")
             {
-                caster.WorldLevel += 1;
-                director.TogglePortalBool();
+                //caster.WorldLevel += 1;
+                //director.TogglePortalBool();
                 SelfDestruct();
             }
             //else

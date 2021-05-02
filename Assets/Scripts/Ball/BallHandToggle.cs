@@ -37,16 +37,16 @@ namespace LW.Ball
             {
                 if (tracking.leftPose != HandPose.flat)
                 {
-                    if (collider.CompareTag("Right Pointer") && !director.Still)
+                    if (collider.CompareTag("Right Index"))
                     {
-                        director.Still = true;
-                        SendOSC("still/");
+                        director.SetGlobalStill(true);
+                        //SendOSC("still/");
                         GetComponent<AudioSource>().PlayOneShot(stillFX);
                     }
                 }
                 else
                 {
-                    if (collider.CompareTag("Right Pointer"))
+                    if (collider.CompareTag("Right Index"))
                     {
                         if (tracking.rightPose != HandPose.peace)
                         {
@@ -72,16 +72,16 @@ namespace LW.Ball
             {
                 if (tracking.rightPose != HandPose.flat)
                 {
-                    if (collider.CompareTag("Left Pointer") && director.Still)
+                    if (collider.CompareTag("Left Index"))
                     {
-                        director.Still = false;
-                        SendOSC("active/");
+                        director.SetGlobalStill(false);
+                        //SendOSC("active/");
                         GetComponent<AudioSource>().PlayOneShot(activeFX);
                     }
                 }
                 else
                 {
-                    if (collider.CompareTag("Left Pointer"))
+                    if (collider.CompareTag("Left Index"))
                     {
                         if (tracking.leftPose != HandPose.peace)
                         {
@@ -112,26 +112,6 @@ namespace LW.Ball
             osc.Send(message);
         }
 
-        private void SpawnPortal()
-        {
-            if (!triggered)
-            {
-                director.TogglePortal();
-                triggered = true;
-                StartCoroutine("ToggleDelay");
-            }
-        }
-
-        private void ToggleGaze()
-        {
-            if (!triggered)
-            {
-                director.ToggleGaze();
-                triggered = true;
-                StartCoroutine("ToggleDelay");
-
-            }
-        }
 
         IEnumerator ToggleDelay()
         {

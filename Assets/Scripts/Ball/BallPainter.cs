@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
@@ -6,15 +7,23 @@ namespace LW.Ball
     public class BallPainter : MonoBehaviour
     {
         [SerializeField] List<GameObject> shells, rings;
+        float h, s, v;
 
         List<Material> shellMats = new List<Material>();
         List<Material> ringMats = new List<Material>();
 
         Ball ball;
+        Light light;
 
         void Start()
         {
             ball = GetComponent<Ball>();
+
+            if (GetComponentInChildren<Light>())
+            {
+                light = GetComponentInChildren<Light>();
+            }
+
             if (shells.Count > 0)
             {
                 foreach (GameObject shell in shells)
@@ -34,18 +43,73 @@ namespace LW.Ball
 
         void Update()
         {
-            foreach (Material mat in shellMats)
+            if (ball.CoreActive)
             {
-                Color.RGBToHSV(ball.NoteColor, out float h, out _, out float v);
-                mat.color = Color.HSVToRGB(h, 0.2f, 0.2f);
+                SetColor();
             }
 
-            foreach (Material mat in ringMats)
+            if (s > 0)
             {
-                mat.color = ball.State == BallState.Active ? Color.HSVToRGB(0, 0, 1) : ball.NoteColor;
-                mat.SetColor("_EmissionColor", ball.NoteColor);
+                s -= 0.01f;
             }
+            
+            if (v > 0)
+            {
+                v -= 0.01f;
+            }
+
+            if (light != null)
+            {
+                if (light.intensity > 0)
+                {
+                    light.intensity -= 0.1f;
+                }
+
+                light.enabled = true;
+                light.color = Color.HSVToRGB(h, s, 1);
+            }
+
+            if (shellMats.Count > 0)
+            {
+                foreach (Material mat in shellMats)
+                {
+                    if (ball.Handedness == Core.Hands.right)
+                    {
+                        mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0, 0.5f, 1f) : Color.HSVToRGB(0, 0.5f, 0.2f);
+                    } 
+                    else
+                    {
+                        mat.color = ball.State == BallState.Still ? Color.HSVToRGB(0.5f, 0.5f, 1f) : Color.HSVToRGB(0.5f, 0.5f, 0.2f);
+
+                    }
+                }
+            }
+
+            if (ringMats.Count > 0)
+            {
+                foreach (Material mat in ringMats)
+                {
+                    //mat.color = Color.HSVToRGB(h, s, v);
+                    //mat.EnableKeyword("_EMISSION");
+                    mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
+                    mat.color = ball.NoteColor;
+                    //if (ball.State == BallState.Active)
+                    //{
+                    //    mat.EnableKeyword("_EMISSION");
+                    //    mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
+                    //}
+                }
+            }
+
+            
         }
+
+        public void SetColor()
+        {
+            Color.RGBToHSV(ball.NoteColor, out h, out s, out v);
+            light.intensity = 10;
+        }
+
     }
 }
 

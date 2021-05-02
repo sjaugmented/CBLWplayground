@@ -14,9 +14,9 @@ namespace LW.Ball
         NewTracking tracking;
         CastOrigins origins;
         OSC osc;
-        BallCaster caster;
-        BallJedi jedi;
+        BallDirector director;
         Ball ball;
+        BallJedi jedi;
         BallParticleController particles;
 
         bool holdToggle, activeToggle, stillToggle, pointerToggle, rightFisted, dualFisted, thumbsUpped, withinRange, pushed, pulled, lifted, lowered, spun, recalled;
@@ -30,25 +30,34 @@ namespace LW.Ball
         {
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            caster = GameObject.FindGameObjectWithTag("Caster").GetComponent<BallCaster>();
-            jedi = GetComponent<BallJedi>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             ball = GetComponent<Ball>();
+            jedi = GetComponent<BallJedi>();
             particles = GetComponent<BallParticleController>();
 
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(killCode, ball.KillBall);
             //GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAddressHandler(glitterCode, GlitterBall);
             GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>().SetAllMessageHandler(particles.GlitterBall);
 
-            Send("iAM!");
+            //Send("iAM!");
         }
 
         void Update()
         {
-            if (!ball.HasSpawned) { return; }
-            var playerDistance = Vector3.Distance(transform.position, Camera.main.transform.position);
+            string ballId = ball.DominantHand == tracking.GetRtPalm ? "rightBall" : "leftBall";
+            if (director.SendCoordinates && jedi.Moving)
+            {
+                SendClean(ballId + "/WorldSpace/X/", transform.position.x);
+                SendClean(ballId + "/WorldSpace/Y/", transform.position.y);
+                SendClean(ballId + "/WorldSpace/Z/", transform.position.z);
+            }
+
+            if (!ball.IsNotQuiet) { return; }
 
             if (jedi.Held)
             {
+                Send("HoldDist/" + jedi.HoldPose, 1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1));
+                Send("HoldAng/" + jedi.HoldPose, tracking.StaffRight / 90);
                 //if (!holdToggle)
                 //{
                 //    Send("holdingOn");
@@ -66,119 +75,124 @@ namespace LW.Ball
 
             if (jedi.Moving)
             {
-                Send("moving", playerDistance);
+                Send("moving", ball.Distance);
             }
 
             if (ball.State == BallState.Active) // ACTIVE
             {
-                if (!activeToggle)
+                //if (!activeToggle)
+                //{
+                //    Send("activeMode");
+                //    activeToggle = true;
+                //}
+
+                if (ball.BallCollision)
                 {
-                    Send("activeMode");
-                    activeToggle = true;
+                    Send("ballsCollided");
                 }
             }
             else // STILL
             {
-                if (activeToggle)
-                {
-                    Send("stillMode");
-                    activeToggle = false;
-                }
+                //if (activeToggle)
+                //{
+                //    Send("stillMode");
+                //    activeToggle = false;
+                //}
 
-                if (jedi.ControlPose == HandPose.pointer)
-                {
-                    if (!pointerToggle)
-                    {
-                        Send("pointerControlOn");
-                        pointerToggle = true;
-                    }
-                    if (ball.WithinRange)
-                    {
-                        //Send("pointerControlAngle", 1 - tracking.StaffUp / 180);
-                        Send("pointerControlDistance", jedi.RelativeHandDist);
-                    }
-                }
-                else
-                {
-                    if (pointerToggle)
-                    {
-                        Send("pointerControlOff");
-                        pointerToggle = false;
-                    }
-                }
+                //if (jedi.ControlPose == HandPose.pointer)
+                //{
+                //    if (!pointerToggle)
+                //    {
+                //        Send("pointerControlOn");
+                //        pointerToggle = true;
+                //    }
+                //    if (ball.WithinRange)
+                //    {
+                //        //Send("pointerControlAngle", 1 - tracking.StaffUp / 180);
+                //        Send("pointerControlDistance", jedi.RelativeHandDist);
+                //    }
+                //}
+                //else
+                //{
+                //    if (pointerToggle)
+                //    {
+                //        Send("pointerControlOff");
+                //        pointerToggle = false;
+                //    }
+                //}
 
-                if (jedi.ControlPose == HandPose.fist)
-                {
-                    if (!dualFisted)
-                    {
-                        Send("fistControlOn");
-                        dualFisted = true;
-                    }
-                    if (ball.WithinRange)
-                    {
-                        //Send("fistControlAngle", 1 - tracking.StaffUp / 180);
-                        Send("fistControlDistance", jedi.RelativeHandDist);
-                    }
-                }
-                else
-                {
-                    if (dualFisted)
-                    {
-                        Send("fistControlOff");
-                        dualFisted = false;
-                    }
-                }
+                //if (jedi.ControlPose == HandPose.fist)
+                //{
+                //    if (!dualFisted)
+                //    {
+                //        Send("fistControlOn");
+                //        dualFisted = true;
+                //    }
+                //    if (ball.WithinRange)
+                //    {
+                //        //Send("fistControlAngle", 1 - tracking.StaffUp / 180);
+                //        Send("fistControlDistance", jedi.RelativeHandDist);
+                //    }
+                //}
+                //else
+                //{
+                //    if (dualFisted)
+                //    {
+                //        Send("fistControlOff");
+                //        dualFisted = false;
+                //    }
+                //}
 
-                if (jedi.ControlPose == HandPose.thumbsUp)
-                {
-                    if (!thumbsUpped)
-                    {
-                        Send("thumbsUpControlOn");
-                        thumbsUpped = true;
-                    }
-                    if (ball.WithinRange)
-                    {
-                        //Send("thumbsUpControlAngle", 1 - tracking.StaffUp / 180);
-                        Send("thumbsUpControlDistance", jedi.RelativeHandDist);
-                    }
-                }
-                else
-                {
-                    if (thumbsUpped)
-                    {
-                        Send("fistControlOff");
-                        thumbsUpped = false;
-                    }
-                }
+                //if (jedi.ControlPose == HandPose.thumbsUp)
+                //{
+                //    if (!thumbsUpped)
+                //    {
+                //        Send("thumbsUpControlOn");
+                //        thumbsUpped = true;
+                //    }
+                //    if (ball.WithinRange)
+                //    {
+                //        //Send("thumbsUpControlAngle", 1 - tracking.StaffUp / 180);
+                //        Send("thumbsUpControlDistance", jedi.RelativeHandDist);
+                //    }
+                //}
+                //else
+                //{
+                //    if (thumbsUpped)
+                //    {
+                //        Send("fistControlOff");
+                //        thumbsUpped = false;
+                //    }
+                //}
             }
             
 
-            if (jedi.Primary == Force.push)
-            {
-                if (!pushed)
-                {
-                    Send("pushing");
-                    pushed = true;
-                }
-            }
-            else
-            {
-                pushed = false;
-            }
+            //if (jedi.Primary == Force.push)
+            //{
+            //    if (!pushed)
+            //    {
+            //        Send("pushing");
+            //        pushed = true;
+            //    }
+            //}
+            //else
+            //{
+            //    pushed = false;
+            //}
             
 
-            if (jedi.Primary == Force.pull)
-            {
-                if (!pulled)
-                {
-                    Send("pulling");
-                    pulled = true;
-                }
-            }
-            else
-            {
-                pulled = false;
-            }
+            //if (jedi.Primary == Force.pull)
+            //{
+            //    if (!pulled)
+            //    {
+            //        Send("pulling");
+            //        pulled = true;
+            //    }
+            //}
+            //else
+            //{
+            //    pulled = false;
+            //}
 
             //if (jedi.Power == TheForce.lift)
             //{
@@ -220,12 +234,25 @@ namespace LW.Ball
                 recalled = false;
             }
 
+            if (ball.State == BallState.Dead)
+            {
+                //Send("iDead");
+            }
+
         }
 
         public void Send(string address = "", float val = 1)
         {
             OscMessage message = new OscMessage();
-            message.address = caster.WorldLevel + "/" + ball.State + "/" + address + "/";
+            message.address = director.WorldLevel + "/" + ball.Handedness + "/" + address + "/";
+            message.values.Add(val);
+            osc.Send(message);
+        }
+        
+        public void SendClean(string address = "", float val = 1)
+        {
+            OscMessage message = new OscMessage();
+            message.address = address + "/";
             message.values.Add(val);
             osc.Send(message);
         }
