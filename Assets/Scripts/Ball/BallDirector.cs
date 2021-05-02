@@ -1,4 +1,5 @@
 ﻿using LW.Core;
+using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,8 +39,8 @@ namespace LW.Ball
 		public bool RightBallInPlay { get; set; }
 		public bool LeftBallInPlay { get; set; }
 
-		bool conjureReady, hasReset;
-		float conjureTimer = Mathf.Infinity;
+		bool spawnReady, hasReset;
+		float spawnWindow = Mathf.Infinity;
 
 		public Vector3 SpawnOffset { get; set; }
 
@@ -53,6 +54,13 @@ namespace LW.Ball
 			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
 			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
+
+			if (PhotonNetwork.PrefabPool is DefaultPool pool)
+            {
+				if (prefab1 != null) pool.ResourceCache.Add(prefab1.name, prefab1);
+				if (prefab3 != null) pool.ResourceCache.Add(prefab3.name, prefab3);
+				if (prefab4 != null) pool.ResourceCache.Add(prefab4.name, prefab4);
+            }
 
 			rightHand.Add(rightHandTouch);
 			rightHand.Add(rightToggle);
@@ -71,28 +79,28 @@ namespace LW.Ball
 		{
 			List<Ball> balls = new List<Ball>();
 			
-			if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
-            {
-				balls.Add(rightBall.GetComponent<Ball>());
-            }
-			if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
-            {
-				balls.Add(leftBall.GetComponent<Ball>());
-            }
+			//if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
+   //         {
+			//	balls.Add(rightBall.GetComponent<Ball>());
+   //         }
+			//if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
+   //         {
+			//	balls.Add(leftBall.GetComponent<Ball>());
+   //         }
 
-			if (RightBallInPlay && LeftBallInPlay)
-            {
-				if (balls[0].State == balls[1].State)
-                {
-					balls[0].GetComponent<BallJedi>().NoJedi = true;
-					balls[1].GetComponent<BallJedi>().NoJedi = true;
-				}
-				else
-                {
-					balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
-					balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
-				}
-            }
+			//if (RightBallInPlay && LeftBallInPlay)
+   //         {
+			//	if (balls[0].State == balls[1].State)
+   //             {
+			//		balls[0].GetComponent<BallJedi>().NoJedi = true;
+			//		balls[1].GetComponent<BallJedi>().NoJedi = true;
+			//	}
+			//	else
+   //             {
+			//		balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
+			//		balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
+			//	}
+   //         }
 			
 			Viewfinder = rThumbTrigger.Triggered && lThumbTrigger.Triggered;
 			
@@ -101,6 +109,11 @@ namespace LW.Ball
 
 			if (rightBall)
 			{
+				if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
+				{
+					balls.Add(rightBall.GetComponent<Ball>());
+				}
+
 				handColliders.SetActive(!rightBall.GetComponent<Ball>().InteractingWithParticles);
 				if (rightBall.GetComponent<Ball>().State == BallState.Dead)
                 {
@@ -109,6 +122,11 @@ namespace LW.Ball
 			}
 			if (leftBall)
 			{
+				if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
+				{
+					balls.Add(leftBall.GetComponent<Ball>());
+				}
+
 				handColliders.SetActive(!leftBall.GetComponent<Ball>().InteractingWithParticles);
 				if (leftBall.GetComponent<Ball>().State == BallState.Dead)
 				{
@@ -116,24 +134,38 @@ namespace LW.Ball
 				}
 			}
 
-			SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
-			conjureTimer += Time.deltaTime;
+			if (RightBallInPlay && LeftBallInPlay)
+			{
+				if (balls[0].State == balls[1].State)
+				{
+					balls[0].GetComponent<BallJedi>().NoJedi = true;
+					balls[1].GetComponent<BallJedi>().NoJedi = true;
+				}
+				else
+				{
+					balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
+					balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
+				}
+			}
 
 			// Spawning
+			SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
+			spawnWindow += Time.deltaTime;
+
 			if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
 			{
-				if (!conjureReady)
+				if (!spawnReady)
 				{
-					conjureTimer = 0;
-					conjureReady = true;
+					spawnWindow = 0;
+					spawnReady = true;
 				}
 			}
 			else
 			{
-				conjureReady = false;
+				spawnReady = false;
 			}
 
-			if (conjureTimer < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
+			if (spawnWindow < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
 			{
 				if (!RightBallInPlay)
 				{
@@ -143,18 +175,18 @@ namespace LW.Ball
 
 			if (tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.fist)
 			{
-				if (!conjureReady)
+				if (!spawnReady)
 				{
-					conjureTimer = 0;
-					conjureReady = true;
+					spawnWindow = 0;
+					spawnReady = true;
 				}
 			}
 			else
 			{
-				conjureReady = false;
+				spawnReady = false;
 			}
 
-			if (conjureTimer < 1 && tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.flat)
+			if (spawnWindow < 1 && tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.flat)
 			{
 				if (!LeftBallInPlay)
 				{
@@ -184,9 +216,9 @@ namespace LW.Ball
 			if (side == "right")
             {
 				RightBallInPlay = true;
-				rightBall = Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
-				rightBall.GetComponent<Ball>().Handedness = Hands.right;
-			}
+				rightBall = PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+                rightBall.GetComponent<Ball>().Handedness = Hands.right;
+            }
 			else
             {
 				LeftBallInPlay = true;
