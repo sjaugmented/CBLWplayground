@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Ball.unity
     guid: cb3432b8c08d9434a8b436e718788a80
-  m_configObjects: {}
+  m_configObjects:
+    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: abb97b19e849bbc4683206b1057fc682,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 29e2658389bb8784491431393cd15af8,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 3de9c25b6f09e5a42974c25d046c814a,
+      type: 2}
