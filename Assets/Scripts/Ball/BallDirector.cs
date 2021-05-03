@@ -222,7 +222,7 @@ namespace LW.Ball
 			else
             {
 				LeftBallInPlay = true;
-				leftBall = Instantiate(spawnPrefab, tracking.GetLtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+				leftBall = PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetLtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
 			}
 		}
