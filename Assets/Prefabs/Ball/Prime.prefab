@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5707075205884175199}
   - component: {fileID: 1604051139813940300}
   - component: {fileID: 6950651417751999080}
+  - component: {fileID: 1358161408894268084}
+  - component: {fileID: 6055917370702390410}
   m_Layer: 0
   m_Name: Ball Collison Particles
   m_TagString: Ball
@@ -4766,6 +4768,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d512119a7909a4880184a1672503da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1358161408894268084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644444610910363575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &6055917370702390410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644444610910363575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1023815655490042180
 GameObject:
   m_ObjectHideFlags: 0
@@ -4778,6 +4815,8 @@ GameObject:
   - component: {fileID: 3057757529108551911}
   - component: {fileID: 257819692034726800}
   - component: {fileID: 6329284604201645213}
+  - component: {fileID: 2580970689326138075}
+  - component: {fileID: 7465416211487066511}
   m_Layer: 0
   m_Name: Carbonfiber Shell
   m_TagString: Ball
@@ -4876,6 +4915,41 @@ MonoBehaviour:
   useMeshBoundsCenter: 1
   allowShadows: 1
   shadersAlreadyHandleTransparency: 0
+--- !u!114 &2580970689326138075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023815655490042180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &7465416211487066511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023815655490042180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1632886652896796702
 GameObject:
   m_ObjectHideFlags: 0
@@ -4888,6 +4962,8 @@ GameObject:
   - component: {fileID: 6631249172954781043}
   - component: {fileID: 7896158558713183491}
   - component: {fileID: 980028361898908955}
+  - component: {fileID: 5219374320990741379}
+  - component: {fileID: 8824146770730727673}
   m_Layer: 0
   m_Name: Core Particles
   m_TagString: Ball
@@ -9642,6 +9718,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a843bccad69b2498863a714c30e807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5219374320990741379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632886652896796702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &8824146770730727673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632886652896796702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2193309182879926446
 GameObject:
   m_ObjectHideFlags: 0
@@ -9655,6 +9766,8 @@ GameObject:
   - component: {fileID: 2193309182879926442}
   - component: {fileID: 8191409642284321730}
   - component: {fileID: 2606699614429266282}
+  - component: {fileID: 3339003158564616521}
+  - component: {fileID: 160094545060265277}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Ball
@@ -9761,6 +9874,41 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3339003158564616521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309182879926446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &160094545060265277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309182879926446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2193309183216341837
 GameObject:
   m_ObjectHideFlags: 0
@@ -10206,6 +10354,8 @@ GameObject:
   - component: {fileID: 8880503569315776801}
   - component: {fileID: 5558816901813213294}
   - component: {fileID: 3894228652144858138}
+  - component: {fileID: 8641847767206554167}
+  - component: {fileID: 4077656023491818184}
   m_Layer: 0
   m_Name: Death Particles
   m_TagString: Ball
@@ -14960,6 +15110,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ced62062061c94c80773eac8c7dbb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8641847767206554167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3175291041352865394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &4077656023491818184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3175291041352865394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &3456582816631418966
 GameObject:
   m_ObjectHideFlags: 0
@@ -14972,6 +15157,8 @@ GameObject:
   - component: {fileID: 28587033041716699}
   - component: {fileID: 6702197957629044614}
   - component: {fileID: 6451240688396706698}
+  - component: {fileID: 8078178733817178043}
+  - component: {fileID: 5223670538366407050}
   m_Layer: 0
   m_Name: Spin Particles
   m_TagString: Ball
@@ -19726,6 +19913,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ceeb5c74991157428776ae819f7c300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8078178733817178043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3456582816631418966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &5223670538366407050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3456582816631418966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &1208798008594408579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4096006491182456180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &7517134979732026687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4096006491182456180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 1208798008594408579}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &7428379026398809593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19832,6 +20090,8 @@ GameObject:
   - component: {fileID: 3359161158003998707}
   - component: {fileID: 3110170826725499811}
   - component: {fileID: 6462674333654819902}
+  - component: {fileID: 6624173734322888849}
+  - component: {fileID: 1426123680492801190}
   m_Layer: 0
   m_Name: Slice.005
   m_TagString: Ball
@@ -19900,6 +20160,41 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &6624173734322888849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692596856355441701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &1426123680492801190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4692596856355441701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &5379702898570425307
 GameObject:
   m_ObjectHideFlags: 0
@@ -19912,6 +20207,8 @@ GameObject:
   - component: {fileID: 2225964859482369042}
   - component: {fileID: 8092967912452841659}
   - component: {fileID: 7957778474496594245}
+  - component: {fileID: 327559340786829650}
+  - component: {fileID: 3073831807895766809}
   m_Layer: 0
   m_Name: Force Particles
   m_TagString: Ball
@@ -24666,6 +24963,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae22781021386f441abd25d36b6e292b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &327559340786829650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5379702898570425307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &3073831807895766809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5379702898570425307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6179722345948086096
 GameObject:
   m_ObjectHideFlags: 0
@@ -24677,6 +25009,8 @@ GameObject:
   - component: {fileID: 6927296401836621742}
   - component: {fileID: 165231527982154708}
   - component: {fileID: 2285316288692374076}
+  - component: {fileID: 5562004671902702240}
+  - component: {fileID: 8770934018003144141}
   m_Layer: 0
   m_Name: Slice.004
   m_TagString: Ball
@@ -24745,6 +25079,41 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5562004671902702240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6179722345948086096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &8770934018003144141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6179722345948086096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6222737119637812561
 GameObject:
   m_ObjectHideFlags: 0
@@ -24756,6 +25125,8 @@ GameObject:
   - component: {fileID: 2545787676401583252}
   - component: {fileID: 7157100708554919791}
   - component: {fileID: 6947016719547110368}
+  - component: {fileID: 4763497375133090404}
+  - component: {fileID: 7995244167988341315}
   m_Layer: 0
   m_Name: Slice.003
   m_TagString: Ball
@@ -24824,6 +25195,41 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4763497375133090404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6222737119637812561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &7995244167988341315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6222737119637812561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6872868398150107794
 GameObject:
   m_ObjectHideFlags: 0
@@ -24836,6 +25242,8 @@ GameObject:
   - component: {fileID: 112308320517567510}
   - component: {fileID: 2119992779265499970}
   - component: {fileID: 3966186534869712072}
+  - component: {fileID: 231514157110418021}
+  - component: {fileID: 6393653941055736783}
   m_Layer: 11
   m_Name: Gaze Collider
   m_TagString: Untagged
@@ -24938,6 +25346,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02f45f18db2e714e9f9e5bc178e3b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &231514157110418021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6872868398150107794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &6393653941055736783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6872868398150107794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &8345121157754330294
 GameObject:
   m_ObjectHideFlags: 0
@@ -24951,6 +25394,8 @@ GameObject:
   - component: {fileID: 6553039215330814807}
   - component: {fileID: 2109400324200489764}
   - component: {fileID: 2906337654915167902}
+  - component: {fileID: 1814537747486412330}
+  - component: {fileID: 548286809744474248}
   m_Layer: 0
   m_Name: Glitter Particles
   m_TagString: Ball
@@ -29717,6 +30162,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4f9ce3244d9784d83da11c649e744c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1814537747486412330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345121157754330294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isUser: 0
+--- !u!114 &548286809744474248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8345121157754330294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &3120577244758270086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30222,6 +30702,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de7304a2e43e76c41b94d77c71eda0e0, type: 3}
+--- !u!1 &4096006491182456180 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6652087764009179450, guid: de7304a2e43e76c41b94d77c71eda0e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 7243765812008485966}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3063192614878177938 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5622079842188750556, guid: de7304a2e43e76c41b94d77c71eda0e0,

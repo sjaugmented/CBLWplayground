@@ -58,11 +58,17 @@ namespace LW.Core {
         Transform cam;
         Transform floor;
 
-        void Start()
+        private void Awake()
         {
             cam = Camera.main.transform;
             floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
         }
+
+        //void Start()
+        //{
+        //    cam = Camera.main.transform;
+        //    floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
+        //}
 
 
         void Update()

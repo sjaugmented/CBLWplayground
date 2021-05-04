@@ -7,6 +7,7 @@ namespace LW.Ball
 {
 	public class BallDirector : MonoBehaviour
 	{
+		[SerializeField] bool sharedExperience = false;
 		[SerializeField] GameObject prefab1;
 		[SerializeField] GameObject prefab3;
 		[SerializeField] GameObject prefab4;
@@ -49,17 +50,25 @@ namespace LW.Ball
 		GameObject rightBall;
 		GameObject leftBall;
 
+        private void Awake()
+        {
+			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+		}
+
 		void Start()
 		{
-			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+			//tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
 			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
 
-			if (PhotonNetwork.PrefabPool is DefaultPool pool)
+			if (sharedExperience)
             {
-				if (prefab1 != null) pool.ResourceCache.Add(prefab1.name, prefab1);
-				if (prefab3 != null) pool.ResourceCache.Add(prefab3.name, prefab3);
-				if (prefab4 != null) pool.ResourceCache.Add(prefab4.name, prefab4);
+				if (PhotonNetwork.PrefabPool is DefaultPool pool)
+				{
+					if (prefab1 != null) pool.ResourceCache.Add(prefab1.name, prefab1);
+					if (prefab3 != null) pool.ResourceCache.Add(prefab3.name, prefab3);
+					if (prefab4 != null) pool.ResourceCache.Add(prefab4.name, prefab4);
+				}
             }
 
 			rightHand.Add(rightHandTouch);
@@ -216,13 +225,14 @@ namespace LW.Ball
 			if (side == "right")
             {
 				RightBallInPlay = true;
-				rightBall = PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
-                rightBall.GetComponent<Ball>().Handedness = Hands.right;
+				rightBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+
+				rightBall.GetComponent<Ball>().Handedness = Hands.right;
             }
 			else
             {
 				LeftBallInPlay = true;
-				leftBall = PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetLtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+				leftBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
 			}
 		}
