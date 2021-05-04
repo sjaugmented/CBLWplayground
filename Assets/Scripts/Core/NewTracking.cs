@@ -64,12 +64,6 @@ namespace LW.Core {
             floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
         }
 
-        //void Start()
-        //{
-        //    cam = Camera.main.transform;
-        //    floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
-        //}
-
 
         void Update()
         {

@@ -50,26 +50,27 @@ namespace LW.Ball
 		GameObject rightBall;
 		GameObject leftBall;
 
+		public List<Ball> currentBalls = new List<Ball>();
+
         private void Awake()
         {
 			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-		}
-
-		void Start()
-		{
-			//tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
-			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
 
 			if (sharedExperience)
-            {
+			{
 				if (PhotonNetwork.PrefabPool is DefaultPool pool)
 				{
 					if (prefab1 != null) pool.ResourceCache.Add(prefab1.name, prefab1);
 					if (prefab3 != null) pool.ResourceCache.Add(prefab3.name, prefab3);
 					if (prefab4 != null) pool.ResourceCache.Add(prefab4.name, prefab4);
 				}
-            }
+			}
+		}
+
+		void Start()
+		{
+			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
+			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
 
 			rightHand.Add(rightHandTouch);
 			rightHand.Add(rightToggle);
@@ -86,42 +87,40 @@ namespace LW.Ball
 
 		void Update()
 		{
-			List<Ball> balls = new List<Ball>();
-			
+			SetRightHand(tracking.FoundRightHand);
+			SetLeftHand(tracking.FoundLeftHand);
+
 			//if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
-   //         {
+			//         {
 			//	balls.Add(rightBall.GetComponent<Ball>());
-   //         }
+			//         }
 			//if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
-   //         {
+			//         {
 			//	balls.Add(leftBall.GetComponent<Ball>());
-   //         }
+			//         }
 
 			//if (RightBallInPlay && LeftBallInPlay)
-   //         {
+			//         {
 			//	if (balls[0].State == balls[1].State)
-   //             {
+			//             {
 			//		balls[0].GetComponent<BallJedi>().NoJedi = true;
 			//		balls[1].GetComponent<BallJedi>().NoJedi = true;
 			//	}
 			//	else
-   //             {
+			//             {
 			//		balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
 			//		balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
 			//	}
-   //         }
-			
+			//         }
+
 			Viewfinder = rThumbTrigger.Triggered && lThumbTrigger.Triggered;
 			
-			SetRightHand(tracking.FoundRightHand);
-			SetLeftHand(tracking.FoundLeftHand);
-
 			if (rightBall)
 			{
-				if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
-				{
-					balls.Add(rightBall.GetComponent<Ball>());
-				}
+				//if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
+				//{
+				//	balls.Add(rightBall.GetComponent<Ball>());
+				//}
 
 				handColliders.SetActive(!rightBall.GetComponent<Ball>().InteractingWithParticles);
 				if (rightBall.GetComponent<Ball>().State == BallState.Dead)
@@ -131,10 +130,10 @@ namespace LW.Ball
 			}
 			if (leftBall)
 			{
-				if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
-				{
-					balls.Add(leftBall.GetComponent<Ball>());
-				}
+				//if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
+				//{
+				//	balls.Add(leftBall.GetComponent<Ball>());
+				//}
 
 				handColliders.SetActive(!leftBall.GetComponent<Ball>().InteractingWithParticles);
 				if (leftBall.GetComponent<Ball>().State == BallState.Dead)
@@ -143,17 +142,17 @@ namespace LW.Ball
 				}
 			}
 
-			if (RightBallInPlay && LeftBallInPlay)
+			if (currentBalls.Count > 1)
 			{
-				if (balls[0].State == balls[1].State)
+				if (currentBalls[0].State == currentBalls[1].State)
 				{
-					balls[0].GetComponent<BallJedi>().NoJedi = true;
-					balls[1].GetComponent<BallJedi>().NoJedi = true;
+					currentBalls[0].GetComponent<BallJedi>().NoJedi = true;
+					currentBalls[1].GetComponent<BallJedi>().NoJedi = true;
 				}
 				else
 				{
-					balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
-					balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
+					currentBalls[0].GetComponent<BallJedi>().NoJedi = currentBalls[0].State == BallState.Still;
+					currentBalls[1].GetComponent<BallJedi>().NoJedi = currentBalls[1].State == BallState.Still;
 				}
 			}
 
@@ -228,12 +227,16 @@ namespace LW.Ball
 				rightBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 
 				rightBall.GetComponent<Ball>().Handedness = Hands.right;
+				
+				currentBalls.Add(rightBall.GetComponent<Ball>());
             }
 			else
             {
 				LeftBallInPlay = true;
 				leftBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
+
+				currentBalls.Add(rightBall.GetComponent<Ball>());
 			}
 		}
 
@@ -268,6 +271,19 @@ namespace LW.Ball
 		{
 			handColliders.SetActive(true);
 		}
+
+		public void RemoveBall(Hands handedness)
+        {
+			Ball ballToRemove;
+
+			foreach(Ball ball in currentBalls)
+            {
+				if (ball.Handedness == handedness)
+                {
+					currentBalls.Remove(ball);
+                }
+            }
+        }
 
 		public void SetGlobalStill(bool val)
         {

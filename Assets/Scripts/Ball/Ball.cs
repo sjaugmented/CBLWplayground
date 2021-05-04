@@ -413,6 +413,8 @@ namespace LW.Ball{
             State = BallState.Dead;
             IsNotQuiet = false;
 
+            director.RemoveBall(Handedness);
+
             if (GetComponentInChildren<DeathParticlesId>())
             {
                 var deathParticles = GetComponentInChildren<DeathParticlesId>().GetComponent<ParticleSystem>();
