@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 5707075205884175199}
   - component: {fileID: 1604051139813940300}
   - component: {fileID: 6950651417751999080}
-  - component: {fileID: 1358161408894268084}
-  - component: {fileID: 6055917370702390410}
   m_Layer: 0
   m_Name: Ball Collison Particles
   m_TagString: Ball
@@ -4768,41 +4766,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d512119a7909a4880184a1672503da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1358161408894268084
+--- !u!1 &1087226983205018261
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5391405407328720528}
+  - component: {fileID: 1744272388071029347}
+  m_Layer: 0
+  m_Name: Shell
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5391405407328720528
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087226983205018261}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0005557798, y: -0.00039082766, z: -0.0021237843}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5601265617212390397}
+  m_Father: {fileID: 2193309183216341836}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1744272388071029347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 644444610910363575}
+  m_GameObject: {fileID: 1087226983205018261}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
+  m_Script: {fileID: 11500000, guid: b64737a73c17fe04f8f82944bf98978d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &6055917370702390410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 644444610910363575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &1632886652896796702
 GameObject:
   m_ObjectHideFlags: 0
@@ -4815,8 +4822,6 @@ GameObject:
   - component: {fileID: 6631249172954781043}
   - component: {fileID: 7896158558713183491}
   - component: {fileID: 980028361898908955}
-  - component: {fileID: 5219374320990741379}
-  - component: {fileID: 8824146770730727673}
   m_Layer: 0
   m_Name: Core Particles
   m_TagString: Ball
@@ -9571,41 +9576,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60a843bccad69b2498863a714c30e807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5219374320990741379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1632886652896796702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &8824146770730727673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1632886652896796702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &2193309182879926446
 GameObject:
   m_ObjectHideFlags: 0
@@ -9617,10 +9587,7 @@ GameObject:
   - component: {fileID: 2193309182879926445}
   - component: {fileID: 2193309182879926441}
   - component: {fileID: 2193309182879926442}
-  - component: {fileID: 8191409642284321730}
   - component: {fileID: 2606699614429266282}
-  - component: {fileID: 3339003158564616521}
-  - component: {fileID: 160094545060265277}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Ball
@@ -9638,8 +9605,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.092192, y: 0.092192, z: 0.092192}
-  m_Children:
-  - {fileID: 5601265617212390397}
+  m_Children: []
   m_Father: {fileID: 2193309183216341836}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9690,31 +9656,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8191409642284321730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2193309182879926446}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abd71dcb0056342b08cb3e8851fac00b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  minSpeed: 0.1
-  maxSpeed: 1
-  minRotationSpeed: 90
-  maxRotationSpeed: 360
-  fadeWaitTime: 0.2
-  fadeTime: 0.3
-  useGravity: 0
-  colliderThickness: 0.125
-  useNormals: 0
-  useMeshBoundsCenter: 0
-  allowShadows: 0
-  shadersAlreadyHandleTransparency: 0
 --- !u!135 &2606699614429266282
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9728,42 +9669,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3339003158564616521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2193309182879926446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &160094545060265277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2193309182879926446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 3339003158564616521}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &2193309183216341837
 GameObject:
   m_ObjectHideFlags: 0
@@ -9785,8 +9690,6 @@ GameObject:
   - component: {fileID: 2454764655673570708}
   - component: {fileID: 863079449121654146}
   - component: {fileID: 3646315328873643937}
-  - component: {fileID: -2552315299068875482}
-  - component: {fileID: 2050394079218759891}
   m_Layer: 0
   m_Name: Prime
   m_TagString: Ball
@@ -9813,6 +9716,7 @@ Transform:
   - {fileID: 3205531828210711906}
   - {fileID: 5528585099856149276}
   - {fileID: 389433642642422349}
+  - {fileID: 5391405407328720528}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -10080,6 +9984,7 @@ MonoBehaviour:
   holdDistance: 0.5
   gingerLift: 0.001
   noJedi: 0
+  spin: 0
   HoldPose: 8
   Primary: 4
   Secondary: 4
@@ -10151,42 +10056,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 103f3e286c4342e42a156d9b22c87cb0, type: 3}
   - {fileID: 8300000, guid: 9e9bdc57acb6f7949a260e334e7973d3, type: 3}
   - {fileID: 8300000, guid: 569f0ed12ff9ed94cb61d0741943d240, type: 3}
---- !u!114 &-2552315299068875482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2193309183216341837}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &2050394079218759891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2193309183216341837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: -2552315299068875482}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0
@@ -10199,8 +10068,6 @@ GameObject:
   - component: {fileID: 8880503569315776801}
   - component: {fileID: 5558816901813213294}
   - component: {fileID: 3894228652144858138}
-  - component: {fileID: 8641847767206554167}
-  - component: {fileID: 4077656023491818184}
   m_Layer: 0
   m_Name: Death Particles
   m_TagString: Ball
@@ -14955,41 +14822,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45ced62062061c94c80773eac8c7dbb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8641847767206554167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3175291041352865394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &4077656023491818184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3175291041352865394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &3456582816631418966
 GameObject:
   m_ObjectHideFlags: 0
@@ -15002,8 +14834,6 @@ GameObject:
   - component: {fileID: 28587033041716699}
   - component: {fileID: 6702197957629044614}
   - component: {fileID: 6451240688396706698}
-  - component: {fileID: 8078178733817178043}
-  - component: {fileID: 5223670538366407050}
   m_Layer: 0
   m_Name: Spin Particles
   m_TagString: Ball
@@ -15019,10 +14849,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3456582816631418966}
   m_LocalRotation: {x: -0.0000010728836, y: 0.7071068, z: 0.0000010728836, w: -0.7071068}
-  m_LocalPosition: {x: 0.525, y: 0, z: 0}
-  m_LocalScale: {x: 0.03183032, y: 0.031830322, z: 0.031830322}
+  m_LocalPosition: {x: 0.048956577, y: 0.00039082766, z: 0.0021237843}
+  m_LocalScale: {x: 0.026819872, y: 0.026819872, z: 0.026819875}
   m_Children: []
-  m_Father: {fileID: 2193309182879926445}
+  m_Father: {fileID: 5391405407328720528}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -90.00001, z: 270}
 --- !u!198 &28587033041716699
@@ -19758,78 +19588,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ceeb5c74991157428776ae819f7c300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8078178733817178043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3456582816631418966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &5223670538366407050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3456582816631418966}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 8078178733817178043}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &1208798008594408579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4096006491182456180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &7517134979732026687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4096006491182456180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 1208798008594408579}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &5379702898570425307
 GameObject:
   m_ObjectHideFlags: 0
@@ -19842,8 +19600,6 @@ GameObject:
   - component: {fileID: 2225964859482369042}
   - component: {fileID: 8092967912452841659}
   - component: {fileID: 7957778474496594245}
-  - component: {fileID: 327559340786829650}
-  - component: {fileID: 3073831807895766809}
   m_Layer: 0
   m_Name: Force Particles
   m_TagString: Ball
@@ -24598,41 +24354,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae22781021386f441abd25d36b6e292b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &327559340786829650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5379702898570425307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &3073831807895766809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5379702898570425307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &6872868398150107794
 GameObject:
   m_ObjectHideFlags: 0
@@ -24645,8 +24366,6 @@ GameObject:
   - component: {fileID: 112308320517567510}
   - component: {fileID: 2119992779265499970}
   - component: {fileID: 3966186534869712072}
-  - component: {fileID: 231514157110418021}
-  - component: {fileID: 6393653941055736783}
   m_Layer: 11
   m_Name: Gaze Collider
   m_TagString: Untagged
@@ -24749,41 +24468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f02f45f18db2e714e9f9e5bc178e3b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &231514157110418021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6872868398150107794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &6393653941055736783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6872868398150107794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &8345121157754330294
 GameObject:
   m_ObjectHideFlags: 0
@@ -24797,8 +24481,6 @@ GameObject:
   - component: {fileID: 6553039215330814807}
   - component: {fileID: 2109400324200489764}
   - component: {fileID: 2906337654915167902}
-  - component: {fileID: 1814537747486412330}
-  - component: {fileID: 548286809744474248}
   m_Layer: 0
   m_Name: Glitter Particles
   m_TagString: Ball
@@ -29565,41 +29247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4f9ce3244d9784d83da11c649e744c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1814537747486412330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345121157754330294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &548286809744474248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8345121157754330294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1001 &7243765812008485966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29709,12 +29356,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de7304a2e43e76c41b94d77c71eda0e0, type: 3}
---- !u!1 &4096006491182456180 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6652087764009179450, guid: de7304a2e43e76c41b94d77c71eda0e0,
-    type: 3}
-  m_PrefabInstance: {fileID: 7243765812008485966}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3063192614878177938 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5622079842188750556, guid: de7304a2e43e76c41b94d77c71eda0e0,

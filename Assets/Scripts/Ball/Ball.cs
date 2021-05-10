@@ -171,7 +171,9 @@ namespace LW.Ball{
 
             if (jedi.Spin)
             {
-                var shell = GetComponentInChildren<SpinParticlesID>().transform.parent.transform;
+                var shell = GetComponentInChildren<ShellId>().transform;
+                Debug.Log("spinning");
+                
                 if (jedi.HoldPose == HandPose.flat)
                 {
                     shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, 0);
@@ -272,17 +274,6 @@ namespace LW.Ball{
         {
             if (InteractingWithParticles) { return; }
 
-            //if (
-            //    jedi.LevelUpTimer < 2 &&
-            //    tracking.handedness == Hands.both &&
-            //    tracking.rightPose == HandPose.fist && tracking.leftPose == HandPose.fist
-            //    )
-            //{
-            //    osc.Send("LevelUp!");
-            //    director.NextWorldLevel();
-            //    StartCoroutine(destroySelf);
-            //}
-
             if (other.collider.CompareTag("RightHand"))
             {
 
@@ -342,6 +333,13 @@ namespace LW.Ball{
             }
             else
             {
+                //if (jedi.LevelUpTimer < 2 && tracking.leftPose == HandPose.fist)
+                //{
+                //    osc.Send("LevelUp!");
+                //    director.NextWorldLevel();
+                //    StartCoroutine(destroySelf);
+                //}
+
                 if (tracking.leftPose == HandPose.fist)
                 {
                     Note = Notes.lFist;
@@ -394,10 +392,6 @@ namespace LW.Ball{
 
         private void OnCollisionExit(Collision collision)
         {
-            //if (State == BallState.Active)
-            //{
-            //    touched = false;
-            //}
             touched = false;
             touchResponseLimiter = false;
             BallCollision = false;
@@ -412,8 +406,6 @@ namespace LW.Ball{
         {
             State = BallState.Dead;
             IsNotQuiet = false;
-
-            director.RemoveBall(Handedness);
 
             if (GetComponentInChildren<DeathParticlesId>())
             {
@@ -436,6 +428,7 @@ namespace LW.Ball{
 
             yield return new WaitForSeconds(destroyDelay);
 
+            director.RemoveBall(Handedness);
             Destroy(gameObject);
         }
 

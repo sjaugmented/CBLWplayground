@@ -17,7 +17,8 @@ namespace LW.Ball
 
         public float GingerLift { get { return gingerLift; } }
 
-        public bool Spin { get; set; }
+        public bool spin;
+        public bool Spin { get { return spin; } set { spin = value; } }
         public float HoldDistance
         {
             get { return holdDistance; }

@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 3130787712181787250}
   - component: {fileID: 4088604607759142178}
   - component: {fileID: 4979605281813388549}
-  - component: {fileID: 4462126391687448973}
-  - component: {fileID: 5372512957928350003}
   m_Layer: 0
   m_Name: Slice.003
   m_TagString: Ball
@@ -81,42 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &4462126391687448973
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009859259899801870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &5372512957928350003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1009859259899801870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 4462126391687448973}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &5072076890822638833
 GameObject:
   m_ObjectHideFlags: 0
@@ -128,9 +90,6 @@ GameObject:
   - component: {fileID: 5700747360581324010}
   - component: {fileID: 2203004074498672479}
   - component: {fileID: 323561579507158195}
-  - component: {fileID: 6503273660096770392}
-  - component: {fileID: 5440754486041699383}
-  - component: {fileID: 3071271702408843117}
   m_Layer: 0
   m_Name: Carbonfiber Shell
   m_TagString: Ball
@@ -146,14 +105,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5072076890822638833}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.64288, y: 4.6428795, z: 4.6428795}
+  m_LocalPosition: {x: 0.0005557798, y: 0.00039082766, z: 0.0021237843}
+  m_LocalScale: {x: 4.64288, y: 4.642879, z: 4.642879}
   m_Children:
   - {fileID: 3130787712181787250}
   - {fileID: 6725446690529164673}
   - {fileID: 2171882995708298621}
-  m_Father: {fileID: 1134212181751807886}
-  m_RootOrder: 8
+  m_Father: {fileID: 6566154023562918482}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2203004074498672479
 MeshFilter:
@@ -203,67 +162,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &6503273660096770392
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5072076890822638833}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abd71dcb0056342b08cb3e8851fac00b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  minSpeed: 0.1
-  maxSpeed: 1
-  minRotationSpeed: 90
-  maxRotationSpeed: 360
-  fadeWaitTime: 0.2
-  fadeTime: 0.3
-  useGravity: 0
-  colliderThickness: 0.125
-  useNormals: 0
-  useMeshBoundsCenter: 1
-  allowShadows: 1
-  shadersAlreadyHandleTransparency: 0
---- !u!114 &5440754486041699383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5072076890822638833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &3071271702408843117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5072076890822638833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 5440754486041699383}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &5834095268209394766
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,8 +173,6 @@ GameObject:
   - component: {fileID: 6725446690529164673}
   - component: {fileID: 3941804271180558965}
   - component: {fileID: 7800475831727607372}
-  - component: {fileID: 2546343738395862566}
-  - component: {fileID: 8742037087447155617}
   m_Layer: 0
   m_Name: Slice.004
   m_TagString: Ball
@@ -345,41 +241,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &2546343738395862566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5834095268209394766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &8742037087447155617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5834095268209394766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &8836994469961160642
 GameObject:
   m_ObjectHideFlags: 0
@@ -391,8 +252,6 @@ GameObject:
   - component: {fileID: 2171882995708298621}
   - component: {fileID: 3808143371737620774}
   - component: {fileID: 6924251974446833518}
-  - component: {fileID: 8495628031290991589}
-  - component: {fileID: 1992980295706642737}
   m_Layer: 0
   m_Name: Slice.005
   m_TagString: Ball
@@ -461,42 +320,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8495628031290991589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8836994469961160642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa3fb0857e8b5d94e8f7201d877043be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUser: 0
---- !u!114 &1992980295706642737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8836994469961160642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 8495628031290991589}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1001 &1282880396942044354
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -607,13 +430,18 @@ PrefabInstance:
     - target: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: m_Name
-      value: Variant 1
+      value: Variant 1 - Carbon
+      objectReference: {fileID: 0}
+    - target: {fileID: 5391405407328720528, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
---- !u!4 &1134212181751807886 stripped
+--- !u!4 &6566154023562918482 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2193309183216341836, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+  m_CorrespondingSourceObject: {fileID: 5391405407328720528, guid: 56e79d1d7f3b27e4ab523612c469e09a,
     type: 3}
   m_PrefabInstance: {fileID: 1282880396942044354}
   m_PrefabAsset: {fileID: 0}

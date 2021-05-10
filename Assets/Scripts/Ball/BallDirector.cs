@@ -8,6 +8,7 @@ namespace LW.Ball
 	public class BallDirector : MonoBehaviour
 	{
 		[SerializeField] bool sharedExperience = false;
+		[SerializeField] bool multiBall = false;
 		[SerializeField] GameObject prefab1;
 		[SerializeField] GameObject prefab3;
 		[SerializeField] GameObject prefab4;
@@ -37,8 +38,10 @@ namespace LW.Ball
 
 		public bool Still { get; set; }
 
-		public bool RightBallInPlay { get; set; }
-		public bool LeftBallInPlay { get; set; }
+		public bool rightInPlay, leftInPlay;
+
+		public bool RightBallInPlay { get { return rightInPlay; } set { rightInPlay = value; } }
+		public bool LeftBallInPlay { get { return leftInPlay; } set { leftInPlay = value; } }
 
 		bool spawnReady, hasReset;
 		float spawnWindow = Mathf.Infinity;
@@ -196,7 +199,7 @@ namespace LW.Ball
 
 			if (spawnWindow < 1 && tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.flat)
 			{
-				if (!LeftBallInPlay)
+				if (!LeftBallInPlay && multiBall && worldLevel > 3)
 				{
 					SpawnBall("left");
 				}
@@ -206,20 +209,20 @@ namespace LW.Ball
 
 		private void SpawnBall(string side)
 		{
-			GameObject spawnPrefab;
+			GameObject spawnPrefab = prefab1;
 
-			switch (worldLevel)
-            {
-				case 3:
-					spawnPrefab = prefab3;
-					break;
-				case 4:
-					spawnPrefab = prefab4;
-					break;
-				default:
-					spawnPrefab = prefab1;
-					break;
-            }
+			//switch (worldLevel)
+   //         {
+   //             case 3:
+   //                 spawnPrefab = prefab3;
+   //                 break;
+   //             case 4:
+   //                 spawnPrefab = prefab4;
+   //                 break;
+   //             default:
+			//		spawnPrefab = prefab1;
+			//		break;
+   //         }
 			
 			if (side == "right")
             {
@@ -236,7 +239,7 @@ namespace LW.Ball
 				leftBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
 
-				currentBalls.Add(rightBall.GetComponent<Ball>());
+				currentBalls.Add(leftBall.GetComponent<Ball>());
 			}
 		}
 
@@ -274,15 +277,18 @@ namespace LW.Ball
 
 		public void RemoveBall(Hands handedness)
         {
-			Ball ballToRemove;
+			int index = 0;
 
-			foreach(Ball ball in currentBalls)
+			for(int i = 0; i < currentBalls.Count; i++)
             {
-				if (ball.Handedness == handedness)
+				if (currentBalls[i].Handedness == handedness)
                 {
-					currentBalls.Remove(ball);
+					index = i;
                 }
             }
+
+			Debug.Log("Removing ball at index " + index);
+			currentBalls.RemoveAt(index);
         }
 
 		public void SetGlobalStill(bool val)
