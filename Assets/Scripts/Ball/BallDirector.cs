@@ -9,6 +9,7 @@ namespace LW.Ball
 	{
 		[SerializeField] bool sharedExperience = false;
 		[SerializeField] bool multiBall = false;
+		[SerializeField] bool killJedi = false;
 		[SerializeField] GameObject prefab1;
 		[SerializeField] GameObject prefab3;
 		[SerializeField] GameObject prefab4;
@@ -26,6 +27,11 @@ namespace LW.Ball
 		public bool SendCoordinates
         {
 			get { return sendCoordinates; }
+        }
+		public bool KillJedi
+        {
+			get { return killJedi; }
+			set { killJedi = value; }
         }
 
 		public bool Viewfinder { get; set; }
@@ -226,12 +232,20 @@ namespace LW.Ball
 			
 			if (side == "right")
             {
+				Debug.Log("spawning");
+
 				RightBallInPlay = true;
 				rightBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 
+				Debug.Log("spawned");
+
 				rightBall.GetComponent<Ball>().Handedness = Hands.right;
+
+				Debug.Log("set handedness");
 				
 				currentBalls.Add(rightBall.GetComponent<Ball>());
+
+				Debug.Log("added to Balls");
             }
 			else
             {

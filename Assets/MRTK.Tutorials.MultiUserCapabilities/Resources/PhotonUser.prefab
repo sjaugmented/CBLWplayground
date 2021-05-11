@@ -1051,6 +1051,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 310e56a3f87f528418d56bdecfee37a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: 0
 --- !u!1 &1285600317800645915
 GameObject:
   m_ObjectHideFlags: 0
@@ -8634,6 +8635,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sharedExperience: 0
+  multiBall: 0
+  killJedi: 0
   prefab1: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
   prefab3: {fileID: 248868520167158515, guid: ebb95e46f1d404d4db31b2553628b164, type: 3}
   prefab4: {fileID: 1349769195282819603, guid: 61f9397ea815b8b43aea668eaaac369d, type: 3}
@@ -9265,7 +9268,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0

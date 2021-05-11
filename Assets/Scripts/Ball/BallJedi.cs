@@ -53,6 +53,7 @@ namespace LW.Ball
         bool lassoReady, resetReady;
         float lassoTimer, resetTimer, recallPunchTimer, forceTimer = Mathf.Infinity;
 
+        BallDirector director;
         NewTracking tracking;
         CastOrigins origins;
         Rigidbody rigidbody;
@@ -61,6 +62,7 @@ namespace LW.Ball
 
         void Start()
         {
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
             origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             rigidbody = GetComponent<Rigidbody>();
@@ -71,6 +73,7 @@ namespace LW.Ball
         void Update()
         {
             //Debug.Log(NoJedi);
+            bool gravityCondition = !Held && ball.State == BallState.Active;
             
             RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
 
@@ -79,12 +82,11 @@ namespace LW.Ball
             recallPunchTimer += Time.deltaTime;
             forceTimer = Time.deltaTime;
 
-            bool gravityCondition = !Held && ball.State == BallState.Active;
 
             rigidbody.useGravity = gravityCondition;
             GetComponent<ConstantForce>().enabled = gravityCondition;
 
-            if (!NoJedi)
+            if (!NoJedi && !director.KillJedi)
             {
                 #region Multi Axis Control
                 if (tracking.handedness == Hands.both)

@@ -11,7 +11,7 @@ namespace LW.Ball
 
         void Start()
         {
-
+            Debug.Log("Player live");
         }
 
         void Update()

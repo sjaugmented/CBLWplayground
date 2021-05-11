@@ -1403,7 +1403,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &733917316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8407,7 +8407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!54 &1822961035
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24170,7 +24170,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2452266860748762232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24183,7 +24183,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b746267a791aa954fbaad58498b6c655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab1: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
+  sharedExperience: 1
+  multiBall: 0
+  killJedi: 1
+  prefab1: {fileID: 1134212181751807887, guid: f8579223d56c7914489b6d1eda473014, type: 3}
   prefab3: {fileID: 248868520167158515, guid: ebb95e46f1d404d4db31b2553628b164, type: 3}
   prefab4: {fileID: 1349769195282819603, guid: 61f9397ea815b8b43aea668eaaac369d, type: 3}
   nodeTap: {fileID: 8300000, guid: 7d0e27bc0f165ce4f9158109afffe01d, type: 3}
@@ -24195,6 +24198,9 @@ MonoBehaviour:
   handColliders: {fileID: 7633091808637125529}
   worldLevel: 1
   sendCoordinates: 1
+  rightInPlay: 0
+  leftInPlay: 0
+  currentBalls: []
 --- !u!4 &2452266861773551491
 Transform:
   m_ObjectHideFlags: 0
