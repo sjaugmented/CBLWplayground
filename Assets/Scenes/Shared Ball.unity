@@ -24185,7 +24185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sharedExperience: 1
   multiBall: 0
-  killJedi: 1
+  killJedi: 0
   prefab1: {fileID: 1134212181751807887, guid: f8579223d56c7914489b6d1eda473014, type: 3}
   prefab3: {fileID: 248868520167158515, guid: ebb95e46f1d404d4db31b2553628b164, type: 3}
   prefab4: {fileID: 1349769195282819603, guid: 61f9397ea815b8b43aea668eaaac369d, type: 3}
