@@ -2,6 +2,7 @@
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
+using MRTK.Tutorials.MultiUserCapabilities;
 
 namespace LW.Ball
 {
@@ -61,8 +62,11 @@ namespace LW.Ball
 
 		public List<Ball> currentBalls = new List<Ball>();
 
+		PhotonRoom room;
+
         private void Awake()
         {
+			room = FindObjectOfType<PhotonRoom>();
 			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 
 			if (sharedExperience)
@@ -186,8 +190,9 @@ namespace LW.Ball
 			{
 				if (!RightBallInPlay)
 				{
-					SpawnBall("right");
-				}
+                    SpawnBall("right");
+
+                }
 			}
 
 			if (tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.fist)
@@ -207,7 +212,7 @@ namespace LW.Ball
 			{
 				if (!LeftBallInPlay && multiBall && worldLevel > 3)
 				{
-					SpawnBall("left");
+					//SpawnBall("left");
 				}
 			}
 
@@ -235,7 +240,7 @@ namespace LW.Ball
 				Debug.Log("spawning");
 
 				RightBallInPlay = true;
-				rightBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+				rightBall = sharedExperience ? room.CreateInteractableObjects(tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 
 				Debug.Log("spawned");
 

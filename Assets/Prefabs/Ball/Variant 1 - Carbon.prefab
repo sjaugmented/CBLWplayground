@@ -574,6 +574,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -325292382965221299, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: Synchronization
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 863079449121654146, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: rings.Array.size

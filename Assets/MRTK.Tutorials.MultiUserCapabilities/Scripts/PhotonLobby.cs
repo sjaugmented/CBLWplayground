@@ -6,6 +6,10 @@ namespace MRTK.Tutorials.MultiUserCapabilities
 {
     public class PhotonLobby : MonoBehaviourPunCallbacks
     {
+        [Tooltip("The UI Label to inform the user that the connection is in progress")]
+        [SerializeField]
+        private GameObject connectingCanvas;
+
         public static PhotonLobby Lobby;
 
         private int roomNumber = 1;
@@ -31,6 +35,11 @@ namespace MRTK.Tutorials.MultiUserCapabilities
             GenericNetworkManager.OnReadyToStartNetwork += StartNetwork;
         }
 
+        private void Start()
+        {
+            connectingCanvas.SetActive(true);
+        }
+
         public override void OnConnectedToMaster()
         {
             var randomUserId = Random.Range(0, 999999);
@@ -50,6 +59,7 @@ namespace MRTK.Tutorials.MultiUserCapabilities
             Debug.Log("Current room name: " + PhotonNetwork.CurrentRoom.Name);
             Debug.Log("Other players in room: " + PhotonNetwork.CountOfPlayersInRooms);
             Debug.Log("Total players in room: " + (PhotonNetwork.CountOfPlayersInRooms + 1));
+            connectingCanvas.SetActive(false);
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)
