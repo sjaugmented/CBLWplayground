@@ -699,6 +699,11 @@ PrefabInstance:
       propertyPath: toggleContainmentSphere
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4535550177916747543, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5391405407328720528, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: m_RootOrder

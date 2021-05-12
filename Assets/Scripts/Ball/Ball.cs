@@ -2,6 +2,8 @@
 using UnityEngine;
 using LW.Core;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Photon.Pun;
+using Photon.Realtime;
 
 namespace LW.Ball{
     public enum BallState { Active, Still, Dead };
@@ -429,7 +431,16 @@ namespace LW.Ball{
             yield return new WaitForSeconds(destroyDelay);
 
             director.RemoveBall(Handedness);
-            Destroy(gameObject);
+
+            if (director.SharedExperience && GetComponent<PhotonView>().IsMine)
+            {
+                Debug.Log("Destroying with Photon--");
+                PhotonNetwork.Destroy(gameObject);
+            }
+            else 
+            {
+                Destroy(gameObject);
+            }
         }
 
         IEnumerator QuietBall()

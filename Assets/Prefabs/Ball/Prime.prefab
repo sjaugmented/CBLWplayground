@@ -9693,6 +9693,7 @@ GameObject:
   - component: {fileID: 4535550177916747543}
   - component: {fileID: -325292382965221299}
   - component: {fileID: 3648994045737851960}
+  - component: {fileID: 2989304319388011240}
   m_Layer: 0
   m_Name: Prime
   m_TagString: Ball
@@ -10092,6 +10093,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4535550177916747543}
+  - {fileID: 2989304319388011240}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -10107,6 +10109,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 130ef06c1c6d9a8408a37662e933b938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2989304319388011240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193309183216341837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
 --- !u!1 &3175291041352865394
 GameObject:
   m_ObjectHideFlags: 0

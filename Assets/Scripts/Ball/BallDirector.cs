@@ -25,6 +25,11 @@ namespace LW.Ball
 		[SerializeField] int worldLevel = 1;
 		[SerializeField] bool sendCoordinates = false;
 
+		public bool SharedExperience
+        {
+			get { return sharedExperience; }
+        }
+
 		public bool SendCoordinates
         {
 			get { return sendCoordinates; }
