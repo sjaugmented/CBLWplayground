@@ -8,6 +8,8 @@ namespace LW.Ball
 {
 	public class BallDirector : MonoBehaviour
 	{
+		public static BallDirector Instance;
+		
 		[SerializeField] bool sharedExperience = false;
 		[SerializeField] bool multiBall = false;
 		[SerializeField] bool killJedi = false;
@@ -60,19 +62,19 @@ namespace LW.Ball
 
 		public Vector3 SpawnOffset { get; set; }
 
-		NewTracking tracking;
+		//NewTracking tracking;
 		ThumbTrigger rThumbTrigger, lThumbTrigger;
 		GameObject rightBall;
 		GameObject leftBall;
 
 		public List<Ball> currentBalls = new List<Ball>();
 
-		PhotonRoom room;
+		//PhotonRoom room;
 
         private void Awake()
         {
-			room = FindObjectOfType<PhotonRoom>();
-			tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+			//room = FindObjectOfType<PhotonRoom>();
+			//tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
 
 			if (sharedExperience)
 			{
@@ -87,6 +89,8 @@ namespace LW.Ball
 
 		void Start()
 		{
+			Instance = this;
+			
 			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
 			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
 
@@ -105,8 +109,8 @@ namespace LW.Ball
 
 		void Update()
 		{
-			SetRightHand(tracking.FoundRightHand);
-			SetLeftHand(tracking.FoundLeftHand);
+			SetRightHand(NewTracking.Instance.FoundRightHand);
+			SetLeftHand(NewTracking.Instance.FoundLeftHand);
 
 			//if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
 			//         {
@@ -178,7 +182,7 @@ namespace LW.Ball
 			SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
 			spawnWindow += Time.deltaTime;
 
-			if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
+			if (NewTracking.Instance.rightPalmAbs == Direction.up && NewTracking.Instance.rightPose == HandPose.fist)
 			{
 				if (!spawnReady)
 				{
@@ -191,7 +195,7 @@ namespace LW.Ball
 				spawnReady = false;
 			}
 
-			if (spawnWindow < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
+			if (spawnWindow < 1 && NewTracking.Instance.rightPalmAbs == Direction.up && NewTracking.Instance.rightPose == HandPose.flat)
 			{
 				if (!RightBallInPlay)
 				{
@@ -200,7 +204,7 @@ namespace LW.Ball
                 }
 			}
 
-			if (tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.fist)
+			if (NewTracking.Instance.leftPalmAbs == Direction.up && NewTracking.Instance.leftPose == HandPose.fist)
 			{
 				if (!spawnReady)
 				{
@@ -213,7 +217,7 @@ namespace LW.Ball
 				spawnReady = false;
 			}
 
-			if (spawnWindow < 1 && tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.flat)
+			if (spawnWindow < 1 && NewTracking.Instance.leftPalmAbs == Direction.up && NewTracking.Instance.leftPose == HandPose.flat)
 			{
 				if (!LeftBallInPlay && multiBall && worldLevel > 3)
 				{
@@ -245,7 +249,7 @@ namespace LW.Ball
 				Debug.Log("spawning");
 
 				RightBallInPlay = true;
-				rightBall = sharedExperience ? room.CreateInteractableObjects(tracking.GetRtPalm.Position + SpawnOffset, tracking.GetRtPalm.Rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+				rightBall = Instantiate(spawnPrefab, NewTracking.Instance.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 
 				Debug.Log("spawned");
 
@@ -260,7 +264,7 @@ namespace LW.Ball
 			else
             {
 				LeftBallInPlay = true;
-				leftBall = sharedExperience ? PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation) : Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+				leftBall = Instantiate(spawnPrefab, NewTracking.Instance.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 				leftBall.GetComponent<Ball>().Handedness = Hands.left;
 
 				currentBalls.Add(leftBall.GetComponent<Ball>());

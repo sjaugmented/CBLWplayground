@@ -64,13 +64,13 @@ namespace LW.Ball{
         public float Distance { get; set; }
         public float ModeToggleTimer { get; set; }
 
-        BallDirector director;
-        NewTracking tracking;
-        CastOrigins origins;
+        //BallDirector director;
+        //NewTracking tracking;
+        //CastOrigins origins;
         BallJedi jedi;
         BallOsc osc;
         Rigidbody rigidbody;
-        MultiAxisController multiAxis;
+        //MultiAxisController multiAxis;
         NotePlayer notePlayer;
         IEnumerator quietBall, destroySelf;
 
@@ -81,12 +81,12 @@ namespace LW.Ball{
 
         void Start()
         {
-            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
-            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            //director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            //tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+            //origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
-            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
+            //multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
             notePlayer = GetComponent<NotePlayer>();
 
             TouchLevel = 0;

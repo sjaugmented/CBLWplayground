@@ -3,7 +3,6 @@ using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace LW.Core {
-    
     public enum Hands {right, left, both, none}
     public enum Direction {up, down, palmOut, palmIn, side, none };
     public enum Formation {palmsIn, palmsOut, together, palmsUp, palmsDown, none}
@@ -12,6 +11,8 @@ namespace LW.Core {
     [RequireComponent(typeof(CastOrigins))]
     public class NewTracking : MonoBehaviour
     {
+        public static NewTracking Instance;
+        
         [SerializeField] float strictMargin = 20;
         [SerializeField] bool printAngles = false;
         [SerializeField] bool showStaff = false;
@@ -62,6 +63,11 @@ namespace LW.Core {
         {
             cam = Camera.main.transform;
             floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
+        }
+
+        private void Start()
+        {
+            Instance = this;
         }
 
 

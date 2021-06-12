@@ -23,8 +23,8 @@ namespace LW.Ball
 
         Ball ball;
         BallJedi jedi;
-        NewTracking tracking;
-        CastOrigins origins;
+        //NewTracking tracking;
+        //CastOrigins origins;
         ParticleSystem innerParticles;
         ParticleSystem forceParticles;
         ParticleSystem spinParticles;
@@ -37,8 +37,8 @@ namespace LW.Ball
             spinParticles = GetComponentInChildren<SpinParticlesID>().transform.GetComponent<ParticleSystem>();
             collisionParticles = GetComponentInChildren<CollisionParticlesID>().transform.GetComponent<ParticleSystem>();
             jedi = GetComponentInParent<BallJedi>();
-            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            //tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+            //origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
 
             CoreSize = 0.9f;
             CoreLifetime = 0.1f;
