@@ -6,8 +6,6 @@ namespace LW.Core
 {
     public class MultiAxisController : MonoBehaviour
     {
-        public static MultiAxisController Instance;
-        
         [SerializeField] float deadZone = 40;
         [SerializeField] Vector3 outOffset;
         [SerializeField] Vector3 inOffset;
@@ -20,18 +18,20 @@ namespace LW.Core
         public Vector3 OutOffset { get { return outOffset; } }
         public Vector3 InOffset { get { return inOffset; } }
 
-        void Start()
+        NewTracking tracking;
+
+        private void Start()
         {
-            Instance = this;
+            tracking = GetComponent<NewTracking>();
         }
 
         void Update()
         {
-            var rightPalm = NewTracking.Instance.GetRtPalm;
+            var rightPalm = tracking.GetRtPalm;
             var rightPalmRight = rightPalm.Right.normalized;
 
-            palmRightAgainstStaffForward = Vector3.Angle(rightPalmRight, NewTracking.Instance.Staff);
-            staffAgainstCamForward = Vector3.Angle(NewTracking.Instance.Staff, Camera.main.transform.forward);
+            palmRightAgainstStaffForward = Vector3.Angle(rightPalmRight, tracking.Staff);
+            staffAgainstCamForward = Vector3.Angle(tracking.Staff, Camera.main.transform.forward);
         }
     }
 }

@@ -11,10 +11,10 @@ namespace LW.Ball
         [SerializeField] string killCode;
         [SerializeField] string glitterCode;
 
-        //NewTracking tracking;
-        //CastOrigins origins;
+        NewTracking tracking;
+        CastOrigins origins;
         OSC osc;
-        //BallDirector director;
+        BallDirector director;
         Ball ball;
         BallJedi jedi;
         BallParticleController particles;
@@ -28,9 +28,9 @@ namespace LW.Ball
 
         void Start()
         {
-            //tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            //origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            //director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             ball = GetComponent<Ball>();
             jedi = GetComponent<BallJedi>();
             particles = GetComponent<BallParticleController>();
@@ -44,8 +44,8 @@ namespace LW.Ball
 
         void Update()
         {
-            string ballId = ball.DominantHand == NewTracking.Instance.GetRtPalm ? "rightBall" : "leftBall";
-            if (BallDirector.Instance.SendCoordinates && jedi.Moving)
+            string ballId = ball.DominantHand == tracking.GetRtPalm ? "rightBall" : "leftBall";
+            if (director.SendCoordinates && jedi.Moving)
             {
                 SendClean(ballId + "/WorldSpace/X/", transform.position.x);
                 SendClean(ballId + "/WorldSpace/Y/", transform.position.y);
@@ -57,7 +57,7 @@ namespace LW.Ball
             if (jedi.Held)
             {
                 Send("HoldDist/" + jedi.HoldPose, 1 - Mathf.Clamp(jedi.RelativeHandDist, 0, 1));
-                Send("HoldAng/" + jedi.HoldPose, NewTracking.Instance.StaffRight / 90);
+                Send("HoldAng/" + jedi.HoldPose, tracking.StaffRight / 90);
                 //if (!holdToggle)
                 //{
                 //    Send("holdingOn");
@@ -212,7 +212,7 @@ namespace LW.Ball
                 if (!spun)
                 {
                     Send("spinningDist", 1 - jedi.RelativeHandDist);
-                    Send("spinningAngle", NewTracking.Instance.StaffRight / 90);
+                    Send("spinningAngle", tracking.StaffRight / 90);
                     spun = true;
                 }
             }
@@ -244,7 +244,7 @@ namespace LW.Ball
         public void Send(string address = "", float val = 1)
         {
             OscMessage message = new OscMessage();
-            message.address = BallDirector.Instance.WorldLevel + "/" + ball.Handedness + "/" + address + "/";
+            message.address = director.WorldLevel + "/" + ball.Handedness + "/" + address + "/";
             message.values.Add(val);
             osc.Send(message);
         }

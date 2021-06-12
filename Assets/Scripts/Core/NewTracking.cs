@@ -11,8 +11,6 @@ namespace LW.Core {
     [RequireComponent(typeof(CastOrigins))]
     public class NewTracking : MonoBehaviour
     {
-        public static NewTracking Instance;
-        
         [SerializeField] float strictMargin = 20;
         [SerializeField] bool printAngles = false;
         [SerializeField] bool showStaff = false;
@@ -57,19 +55,13 @@ namespace LW.Core {
         #endregion
 
         Transform cam;
-        Transform floor;
+        //Transform floor;
 
         private void Awake()
         {
             cam = Camera.main.transform;
-            floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
+            //floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
         }
-
-        private void Start()
-        {
-            Instance = this;
-        }
-
 
         void Update()
         {
@@ -117,6 +109,8 @@ namespace LW.Core {
 
         private void WatchPalmDirections() 
         {
+            Transform floor = LevelObject.Instance.transform;
+
             rtPalmForwardRel = Vector3.Angle(rtPalm.Up, cam.forward);
             rtPalmForwardAbs = Vector3.Angle(rtPalm.Up, floor.forward);
             rtPalmUpRel = Vector3.Angle(rtPalm.Up, cam.up);
@@ -229,6 +223,8 @@ namespace LW.Core {
             {
                 Debug.DrawLine(ltPalm.Position, ltPalm.Position + staff * 2, Color.red, Mathf.Infinity);
             }
+            
+            Transform floor = LevelObject.Instance.transform;
             staffUp = Vector3.Angle(staff, cam.up);
             staffForward = Vector3.Angle(staff, cam.forward);
             staffRight = Vector3.Angle(staff, cam.right);

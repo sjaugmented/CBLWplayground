@@ -53,21 +53,21 @@ namespace LW.Ball
         bool lassoReady, resetReady;
         float lassoTimer, resetTimer, recallPunchTimer, forceTimer = Mathf.Infinity;
 
-        //BallDirector director;
-        //NewTracking tracking;
-        //CastOrigins origins;
+        BallDirector director;
+        NewTracking tracking;
+        CastOrigins origins;
         Rigidbody rigidbody;
         Ball ball;
-        //MultiAxisController multiAxis;
+        MultiAxisController multiAxis;
 
         void Start()
         {
-            //director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
-            //tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            //origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
             rigidbody = GetComponent<Rigidbody>();
             ball = GetComponent<Ball>();
-            //multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
+            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
         }
 
         void Update()
@@ -75,7 +75,7 @@ namespace LW.Ball
             //Debug.Log(NoJedi);
             bool gravityCondition = !Held && ball.State == BallState.Active;
             
-            RelativeHandDist = (CastOrigins.Instance.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
+            RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
 
             lassoTimer += Time.deltaTime;
             resetTimer += Time.deltaTime;
@@ -85,13 +85,11 @@ namespace LW.Ball
 
             rigidbody.useGravity = gravityCondition;
             GetComponent<ConstantForce>().enabled = gravityCondition;
-            NewTracking tracking = NewTracking.Instance;
-            MultiAxisController multi = MultiAxisController.Instance;
 
-            if (!NoJedi && !BallDirector.Instance.KillJedi)
+            if (!NoJedi && !director.KillJedi)
             {
 
-                #region Multi Axis Control
+                #region multiAxis Axis Control
                 if (tracking.handedness == Hands.both)
                 {
                     if (tracking.palmsRel == Formation.together)
@@ -124,11 +122,11 @@ namespace LW.Ball
                     else if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                     {
                         #region Jedi
-                        if (multi.StaffForward > (90 + multi.DeadZone / 2))
+                        if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
                         {
                             Secondary = Force.right;
                         }
-                        else if (multi.StaffForward < (90 - multi.DeadZone / 2))
+                        else if (multiAxis.StaffForward < (90 - multiAxis.DeadZone / 2))
                         {
                             Secondary = Force.left;
                         }
@@ -137,11 +135,11 @@ namespace LW.Ball
                             Secondary = Force.idle;
                         }
 
-                        if (multi.StaffRight > (90 + multi.DeadZone))
+                        if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
                         {
                             Primary = Force.pull;
                         }
-                        else if (multi.StaffRight < (90 - multi.DeadZone))
+                        else if (multiAxis.StaffRight < (90 - multiAxis.DeadZone))
                         {
                             Primary = Force.push;
                         }
