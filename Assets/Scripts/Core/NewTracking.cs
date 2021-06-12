@@ -1,20 +1,23 @@
 ﻿using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using Photon.Pun;
 using UnityEngine;
 
 namespace LW.Core {
+    
+    #region Public Enums
+
     public enum Hands {right, left, both, none}
     public enum Direction {up, down, palmOut, palmIn, side, none };
     public enum Formation {palmsIn, palmsOut, together, palmsUp, palmsDown, none}
     public enum HandPose {pointer, peace, flat, fist, gun, thumbsUp, rockOn, any, none}
 
-    [RequireComponent(typeof(CastOrigins))]
-    public class NewTracking : MonoBehaviour
-    {
-        [SerializeField] float strictMargin = 20;
-        [SerializeField] bool printAngles = false;
-        [SerializeField] bool showStaff = false;
+    #endregion
 
+    [RequireComponent(typeof(CastOrigins))]
+    public class NewTracking : MonoBehaviourPunCallbacks
+    {
+        #region Public State
         public Hands handedness = Hands.none;
         public Formation palmsRel = Formation.none;
         public Formation palmsAbs = Formation.none;
@@ -24,17 +27,31 @@ namespace LW.Core {
         public Direction leftPalmAbs = Direction.none;
         public HandPose rightPose = HandPose.none;
         public HandPose leftPose = HandPose.none;
-        
-        MixedRealityPose rtIndex, rtMiddle, rtPinky, rtThumb, rtPalm;
-        MixedRealityPose ltIndex, ltMiddle, ltPinky, ltThumb, ltPalm;
+        #endregion
 
+        #region Serialized Fields
+        [SerializeField] float strictMargin = 20;
+        [SerializeField] bool printAngles = false;
+        [SerializeField] bool showStaff = false;
+        #endregion
+
+        #region Private Fields
+        // Right Hand
+        MixedRealityPose rtIndex, rtMiddle, rtPinky, rtThumb, rtPalm;
         bool foundRtIndex, foundRtMiddle, foundRtPinky, foundRtThumb, foundRtPalm;
+        float rtPalmForwardRel, rtPalmForwardAbs, rtPalmUpRel, rtPalmUpAbs, rtPalmInRel, rtLauncher;
+        // Left Hand
+        MixedRealityPose ltIndex, ltMiddle, ltPinky, ltThumb, ltPalm;
         bool foundLtIndex, foundLtMiddle, foundLtPinky, foundLtThumb, foundLtPalm;
-        
+        float ltPalmForwardRel, ltPalmForwardAbs, ltPalmUpRel, ltPalmUpAbs, ltPalmInRel, ltLauncher;
+        // Staff
         Vector3 staff;
         float staffForward, staffUp, staffRight, staffFloorUp, staffFloorForward;
-        float rtPalmForwardRel, rtPalmForwardAbs, rtPalmUpRel, rtPalmUpAbs, rtPalmInRel, rtLauncher, ltPalmForwardRel,ltPalmForwardAbs, ltPalmUpRel, ltPalmUpAbs, ltPalmInRel, ltLauncher;
         
+        Transform cam;
+        //Transform floor;
+        #endregion
+
         #region Getters
         public MixedRealityPose GetRtPalm { get { return rtPalm; } }
         public MixedRealityPose GetLtPalm { get {return ltPalm;} }
@@ -54,8 +71,10 @@ namespace LW.Core {
         public Vector3 Staff { get { return staff; } }
         #endregion
 
-        Transform cam;
-        //Transform floor;
+        public bool IsPosed(float pose, float target, float marginOfError = 40)
+        {
+            return (pose < target + marginOfError && pose > target - marginOfError);
+        }
 
         private void Awake()
         {
@@ -63,19 +82,23 @@ namespace LW.Core {
             //floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
         }
 
-        void Update()
+        private void Update()
         {
-            FindJoints();
-            FindHands();
+            if (photonView.IsMine)
+            {
+                FindJoints();
+                FindHands();
 
-            WatchPalmDirections();
+                WatchPalmDirections();
 
-            WatchStaff();
-            WatchFormations();
+                WatchStaff();
+                WatchFormations();
             
-            WatchPoses();
+                WatchPoses();
+            }
         }
 
+        #region Private Methods
         private void FindJoints()
         {
             foundRtIndex = HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out rtIndex);
@@ -373,10 +396,6 @@ namespace LW.Core {
             }
             #endregion
         }
-
-        public bool IsPosed(float pose, float target, float marginOfError = 40)
-        {
-            return (pose < target + marginOfError && pose > target - marginOfError);
-        }
+        #endregion
     }
 }
