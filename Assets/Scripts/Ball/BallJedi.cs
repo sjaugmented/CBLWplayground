@@ -122,11 +122,11 @@ namespace LW.Ball
                     else if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                     {
                         #region Jedi
-                        if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
+                        if (multiAxis.StaffForwardCamForward > (90 + multiAxis.DeadZone / 2))
                         {
                             Secondary = Force.right;
                         }
-                        else if (multiAxis.StaffForward < (90 - multiAxis.DeadZone / 2))
+                        else if (multiAxis.StaffForwardCamForward < (90 - multiAxis.DeadZone / 2))
                         {
                             Secondary = Force.left;
                         }
@@ -135,11 +135,11 @@ namespace LW.Ball
                             Secondary = Force.idle;
                         }
 
-                        if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
+                        if (multiAxis.PalmRightStaffForward > (90 + multiAxis.DeadZone))
                         {
                             Primary = Force.pull;
                         }
-                        else if (multiAxis.StaffRight < (90 - multiAxis.DeadZone))
+                        else if (multiAxis.PalmRightStaffForward < (90 - multiAxis.DeadZone))
                         {
                             Primary = Force.push;
                         }

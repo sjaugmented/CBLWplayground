@@ -144,14 +144,14 @@ namespace LW.Ball{
             if (jedi.Primary == Force.pull)
             {
                 float pullCorrection = 90 + multiAxis.DeadZone;
-                float palmForce = Mathf.Clamp((multiAxis.StaffRight - pullCorrection) / totalPrimaryRange, 0.001f, 1);
+                float palmForce = Mathf.Clamp((multiAxis.PalmRightStaffForward - pullCorrection) / totalPrimaryRange, 0.001f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
                 rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
             
             if (jedi.Primary == Force.push)
             {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffRight / totalPrimaryRange), 0.001f, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.PalmRightStaffForward / totalPrimaryRange), 0.001f, 1);
                 transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
                 rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
             }
@@ -159,14 +159,14 @@ namespace LW.Ball{
             if (jedi.Secondary == Force.right)
             {
                 float rightCorrection = 90 + multiAxis.DeadZone / 2;
-                float palmForce = Mathf.Clamp((multiAxis.StaffForward - rightCorrection) / totalSecondaryRange, 0.001f, 1);
+                float palmForce = Mathf.Clamp((multiAxis.StaffForwardCamForward - rightCorrection) / totalSecondaryRange, 0.001f, 1);
                 //rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
                 rigidbody.velocity += new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
             }
 
             if (jedi.Secondary == Force.left)
             {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForward / totalSecondaryRange), 0.001f, 1);
+                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForwardCamForward / totalSecondaryRange), 0.001f, 1);
                 //rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
                 rigidbody.velocity += new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
             }
