@@ -76,8 +76,10 @@ namespace LW.Ball
 		{
 			if (stream.IsWriting)
             {
-                // This is us - send data
-            }
+				// This is us - send data
+				//stream.SendNext(transform.localPosition);
+				//stream.SendNext(transform.localRotation);
+			}
 			else
             {
 				// This is networked user - receive data
