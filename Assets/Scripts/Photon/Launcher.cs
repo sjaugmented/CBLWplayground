@@ -98,14 +98,6 @@ namespace LW.Photon
             Debug.LogWarningFormat("PUN Basics Tutorial/Launcher: OnDisconnected() was called by PUN with reason {0}", cause);
         }
 
-        public override void OnJoinRandomFailed(short returnCode, string message)
-        {
-            Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
-
-            // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
-            PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
-        }
-
         public override void OnJoinedRoom()
         {
             //Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
@@ -131,7 +123,34 @@ namespace LW.Photon
             connectingCanvas.SetActive(false);
         }
 
+        public override void OnJoinRandomFailed(short returnCode, string message)
+        {
+            Debug.Log("PUN Basics Tutorial/Launcher:OnJoinRandomFailed() was called by PUN. No random room available, so we create one.\nCalling: PhotonNetwork.CreateRoom");
+
+            // #Critical: we failed to join a random room, maybe none exists or they are all full. No worries, we create a new room.
+            //PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
+            CreateRoom();
+        }
+
+        public override void OnCreateRoomFailed(short returnCode, string message)
+        {
+            Debug.Log("\nPhotonLobby.OnCreateRoomFailed()");
+            Debug.LogError("Creating Room Failed");
+            CreateRoom();
+        }
+
+        public override void OnCreatedRoom()
+        {
+            base.OnCreatedRoom();
+        }
+
         #endregion
+
+        private void CreateRoom()
+        {
+            var roomOptions = new RoomOptions { IsVisible = true, IsOpen = true, MaxPlayers = 10 };
+            PhotonNetwork.CreateRoom("Room" + Random.Range(1, 3000), roomOptions);
+        }
 
         private void CreatePlayer()
         {

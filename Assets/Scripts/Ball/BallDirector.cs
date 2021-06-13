@@ -97,15 +97,15 @@ namespace LW.Ball
 
             tracking = GetComponent<NewTracking>();
 
-            if (sharedExperience)
-			{
-				if (PhotonNetwork.PrefabPool is DefaultPool pool)
-				{
-					if (prefab1 != null) pool.ResourceCache.Add(prefab1.name, prefab1);
-					if (prefab3 != null) pool.ResourceCache.Add(prefab3.name, prefab3);
-					if (prefab4 != null) pool.ResourceCache.Add(prefab4.name, prefab4);
-				}
-			}
+   //         if (sharedExperience)
+			//{
+			//	if (PhotonNetwork.PrefabPool is DefaultPool pool)
+			//	{
+			//		if (prefab1 != null) pool.ResourceCache.Add(prefab1.name, prefab1);
+			//		if (prefab3 != null) pool.ResourceCache.Add(prefab3.name, prefab3);
+			//		if (prefab4 != null) pool.ResourceCache.Add(prefab4.name, prefab4);
+			//	}
+			//}
 		}
 
 		void Start()

@@ -47,10 +47,10 @@ namespace LW.Photon
         /// <summary>
         /// Called when the local player left the room. We need to load the launcher scene.
         /// </summary>
-        public override void OnLeftRoom()
-        {
-            SceneManager.LoadScene(0);
-        }
+        //public override void OnLeftRoom()
+        //{
+        //    SceneManager.LoadScene(0);
+        //}
 
         public override void OnPlayerEnteredRoom(Player other)
         {
@@ -61,7 +61,7 @@ namespace LW.Photon
             {
                 Debug.LogFormat("OnPlayerEnteredRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
-                LoadArena();
+                //LoadArena();
             }
         }
 
@@ -76,7 +76,7 @@ namespace LW.Photon
                 Debug.LogFormat("OnPlayerLeftRoom IsMasterClient {0}", PhotonNetwork.IsMasterClient); // called before OnPlayerLeftRoom
 
 
-                LoadArena();
+                //LoadArena();
             }
         }
 
