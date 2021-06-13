@@ -610,10 +610,10 @@ PlayerSettings:
   metroPackageName: SharedX
   metroPackageVersion: 2.0.0.0
   metroCertificatePath: Assets/WSATestCertificate.pfx
-  metroCertificatePassword: 
-  metroCertificateSubject: Circus Bounce
-  metroCertificateIssuer: Circus Bounce
-  metroCertificateNotAfter: 803eb9afef46d701
+  metroCertificatePassword: "\x7Fdm~ebk,e\x7F,om~ebk"
+  metroCertificateSubject: LightWand
+  metroCertificateIssuer: LightWand
+  metroCertificateNotAfter: 808fdec8807fd801
   metroApplicationDescription: Sharing is Caring
   wsaImages: {}
   metroTileShortName: CB floor level
