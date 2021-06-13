@@ -1,11 +1,12 @@
 ﻿using LW.Core;
+using Photon.Pun;
 using UnityEngine;
 
 namespace LW.Ball
 {
     public enum Force { push, pull, right, left, idle }
 
-    public class BallJedi : MonoBehaviour
+    public class BallJedi : MonoBehaviourPunCallbacks, IPunObservable
     {
         [SerializeField] float masterForce = 3;
         [SerializeField] float recallMultiplier = 6;
@@ -60,14 +61,34 @@ namespace LW.Ball
         Ball ball;
         MultiAxisController multiAxis;
 
+        #region Photon
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this ball so send the others our data
+                //stream.SendNext(IsFiring);
+                //stream.SendNext(Health);
+            }
+            else
+            {
+                // Network ball, receive data
+                //this.IsFiring = (bool)stream.ReceiveNext();
+                //this.Health = (float)stream.ReceiveNext();
+            }
+        }
+
+        #endregion
+
         void Start()
         {
-            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
-            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
+            director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
+            origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
+            multiAxis = GameObject.FindGameObjectWithTag("Player").GetComponent<MultiAxisController>();
             rigidbody = GetComponent<Rigidbody>();
             ball = GetComponent<Ball>();
-            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
         }
 
         void Update()

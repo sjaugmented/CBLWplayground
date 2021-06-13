@@ -11,7 +11,7 @@ namespace LW.Ball{
 
     [RequireComponent(typeof(AudioSource))]
     [RequireComponent(typeof(Rigidbody))]
-    public class Ball : MonoBehaviour
+    public class Ball : MonoBehaviourPunCallbacks, IPunObservable
     {
         [SerializeField] bool toggleContainmentSphere = true;
         [SerializeField] GameObject containmentSphere; // on off based on frozen
@@ -74,6 +74,26 @@ namespace LW.Ball{
         NotePlayer notePlayer;
         IEnumerator quietBall, destroySelf;
 
+        #region Photon
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this ball so send the others our data
+                //stream.SendNext(IsFiring);
+                //stream.SendNext(Health);
+            }
+            else
+            {
+                // Network ball, receive data
+                //this.IsFiring = (bool)stream.ReceiveNext();
+                //this.Health = (float)stream.ReceiveNext();
+            }
+        }
+
+        #endregion
+
         private void Awake()
         {
             osc = GetComponent<BallOsc>();
@@ -81,12 +101,12 @@ namespace LW.Ball{
 
         void Start()
         {
-            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
-            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
+            tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
+            director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
+            origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
+            multiAxis = GameObject.FindGameObjectWithTag("Player").GetComponent<MultiAxisController>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
-            multiAxis = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<MultiAxisController>();
             notePlayer = GetComponent<NotePlayer>();
 
             TouchLevel = 0;

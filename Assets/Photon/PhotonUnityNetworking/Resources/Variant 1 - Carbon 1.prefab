@@ -335,7 +335,12 @@ PrefabInstance:
     - target: {fileID: -325292382965221299, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: observableSearch
-      value: 2
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -325292382965221299, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: ObservedComponents.Array.data[0]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 863079449121654146, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
@@ -450,7 +455,7 @@ PrefabInstance:
     - target: {fileID: 2193309183216341837, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: m_Name
-      value: Variant 1 - Carbon
+      value: Variant 1 - Carbon 1
       objectReference: {fileID: 0}
     - target: {fileID: 2225964859482369042, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
@@ -465,14 +470,16 @@ PrefabInstance:
     - target: {fileID: 4535550177916747543, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5391405407328720528, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3648994045737851960, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
+    - {fileID: 4535550177916747543, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
 --- !u!4 &6566154023562918482 stripped
 Transform:

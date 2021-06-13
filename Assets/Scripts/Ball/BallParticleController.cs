@@ -1,11 +1,12 @@
 ﻿using LW.Core;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
 {
-    public class BallParticleController : MonoBehaviour
+    public class BallParticleController : MonoBehaviourPunCallbacks, IPunObservable
     {
         [SerializeField] float maxLifetime = 2;
         [SerializeField] float maxSize = 0.25f;
@@ -29,6 +30,26 @@ namespace LW.Ball
         ParticleSystem forceParticles;
         ParticleSystem spinParticles;
         ParticleSystem collisionParticles;
+
+        #region Photon
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this ball so send the others our data
+                //stream.SendNext(IsFiring);
+                //stream.SendNext(Health);
+            }
+            else
+            {
+                // Network ball, receive data
+                //this.IsFiring = (bool)stream.ReceiveNext();
+                //this.Health = (float)stream.ReceiveNext();
+            }
+        }
+
+        #endregion
         void Start()
         {
             ball = GetComponent<Ball>();

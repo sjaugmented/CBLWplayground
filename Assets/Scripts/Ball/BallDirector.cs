@@ -2,7 +2,6 @@
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
-using MRTK.Tutorials.MultiUserCapabilities;
 
 namespace LW.Ball
 {
@@ -71,6 +70,8 @@ namespace LW.Ball
 
 		#region Photon
 
+		public static GameObject LocalPlayerInstance;
+
 		public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 		{
 			if (stream.IsWriting)
@@ -88,8 +89,14 @@ namespace LW.Ball
 
 		private void Awake()
         {
-			//room = FindObjectOfType<PhotonRoom>();
-            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+			if (photonView.IsMine)
+            {
+				BallDirector.LocalPlayerInstance = this.gameObject;
+            }
+
+			DontDestroyOnLoad(this.gameObject);
+
+            tracking = GetComponent<NewTracking>();
 
             if (sharedExperience)
 			{
@@ -122,121 +129,124 @@ namespace LW.Ball
 
 		void Update()
 		{
-			SetRightHand(tracking.FoundRightHand);
-			SetLeftHand(tracking.FoundLeftHand);
+			if (photonView.IsMine)
+            {
+				SetRightHand(tracking.FoundRightHand);
+				SetLeftHand(tracking.FoundLeftHand);
 
-			//if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
-			//         {
-			//	balls.Add(rightBall.GetComponent<Ball>());
-			//         }
-			//if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
-			//         {
-			//	balls.Add(leftBall.GetComponent<Ball>());
-			//         }
-
-			//if (RightBallInPlay && LeftBallInPlay)
-			//         {
-			//	if (balls[0].State == balls[1].State)
-			//             {
-			//		balls[0].GetComponent<BallJedi>().NoJedi = true;
-			//		balls[1].GetComponent<BallJedi>().NoJedi = true;
-			//	}
-			//	else
-			//             {
-			//		balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
-			//		balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
-			//	}
-			//         }
-
-			Viewfinder = rThumbTrigger.Triggered && lThumbTrigger.Triggered;
-			
-			if (rightBall)
-			{
 				//if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
-				//{
+				//         {
 				//	balls.Add(rightBall.GetComponent<Ball>());
-				//}
-
-				handColliders.SetActive(!rightBall.GetComponent<Ball>().InteractingWithParticles);
-				if (rightBall.GetComponent<Ball>().State == BallState.Dead)
-                {
-					RightBallInPlay = false;
-                }
-			}
-			if (leftBall)
-			{
+				//         }
 				//if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
-				//{
+				//         {
 				//	balls.Add(leftBall.GetComponent<Ball>());
-				//}
+				//         }
 
-				handColliders.SetActive(!leftBall.GetComponent<Ball>().InteractingWithParticles);
-				if (leftBall.GetComponent<Ball>().State == BallState.Dead)
+				//if (RightBallInPlay && LeftBallInPlay)
+				//         {
+				//	if (balls[0].State == balls[1].State)
+				//             {
+				//		balls[0].GetComponent<BallJedi>().NoJedi = true;
+				//		balls[1].GetComponent<BallJedi>().NoJedi = true;
+				//	}
+				//	else
+				//             {
+				//		balls[0].GetComponent<BallJedi>().NoJedi = balls[0].State == BallState.Still;
+				//		balls[1].GetComponent<BallJedi>().NoJedi = balls[1].State == BallState.Still;
+				//	}
+				//         }
+
+				Viewfinder = rThumbTrigger.Triggered && lThumbTrigger.Triggered;
+			
+				if (rightBall)
 				{
-					LeftBallInPlay = false;
+					//if (RightBallInPlay && rightBall.GetComponent<Ball>().State != BallState.Dead)
+					//{
+					//	balls.Add(rightBall.GetComponent<Ball>());
+					//}
+
+					handColliders.SetActive(!rightBall.GetComponent<Ball>().InteractingWithParticles);
+					if (rightBall.GetComponent<Ball>().State == BallState.Dead)
+					{
+						RightBallInPlay = false;
+					}
 				}
-			}
-
-			if (currentBalls.Count > 1)
-			{
-				if (currentBalls[0].State == currentBalls[1].State)
+				if (leftBall)
 				{
-					currentBalls[0].GetComponent<BallJedi>().NoJedi = true;
-					currentBalls[1].GetComponent<BallJedi>().NoJedi = true;
+					//if (LeftBallInPlay && leftBall.GetComponent<Ball>().State != BallState.Dead)
+					//{
+					//	balls.Add(leftBall.GetComponent<Ball>());
+					//}
+
+					handColliders.SetActive(!leftBall.GetComponent<Ball>().InteractingWithParticles);
+					if (leftBall.GetComponent<Ball>().State == BallState.Dead)
+					{
+						LeftBallInPlay = false;
+					}
+				}
+
+				if (currentBalls.Count > 1)
+				{
+					if (currentBalls[0].State == currentBalls[1].State)
+					{
+						currentBalls[0].GetComponent<BallJedi>().NoJedi = true;
+						currentBalls[1].GetComponent<BallJedi>().NoJedi = true;
+					}
+					else
+					{
+						currentBalls[0].GetComponent<BallJedi>().NoJedi = currentBalls[0].State == BallState.Still;
+						currentBalls[1].GetComponent<BallJedi>().NoJedi = currentBalls[1].State == BallState.Still;
+					}
+				}
+
+				// Spawning
+				SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
+				spawnWindow += Time.deltaTime;
+
+				if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
+				{
+					if (!spawnReady)
+					{
+						spawnWindow = 0;
+						spawnReady = true;
+					}
 				}
 				else
 				{
-					currentBalls[0].GetComponent<BallJedi>().NoJedi = currentBalls[0].State == BallState.Still;
-					currentBalls[1].GetComponent<BallJedi>().NoJedi = currentBalls[1].State == BallState.Still;
+					spawnReady = false;
 				}
-			}
 
-			// Spawning
-			SpawnOffset = new Vector3(0, 0.1f, 0) + Camera.main.transform.InverseTransformDirection(0, 0, 0.03f);
-			spawnWindow += Time.deltaTime;
-
-			if (tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.fist)
-			{
-				if (!spawnReady)
+				if (spawnWindow < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
 				{
-					spawnWindow = 0;
-					spawnReady = true;
+					if (!RightBallInPlay)
+					{
+						SpawnBall("right");
+
+					}
 				}
-			}
-			else
-			{
-				spawnReady = false;
-			}
 
-			if (spawnWindow < 1 && tracking.rightPalmAbs == Direction.up && tracking.rightPose == HandPose.flat)
-			{
-				if (!RightBallInPlay)
+				if (tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.fist)
 				{
-                    SpawnBall("right");
-
-                }
-			}
-
-			if (tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.fist)
-			{
-				if (!spawnReady)
-				{
-					spawnWindow = 0;
-					spawnReady = true;
+					if (!spawnReady)
+					{
+						spawnWindow = 0;
+						spawnReady = true;
+					}
 				}
-			}
-			else
-			{
-				spawnReady = false;
-			}
-
-			if (spawnWindow < 1 && tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.flat)
-			{
-				if (!LeftBallInPlay && multiBall && worldLevel > 3)
+				else
 				{
-					//SpawnBall("left");
+					spawnReady = false;
 				}
-			}
+
+				if (spawnWindow < 1 && tracking.leftPalmAbs == Direction.up && tracking.leftPose == HandPose.flat)
+				{
+					if (!LeftBallInPlay && multiBall && worldLevel > 3)
+					{
+						//SpawnBall("left");
+					}
+				}
+            }
 
         }
 
@@ -262,7 +272,7 @@ namespace LW.Ball
 				Debug.Log("spawning");
 
 				RightBallInPlay = true;
-				rightBall = Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+				rightBall = PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
 
 				Debug.Log("spawned");
 
@@ -274,14 +284,14 @@ namespace LW.Ball
 
 				Debug.Log("added to Balls");
             }
-			else
-            {
-				LeftBallInPlay = true;
-				leftBall = Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
-				leftBall.GetComponent<Ball>().Handedness = Hands.left;
+			//else
+   //         {
+			//	LeftBallInPlay = true;
+			//	leftBall = Instantiate(spawnPrefab, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+			//	leftBall.GetComponent<Ball>().Handedness = Hands.left;
 
-				currentBalls.Add(leftBall.GetComponent<Ball>());
-			}
+			//	currentBalls.Add(leftBall.GetComponent<Ball>());
+			//}
 		}
 
 		private void SetRightHand(bool set)

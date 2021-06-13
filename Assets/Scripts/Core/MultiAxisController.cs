@@ -1,11 +1,12 @@
 ﻿using Microsoft.MixedReality.Toolkit.Utilities;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Core
 {
-    public class MultiAxisController : MonoBehaviour
+    public class MultiAxisController : MonoBehaviourPunCallbacks
     {
         [SerializeField] float deadZone = 15;
         [Tooltip("Angle correction for palms out - typically only requires correction of the X vector axis. Recommend 60 degrees.")]
@@ -40,10 +41,13 @@ namespace LW.Core
 
         void Update()
         {
-            MixedRealityPose rightPalm = tracking.GetRtPalm;
-            Vector3 rightPalmRight = rightPalm.Right.normalized;
-            PalmRightStaffForward = Vector3.Angle(rightPalmRight, tracking.Staff);
-            StaffForwardCamForward = Vector3.Angle(tracking.Staff, Camera.main.transform.forward);
+            if (photonView.IsMine)
+            {
+                MixedRealityPose rightPalm = tracking.GetRtPalm;
+                Vector3 rightPalmRight = rightPalm.Right.normalized;
+                PalmRightStaffForward = Vector3.Angle(rightPalmRight, tracking.Staff);
+                StaffForwardCamForward = Vector3.Angle(tracking.Staff, Camera.main.transform.forward);
+            }
         }
     }
 }

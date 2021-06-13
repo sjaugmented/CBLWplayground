@@ -7,7 +7,8 @@ namespace LW.Photon
     public class Launcher : MonoBehaviourPunCallbacks
     {
         #region Private Serializable Fields
-
+        [Tooltip("The prefab to use for representing the player")]
+        public GameObject playerPrefab;
         [Tooltip("The maximum number of players per room. When a room is full, it can't be joined by new players, and so new room will be created")]
         [SerializeField]
         private byte maxPlayersPerRoom = 4;
@@ -121,15 +122,22 @@ namespace LW.Photon
             //}
 
             base.OnJoinedRoom();
-
+            // TODO remove logs
             Debug.Log("\nPhotonLobby.OnJoinedRoom()");
             Debug.Log("Current room name: " + PhotonNetwork.CurrentRoom.Name);
             Debug.Log("Other players in room: " + PhotonNetwork.CountOfPlayersInRooms);
             Debug.Log("Total players in room: " + (PhotonNetwork.CountOfPlayersInRooms + 1));
+            CreatePlayer();
             connectingCanvas.SetActive(false);
         }
 
         #endregion
+
+        private void CreatePlayer()
+        {
+            var player = PhotonNetwork.Instantiate(playerPrefab.name, Vector3.zero, Quaternion.identity);
+            Debug.Log("Instantiated playerPrefab"); // TODO remove
+        }
 
     }
 

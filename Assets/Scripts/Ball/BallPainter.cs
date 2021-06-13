@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
 {
-    public class BallPainter : MonoBehaviour
+    public class BallPainter : MonoBehaviourPunCallbacks, IPunObservable
     {
         [SerializeField] List<GameObject> shells, rings;
         float h, s, v;
@@ -14,6 +15,26 @@ namespace LW.Ball
 
         Ball ball;
         Light light;
+
+        #region Photon
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this ball so send the others our data
+                //stream.SendNext(IsFiring);
+                //stream.SendNext(Health);
+            }
+            else
+            {
+                // Network ball, receive data
+                //this.IsFiring = (bool)stream.ReceiveNext();
+                //this.Health = (float)stream.ReceiveNext();
+            }
+        }
+
+        #endregion
 
         void Start()
         {

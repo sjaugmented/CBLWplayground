@@ -24,9 +24,11 @@ namespace LW.Ball
 
         void Start()
         {
-            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            tracking = transform.root.GetComponent<NewTracking>();
+            director = transform.root.GetComponent<BallDirector>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
-            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
+
+            Debug.Log(transform.root.name);
         }
 
         private void OnTriggerEnter(Collider collider)

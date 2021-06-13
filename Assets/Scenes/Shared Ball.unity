@@ -1559,7 +1559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &733917316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1572,9 +1572,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39d8ae40140d50842bdf3bbd8994b5e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strictMargin: 20
-  printAngles: 0
-  showStaff: 0
   handedness: 3
   palmsRel: 5
   palmsAbs: 5
@@ -1584,6 +1581,9 @@ MonoBehaviour:
   leftPalmAbs: 5
   rightPose: 7
   leftPose: 7
+  strictMargin: 20
+  printAngles: 0
+  showStaff: 0
 --- !u!4 &733917317
 Transform:
   m_ObjectHideFlags: 0
@@ -1625,8 +1625,6 @@ MonoBehaviour:
   deadZone: 15
   outOffset: {x: 60, y: 0, z: 0}
   inOffset: {x: 120, y: 0, z: 0}
-  palmRightAgainstStaffForward: 0
-  staffAgainstCamForward: 0
 --- !u!1 &734231680
 GameObject:
   m_ObjectHideFlags: 0
@@ -2004,6 +2002,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28641cf195f66f141bc89756ec4ef5b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1285600317251020317, guid: 658996e40afdd264b8917561f5740ec1,
+    type: 3}
   maxPlayersPerRoom: 4
   connectingCanvas: {fileID: 963248515}
 --- !u!4 &786510831
@@ -2063,8 +2063,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc40d6242bad9949966720049f5f8f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1285600317251020317, guid: 658996e40afdd264b8917561f5740ec1,
-    type: 3}
 --- !u!1 &851767833
 GameObject:
   m_ObjectHideFlags: 0
@@ -24435,7 +24433,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2452266860748762232
 MonoBehaviour:
   m_ObjectHideFlags: 0

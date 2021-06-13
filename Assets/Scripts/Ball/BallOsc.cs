@@ -28,9 +28,9 @@ namespace LW.Ball
 
         void Start()
         {
-            tracking = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>();
-            origins = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<CastOrigins>();
-            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
+            director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
+            origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
             ball = GetComponent<Ball>();
             jedi = GetComponent<BallJedi>();
             particles = GetComponent<BallParticleController>();
