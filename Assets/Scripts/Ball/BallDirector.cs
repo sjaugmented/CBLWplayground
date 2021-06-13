@@ -117,10 +117,10 @@ namespace LW.Ball
 
 		void Start()
 		{
-			if (!photonView.IsMine)
-			{
-				return;
-			}
+			//if (!photonView.IsMine)
+			//{
+			//	return;
+			//}
 			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
 			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
 

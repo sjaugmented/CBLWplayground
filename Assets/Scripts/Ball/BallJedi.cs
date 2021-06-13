@@ -95,14 +95,14 @@ namespace LW.Ball
 
         void Start()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
-            tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
-            director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
-            origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
-            multiAxis = GameObject.FindGameObjectWithTag("Player").GetComponent<MultiAxisController>();
+            //if (!photonView.IsMine)
+            //{
+            //    return;
+            //}
+            tracking = GameObject.FindGameObjectWithTag("Director").GetComponent<NewTracking>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            origins = GameObject.FindGameObjectWithTag("Director").GetComponent<CastOrigins>();
+            multiAxis = GameObject.FindGameObjectWithTag("Director").GetComponent<MultiAxisController>();
             rigidbody = GetComponent<Rigidbody>();
             ball = GetComponent<Ball>();
         }

@@ -3,7 +3,6 @@ using UnityEngine;
 using LW.Core;
 using Microsoft.MixedReality.Toolkit.Utilities;
 using Photon.Pun;
-using Photon.Realtime;
 
 namespace LW.Ball{
     public enum BallState { Active, Still, Dead };
@@ -126,10 +125,10 @@ namespace LW.Ball{
             {
                 return;
             }
-            tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
-            director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
-            origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
-            multiAxis = GameObject.FindGameObjectWithTag("Player").GetComponent<MultiAxisController>();
+            tracking = GameObject.FindGameObjectWithTag("Director").GetComponent<NewTracking>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            origins = GameObject.FindGameObjectWithTag("Director").GetComponent<CastOrigins>();
+            multiAxis = GameObject.FindGameObjectWithTag("Director").GetComponent<MultiAxisController>();
             jedi = GetComponent<BallJedi>();
             rigidbody = GetComponent<Rigidbody>();
             notePlayer = GetComponent<NotePlayer>();
@@ -240,7 +239,7 @@ namespace LW.Ball{
 
                 if (jedi.Recall)
                 {
-                    lassoOrigin = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>().GetRtPalm.Position;
+                    lassoOrigin = GameObject.FindGameObjectWithTag("Director").GetComponent<NewTracking>().GetRtPalm.Position;
                     transform.LookAt(lassoOrigin);
 
                     if (distToOrigin > recallDistance)

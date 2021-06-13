@@ -24,22 +24,22 @@ namespace LW.Ball
 
         private void Awake()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
+            //if (!photonView.IsMine)
+            //{
+            //    return;
+            //}
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
         }
 
         void Start()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
-            tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
-            director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
-            origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
+            //if (!photonView.IsMine)
+            //{
+            //    return;
+            //}
+            tracking = GameObject.FindGameObjectWithTag("Director").GetComponent<NewTracking>();
+            director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
+            origins = GameObject.FindGameObjectWithTag("Director").GetComponent<CastOrigins>();
             ball = GetComponent<Ball>();
             jedi = GetComponent<BallJedi>();
             particles = GetComponent<BallParticleController>();

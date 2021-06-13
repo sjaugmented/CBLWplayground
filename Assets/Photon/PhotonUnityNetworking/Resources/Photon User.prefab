@@ -5313,7 +5313,7 @@ GameObject:
   - component: {fileID: 4814400574167070987}
   m_Layer: 0
   m_Name: Photon User
-  m_TagString: Player
+  m_TagString: Director
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5885,6 +5885,8 @@ GameObject:
   - component: {fileID: 271043254012059373}
   - component: {fileID: 2788811390744558473}
   - component: {fileID: 3941202153847641783}
+  - component: {fileID: 4571139488607916653}
+  - component: {fileID: 5371877575797095100}
   m_Layer: 0
   m_Name: 3rd Eye Particles (1)
   m_TagString: Untagged
@@ -5899,12 +5901,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2686738236696419717}
-  m_LocalRotation: {x: 0.12875654, y: 0.114705496, z: 0.28223115, w: 0.94372135}
-  m_LocalPosition: {x: -0.22213006, y: 0.1652985, z: -0.28016075}
+  m_LocalRotation: {x: -0, y: -0, z: -0.0000000055879354, w: 1}
+  m_LocalPosition: {x: 0, y: 0.055000022, z: 0.06260002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6876228673805842919}
-  m_RootOrder: 0
+  m_Father: {fileID: 2161136185307193296}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &2788811390744558473
 ParticleSystem:
@@ -10627,6 +10629,55 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &4571139488607916653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2686738236696419717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55691ad5b034fe6966763a6e23818d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackedTargetType: 6
+  trackedHandness: 2
+  trackedHandJoint: 2
+  transformOverride: {fileID: 0}
+  additionalOffset: {x: 0, y: 0, z: 0}
+  additionalRotation: {x: 0, y: 0, z: 0}
+  updateSolvers: 1
+--- !u!114 &5371877575797095100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2686738236696419717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4684083f6dff4a1d8a790bccc354fcf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  updateLinkedTransform: 0
+  moveLerpTime: 0.1
+  rotateLerpTime: 0.1
+  scaleLerpTime: 0
+  maintainScale: 1
+  smoothing: 1
+  lifetime: 0
+  referenceDirection: 1
+  minDistance: 0
+  maxDistance: 0
+  minViewDegrees: 0
+  maxViewDegrees: 30
+  aspectV: 1
+  ignoreAngleClamp: 0
+  ignoreDistanceClamp: 0
+  useFixedVerticalPosition: 0
+  fixedVerticalPosition: -0.4
+  orientToReferenceDirection: 0
 --- !u!1 &2754485830815910111
 GameObject:
   m_ObjectHideFlags: 0
@@ -10920,6 +10971,7 @@ Transform:
   - {fileID: 6876228673805842919}
   - {fileID: 6964141197547294275}
   - {fileID: 1751207734905421226}
+  - {fileID: 271043254012059373}
   m_Father: {fileID: 4953489438470268841}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11142,8 +11194,7 @@ Transform:
   m_LocalRotation: {x: -0.12875654, y: -0.114705496, z: -0.28223115, w: 0.94372135}
   m_LocalPosition: {x: 0.04766794, y: -0.10402617, z: 0.4198028}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 271043254012059373}
+  m_Children: []
   m_Father: {fileID: 2161136185307193296}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26632,7 +26683,7 @@ GameObject:
   - component: {fileID: 1207738654764425218}
   m_Layer: 0
   m_Name: Hands
-  m_TagString: Director
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
