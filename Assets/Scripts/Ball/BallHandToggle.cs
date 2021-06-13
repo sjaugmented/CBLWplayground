@@ -18,21 +18,18 @@ namespace LW.Ball
         [SerializeField] bool leftHand = false;
         bool triggered, inactive;
 
-        NewTracking tracking;
-        BallDirector director;
         OSC osc;
 
         void Start()
         {
-            tracking = transform.root.GetComponent<NewTracking>();
-            director = transform.root.GetComponent<BallDirector>();
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
-
-            Debug.Log(transform.root.name);
         }
 
         private void OnTriggerEnter(Collider collider)
         {
+            NewTracking tracking = transform.root.GetComponent<NewTracking>();
+            BallDirector director = transform.root.GetComponent<BallDirector>();
+            
             if (inactive) { return; }
 
             if (leftHand)

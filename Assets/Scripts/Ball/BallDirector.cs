@@ -76,8 +76,7 @@ namespace LW.Ball
 		{
 			if (stream.IsWriting)
             {
-				// This is us - send data
-				// stream.SendNext();
+                // This is us - send data
             }
 			else
             {

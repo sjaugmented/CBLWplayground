@@ -68,14 +68,26 @@ namespace LW.Ball
             if (stream.IsWriting)
             {
                 // We own this ball so send the others our data
-                //stream.SendNext(IsFiring);
-                //stream.SendNext(Health);
+                stream.SendNext(Primary);
+                stream.SendNext(Secondary);
+                stream.SendNext(Spin);
+                stream.SendNext(Recall);
+                stream.SendNext(Reset);
+                stream.SendNext(Held);
+                stream.SendNext(HoldPose);
+                stream.SendNext(RelativeHandDist);
             }
             else
             {
                 // Network ball, receive data
-                //this.IsFiring = (bool)stream.ReceiveNext();
-                //this.Health = (float)stream.ReceiveNext();
+                this.Reset = (bool)stream.ReceiveNext();
+                this.Secondary = (Force)stream.ReceiveNext();
+                this.Spin = (bool)stream.ReceiveNext();
+                this.Recall = (bool)stream.ReceiveNext();
+                this.Reset = (bool)stream.ReceiveNext();
+                this.Held = (bool)stream.ReceiveNext();
+                this.HoldPose = (HandPose)stream.ReceiveNext();
+                this.RelativeHandDist = (float)stream.ReceiveNext();
             }
         }
 
@@ -202,54 +214,6 @@ namespace LW.Ball
             
             #endregion
 
-
-
-            #region Forces
-            //if (forceTimer < 3)
-            //{
-            //    if (tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace))
-            //    {
-            //        if (multiAxis.StaffForward > (90 + multiAxis.DeadZone / 2))
-            //        {
-            //            Secondary = Force.right;
-            //        }
-            //        else if (multiAxis.StaffForward < (90 - multiAxis.DeadZone / 2))
-            //        {
-            //            Secondary = Force.left;
-            //        }
-            //        else/* if (multiAxis.StaffForward >= (90 - multiAxis.DeadZone) && multiAxis.StaffForward <= (90 + multiAxis.DeadZone))*/
-            //        {
-            //            Secondary = Force.idle;
-            //        }
-
-            //        if (multiAxis.StaffRight > (90 + multiAxis.DeadZone))
-            //        {
-            //            Primary = Force.pull;
-            //        }
-            //        else if (multiAxis.StaffRight < (90 - multiAxis.DeadZone))
-            //        {
-            //            Primary = Force.push;
-            //        }
-            //        else/* if (multiAxis.StaffRight >= (90 - multiAxis.DeadZone) && multiAxis.StaffRight <= (90 + multiAxis.DeadZone))*/
-            //        {
-            //            Primary = Force.idle;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Primary = Force.idle;
-            //        Secondary = Force.idle;
-            //    }
-            //}
-            //else
-            //{
-            //    Primary = Force.idle;
-            //    Secondary = Force.idle;
-            //}
-
-            //Spin = ball.State == BallState.Still && tracking.handedness == Hands.both && (tracking.rightPose == HandPose.flat || tracking.rightPose == HandPose.peace) && (tracking.leftPose == HandPose.flat || tracking.leftPose == HandPose.peace);
-            #endregion
-
             #region Recall
             if (ball.IsNotQuiet && tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
             {
@@ -295,33 +259,6 @@ namespace LW.Ball
                 Reset = false;
             }
 
-            #endregion
-
-            #region Forces (old)
-            //if (tracking.palmsRel == Formation.palmsOut && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-            //{
-            //    Power = TheForce.push;
-            //}
-            //else if (tracking.palmsAbs == Formation.palmsUp && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
-            //{
-            //    Power = TheForce.lift;
-            //}
-            //else if (tracking.palmsRel == Formation.palmsIn && tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
-            //{
-            //    Power = TheForce.pull;
-            //}
-            //else if (tracking.palmsAbs == Formation.palmsDown && (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat))
-            //{
-            //    Power = TheForce.down;
-            //}
-            //if (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp)
-            //{
-            //    Power = TheForce.spin;
-            //}
-            //else
-            //{
-            //    Power = TheForce.idle;
-            //}
             #endregion
         }
     }

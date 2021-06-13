@@ -55,6 +55,51 @@ namespace LW.Ball{
         public bool ModeToggled { get; set; }
         public bool BallCollision { get; set; }
 
+        #region Photon
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                // We own this ball so send the others our data
+                // Particles need...
+                stream.SendNext(State);
+                stream.SendNext(BallCollision);
+                stream.SendNext(CoreActive);
+
+                // Jedi needs...
+                stream.SendNext(IsNotQuiet);
+                stream.SendNext(DominantDir);
+                stream.SendNext(DominantPose);
+
+                // Painter needs...
+                stream.SendNext(Hue);
+                stream.SendNext(NoteColor);
+                stream.SendNext(Handedness);
+
+                // Notes need...
+
+                
+                
+            }
+            else
+            {
+                // Network ball, receive data
+                this.State = (BallState)stream.ReceiveNext();
+                this.CoreActive = (bool)stream.ReceiveNext();
+                this.BallCollision = (bool)stream.ReceiveNext();
+                
+                this.IsNotQuiet = (bool)stream.ReceiveNext();
+                this.DominantDir = (Direction)stream.ReceiveNext();
+                this.DominantPose = (HandPose)stream.ReceiveNext();
+                
+                this.Hue = (float)stream.ReceiveNext();
+                this.NoteColor = (Color)stream.ReceiveNext();
+                this.Handedness = (Hands)stream.ReceiveNext();
+            }
+        }
+
+        #endregion
         //float touchTimer = Mathf.Infinity;
         bool touchResponseLimiter, hasReset;
         Vector3 lassoOrigin;
@@ -74,25 +119,6 @@ namespace LW.Ball{
         NotePlayer notePlayer;
         IEnumerator quietBall, destroySelf;
 
-        #region Photon
-
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (stream.IsWriting)
-            {
-                // We own this ball so send the others our data
-                //stream.SendNext(IsFiring);
-                //stream.SendNext(Health);
-            }
-            else
-            {
-                // Network ball, receive data
-                //this.IsFiring = (bool)stream.ReceiveNext();
-                //this.Health = (float)stream.ReceiveNext();
-            }
-        }
-
-        #endregion
 
         private void Awake()
         {
@@ -213,7 +239,7 @@ namespace LW.Ball{
 
             if (jedi.Recall)
             {
-                lassoOrigin = GameObject.FindGameObjectWithTag("HandTracking").GetComponent<NewTracking>().GetRtPalm.Position;
+                lassoOrigin = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>().GetRtPalm.Position;
                 transform.LookAt(lassoOrigin);
 
                 if (distToOrigin > recallDistance)
