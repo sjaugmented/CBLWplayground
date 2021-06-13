@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
 {
-    public class ThumbTrigger : MonoBehaviour
+    public class ThumbTrigger : MonoBehaviourPunCallbacks
     {
         [SerializeField] bool leftThumb = false;
 
@@ -12,6 +13,10 @@ namespace LW.Ball
 
         private void OnTriggerEnter(Collider other)
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             if (leftThumb)
             {
                 if (other.CompareTag("Right Index"))

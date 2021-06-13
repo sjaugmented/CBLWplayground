@@ -88,12 +88,17 @@ namespace LW.Ball
 
 		private void Awake()
         {
-			if (photonView.IsMine)
-            {
-				BallDirector.LocalPlayerInstance = this.gameObject;
-            }
+			//if (photonView.IsMine)
+   //         {
+			//	BallDirector.LocalPlayerInstance = this.gameObject;
+   //         }
 
-			DontDestroyOnLoad(this.gameObject);
+			//DontDestroyOnLoad(this.gameObject);
+
+			if (!photonView.IsMine)
+            {
+				return;
+            }
 
             tracking = GetComponent<NewTracking>();
 
@@ -110,6 +115,10 @@ namespace LW.Ball
 
 		void Start()
 		{
+			if (!photonView.IsMine)
+			{
+				return;
+			}
 			rThumbTrigger = GameObject.FindGameObjectWithTag("Right Thumb").GetComponent<ThumbTrigger>();
 			lThumbTrigger = GameObject.FindGameObjectWithTag("Left Thumb").GetComponent<ThumbTrigger>();
 
@@ -311,22 +320,38 @@ namespace LW.Ball
 
 		public void NextWorldLevel()
 		{
+			if (!photonView.IsMine)
+			{
+				return;
+			}
 			Debug.Log("NEXT WORLD");
 			worldLevel = worldLevel < 4 ? worldLevel + 1 : 1;
 		}
 
 		public void DisableHandColliders()
 		{
+			if (!photonView.IsMine)
+			{
+				return;
+			}
 			handColliders.SetActive(false);
 		}
 
 		public void EnableHandColliders()
 		{
+			if (!photonView.IsMine)
+			{
+				return;
+			}
 			handColliders.SetActive(true);
 		}
 
 		public void RemoveBall(Hands handedness)
         {
+			if (!photonView.IsMine)
+			{
+				return;
+			}
 			int index = 0;
 
 			for(int i = 0; i < currentBalls.Count; i++)
@@ -343,6 +368,10 @@ namespace LW.Ball
 
 		public void SetGlobalStill(bool val)
         {
+			if (!photonView.IsMine)
+			{
+				return;
+			}
 			List<Ball> balls = new List<Ball>();
 
 			if (RightBallInPlay && LeftBallInPlay)

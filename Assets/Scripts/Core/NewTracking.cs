@@ -73,11 +73,19 @@ namespace LW.Core {
 
         public bool IsPosed(float pose, float target, float marginOfError = 40)
         {
+            if (!photonView.IsMine)
+            {
+                return false;
+            }
             return (pose < target + marginOfError && pose > target - marginOfError);
         }
 
         private void Awake()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             cam = Camera.main.transform;
             //floor = GameObject.FindGameObjectWithTag("Floor").GetComponent<LevelObject>().transform;
         }

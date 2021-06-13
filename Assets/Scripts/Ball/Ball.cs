@@ -63,39 +63,34 @@ namespace LW.Ball{
             {
                 // We own this ball so send the others our data
                 // Particles need...
-                stream.SendNext(State);
+                //stream.SendNext(State);
                 stream.SendNext(BallCollision);
                 stream.SendNext(CoreActive);
 
                 // Jedi needs...
-                stream.SendNext(IsNotQuiet);
-                stream.SendNext(DominantDir);
-                stream.SendNext(DominantPose);
+                //stream.SendNext(IsNotQuiet);
+                //stream.SendNext(DominantDir);
+                //stream.SendNext(DominantPose);
 
                 // Painter needs...
-                stream.SendNext(Hue);
-                stream.SendNext(NoteColor);
-                stream.SendNext(Handedness);
-
-                // Notes need...
-
-                
-                
+                //stream.SendNext(Hue);
+                //stream.SendNext(NoteColor);
+                //stream.SendNext(Handedness);
             }
             else
             {
                 // Network ball, receive data
-                this.State = (BallState)stream.ReceiveNext();
-                this.CoreActive = (bool)stream.ReceiveNext();
-                this.BallCollision = (bool)stream.ReceiveNext();
+                //State = (BallState)stream.ReceiveNext();
+                CoreActive = (bool)stream.ReceiveNext();
+                BallCollision = (bool)stream.ReceiveNext();
                 
-                this.IsNotQuiet = (bool)stream.ReceiveNext();
-                this.DominantDir = (Direction)stream.ReceiveNext();
-                this.DominantPose = (HandPose)stream.ReceiveNext();
+                //IsNotQuiet = (bool)stream.ReceiveNext();
+                //DominantDir = (Direction)stream.ReceiveNext();
+                //DominantPose = (HandPose)stream.ReceiveNext();
                 
-                this.Hue = (float)stream.ReceiveNext();
-                this.NoteColor = (Color)stream.ReceiveNext();
-                this.Handedness = (Hands)stream.ReceiveNext();
+                //Hue = (float)stream.ReceiveNext();
+                //NoteColor = (Color)stream.ReceiveNext();
+                //Handedness = (Hands)stream.ReceiveNext();
             }
         }
 
@@ -127,6 +122,10 @@ namespace LW.Ball{
 
         void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
             director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
             origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
@@ -148,113 +147,117 @@ namespace LW.Ball{
 
         void Update()
         {
-            State = Still ? BallState.Still : BallState.Active;
-            Distance = Vector3.Distance(transform.position, Camera.main.transform.position);
-
-            ModeToggleTimer += Time.deltaTime;
-
-            DominantHand = Handedness == Hands.right ? tracking.GetRtPalm : tracking.GetLtPalm;
-            DominantPose = Handedness == Hands.right ? tracking.rightPose : tracking.leftPose;
-            DominantDir = Handedness == Hands.right ? tracking.rightPalmAbs : tracking.leftPalmAbs;
-
-            //touchTimer += Time.deltaTime;
-
-            float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
-            float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
-            WithinRange = distanceToPlayer < perimeter;
-
-            GetComponent<SphereCollider>().enabled = !InteractingWithParticles;
-            containmentSphere.SetActive(!toggleContainmentSphere || State == BallState.Still);
-            CoreActive = touched;
-            //InteractingWithParticles = jedi.HoldPose != HandPose.none;
-
-            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall && !jedi.Reset)
+            if (photonView.IsMine)
             {
-                transform.position = LockPos;
-            }
-            else
-            {
-                LockPos = transform.position;
-            }
+                State = Still ? BallState.Still : BallState.Active;
+                Distance = Vector3.Distance(transform.position, Camera.main.transform.position);
 
-            if (jedi.Held && State == BallState.Active)
-            {
-                rigidbody.velocity += new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * jedi.GingerLift);
-            }
+                ModeToggleTimer += Time.deltaTime;
 
-            Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
-            float totalPrimaryRange = 90 - multiAxis.DeadZone;
-            float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
-            float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * masterThrottle;
+                DominantHand = Handedness == Hands.right ? tracking.GetRtPalm : tracking.GetLtPalm;
+                DominantPose = Handedness == Hands.right ? tracking.rightPose : tracking.leftPose;
+                DominantDir = Handedness == Hands.right ? tracking.rightPalmAbs : tracking.leftPalmAbs;
 
-            if (jedi.Primary == Force.pull)
-            {
-                float pullCorrection = 90 + multiAxis.DeadZone;
-                float palmForce = Mathf.Clamp((multiAxis.PalmRightStaffForward - pullCorrection) / totalPrimaryRange, 0.001f, 1);
-                transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
-                rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
-            }
+                //touchTimer += Time.deltaTime;
+
+                float distToOrigin = Vector3.Distance(transform.position, lassoOrigin);
+                float distanceToPlayer = Vector3.Distance(transform.position, Camera.main.transform.position);
+                WithinRange = distanceToPlayer < perimeter;
+
+                GetComponent<SphereCollider>().enabled = !InteractingWithParticles;
+                containmentSphere.SetActive(!toggleContainmentSphere || State == BallState.Still);
+                CoreActive = touched;
+                //InteractingWithParticles = jedi.HoldPose != HandPose.none;
+
+                if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall && !jedi.Reset)
+                {
+                    transform.position = LockPos;
+                }
+                else
+                {
+                    LockPos = transform.position;
+                }
+
+                if (jedi.Held && State == BallState.Active)
+                {
+                    rigidbody.velocity += new Vector3(0, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * jedi.GingerLift);
+                }
+
+                Quaternion handsRotation = Quaternion.Slerp(tracking.GetRtPalm.Rotation, tracking.GetLtPalm.Rotation, 0.5f);
+                float totalPrimaryRange = 90 - multiAxis.DeadZone;
+                float totalSecondaryRange = 90 - multiAxis.DeadZone / 2;
+                float palmDistThrottle = (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * masterThrottle;
+
+                if (jedi.Primary == Force.pull)
+                {
+                    float pullCorrection = 90 + multiAxis.DeadZone;
+                    float palmForce = Mathf.Clamp((multiAxis.PalmRightStaffForward - pullCorrection) / totalPrimaryRange, 0.001f, 1);
+                    transform.rotation = handsRotation * Quaternion.Euler(multiAxis.InOffset);
+                    rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
+                }
             
-            if (jedi.Primary == Force.push)
-            {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.PalmRightStaffForward / totalPrimaryRange), 0.001f, 1);
-                transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
-                rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
-            }
+                if (jedi.Primary == Force.push)
+                {
+                    float palmForce = Mathf.Clamp(1 - (multiAxis.PalmRightStaffForward / totalPrimaryRange), 0.001f, 1);
+                    transform.rotation = handsRotation * Quaternion.Euler(multiAxis.OutOffset);
+                    rigidbody.AddForce(transform.forward * (palmForce * palmDistThrottle * jedi.MasterForce));
+                }
 
-            if (jedi.Secondary == Force.right)
-            {
-                float rightCorrection = 90 + multiAxis.DeadZone / 2;
-                float palmForce = Mathf.Clamp((multiAxis.StaffForwardCamForward - rightCorrection) / totalSecondaryRange, 0.001f, 1);
-                //rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
-                rigidbody.velocity += new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
-            }
+                if (jedi.Secondary == Force.right)
+                {
+                    float rightCorrection = 90 + multiAxis.DeadZone / 2;
+                    float palmForce = Mathf.Clamp((multiAxis.StaffForwardCamForward - rightCorrection) / totalSecondaryRange, 0.001f, 1);
+                    //rigidbody.AddForce(transform.right * palmForce * jedi.MasterForce);
+                    rigidbody.velocity += new Vector3(palmForce * -jedi.MasterForce * 0.01f, 0);
+                }
 
-            if (jedi.Secondary == Force.left)
-            {
-                float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForwardCamForward / totalSecondaryRange), 0.001f, 1);
-                //rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
-                rigidbody.velocity += new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
-            }
+                if (jedi.Secondary == Force.left)
+                {
+                    float palmForce = Mathf.Clamp(1 - (multiAxis.StaffForwardCamForward / totalSecondaryRange), 0.001f, 1);
+                    //rigidbody.AddForce(transform.right * -palmForce * jedi.MasterForce);
+                    rigidbody.velocity += new Vector3(palmForce * jedi.MasterForce * 0.01f, 0);
+                }
 
-            if (jedi.Spin)
-            {
-                var shell = GetComponentInChildren<ShellId>().transform;
-                Debug.Log("spinning");
+                if (jedi.Spin)
+                {
+                    var shell = GetComponentInChildren<ShellId>().transform;
+                    Debug.Log("spinning");
                 
-                if (jedi.HoldPose == HandPose.flat)
-                {
-                    shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, 0);
-                }
-                else if (jedi.HoldPose == HandPose.pointer)
-                {
-                    shell.Rotate(0, tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY);
-                }
-                else if (jedi.HoldPose == HandPose.thumbsUp)
-                {
-                    shell.Rotate((1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ, 0);
-                }
+                    if (jedi.HoldPose == HandPose.flat)
+                    {
+                        shell.Rotate(tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, 0);
+                    }
+                    else if (jedi.HoldPose == HandPose.pointer)
+                    {
+                        shell.Rotate(0, tracking.StaffRight / 90 * maxSpinZ, (1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY);
+                    }
+                    else if (jedi.HoldPose == HandPose.thumbsUp)
+                    {
+                        shell.Rotate((1 - Mathf.Clamp(jedi.RelativeHandDist, 0.001f, 1)) * maxSpinY, tracking.StaffRight / 90 * maxSpinZ, 0);
+                    }
                 
-            }
-
-            if (jedi.Recall)
-            {
-                lassoOrigin = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>().GetRtPalm.Position;
-                transform.LookAt(lassoOrigin);
-
-                if (distToOrigin > recallDistance)
-                {
-                    rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
                 }
-            }
 
-            if (jedi.Reset)
-            {
-                ResetBall();
-            }
-            else
-            {
-                hasReset = false;
+                if (jedi.Recall)
+                {
+                    lassoOrigin = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>().GetRtPalm.Position;
+                    transform.LookAt(lassoOrigin);
+
+                    if (distToOrigin > recallDistance)
+                    {
+                        rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
+                    }
+                }
+
+                if (jedi.Reset)
+                {
+                    ResetBall();
+                }
+                else
+                {
+                    hasReset = false;
+                }
+
             }
         }
 
@@ -447,6 +450,10 @@ namespace LW.Ball{
 
         public void KillBall(OscMessage message)
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             StartCoroutine(destroySelf);
         }
 
@@ -498,6 +505,10 @@ namespace LW.Ball{
 
         public void IsGazedAt()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             if (director.Viewfinder && ModeToggleTimer > modeToggleSpacer)
             {
                 Still = !Still;
@@ -513,11 +524,19 @@ namespace LW.Ball{
 
         public void PlayStillFx()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             GetComponent<AudioSource>().PlayOneShot(stillFX);
         }
 
         public void PlayActionFx()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             GetComponent<AudioSource>().PlayOneShot(activeFX);
         }
     }

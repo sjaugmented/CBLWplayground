@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
 {
-    public class ShellRotator : MonoBehaviour
+    public class ShellRotator : MonoBehaviourPunCallbacks
     {
         [SerializeField] float xRotation = 2;
         [SerializeField] float yRotation = 2;
@@ -15,10 +16,19 @@ namespace LW.Ball
 
         private void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             ball = GetComponentInParent<Ball>();
         }
         void Update()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+
             if (ball.State == BallState.Still)
             {
                 transform.Rotate(xRotation, yRotation, zRotation);

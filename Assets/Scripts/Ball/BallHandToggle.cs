@@ -1,5 +1,6 @@
 ﻿using LW.Core;
 using Microsoft.MixedReality.Toolkit.Utilities.Solvers;
+using Photon.Pun;
 using System.Collections;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace LW.Ball
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(BoxCollider))]
     [RequireComponent(typeof(RadialView))]
-    public class BallHandToggle : MonoBehaviour
+    public class BallHandToggle : MonoBehaviourPunCallbacks
     {
         [SerializeField] AudioClip singleTap;
         [SerializeField] AudioClip doubleTap;
@@ -22,11 +23,20 @@ namespace LW.Ball
 
         void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
         }
 
         private void OnTriggerEnter(Collider collider)
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+            
             NewTracking tracking = transform.root.GetComponent<NewTracking>();
             BallDirector director = transform.root.GetComponent<BallDirector>();
             

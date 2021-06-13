@@ -23,14 +23,16 @@ namespace LW.Ball
             if (stream.IsWriting)
             {
                 // We own this ball so send the others our data
-                //stream.SendNext(IsFiring);
-                //stream.SendNext(Health);
+                stream.SendNext(h);
+                stream.SendNext(s);
+                stream.SendNext(v);
             }
             else
             {
                 // Network ball, receive data
-                //this.IsFiring = (bool)stream.ReceiveNext();
-                //this.Health = (float)stream.ReceiveNext();
+                h = (float)stream.ReceiveNext();
+                s = (float)stream.ReceiveNext();
+                v = (float)stream.ReceiveNext();
             }
         }
 
@@ -38,6 +40,10 @@ namespace LW.Ball
 
         void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             ball = GetComponent<Ball>();
 
             if (GetComponentInChildren<Light>())
@@ -64,6 +70,11 @@ namespace LW.Ball
 
         void Update()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+
             if (ball.CoreActive)
             {
                 SetColor();
@@ -127,6 +138,10 @@ namespace LW.Ball
 
         public void SetColor()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             Color.RGBToHSV(ball.NoteColor, out h, out s, out v);
             light.intensity = 10;
         }

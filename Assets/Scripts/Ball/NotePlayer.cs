@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LW.Ball
 {
-    public class NotePlayer : MonoBehaviour
+    public class NotePlayer : MonoBehaviourPunCallbacks
     {
         [SerializeField] List<AudioClip> notes;
 
@@ -12,6 +13,10 @@ namespace LW.Ball
         AudioSource audio;
         void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             ball = GetComponent<Ball>();
             audio = GetComponent<AudioSource>();
         }
@@ -24,8 +29,12 @@ namespace LW.Ball
 
         public void PlayNote(int index)
         {
-            //if (audio.isPlaying) { return; }
+            if (!photonView.IsMine)
+            {
+                return;
+            }
 
+            //if (audio.isPlaying) { return; }
             audio.PlayOneShot(notes[index]);
         }
     }

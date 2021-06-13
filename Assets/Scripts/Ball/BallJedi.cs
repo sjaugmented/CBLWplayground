@@ -80,14 +80,14 @@ namespace LW.Ball
             else
             {
                 // Network ball, receive data
-                this.Reset = (bool)stream.ReceiveNext();
-                this.Secondary = (Force)stream.ReceiveNext();
-                this.Spin = (bool)stream.ReceiveNext();
-                this.Recall = (bool)stream.ReceiveNext();
-                this.Reset = (bool)stream.ReceiveNext();
-                this.Held = (bool)stream.ReceiveNext();
-                this.HoldPose = (HandPose)stream.ReceiveNext();
-                this.RelativeHandDist = (float)stream.ReceiveNext();
+                Primary = (Force)stream.ReceiveNext();
+                Secondary = (Force)stream.ReceiveNext();
+                Spin = (bool)stream.ReceiveNext();
+                Recall = (bool)stream.ReceiveNext();
+                Reset = (bool)stream.ReceiveNext();
+                Held = (bool)stream.ReceiveNext();
+                HoldPose = (HandPose)stream.ReceiveNext();
+                RelativeHandDist = (float)stream.ReceiveNext();
             }
         }
 
@@ -95,6 +95,10 @@ namespace LW.Ball
 
         void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             tracking = GameObject.FindGameObjectWithTag("Player").GetComponent<NewTracking>();
             director = GameObject.FindGameObjectWithTag("Player").GetComponent<BallDirector>();
             origins = GameObject.FindGameObjectWithTag("Player").GetComponent<CastOrigins>();
@@ -105,6 +109,11 @@ namespace LW.Ball
 
         void Update()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+
             //Debug.Log(NoJedi);
             bool gravityCondition = !Held && ball.State == BallState.Active;
             

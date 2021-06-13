@@ -38,20 +38,30 @@ namespace LW.Ball
             if (stream.IsWriting)
             {
                 // We own this ball so send the others our data
-                //stream.SendNext(IsFiring);
-                //stream.SendNext(Health);
+                //stream.SendNext(CoreSize);
+                //stream.SendNext(CoreLifetime);
+                //stream.SendNext(CoreSpeed);
+                stream.SendNext(CoreHue);
+                stream.SendNext(CoreSat);
+                stream.SendNext(CoreVal);
+                //stream.SendNext(CoreEmission);
             }
             else
             {
                 // Network ball, receive data
-                //this.IsFiring = (bool)stream.ReceiveNext();
-                //this.Health = (float)stream.ReceiveNext();
+                CoreHue = (float)stream.ReceiveNext();
+                CoreSat = (float)stream.ReceiveNext();
+                CoreVal = (float)stream.ReceiveNext();
             }
         }
 
         #endregion
         void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             ball = GetComponent<Ball>();
             innerParticles = GetComponentInChildren<CoreParticlesID>().transform.GetComponent<ParticleSystem>();
             forceParticles = GetComponentInChildren<ForceParticlesID>().transform.GetComponent<ParticleSystem>();
@@ -72,6 +82,11 @@ namespace LW.Ball
 
         void Update()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+
             var innerMain = innerParticles.main;
             var coreEmission = innerParticles.emission;
             var forceEmission = forceParticles.emission;
@@ -121,6 +136,11 @@ namespace LW.Ball
 
         public void GlitterBall(OscMessage message)
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+
             SendMessage("GlitterBall");
             GetComponentInChildren<GlitterParticlesId>().GetComponent<ParticleSystem>().Play();
         }

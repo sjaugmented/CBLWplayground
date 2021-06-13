@@ -36,6 +36,10 @@ namespace LW.Core
 
         private void Start()
         {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
             tracking = GetComponent<NewTracking>();
         }
 
