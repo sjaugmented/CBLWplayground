@@ -18,6 +18,8 @@ namespace LW.Ball
 
         #region Photon
 
+        Color ringColor;
+
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             if (stream.IsWriting)
@@ -26,6 +28,7 @@ namespace LW.Ball
                 stream.SendNext(h);
                 stream.SendNext(s);
                 stream.SendNext(v);
+                stream.SendNext(ringColor);
             }
             else
             {
@@ -33,6 +36,7 @@ namespace LW.Ball
                 h = (float)stream.ReceiveNext();
                 s = (float)stream.ReceiveNext();
                 v = (float)stream.ReceiveNext();
+                ringColor = (Color)stream.ReceiveNext();
             }
         }
 
@@ -40,10 +44,6 @@ namespace LW.Ball
 
         void Start()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
             ball = GetComponent<Ball>();
 
             if (GetComponentInChildren<Light>())
@@ -70,13 +70,9 @@ namespace LW.Ball
 
         void Update()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
-
             if (ball.CoreActive)
             {
+                Debug.Log("CoreActive");
                 SetColor();
             }
 
@@ -84,7 +80,7 @@ namespace LW.Ball
             {
                 s -= 0.01f;
             }
-            
+
             if (v > 0)
             {
                 v -= 0.01f;
@@ -94,10 +90,11 @@ namespace LW.Ball
             {
                 if (light.intensity > 0)
                 {
+                    Debug.Log("dimming light");
                     light.intensity -= 0.1f;
                 }
 
-                light.enabled = true;
+                Debug.Log("setting light color");
                 light.color = Color.HSVToRGB(h, s, 1);
             }
 
@@ -117,19 +114,17 @@ namespace LW.Ball
                 }
             }
 
+            if (photonView.IsMine)
+            {
+                ringColor = ball.NoteColor;
+            }
+
             if (ringMats.Count > 0)
             {
                 foreach (Material mat in ringMats)
                 {
-                    //mat.color = Color.HSVToRGB(h, s, v);
-                    //mat.EnableKeyword("_EMISSION");
                     mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
-                    mat.color = ball.NoteColor;
-                    //if (ball.State == BallState.Active)
-                    //{
-                    //    mat.EnableKeyword("_EMISSION");
-                    //    mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
-                    //}
+                    mat.color = ringColor;
                 }
             }
 
@@ -138,11 +133,11 @@ namespace LW.Ball
 
         public void SetColor()
         {
-            if (!photonView.IsMine)
+            if (photonView.IsMine)
             {
-                return;
+                Color.RGBToHSV(ball.NoteColor, out h, out s, out v);
             }
-            Color.RGBToHSV(ball.NoteColor, out h, out s, out v);
+            Debug.Log("Light up 10!");
             light.intensity = 10;
         }
 

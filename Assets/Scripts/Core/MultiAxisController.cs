@@ -36,22 +36,15 @@ namespace LW.Core
 
         private void Start()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
             tracking = GetComponent<NewTracking>();
         }
 
         void Update()
         {
-            if (photonView.IsMine)
-            {
-                MixedRealityPose rightPalm = tracking.GetRtPalm;
-                Vector3 rightPalmRight = rightPalm.Right.normalized;
-                PalmRightStaffForward = Vector3.Angle(rightPalmRight, tracking.Staff);
-                StaffForwardCamForward = Vector3.Angle(tracking.Staff, Camera.main.transform.forward);
-            }
+            MixedRealityPose rightPalm = tracking.GetRtPalm;
+            Vector3 rightPalmRight = rightPalm.Right.normalized;
+            PalmRightStaffForward = Vector3.Angle(rightPalmRight, tracking.Staff);
+            StaffForwardCamForward = Vector3.Angle(tracking.Staff, Camera.main.transform.forward);
         }
     }
 }

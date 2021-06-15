@@ -53,10 +53,10 @@ namespace LW.Ball
 
         void Update()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
+            //if (!photonView.IsMine)
+            //{
+            //    return;
+            //}
             string ballId = ball.DominantHand == tracking.GetRtPalm ? "rightBall" : "leftBall";
             if (director.SendCoordinates && jedi.Moving)
             {
@@ -256,10 +256,10 @@ namespace LW.Ball
 
         public void Send(string address = "", float val = 1)
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
+            //if (!photonView.IsMine)
+            //{
+            //    return;
+            //}
             OscMessage message = new OscMessage();
             message.address = director.WorldLevel + "/" + ball.Handedness + "/" + address + "/";
             message.values.Add(val);
@@ -268,10 +268,10 @@ namespace LW.Ball
         
         public void SendClean(string address = "", float val = 1)
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
+            //if (!photonView.IsMine)
+            //{
+            //    return;
+            //}
             OscMessage message = new OscMessage();
             message.address = address + "/";
             message.values.Add(val);

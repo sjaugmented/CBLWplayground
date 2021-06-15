@@ -23,10 +23,6 @@ namespace LW.Ball
 
         void Start()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
             osc = GameObject.FindGameObjectWithTag("OSC").GetComponent<OSC>();
         }
 

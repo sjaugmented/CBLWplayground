@@ -377,6 +377,21 @@ PrefabInstance:
       propertyPath: ObservedComponents.Array.data[5]
       value: 
       objectReference: {fileID: 4085205338027140650}
+    - target: {fileID: 28587033041716699, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 644444610910363575, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 863079449121654146, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 863079449121654146, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: rings.Array.size
@@ -422,6 +437,11 @@ PrefabInstance:
       propertyPath: shells.Array.data[0]
       value: 
       objectReference: {fileID: 5072076890822638833}
+    - target: {fileID: 1632886652896796702, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1958236206542642372, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: ObservedComponents.Array.size
@@ -495,11 +515,41 @@ PrefabInstance:
     - target: {fileID: 2225964859482369042, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2454764655673570708, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989304319388011240, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3175291041352865394, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3438728957689777466, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3456582816631418966, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3634210435180566554, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: toggleContainmentSphere
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4096006491182456180, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4535550177916747543, guid: 56e79d1d7f3b27e4ab523612c469e09a,
@@ -507,10 +557,25 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5145626739213686484, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5379702898570425307, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5391405407328720528, guid: 56e79d1d7f3b27e4ab523612c469e09a,
         type: 3}
       propertyPath: m_RootOrder
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8345121157754330294, guid: 56e79d1d7f3b27e4ab523612c469e09a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3648994045737851960, guid: 56e79d1d7f3b27e4ab523612c469e09a, type: 3}
@@ -582,7 +647,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 1282880396942044354}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 

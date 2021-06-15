@@ -92,13 +92,10 @@ namespace LW.Ball
         }
 
         #endregion
-
+        
+        // TODO seperate the state for photon
         void Start()
         {
-            //if (!photonView.IsMine)
-            //{
-            //    return;
-            //}
             tracking = GameObject.FindGameObjectWithTag("Director").GetComponent<NewTracking>();
             director = GameObject.FindGameObjectWithTag("Director").GetComponent<BallDirector>();
             origins = GameObject.FindGameObjectWithTag("Director").GetComponent<CastOrigins>();
@@ -109,12 +106,6 @@ namespace LW.Ball
 
         void Update()
         {
-            if (!photonView.IsMine)
-            {
-                return;
-            }
-
-            //Debug.Log(NoJedi);
             bool gravityCondition = !Held && ball.State == BallState.Active;
             
             RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
