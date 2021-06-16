@@ -234,7 +234,7 @@ namespace LW.Ball
                 spun = false;
             }
 
-            if (jedi.Recall)
+            if (jedi.RecallRight)
             {
                 if (!recalled)
                 {

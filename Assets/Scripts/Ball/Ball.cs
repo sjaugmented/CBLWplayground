@@ -156,7 +156,7 @@ namespace LW.Ball{
             CoreActive = touched;
             //InteractingWithParticles = jedi.HoldPose != HandPose.none;
 
-            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.Recall && !jedi.Reset)
+            if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.RecallRight && !jedi.Reset)
             {
                 transform.position = LockPos;
             }
@@ -230,9 +230,20 @@ namespace LW.Ball{
                 }
             }
 
-            if (jedi.Recall)
+            if (jedi.RecallRight)
             {
-                lassoOrigin = GameObject.FindGameObjectWithTag("Director").GetComponent<NewTracking>().GetRtPalm.Position;
+                lassoOrigin = tracking.GetRtPalm.Position;
+                transform.LookAt(lassoOrigin);
+
+                if (distToOrigin > recallDistance)
+                {
+                    rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
+                }
+            }
+
+            if (jedi.RecallLeft)
+            {
+                lassoOrigin = tracking.GetLtPalm.Position;
                 transform.LookAt(lassoOrigin);
 
                 if (distToOrigin > recallDistance)

@@ -18,7 +18,7 @@ namespace LW.Ball
 
         #region Photon
 
-        Color ringColor;
+        float r, g, b, a;
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
@@ -28,7 +28,10 @@ namespace LW.Ball
                 stream.SendNext(h);
                 stream.SendNext(s);
                 stream.SendNext(v);
-                stream.SendNext(ringColor);
+                stream.SendNext(r);
+                stream.SendNext(g);
+                stream.SendNext(b);
+                stream.SendNext(a);
             }
             else
             {
@@ -36,7 +39,10 @@ namespace LW.Ball
                 h = (float)stream.ReceiveNext();
                 s = (float)stream.ReceiveNext();
                 v = (float)stream.ReceiveNext();
-                ringColor = (Color)stream.ReceiveNext();
+                r = (float)stream.ReceiveNext();
+                g = (float)stream.ReceiveNext();
+                b = (float)stream.ReceiveNext();
+                a = (float)stream.ReceiveNext();
             }
         }
 
@@ -70,6 +76,14 @@ namespace LW.Ball
 
         void Update()
         {
+            if (photonView.IsMine)
+            {
+                r = ball.NoteColor.r;
+                g = ball.NoteColor.r;
+                b = ball.NoteColor.b;
+                a = ball.NoteColor.a;
+            }
+
             if (ball.CoreActive)
             {
                 Debug.Log("CoreActive");
@@ -114,17 +128,12 @@ namespace LW.Ball
                 }
             }
 
-            if (photonView.IsMine)
-            {
-                ringColor = ball.NoteColor;
-            }
-
             if (ringMats.Count > 0)
             {
                 foreach (Material mat in ringMats)
                 {
                     mat.SetColor("_EmissionColor", Color.HSVToRGB(h, s, v));
-                    mat.color = ringColor;
+                    mat.color = new Color(r, g, b, a);
                 }
             }
 

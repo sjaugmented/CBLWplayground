@@ -36,7 +36,8 @@ namespace LW.Ball
         public float RelativeHandDist { get; set; }
         public bool Held { get; set; }
         public bool Moving { get; set; }
-        public bool Recall { get; set; }
+        public bool RecallRight { get; set; }
+        public bool RecallLeft { get; set; }
         public bool Reset { get; set; }
         public bool NoJedi 
         { 
@@ -51,8 +52,8 @@ namespace LW.Ball
         public Force Primary = Force.idle;
         public Force Secondary = Force.idle;
 
-        bool lassoReady, resetReady;
-        float lassoTimer, resetTimer, recallPunchTimer, forceTimer = Mathf.Infinity;
+        bool rightLasso, leftLasso, resetReady;
+        float rLassoTimer, lLassoTimer, resetTimer, recallPunchTimer, forceTimer = Mathf.Infinity;
 
         BallDirector director;
         NewTracking tracking;
@@ -67,11 +68,11 @@ namespace LW.Ball
         {
             if (stream.IsWriting)
             {
-                // We own this ball so send the others our data
                 stream.SendNext(Primary);
                 stream.SendNext(Secondary);
                 stream.SendNext(Spin);
-                stream.SendNext(Recall);
+                stream.SendNext(RecallRight);
+                stream.SendNext(RecallLeft);
                 stream.SendNext(Reset);
                 stream.SendNext(Held);
                 stream.SendNext(HoldPose);
@@ -79,11 +80,11 @@ namespace LW.Ball
             }
             else
             {
-                // Network ball, receive data
                 Primary = (Force)stream.ReceiveNext();
                 Secondary = (Force)stream.ReceiveNext();
                 Spin = (bool)stream.ReceiveNext();
-                Recall = (bool)stream.ReceiveNext();
+                RecallRight = (bool)stream.ReceiveNext();
+                RecallLeft = (bool)stream.ReceiveNext();
                 Reset = (bool)stream.ReceiveNext();
                 Held = (bool)stream.ReceiveNext();
                 HoldPose = (HandPose)stream.ReceiveNext();
@@ -106,11 +107,11 @@ namespace LW.Ball
 
         void Update()
         {
-            bool gravityCondition = !Held && ball.State == BallState.Active;
+            bool gravityCondition = !Held && ball.State == BallState.Active && Primary == Force.idle;
             
             RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
 
-            lassoTimer += Time.deltaTime;
+            rLassoTimer += Time.deltaTime;
             resetTimer += Time.deltaTime;
             recallPunchTimer += Time.deltaTime;
             forceTimer = Time.deltaTime;
@@ -121,7 +122,6 @@ namespace LW.Ball
 
             if (!NoJedi && !director.KillJedi)
             {
-
                 #region multiAxis Axis Control
                 if (tracking.handedness == Hands.both)
                 {
@@ -210,33 +210,59 @@ namespace LW.Ball
                     (tracking.rightPose == HandPose.thumbsUp && tracking.leftPose == HandPose.thumbsUp));
             }
 
-            Moving = Primary != Force.idle || Recall;
+            Moving = Primary != Force.idle || RecallRight;
             
             #endregion
 
             #region Recall
+            // Right Hand
             if (ball.IsNotQuiet && tracking.rightPose == HandPose.fist && tracking.rightPalmRel == Direction.palmOut)
             {
-                if (!lassoReady)
+                if (!rightLasso)
                 {
-                    lassoTimer = 0;
-                    lassoReady = true;
+                    rLassoTimer = 0;
+                    rightLasso = true;
                 }
             }
             else
             {
-                lassoReady = false;
+                rightLasso = false;
             }
 
-            if (ball.IsNotQuiet && lassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
+            if (ball.IsNotQuiet && rLassoTimer < 3 && tracking.rightPose == HandPose.flat && tracking.rightPalmRel == Direction.palmOut)
             {
-                Recall = true;
+                RecallRight = true;
                 recallPunchTimer = 0;
             }
 
             if (tracking.rightPose != HandPose.flat)
             {
-                Recall = false;
+                RecallRight = false;
+            }
+
+            // Left Hand
+            if (ball.IsNotQuiet && tracking.leftPose == HandPose.fist && tracking.leftPalmRel == Direction.palmOut)
+            {
+                if (!leftLasso)
+                {
+                    lLassoTimer = 0;
+                    leftLasso = true;
+                }
+            }
+            else
+            {
+                leftLasso = false;
+            }
+
+            if (ball.IsNotQuiet && lLassoTimer < 3 && tracking.leftPose == HandPose.flat && tracking.leftPalmRel == Direction.palmOut)
+            {
+                RecallLeft = true;
+                recallPunchTimer = 0;
+            }
+
+            if (tracking.leftPose != HandPose.flat)
+            {
+                RecallLeft = false;
             }
             #endregion
 
