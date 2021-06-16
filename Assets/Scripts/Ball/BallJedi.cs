@@ -8,6 +8,8 @@ namespace LW.Ball
 
     public class BallJedi : MonoBehaviourPunCallbacks, IPunObservable
     {
+        [SerializeField] float deadZone = 0.5f;
+        [SerializeField] float fieldOfControl = 60f;
         [SerializeField] float masterForce = 3;
         [SerializeField] float recallMultiplier = 6;
         [SerializeField] float holdDistance = 0.5f;
@@ -111,6 +113,11 @@ namespace LW.Ball
             
             RelativeHandDist = (origins.PalmsDist - MinDistance * ball.transform.localScale.x) / (HoldDistance - MinDistance * ball.transform.localScale.x);
 
+            var ballDirection = transform.position - Camera.main.transform.position;
+            var angleToBall = Vector3.Angle(Camera.main.transform.forward, ballDirection);
+            Debug.Log("angleToBall: " + angleToBall);
+            Debug.Log("distance to ball: " + ball.Distance);
+
             rLassoTimer += Time.deltaTime;
             resetTimer += Time.deltaTime;
             recallPunchTimer += Time.deltaTime;
@@ -154,33 +161,36 @@ namespace LW.Ball
                     }
                     else if (tracking.rightPose == HandPose.flat && tracking.leftPose == HandPose.flat)
                     {
-                        #region Jedi
-                        if (multiAxis.StaffForwardCamForward > (90 + multiAxis.DeadZone / 2))
+                        if (angleToBall < fieldOfControl)
                         {
-                            Secondary = Force.right;
-                        }
-                        else if (multiAxis.StaffForwardCamForward < (90 - multiAxis.DeadZone / 2))
-                        {
-                            Secondary = Force.left;
-                        }
-                        else
-                        {
-                            Secondary = Force.idle;
-                        }
+                            #region Jedi
+                            if (multiAxis.StaffForwardCamForward > (90 + multiAxis.DeadZone / 2))
+                            {
+                                Secondary = Force.right;
+                            }
+                            else if (multiAxis.StaffForwardCamForward < (90 - multiAxis.DeadZone / 2))
+                            {
+                                Secondary = Force.left;
+                            }
+                            else
+                            {
+                                Secondary = Force.idle;
+                            }
 
-                        if (multiAxis.PalmRightStaffForward > (90 + multiAxis.DeadZone))
-                        {
-                            Primary = Force.pull;
+                            if (multiAxis.PalmRightStaffForward > (90 + multiAxis.DeadZone) && ball.Distance > deadZone)
+                            {
+                                Primary = Force.pull;
+                            }
+                            else if (multiAxis.PalmRightStaffForward < (90 - multiAxis.DeadZone))
+                            {
+                                Primary = Force.push;
+                            }
+                            else
+                            {
+                                Primary = Force.idle;
+                            }
+                            #endregion
                         }
-                        else if (multiAxis.PalmRightStaffForward < (90 - multiAxis.DeadZone))
-                        {
-                            Primary = Force.push;
-                        }
-                        else
-                        {
-                            Primary = Force.idle;
-                        }
-                        #endregion
                     }
                     else
                     {

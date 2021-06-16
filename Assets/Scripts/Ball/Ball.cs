@@ -67,6 +67,7 @@ namespace LW.Ball{
             {
                 stream.SendNext(State);
                 stream.SendNext(touched);
+                stream.SendNext(CoreActive);
                 stream.SendNext(spin);
                 stream.SendNext(primary);
             }
@@ -74,6 +75,7 @@ namespace LW.Ball{
             {
                 State = (BallState)stream.ReceiveNext();
                 touched = (bool)stream.ReceiveNext();
+                CoreActive = (bool)stream.ReceiveNext();
                 spin = (bool)stream.ReceiveNext();
                 primary = (Force)stream.ReceiveNext();
             }
@@ -153,7 +155,10 @@ namespace LW.Ball{
 
             GetComponent<SphereCollider>().enabled = !InteractingWithParticles;
             containmentSphere.SetActive(!toggleContainmentSphere || State == BallState.Still);
-            CoreActive = touched;
+            if (photonView.IsMine)
+            {
+                CoreActive = touched;
+            }
             //InteractingWithParticles = jedi.HoldPose != HandPose.none;
 
             if (State == BallState.Still && jedi.Primary == Force.idle && !Manipulating && !jedi.RecallRight && !jedi.Reset)
@@ -230,27 +235,34 @@ namespace LW.Ball{
                 }
             }
 
-            if (jedi.RecallRight)
+            if (tracking.handedness == Hands.right)
             {
-                lassoOrigin = tracking.GetRtPalm.Position;
-                transform.LookAt(lassoOrigin);
-
-                if (distToOrigin > recallDistance)
+                if (jedi.RecallRight)
                 {
-                    rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
+                    lassoOrigin = tracking.GetRtPalm.Position;
+                    transform.LookAt(lassoOrigin);
+
+                    if (distToOrigin > recallDistance)
+                    {
+                        rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
+                    }
                 }
             }
-
-            if (jedi.RecallLeft)
+            
+            if (tracking.handedness == Hands.left)
             {
-                lassoOrigin = tracking.GetLtPalm.Position;
-                transform.LookAt(lassoOrigin);
-
-                if (distToOrigin > recallDistance)
+                if (jedi.RecallLeft)
                 {
-                    rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
+                    lassoOrigin = tracking.GetLtPalm.Position;
+                    transform.LookAt(lassoOrigin);
+
+                    if (distToOrigin > recallDistance)
+                    {
+                        rigidbody.AddForce((transform.forward * jedi.RecallForce) + new Vector3(0, antiGrav, 0));
+                    }
                 }
             }
+            
 
             if (jedi.Reset)
             {
