@@ -115,8 +115,6 @@ namespace LW.Ball
 
             var ballDirection = transform.position - Camera.main.transform.position;
             var angleToBall = Vector3.Angle(Camera.main.transform.forward, ballDirection);
-            Debug.Log("angleToBall: " + angleToBall);
-            Debug.Log("distance to ball: " + ball.Distance);
 
             rLassoTimer += Time.deltaTime;
             resetTimer += Time.deltaTime;
