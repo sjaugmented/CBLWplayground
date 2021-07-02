@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   authenticationMode: 0
   spatialAnchorsAccountId: cfb280b5-e239-4cf9-8f56-8bd415a3878d
-  spatialAnchorsAccountKey: roX25A3RQIlJcnL0sTJ+5O03393qy/QqnrtoWwzB3ns=
+  spatialAnchorsAccountKey: xONgEZae0XR9hClEZtI308e1IhRhNL1RsNKFL+AIGDE=
   spatialAnchorsAccountDomain: westus2.mixedreality.azure.com
   clientId: 
   tenantId: 
