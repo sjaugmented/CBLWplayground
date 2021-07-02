@@ -22,6 +22,7 @@ namespace MRTK.Tutorials.MultiUserCapabilities
             {
                 if (Instance != this)
                 {
+                    Debug.Log("destroying playground");
                     Destroy(Instance.gameObject);
                     Instance = this;
                 }

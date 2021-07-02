@@ -9,8 +9,10 @@ namespace MRTK.Tutorials.MultiUserCapabilities
         [Tooltip("The UI Label to inform the user that the connection is in progress")]
         [SerializeField]
         private GameObject connectingCanvas;
+        
 
         public static PhotonLobby Lobby;
+        public bool Connected { get; set; }
 
         private int roomNumber = 1;
         private int userIdCount;
@@ -60,6 +62,7 @@ namespace MRTK.Tutorials.MultiUserCapabilities
             Debug.Log("Other players in room: " + PhotonNetwork.CountOfPlayersInRooms);
             Debug.Log("Total players in room: " + (PhotonNetwork.CountOfPlayersInRooms + 1));
             connectingCanvas.SetActive(false);
+            Connected = true;
         }
 
         public override void OnJoinRandomFailed(short returnCode, string message)

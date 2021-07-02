@@ -21,6 +21,7 @@ namespace MRTK.Tutorials.MultiUserCapabilities
             var pvLocalUser = GenericNetworkManager.Instance.localUser.gameObject;
             var pu = pvLocalUser.gameObject.GetComponent<PhotonUser>();
             pu.ShareAzureAnchorId();
+            //FindObjectOfType<AnchorMonitor>().SetAnchorShared();
         }
 
         public void GetAzureAnchor()

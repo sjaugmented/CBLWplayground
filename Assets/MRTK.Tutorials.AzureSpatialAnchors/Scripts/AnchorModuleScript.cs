@@ -88,6 +88,7 @@ public class AnchorModuleScript : MonoBehaviour
         await cloudManager.StartSessionAsync();
 
         Debug.Log("Azure session started successfully");
+        FindObjectOfType<AnchorMonitor>().StartSession();
     }
 
     public async void StopAzureSession()
@@ -131,6 +132,7 @@ public class AnchorModuleScript : MonoBehaviour
         if (localCloudAnchor.LocalAnchor == IntPtr.Zero)
         {
             Debug.Log("Didn't get the local anchor...");
+            FindObjectOfType<AnchorMonitor>().ShowUhoh("Didn't get the local anchor...");
             return;
         }
         else
@@ -175,10 +177,13 @@ public class AnchorModuleScript : MonoBehaviour
                 // Update the current Azure anchor ID
                 Debug.Log($"Current Azure anchor ID updated to '{currentCloudAnchor.Identifier}'");
                 currentAzureAnchorID = currentCloudAnchor.Identifier;
+
+                FindObjectOfType<AnchorMonitor>().SetAnchorCreated();
             }
             else
             {
                 Debug.Log($"Failed to save cloud anchor with ID '{currentAzureAnchorID}' to Azure");
+                FindObjectOfType<AnchorMonitor>().ShowUhoh($"Failed to save cloud anchor with ID '{currentAzureAnchorID}' to Azure");
 
                 // Notify AnchorFeedbackScript
                 OnCreateAnchorFailed?.Invoke();
@@ -231,6 +236,7 @@ public class AnchorModuleScript : MonoBehaviour
         else
         {
             Debug.Log("Current Azure anchor ID is empty");
+            FindObjectOfType<AnchorMonitor>().ShowUhoh("Current Azure anchor ID is empty");
             return;
         }
 
@@ -247,6 +253,7 @@ public class AnchorModuleScript : MonoBehaviour
         else
         {
             Debug.Log("Attempt to create watcher failed, no session exists");
+            FindObjectOfType<AnchorMonitor>().ShowUhoh("Attempt to create watcher failed, no session exists");
             currentWatcher = null;
         }
     }
@@ -388,6 +395,8 @@ public class AnchorModuleScript : MonoBehaviour
                     Debug.Log("Local anchor position successfully set to Azure anchor position");
 
                     gameObject.GetComponent<UnityEngine.XR.WSA.WorldAnchor>().SetNativeSpatialAnchorPtr(currentCloudAnchor.LocalAnchor);
+
+                    FindObjectOfType<AnchorMonitor>().SetAnchorRetrieved();
                 }
 
 #elif UNITY_ANDROID || UNITY_IOS

@@ -2,6 +2,7 @@
 using Photon.Pun;
 using System.Collections.Generic;
 using UnityEngine;
+using MRTK.Tutorials.MultiUserCapabilities;
 
 namespace LW.Ball
 {
@@ -279,9 +280,10 @@ namespace LW.Ball
 				Debug.Log("spawning");
 
 				RightBallInPlay = true;
-				rightBall = PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+                rightBall = PhotonNetwork.Instantiate(spawnPrefab.name, tracking.GetRtPalm.Position + SpawnOffset, Camera.main.transform.rotation);
+				rightBall.transform.parent = FindObjectOfType<TableAnchor>().transform;
 
-				Debug.Log("spawned");
+                Debug.Log("spawned");
 
 				rightBall.GetComponent<Ball>().Handedness = Hands.right;
 

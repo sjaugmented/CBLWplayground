@@ -86,7 +86,7 @@ namespace LW.Ball
 
             if (ball.CoreActive)
             {
-                Debug.Log("CoreActive");
+                //Debug.Log("CoreActive");
                 SetColor();
             }
 
@@ -104,11 +104,11 @@ namespace LW.Ball
             {
                 if (light.intensity > 0)
                 {
-                    Debug.Log("dimming light");
+                    //Debug.Log("dimming light");
                     light.intensity -= 0.1f;
                 }
 
-                Debug.Log("setting light color");
+                //Debug.Log("setting light color");
                 light.color = Color.HSVToRGB(h, s, 1);
             }
 
@@ -146,7 +146,7 @@ namespace LW.Ball
             {
                 Color.RGBToHSV(ball.NoteColor, out h, out s, out v);
             }
-            Debug.Log("Light up 10!");
+            //Debug.Log("Light up 10!");
             light.intensity = 10;
         }
 
